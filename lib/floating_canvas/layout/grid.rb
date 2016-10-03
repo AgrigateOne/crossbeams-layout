@@ -34,7 +34,7 @@ module FloatingCanvas
         head_section = <<-EOH
       <div class="grid-head">
         <label style="margin-left: 20px;">
-            <button onclick="jmtGridEvents.csvExport('#{grid_id}', '#{file_name_fom_caption(caption)}')">Export to CSV</button>
+            <button onclick="jmtGridEvents.csvExport('#{grid_id}', '#{file_name_from_caption(caption)}')">Export to CSV</button>
         </label>
         <label style="margin-left: 20px;">
             <button onclick="jmtGridEvents.toggleToolPanel('#{grid_id}')">Tool panel</button>
@@ -57,7 +57,7 @@ module FloatingCanvas
 
       private
 
-      def file_name_fom_caption(caption)
+      def file_name_from_caption(caption)
         (caption || 'grid_contents').gsub('&nbsp;','grid_contents').gsub(/[\/:*?"\\<>\|\r\n]/i, '-') << '.csv'
       end
 
