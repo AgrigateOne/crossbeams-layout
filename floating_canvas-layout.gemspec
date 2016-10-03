@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'floating_canvas/layout/version'
+require 'crossbeams/layout/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "floating_canvas-layout"
-  spec.version       = FloatingCanvas::Layout::VERSION
+  spec.name          = "crossbeams-layout"
+  spec.version       = Crossbeams::Layout::VERSION
   spec.authors       = ["James Silberbauer"]
   spec.email         = ["jamessil@telkomsa.net"]
 

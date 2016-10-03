@@ -1,4 +1,4 @@
-module FloatingCanvas
+module Crossbeams
   module Layout
 
     class Page
@@ -59,7 +59,7 @@ module FloatingCanvas
       end
 
       def render
-        #"A string rendered from FloatingCanvas<br>" << nodes.map {|s| s.render }.join("\n<!-- End Section -->\n")
+        #"A string rendered from Crossbeams<br>" << nodes.map {|s| s.render }.join("\n<!-- End Section -->\n")
         nodes.map {|s| s.render }.join("\n<!-- End Section -->\n")
       end
 

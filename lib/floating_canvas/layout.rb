@@ -1,16 +1,16 @@
-require "floating_canvas/layout/version"
-require "floating_canvas/layout/callback_section"
-require "floating_canvas/layout/column"
-require "floating_canvas/layout/field"
-require "floating_canvas/layout/form"
-require "floating_canvas/layout/grid"
-require "floating_canvas/layout/page"
-require "floating_canvas/layout/page_config"
-require "floating_canvas/layout/row"
-require "floating_canvas/layout/section"
-require "floating_canvas/layout/text"
+require "crossbeams/layout/version"
+require "crossbeams/layout/callback_section"
+require "crossbeams/layout/column"
+require "crossbeams/layout/field"
+require "crossbeams/layout/form"
+require "crossbeams/layout/grid"
+require "crossbeams/layout/page"
+require "crossbeams/layout/page_config"
+require "crossbeams/layout/row"
+require "crossbeams/layout/section"
+require "crossbeams/layout/text"
 
-module FloatingCanvas
+module Crossbeams
   module Layout
     # Your code goes here...
   end
