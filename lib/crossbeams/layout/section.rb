@@ -31,7 +31,7 @@ module Crossbeams
       def render
         row_renders = nodes.map {|s| s.render }.join("\n<!-- End Row -->\n")
         <<-EOS
-      <section id="section-#{sequence}" class="jmt_layout">
+      <section id="section-#{sequence}" class="crossbeams_layout">
       <h2>#{caption}</h2>
         #{row_renders}
       </section>

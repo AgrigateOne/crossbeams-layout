@@ -14,7 +14,7 @@ module Crossbeams
       # This render uses XHR via javascript
       # def render
       #   <<-EOS
-      #   <section id="section-#{sequence}" data-jmt_callback_section="#{url}" class="jmt_layout">
+      #   <section id="section-#{sequence}" data-crossbeams_callback_section="#{url}" class="crossbeams_layout">
       #   <h2>#{caption}</h2>
       #   <div class="content-target content-loading"></div>
       #   </section>
@@ -24,12 +24,12 @@ module Crossbeams
       # This render uses inline javascript fetch.
       def render
         <<-EOS
-      <section id="section-#{sequence}" class="jmt_layout">
+      <section id="section-#{sequence}" class="crossbeams_layout">
       <h2>#{caption}</h2>
-      <div id="jmt_callback_target_#{sequence}" class="content-target content-loading"></div>
+      <div id="crossbeams_callback_target_#{sequence}" class="content-target content-loading"></div>
       </section>
       <script>
-        var content_div = document.querySelector('#jmt_callback_target_#{sequence}');
+        var content_div = document.querySelector('#crossbeams_callback_target_#{sequence}');
 
         fetch('#{url}')
         .then(function(response) {

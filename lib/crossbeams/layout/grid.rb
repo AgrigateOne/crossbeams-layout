@@ -29,21 +29,21 @@ module Crossbeams
       def render_for_screen
         caption = options[:caption]
         # buttons << "<input type='text' id='#{@grid_id}search' placeholder='Search...' style='width:100px;margin-left:5px;margin-right:5px;vertical-align:top;' />"
-        #<input onkeyup="jmtGridEvents.quickSearch('#{grid_id}', this)" placeholder='Search...' />
+        #<input onkeyup="crossbeamsGridEvents.quickSearch('#{grid_id}', this)" placeholder='Search...' />
 
         head_section = <<-EOH
       <div class="grid-head">
         <label style="margin-left: 20px;">
-            <button onclick="jmtGridEvents.csvExport('#{grid_id}', '#{file_name_from_caption(caption)}')">Export to CSV</button>
+            <button onclick="crossbeamsGridEvents.csvExport('#{grid_id}', '#{file_name_from_caption(caption)}')">Export to CSV</button>
         </label>
         <label style="margin-left: 20px;">
-            <button onclick="jmtGridEvents.toggleToolPanel('#{grid_id}')">Tool panel</button>
+            <button onclick="crossbeamsGridEvents.toggleToolPanel('#{grid_id}')">Tool panel</button>
         </label>
         <label style="margin-left: 20px;">
-            <button onclick="jmtGridEvents.printAGrid('#{grid_id}', '#{url}')">Print</button>
+            <button onclick="crossbeamsGridEvents.printAGrid('#{grid_id}', '#{url}')">Print</button>
         </label>
         <label style="margin-left: 20px;">
-            <input onkeyup="jmtGridEvents.quickSearch(event)" placeholder='Search...' data-grid-id="#{grid_id}"/>
+            <input onkeyup="crossbeamsGridEvents.quickSearch(event)" placeholder='Search...' data-grid-id="#{grid_id}"/>
         </label>
         #{caption}
       </div>
