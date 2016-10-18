@@ -28,24 +28,24 @@ module Crossbeams
 
       def render_for_screen
         caption = options[:caption]
-        # buttons << "<input type='text' id='#{@grid_id}search' placeholder='Search...' style='width:100px;margin-left:5px;margin-right:5px;vertical-align:top;' />"
-        #<input onkeyup="crossbeamsGridEvents.quickSearch('#{grid_id}', this)" placeholder='Search...' />
 
         head_section = <<-EOH
       <div class="grid-head">
         <label style="margin-left: 20px;">
-            <button onclick="crossbeamsGridEvents.csvExport('#{grid_id}', '#{file_name_from_caption(caption)}')">Export to CSV</button>
+            <button class="pure-button" onclick="crossbeamsGridEvents.csvExport('#{grid_id}', '#{file_name_from_caption(caption)}')"><i class="fa fa-file"></i> Export to CSV</button>
         </label>
         <label style="margin-left: 20px;">
-            <button onclick="crossbeamsGridEvents.toggleToolPanel('#{grid_id}')">Tool panel</button>
+            <button class="pure-button" onclick="crossbeamsGridEvents.toggleToolPanel('#{grid_id}')"><i class="fa fa-cog"></i> Tool panel</button>
         </label>
         <label style="margin-left: 20px;">
-            <button onclick="crossbeamsGridEvents.printAGrid('#{grid_id}', '#{url}')">Print</button>
+            <button class="pure-button" onclick="crossbeamsGridEvents.printAGrid('#{grid_id}', '#{url}')"><i class="fa fa-print"></i> Print</button>
         </label>
         <label style="margin-left: 20px;">
-            <input onkeyup="crossbeamsGridEvents.quickSearch(event)" placeholder='Search...' data-grid-id="#{grid_id}"/>
+            <input class="un-formed-input" onkeyup="crossbeamsGridEvents.quickSearch(event)" placeholder='Search...' data-grid-id="#{grid_id}"/>
         </label>
-        #{caption}
+        <span class="grid-caption">
+          #{caption}
+        </span>
       </div>
         EOH
         <<-EOS
