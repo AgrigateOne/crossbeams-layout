@@ -1,17 +1,17 @@
 module Crossbeams
   module Layout
-
     class Form
       attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row
 
       def initialize(page_config, section_sequence, sequence)
-        @sequence = sequence
-        @form_action = '/' # work out from page_config.object?
-        @nodes  = []
-        @page_config = page_config
-        @form_method = :create
-        @got_row     = false
-        @no_row      = false
+        @section_sequence = section_sequence
+        @sequence         = sequence
+        @form_action      = '/' # work out from page_config.object?
+        @nodes            = []
+        @page_config      = page_config
+        @form_method      = :create
+        @got_row          = false
+        @no_row           = false
       end
 
       def action(act)
@@ -26,12 +26,12 @@ module Crossbeams
       def row
         @got_row = true
         raise 'Cannot mix row and non-row text or fields' if no_row
-        row = Row.new(page_config, sequence, nodes.length+1)
+        row = Row.new(page_config, sequence, nodes.length + 1)
         yield row
         @nodes << row
       end
 
-      def add_field(name, options={})
+      def add_field(name, options = {})
         @no_row = true
         raise 'Cannot mix row and fields' if got_row
         @nodes << Field.new(page_config, name, options)
@@ -53,22 +53,7 @@ module Crossbeams
       end
 
       def render
-        # <form class="pure-form pure-form-aligned edit_user" id="edit_user_1" action="http://localhost:3002/users/1" accept-charset="UTF-8" method="post">
-        # <input name="utf8" type="hidden" value="✓">
-        # <input type="hidden" name="_method" value="patch"><input type="hidden" name="authenticity_token" value="XARxNVBl3eHsDuTDdLURzS3aTgDSaBOZGer6TMVgqmxEt6rj4LZ9Z1SWvta7jPFM3TT55OESF6Z4bdcoVkIX5A==">
-        # <form class="pure-form pure-form-aligned edit_user" id="edit_user_1" action="#{form_action.sub(/\/(\d+)$/, "?id=#{1}")}" accept-charset="utf-8" method="POST">
-        unless got_row
-          # wrap nodes in row & cols.
-          row = Row.make_row(page_config, sequence, 1)
-          col = Column.make_column(page_config)
-          nodes.each do |node|
-            col.add_node( node)
-          end
-          row.add_node(col)
-          renders = row.render << "\n"
-        else
-          renders = nodes.map {|s| s.render }.join("\n<!-- End Row -->\n")
-        end
+        renders = sub_renders
         <<-EOS
       <form class="pure-form pure-form-aligned edit_user" id="edit_user_1" action="#{form_action}" accept-charset="utf-8" method="POST">
         #{form_method_str}
@@ -80,8 +65,26 @@ module Crossbeams
         EOS
       end
 
+      private
+
+      def sub_renders
+        if got_row
+          nodes.map(&:render).join("\n<!-- End Row -->\n")
+        else
+          render_nodes_inside_generated_row
+        end
+      end
+
+      def render_nodes_inside_generated_row
+        # wrap nodes in row & cols.
+        row = Row.make_row(page_config, sequence, 1)
+        col = Column.make_column(page_config)
+        nodes.each do |node|
+          col.add_node(node)
+        end
+        row.add_node(col)
+        row.render << "\n"
+      end
     end
-
   end
-
 end

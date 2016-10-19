@@ -1,10 +1,9 @@
 module Crossbeams
   module Layout
-
     class Grid
       attr_reader :grid_id, :url, :page_config, :options
 
-      def initialize(page_config, grid_id, url, options={})
+      def initialize(page_config, grid_id, url, options = {})
         @grid_id     = grid_id
         @url         = url
         @page_config = page_config
@@ -58,11 +57,8 @@ module Crossbeams
       private
 
       def file_name_from_caption(caption)
-        (caption || 'grid_contents').gsub('&nbsp;','grid_contents').gsub(/[\/:*?"\\<>\|\r\n]/i, '-') << '.csv'
+        (caption || 'grid_contents').gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-') << '.csv'
       end
-
     end
-
   end
-
 end

@@ -1,12 +1,11 @@
 module Crossbeams
   module Layout
-
     class Field
       attr_reader :name, :caption, :page_config
 
-      def initialize(page_config, name, options={})
-        @name = name
-        @caption = options[:caption] || name
+      def initialize(page_config, name, options = {})
+        @name        = name
+        @caption     = options[:caption] || name
         @page_config = page_config
       end
 
@@ -18,9 +17,6 @@ module Crossbeams
       </div>
         EOS
       end
-
     end
-
   end
-
 end

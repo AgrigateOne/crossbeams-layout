@@ -1,6 +1,5 @@
 module Crossbeams
   module Layout
-
     class CallbackSection
       attr_accessor :caption, :url
       attr_reader :sequence, :page_config
@@ -42,9 +41,6 @@ module Crossbeams
       </script>
         EOS
       end
-
     end
-
   end
-
 end
