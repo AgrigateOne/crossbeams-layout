@@ -35,7 +35,7 @@ module Crossbeams
       end
 
       def row
-        row = Row.new(page_config, sequence, rows.length + 1)
+        row = Row.new(page_config, sequence, nodes.length + 1)
         yield row
         @nodes << row
       end
