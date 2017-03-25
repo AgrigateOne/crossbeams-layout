@@ -6,6 +6,7 @@ module Crossbeams
       def initialize(page_config, grid_id, url, options = {})
         @grid_id     = grid_id
         @url         = url
+        # puts ">>> GRID URL: #{url}"
         @page_config = page_config
         @options     = options
       end
