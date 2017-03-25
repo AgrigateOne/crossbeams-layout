@@ -21,6 +21,14 @@ module Crossbeams
         @page_config = page_config
       end
 
+      def invisible?
+        @nodes.all? { |node| node.invisible? }
+      end
+
+      def hidden?
+        @nodes.all? { |node| node.hidden? }
+      end
+
       def self.make_column(page_config)
         new(page_config, :full, nil, nil)
       end
@@ -44,12 +52,16 @@ module Crossbeams
       end
 
       def render
-        field_renders = nodes.map(&:render).join("\n<!-- End Col -->\n")
-        <<-EOS
-      <div class="#{css_class}">
-        #{field_renders}
-      </div>
-        EOS
+        if invisible?
+          ''
+        else
+          field_renders = nodes.reject { |node| node.invisible? }.map(&:render).join("\n<!-- End Col -->\n")
+          <<-EOS
+        <div class="#{css_class}">
+          #{field_renders}
+        </div>
+          EOS
+        end
       end
     end
   end

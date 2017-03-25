@@ -8,6 +8,14 @@ module Crossbeams
         @page_config = page_config
       end
 
+      def invisible?
+        false
+      end
+
+      def hidden?
+        false
+      end
+
       def render
         <<-EOS
       <div class="field pure-control-group">

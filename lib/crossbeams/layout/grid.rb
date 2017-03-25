@@ -11,6 +11,14 @@ module Crossbeams
         @options     = options
       end
 
+      def invisible?
+        false
+      end
+
+      def hidden?
+        false
+      end
+
       def render
         if options[:for_print]
           render_for_print

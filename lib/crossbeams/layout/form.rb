@@ -14,6 +14,14 @@ module Crossbeams
         @no_row           = false
       end
 
+      def invisible?
+        false
+      end
+
+      def hidden?
+        false
+      end
+
       def action(act)
         @form_action = act
       end
@@ -69,7 +77,7 @@ module Crossbeams
 
       def sub_renders
         if got_row
-          nodes.map(&:render).join("\n<!-- End Row -->\n")
+          nodes.reject { |node| node.invisible? }.map(&:render).join("\n<!-- End Row -->\n")
         else
           render_nodes_inside_generated_row
         end
@@ -79,7 +87,7 @@ module Crossbeams
         # wrap nodes in row & cols.
         row = Row.make_row(page_config, sequence, 1)
         col = Column.make_column(page_config)
-        nodes.each do |node|
+        nodes.reject { |node| node.invisible? }.each do |node|
           col.add_node(node)
         end
         row.add_node(col)

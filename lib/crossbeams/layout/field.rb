@@ -9,6 +9,14 @@ module Crossbeams
         @page_config = page_config
       end
 
+      def invisible?
+        false
+      end
+
+      def hidden?
+        false
+      end
+
       def render
         # Needs another pass of config to resolve if we're doing a view/edit etc.
         renderer = Renderer::FieldFactory.new(name, {renderer: :text}, page_config)

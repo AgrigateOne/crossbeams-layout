@@ -59,7 +59,7 @@ module Crossbeams
 
       def render
         # "A string rendered from Crossbeams<br>" << nodes.map {|s| s.render }.join("\n<!-- End Section -->\n")
-        nodes.map(&:render).join("\n<!-- End Section -->\n")
+        nodes.reject { |node| node.invisible? }.map(&:render).join("\n<!-- End Section -->\n")
       end
     end
   end

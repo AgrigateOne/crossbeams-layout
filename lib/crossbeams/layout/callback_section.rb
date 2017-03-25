@@ -10,6 +10,14 @@ module Crossbeams
         @page_config = page_config
       end
 
+      def invisible?
+        false
+      end
+
+      def hidden?
+        false
+      end
+
       # This render uses XHR via javascript
       # def render
       #   <<-EOS

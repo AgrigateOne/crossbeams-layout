@@ -5,6 +5,7 @@
 * Fields should be layout nodes only.
 * Actual rendering of field should be outside object which can be plugged-in.
 * Config has list of attributes/rules for each field as well as the class name to use to render the field.
+* Remove the text object and use a field instead with a test renderer.
 
 Have a `Crossbeams::Layout::Element` class and input, select, email, tel, number, link etc inherit from it.
 
