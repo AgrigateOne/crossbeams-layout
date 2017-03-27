@@ -6,7 +6,9 @@ module Crossbeams
           text: Renderer::Input,
           email: Renderer::Input,
           number: Renderer::Input,
-          label: Renderer::Label
+          label: Renderer::Label,
+          checkbox: Renderer::Checkbox,
+          select: Renderer::Select
         }
       end
     end

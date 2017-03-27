@@ -11,6 +11,8 @@ require 'crossbeams/layout/section'
 require 'crossbeams/layout/text'
 require 'crossbeams/layout/renderer/input'
 require 'crossbeams/layout/renderer/label'
+require 'crossbeams/layout/renderer/select'
+require 'crossbeams/layout/renderer/checkbox'
 require 'crossbeams/layout/renderer/field_factory'
 require 'crossbeams/layout/renderer/field_types'
 

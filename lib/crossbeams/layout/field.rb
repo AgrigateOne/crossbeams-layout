@@ -19,7 +19,7 @@ module Crossbeams
 
       def render
         # Needs another pass of config to resolve if we're doing a view/edit etc.
-        renderer = Renderer::FieldFactory.new(name, {renderer: :text}, page_config)
+        renderer = Renderer::FieldFactory.new(name, (page_config.options[:fields] || {})[name], page_config)
         # renderer.configure(page_config)
         renderer.render
 

@@ -10,12 +10,24 @@ module Crossbeams
         end
 
         def render
-        <<-EOS
-      <div class="field pure-control-group">
-        <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
-        <input type="text" value="#{@page_config.form_object.send(@field_name)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
-      </div>
-        EOS
+          attrs = []
+          attrs << "size=\"#{@field_config[:length]}\"" if @field_config[:length]
+          attrs << 'step="any"' if @field_config[:subtype] == :numeric
+          tp = case @field_config[:subtype]
+               when :integer
+                 'number'
+               when :numeric
+                 'number'
+               else
+                 'text'
+               end
+
+          <<-EOS
+          <div class="field pure-control-group">
+            <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
+            <input type="#{tp}" value="#{@page_config.form_object.send(@field_name)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
+          </div>
+          EOS
         end
       end
     end

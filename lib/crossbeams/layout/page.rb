@@ -9,8 +9,8 @@ module Crossbeams
         @sequence    = 1
       end
 
-      def self.build(&block)
-        new.build(&block)
+      def self.build(options={}, &block)
+        new(options).build(&block)
       end
 
       def build

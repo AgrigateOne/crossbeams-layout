@@ -19,6 +19,7 @@ module Crossbeams
         private
 
         def make_renderer(renderer=nil)
+          # puts ">>> #{renderer}"
           case renderer
           when nil
             Input.new
