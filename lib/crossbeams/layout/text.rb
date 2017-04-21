@@ -18,9 +18,9 @@ module Crossbeams
 
       def render
         <<-EOS
-      <div class="field pure-control-group">
-        #{text}
-      </div>
+        <div class="crossbeams-field">
+          #{text}
+        </div>
         EOS
       end
     end

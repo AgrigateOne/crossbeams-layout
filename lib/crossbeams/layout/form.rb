@@ -62,14 +62,15 @@ module Crossbeams
 
       def render
         renders = sub_renders
+        # TODO: fix form id...
         <<-EOS
-      <form class="pure-form pure-form-aligned edit_user" id="edit_user_1" action="#{form_action}" accept-charset="utf-8" method="POST">
-        #{form_method_str}
-        #{renders}
-      <div class="actions pure-controls">
-        <input type="submit" name="commit" value="Submit" data-disable-with="Submit" class="pure-button pure-button-primary">
-      </div>
-      </form>
+        <form class="crossbeams-form" id="edit_user_1" action="#{form_action}" accept-charset="utf-8" method="POST">
+          #{form_method_str}
+          #{renders}
+        <div class="crossbeams-actions">
+          <input type="submit" name="commit" value="Submit" data-disable-with="Submit" class="pure-button pure-button-primary">
+        </div>
+        </form>
         EOS
       end
 
@@ -77,7 +78,7 @@ module Crossbeams
 
       def sub_renders
         if got_row
-          nodes.reject { |node| node.invisible? }.map(&:render).join("\n<!-- End Row -->\n")
+          nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Row -->\n")
         else
           render_nodes_inside_generated_row
         end
@@ -87,7 +88,7 @@ module Crossbeams
         # wrap nodes in row & cols.
         row = Row.make_row(page_config, sequence, 1)
         col = Column.make_column(page_config)
-        nodes.reject { |node| node.invisible? }.each do |node|
+        nodes.reject(&:invisible?).each do |node|
           col.add_node(node)
         end
         row.add_node(col)

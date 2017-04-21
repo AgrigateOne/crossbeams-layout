@@ -22,11 +22,11 @@ module Crossbeams
       end
 
       def invisible?
-        @nodes.all? { |node| node.invisible? }
+        @nodes.all?(&:invisible?)
       end
 
       def hidden?
-        @nodes.all? { |node| node.hidden? }
+        @nodes.all?(&:hidden?)
       end
 
       def self.make_column(page_config)
@@ -55,11 +55,11 @@ module Crossbeams
         if invisible?
           ''
         else
-          field_renders = nodes.reject { |node| node.invisible? }.map(&:render).join("\n<!-- End Col -->\n")
+          field_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Col -->\n")
           <<-EOS
-        <div class="#{css_class}">
-          #{field_renders}
-        </div>
+          <div class="crossbeams-col">
+            #{field_renders}
+          </div>
           EOS
         end
       end

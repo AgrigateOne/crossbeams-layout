@@ -6,8 +6,8 @@ module Crossbeams
 
         def initialize(field_name, field_config, page_config)
           @field_name   = field_name
-          @page_config  = page_config
-          @field_config = field_config
+          @page_config  = page_config || {}
+          @field_config = field_config || {}
         end
 
         def render
@@ -18,8 +18,7 @@ module Crossbeams
 
         private
 
-        def make_renderer(renderer=nil)
-          # puts ">>> #{renderer}"
+        def make_renderer(renderer = nil)
           case renderer
           when nil
             Input.new

@@ -28,7 +28,7 @@ module Crossbeams
       end
 
       def render
-        row_renders = nodes.reject { |node| node.invisible? }.map(&:render).join("\n<!-- End Row -->\n")
+        row_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Row -->\n")
         <<-EOS
       <section id="section-#{sequence}" class="crossbeams_layout">
       <h2>#{caption}</h2>

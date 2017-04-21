@@ -14,39 +14,21 @@ module Crossbeams
       end
 
       def hidden?
-        false
+        field_config[:renderer] == :hidden
       end
 
       def render
         # Needs another pass of config to resolve if we're doing a view/edit etc.
-        renderer = Renderer::FieldFactory.new(name, (page_config.options[:fields] || {})[name], page_config)
+        renderer = Renderer::FieldFactory.new(name, field_config, page_config)
         # renderer.configure(page_config)
         renderer.render
-
-      #   <<-EOS
-      # <div class="field pure-control-group">
-      #   <label for="#{page_config.name}_#{name}">#{caption}</label>
-      #   <input type="text" value="#{page_config.form_object.send(name)}" name="#{page_config.name}[#{name}]" id="#{page_config.name}_#{name}">
-      # </div>
-      #   EOS
       end
 
       private
-      # def renderer
-      #   renderer = Renderer::Factory.new(page_config[:fields][name]) # pass object and rules and config....
-      #   renderer.configure(page_config)
-      #   renderer
-      #   # #render_klass = page_config[:renderer] || InputRenderer
-      #   # render_klass = case page_config[:renderer]
-      #   #                when String
-      #   #                  self.const_get(page_config[:renderer])
-      #   #                when Constant
-      #   #                  page_config[:renderer]
-      #   #                else
-      #   #                  InputRenderer
-      #   #                end
-      #   # render_klass.new(page_config[:fields][name.to_sym])
-      # end
+
+      def field_config
+        (page_config.options[:fields] || {})[name]
+      end
     end
   end
 end

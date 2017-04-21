@@ -11,11 +11,11 @@ module Crossbeams
       end
 
       def invisible?
-        @nodes.all? { |node| node.invisible? }
+        @nodes.all?(&:invisible?)
       end
 
       def hidden?
-        @nodes.all? { |node| node.hidden? }
+        @nodes.all?(&:hidden?)
       end
 
       def self.make_row(page_config, section_sequence, sequence)
@@ -38,11 +38,11 @@ module Crossbeams
         if invisible?
           ''
         else
-          col_renders = nodes.reject { |node| node.invisible? }.map(&:render).join("\n<!-- End Col -->\n")
+          col_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Col -->\n")
           <<-EOS
-        <div class="pure-g">
-          #{col_renders}
-        </div>
+          <div class="crossbeams-row">
+            #{col_renders}
+          </div>
           EOS
         end
       end
