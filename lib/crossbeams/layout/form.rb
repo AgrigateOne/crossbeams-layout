@@ -69,7 +69,7 @@ module Crossbeams
           #{form_method_str}
           #{renders}
         <div class="crossbeams-actions">
-          <input type="submit" name="commit" value="Submit" data-disable-with="Submit" class="pure-button pure-button-primary">
+          <input type="submit" name="commit" value="Submit" data-disable-with="Submit" class="white bg-green br2 dim pa3 ba b--near-white">
         </div>
         </form>
         EOS

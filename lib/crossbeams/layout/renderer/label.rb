@@ -11,9 +11,11 @@ module Crossbeams
         end
 
         def render
+          value = @page_config.form_object.send(@field_name)
+          value = value.to_s('F') if value.is_a?(BigDecimal)
           <<-EOS
           <div class="crossbeams-field">
-            <input type="text" readonly class="label-field" value="#{@page_config.form_object.send(@field_name)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
+            <input type="text" readonly class="label-field" value="#{value}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
           </div>
           EOS
