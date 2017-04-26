@@ -19,6 +19,7 @@ require 'crossbeams/layout/renderer/field_factory'
 require 'crossbeams/layout/renderer/field_types'
 
 module Crossbeams
+  # Layout an HTML page using DSL.
   module Layout
     # Your code goes here...
   end

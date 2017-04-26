@@ -1,5 +1,6 @@
 module Crossbeams
   module Layout
+    # A page can optionally contain one or more sections.
     class Section
       attr_accessor :caption
       attr_reader :sequence, :nodes, :page_config

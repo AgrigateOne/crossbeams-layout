@@ -1,6 +1,7 @@
 module Crossbeams
   module Layout
     module Renderer
+      # Render a select Field.
       class Select < Base
         def configure(field_name, field_config, page_config)
           @field_name   = field_name

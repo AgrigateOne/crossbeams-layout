@@ -1,6 +1,7 @@
 module Crossbeams
   module Layout
     module Renderer
+      # Renders a Field by calling the relevant renderer.
       class FieldFactory
         attr_reader :name, :field_config
 

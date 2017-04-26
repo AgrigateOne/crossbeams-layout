@@ -1,6 +1,7 @@
 module Crossbeams
   module Layout
     module Renderer
+      # Render an input field.
       class Input < Base
         def configure(field_name, field_config, page_config)
           @field_name   = field_name

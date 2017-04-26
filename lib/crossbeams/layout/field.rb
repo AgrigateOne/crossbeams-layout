@@ -1,5 +1,6 @@
 module Crossbeams
   module Layout
+    # Field object which is rendered by a specific field renderer.
     class Field
       attr_reader :name, :caption, :page_config
 

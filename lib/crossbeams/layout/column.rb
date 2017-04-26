@@ -1,5 +1,6 @@
 module Crossbeams
   module Layout
+    # A column is part of a Row.
     class Column
       attr_reader :css_class, :nodes, :page_config
 

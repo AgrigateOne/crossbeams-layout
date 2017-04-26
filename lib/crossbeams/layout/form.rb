@@ -1,5 +1,6 @@
 module Crossbeams
   module Layout
+    # Form object.
     class Form
       attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row
 
@@ -27,7 +28,7 @@ module Crossbeams
       end
 
       def method(method)
-        raise ArgumentError, "Invalid form method \"#{method}\"" unless [:create, :update].include?(method)
+        raise ArgumentError, "Invalid form method \"#{method}\"" unless %i[create update].include?(method)
         @form_method = method
       end
 

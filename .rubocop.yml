@@ -3,8 +3,8 @@ AllCops:
     - test/**/*
     - tmp/**/*
 
-Documentation:
-  Enabled: false
+# Documentation:
+#   Enabled: false
 
 LineLength:
   Enabled: false
@@ -17,3 +17,13 @@ MethodLength:
 
 Style/ExtraSpacing:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - '*.gemspec'
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*.rb'
+
+Layout/SpaceAroundOperators:
+  AllowForAlignment: true

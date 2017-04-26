@@ -1,5 +1,6 @@
 module Crossbeams
   module Layout
+    # Configuration for a page and its child elements.
     class PageConfig
       attr_reader :form_object, :name, :options
       def initialize(options = {})

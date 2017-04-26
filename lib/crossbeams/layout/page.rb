@@ -1,5 +1,6 @@
 module Crossbeams
   module Layout
+    # A Page obejct holds all other layout elemnts.
     class Page
       attr_reader :nodes, :page_config, :sequence
 

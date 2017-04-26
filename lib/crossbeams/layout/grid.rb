@@ -1,5 +1,6 @@
 module Crossbeams
   module Layout
+    # Render a data grid in the Page.
     class Grid
       attr_reader :grid_id, :url, :page_config, :options
 

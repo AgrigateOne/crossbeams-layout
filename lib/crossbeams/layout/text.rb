@@ -1,5 +1,6 @@
 module Crossbeams
   module Layout
+    # A text renderer - for rendering text without form controls.
     class Text
       attr_reader :text, :page_config
 

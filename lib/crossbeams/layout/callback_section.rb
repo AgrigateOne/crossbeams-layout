@@ -1,5 +1,7 @@
 module Crossbeams
   module Layout
+    # A CallbackSection is a section that does not render itself,
+    # but calls an actin to render within the section once the page is loaded.
     class CallbackSection
       attr_accessor :caption, :url
       attr_reader :sequence, :page_config
