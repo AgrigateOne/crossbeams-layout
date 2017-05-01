@@ -23,21 +23,23 @@ module Crossbeams
                  'text'
                end
 
-          # <<-EOS
-          # <div class="field pure-control-group">
-          #   <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
-          #   <input type="#{tp}" value="#{@page_config.form_object.send(@field_name)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
-          # </div>
-          # EOS
-          value = @page_config.form_object.send(@field_name)
-          value = value.to_s('F') if value.is_a?(BigDecimal) #TODO: read other frameworks to see best way of handling this...
-
           <<-EOS
           <div class="crossbeams-field">
             <input type="#{tp}" value="#{value}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
           </div>
           EOS
+        end
+
+        private
+
+        def value
+          res = @page_config.form_object.send(@field_name)
+          if res.is_a?(BigDecimal) # TODO: read other frameworks to see best way of handling this...
+            res.to_s('F')
+          else
+            res
+          end
         end
       end
     end

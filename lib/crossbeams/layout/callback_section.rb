@@ -3,6 +3,7 @@ module Crossbeams
     # A CallbackSection is a section that does not render itself,
     # but calls an actin to render within the section once the page is loaded.
     class CallbackSection
+      include PageNode
       attr_accessor :caption, :url
       attr_reader :sequence, :page_config
 
@@ -10,6 +11,7 @@ module Crossbeams
         @caption  = 'Section'
         @sequence = sequence
         @page_config = page_config
+        @nodes       = []
       end
 
       def invisible?

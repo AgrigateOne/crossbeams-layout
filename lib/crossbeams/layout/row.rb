@@ -2,6 +2,7 @@ module Crossbeams
   module Layout
     # A Row is a container for Columns.
     class Row
+      include PageNode
       attr_reader :sequence, :nodes, :page_config
 
       def initialize(page_config, section_sequence, sequence)

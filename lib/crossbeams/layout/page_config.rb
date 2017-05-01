@@ -11,7 +11,22 @@ module Crossbeams
 
       def form_object=(obj)
         @form_object = obj
-        @name        = (obj.class.name || 'crossbeams').downcase if name == 'crossbeams'
+        class_name   = obj.class.name || 'crossbeams'
+        @name        = name_from_object(class_name).downcase
+      end
+
+      private
+
+      # Simplify the class name if the class is a ROM::Struct class.
+      # @param class_name [String] The name of a class.
+      # @returns [String] The class name - stripped of any ROM::Struct text.
+      def name_from_object(class_name)
+        if class_name.match?(/ROM::Struct/)
+          r = Regexp.new(/ROM::Struct\[(?<klass>.+)\]/)
+          r.match(class_name)[:klass]
+        else
+          class_name
+        end
       end
     end
   end

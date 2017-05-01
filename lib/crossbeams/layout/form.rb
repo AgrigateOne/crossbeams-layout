@@ -2,7 +2,7 @@ module Crossbeams
   module Layout
     # Form object.
     class Form
-      attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row
+      attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row, :csrf_tag
 
       def initialize(page_config, section_sequence, sequence)
         @section_sequence = section_sequence
@@ -13,6 +13,11 @@ module Crossbeams
         @form_method      = :create
         @got_row          = false
         @no_row           = false
+        @csrf_tag         = nil
+      end
+
+      def add_csrf_tag(tag)
+        @csrf_tag = tag
       end
 
       def invisible?
@@ -66,6 +71,7 @@ module Crossbeams
         # TODO: fix form id...
         <<-EOS
         <form class="crossbeams-form" id="edit_user_1" action="#{form_action}" accept-charset="utf-8" method="POST">
+          #{csrf_tag}
           #{form_method_str}
           #{renders}
         <div class="crossbeams-actions">

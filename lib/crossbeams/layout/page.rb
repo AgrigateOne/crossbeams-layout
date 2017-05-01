@@ -19,6 +19,10 @@ module Crossbeams
         self
       end
 
+      def add_csrf_tag(tag)
+        @nodes.each { |node| node.add_csrf_tag(tag) }
+      end
+
       def form_object(obj)
         @page_config.form_object = obj
       end
