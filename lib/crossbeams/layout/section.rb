@@ -13,6 +13,14 @@ module Crossbeams
         @page_config = page_config
       end
 
+      def invisible?
+        @nodes.all?(&:invisible?)
+      end
+
+      def hidden?
+        @nodes.all?(&:hidden?)
+      end
+
       def form
         form = Form.new(page_config, sequence, nodes.length + 1)
         yield form
