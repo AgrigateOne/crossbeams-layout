@@ -3,16 +3,26 @@ module Crossbeams
     # Configuration for a page and its child elements.
     class PageConfig
       attr_reader :form_object, :name, :options
+      CROSSBEAMS = 'crossbeams'.freeze
+      # Create a new PageConfig.
+      # @param [Hash] options the options for applying parameters.
+      # @option options [Object] :form_object The object that supplies form data.
+      # @option options [String] :name The name of the form. Used as input parameter namespace.
+      # @return self.
       def initialize(options = {})
         @form_object = options.delete(:form_object) # || blank_object?
-        @name        = options.delete(:name) || 'crossbeams'
+        @name        = options.delete(:name) || CROSSBEAMS
         @options     = options
       end
 
+      # Setter for the form object.
+      # If the +name+ has not been set, derive it form the form object's class.
+      # @param [Object] onj The object that supplies values to the form.
+      # @returns [void]
       def form_object=(obj)
         @form_object = obj
-        class_name   = obj.class.name || 'crossbeams'
-        @name        = name_from_object(class_name).downcase
+        class_name   = obj.class.name || CROSSBEAMS
+        @name        = snake_case(name_from_object(class_name)) if @name == CROSSBEAMS
       end
 
       private
@@ -27,6 +37,14 @@ module Crossbeams
         else
           class_name
         end
+      end
+
+      # Helper to snake_case a string.
+      def snake_case(str)
+        str.gsub(/::/, '/')
+           .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+           .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+           .tr('-', '_').downcase
       end
     end
   end

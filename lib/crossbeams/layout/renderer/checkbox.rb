@@ -16,8 +16,8 @@ module Crossbeams
           checked = val && val != false && val != 'f' && val != 'false' && val.to_s != '0' ? 'checked' : ''
           <<-EOS
           <div class="crossbeams-field">
-            <input type="checkbox" value="1" #{checked} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
-            <input name="#{@page_config.name}[#{@field_name}]" type="hidden" value="0">
+            <input name="#{@page_config.name}[#{@field_name}]" type="hidden" value="f">
+            <input type="checkbox" value="t" #{checked} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
           </div>
           EOS
