@@ -3,10 +3,11 @@ module Crossbeams
     module Renderer
       # Render a Grid.
       class Grid < Base
-        def initialize(grid_id, url, caption)
-          @grid_id = grid_id
-          @url     = url
-          @caption = caption
+        def initialize(grid_id, url, caption, nested_grid)
+          @grid_id     = grid_id
+          @url         = url
+          @caption     = caption
+          @nested_grid = nested_grid
         end
         # def configure(field_name, field_config, page_config)
         #   @field_name   = field_name
@@ -37,7 +38,7 @@ module Crossbeams
           EOH
           <<-EOS
         <div style="height:40em">#{head_section}
-          <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{@url}" data-grid="grid"></div>
+          <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{@url}" data-grid="grid" #{denote_nested_grid}></div>
         </div>
           EOS
         end
@@ -46,6 +47,10 @@ module Crossbeams
 
         def file_name_from_caption(caption)
           (caption || 'grid_contents').gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-') << '.csv'
+        end
+
+        def denote_nested_grid
+          @nested_grid ? 'data-nested-grid="y"' : ''
         end
       end
     end

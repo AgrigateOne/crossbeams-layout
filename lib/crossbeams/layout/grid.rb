@@ -39,7 +39,7 @@ module Crossbeams
 
       def render_for_screen
         caption = options[:caption]
-        renderer = Renderer::Grid.new(grid_id, url, caption)
+        renderer = Renderer::Grid.new(grid_id, url, caption, options[:is_nested])
         renderer.render
       end
     end
