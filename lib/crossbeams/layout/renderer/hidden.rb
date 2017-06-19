@@ -12,7 +12,7 @@ module Crossbeams
 
         def render
           <<-EOS
-            <input type="hidden" value="#{@page_config.form_object.send(@field_name)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
+            <input type="hidden" value="#{@page_config.form_object.send(@field_name)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" />
           EOS
         end
       end

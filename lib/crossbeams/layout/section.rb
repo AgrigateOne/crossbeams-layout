@@ -3,14 +3,15 @@ module Crossbeams
     # A page can optionally contain one or more sections.
     class Section
       include PageNode
-      attr_accessor :caption
+      attr_accessor :caption, :hide_caption
       attr_reader :sequence, :nodes, :page_config
 
       def initialize(page_config, sequence)
-        @caption     = 'Section'
-        @sequence    = sequence
-        @nodes       = []
-        @page_config = page_config
+        @caption      = 'Section'
+        @sequence     = sequence
+        @nodes        = []
+        @page_config  = page_config
+        @hide_caption = true
       end
 
       def invisible?
@@ -37,14 +38,29 @@ module Crossbeams
         @nodes << Grid.new(page_config, grid_id, url, options)
       end
 
+      # Add a control (button, link) to the page.
+      #
+      # @return [void]
+      def add_control(page_control_definition)
+        if page_control_definition[:control_type] == :link
+          @nodes << Link.new(page_control_definition)
+        end
+      end
+
       def render
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Row -->\n")
         <<-EOS
       <section id="section-#{sequence}" class="crossbeams_layout">
-      <h2>#{caption}</h2>
+      #{render_caption}
         #{row_renders}
       </section>
         EOS
+      end
+
+      private
+      def render_caption
+        return '' if hide_caption
+        "<h2>#{caption}</h2>"
       end
     end
   end
