@@ -3,6 +3,7 @@ module Crossbeams
     # Configuration for a page and its child elements.
     class PageConfig
       attr_reader :form_object, :name, :options
+      attr_accessor :form_values, :form_errors
       CROSSBEAMS = 'crossbeams'.freeze
       # Create a new PageConfig.
       # @param [Hash] options the options for applying parameters.
@@ -11,6 +12,8 @@ module Crossbeams
       # @return self.
       def initialize(options = {})
         @form_object = options.delete(:form_object) # || blank_object?
+        @form_values = options.delete(:form_values)
+        @form_errors = options.delete(:form_errors)
         @name        = options.delete(:name) || CROSSBEAMS
         @options     = options
       end

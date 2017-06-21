@@ -15,10 +15,10 @@ module Crossbeams
           val = @page_config.form_object.send(@field_name)
           checked = val && val != false && val != 'f' && val != 'false' && val.to_s != '0' ? 'checked' : ''
           <<-EOS
-          <div class="crossbeams-field">
+          <div class="#{div_class}">
             <input name="#{@page_config.name}[#{@field_name}]" type="hidden" value="f">
             <input type="checkbox" value="t" #{checked} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
+            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
           </div>
           EOS
         end

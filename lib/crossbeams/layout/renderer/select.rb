@@ -24,11 +24,11 @@ module Crossbeams
 
         def render_string(attrs, sel)
           <<-EOS
-          <div class="crossbeams-field">
+          <div class="#{div_class}">
             <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
             #{make_prompt}#{make_options(@field_config[:options], sel)}
             </select>
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
+            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
           </div>
           EOS
         end

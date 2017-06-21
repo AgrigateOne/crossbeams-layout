@@ -13,28 +13,35 @@ module Crossbeams
         def render
           attrs = []
           attrs << "size=\"#{@field_config[:length]}\"" if @field_config[:length]
-          attrs << 'step="any"' if @field_config[:subtype] == :numeric
-          tp = case @field_config[:subtype]
-               when :integer
+          attrs << 'step="any"' if subtype == :numeric
+          tp = case subtype
+               when :integer, :numeric, :number
                  'number'
-               when :numeric
-                 'number'
+               when :email
+                 'email'
+               when :url
+                 'url'
                else
                  'text'
                end
 
           <<-EOS
-          <div class="crossbeams-field">
+          <div class="#{div_class}">
             <input type="#{tp}" value="#{value}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
+            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
           </div>
           EOS
         end
 
         private
 
+        def subtype
+          @field_config[:subtype] || @field_config[:renderer]
+        end
+
         def value
           res = @page_config.form_object.send(@field_name)
+          res = @page_config.form_values[@field_name] if @page_config.form_values
           if res.is_a?(BigDecimal) # TODO: read other frameworks to see best way of handling this...
             res.to_s('F')
           else
