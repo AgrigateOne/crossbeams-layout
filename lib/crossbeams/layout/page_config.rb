@@ -35,7 +35,7 @@ module Crossbeams
       # @returns [String] The class name - stripped of any ROM::Struct text.
       def name_from_object(class_name)
         if class_name.match?(/ROM::Struct/)
-          r = Regexp.new(/ROM::Struct\[(?<klass>.+)\]/)
+          r = Regexp.new(/ROM::Struct::(?<klass>.+)/)
           r.match(class_name)[:klass]
         else
           class_name
