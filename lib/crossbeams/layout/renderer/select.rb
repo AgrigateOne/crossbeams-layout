@@ -43,10 +43,10 @@ module Crossbeams
           ar.map do |a|
             if a.is_a?(Array)
               sel = a.last == selected ? ' selected ' : ''
-              "<option value=\"#{a.last}\"#{sel}>#{a.first}</option>"
+              "<option value=\"#{CGI::escapeHTML(a.last)}\"#{sel}>#{CGI::escapeHTML(a.first)}</option>"
             else
               sel = a == selected ? ' selected ' : ''
-              "<option value=\"#{a}\"#{sel}>#{a}</option>"
+              "<option value=\"#{CGI::escapeHTML(a)}\"#{sel}>#{CGI::escapeHTML(a)}</option>"
             end
           end.join("\n")
         end
