@@ -27,7 +27,7 @@ module Crossbeams
 
           <<-EOS
           <div class="#{div_class}">
-            <input type="#{tp}" value="#{CGI::escapeHTML(value)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
+            <input type="#{tp}" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
           </div>
           EOS

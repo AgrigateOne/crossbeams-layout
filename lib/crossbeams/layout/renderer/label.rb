@@ -15,7 +15,7 @@ module Crossbeams
           value = value.to_s('F') if value.is_a?(BigDecimal)
           <<-EOS
           <div class="crossbeams-field">
-            <input type="text" readonly class="label-field" value="#{CGI::escapeHTML(value)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
+            <input type="text" readonly class="label-field" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}</label>
           </div>
           EOS
