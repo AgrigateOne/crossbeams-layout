@@ -14,6 +14,8 @@ module Crossbeams
           attrs = []
           attrs << "size=\"#{@field_config[:length]}\"" if @field_config[:length]
           attrs << 'step="any"' if subtype == :numeric
+          datalist = build_datalist
+          attrs << %Q{list="#{@page_config.name}_#{@field_name}_listing"} unless datalist.nil?
           tp = case subtype
                when :integer, :numeric, :number
                  'number'
@@ -29,6 +31,7 @@ module Crossbeams
           <div class="#{div_class}">
             <input type="#{tp}" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
+            #{datalist}
           </div>
           EOS
         end
@@ -47,6 +50,19 @@ module Crossbeams
           else
             res
           end
+        end
+
+        def build_datalist
+          return nil unless @field_config[:datalist] && !@field_config[:datalist].empty?
+          s = ''
+          @field_config[:datalist].each do |opt|
+            s << "<option value=\"#{opt}\">\n"
+          end
+          <<-EOS
+          <datalist id="#{@page_config.name}_#{@field_name}_listing">
+            #{s}
+          </datalist>
+          EOS
         end
       end
     end
