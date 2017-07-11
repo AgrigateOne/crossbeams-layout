@@ -12,8 +12,18 @@ module Crossbeams
 
         def render
           <<-EOS
-            <input type="hidden" value="#{CGI::escapeHTML(@page_config.form_object.send(@field_name).to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" />
+            <input type="hidden" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" />
           EOS
+        end
+
+        private
+
+        # FIXME: allows for hard-coded value to be used from form_values
+        #        when the ROM::Struct does not include the field.
+        def value
+          res = @page_config.form_values[@field_name] if @page_config.form_values
+          res = @page_config.form_object.send(@field_name) unless res
+          res
         end
       end
     end
