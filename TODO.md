@@ -23,3 +23,7 @@ Have a `Crossbeams::Layout::Element` class and input, select, email, tel, number
 
 * Find a strategy for creating unique ids in a layout that can be addressed in JS if required?
 
+## Non-data-bound values
+
+* Did a quick kludge on hidden fields to manage a non-data object value.
+* Need to rethink and do something more intelligent...

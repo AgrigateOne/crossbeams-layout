@@ -13,6 +13,10 @@ module Crossbeams
         def render
           attrs = []
           attrs << "size=\"#{@field_config[:length]}\"" if @field_config[:length]
+          attrs << build_pattern(@field_config[:pattern]) if @field_config[:pattern]
+          attrs << "title=\"#{@field_config[:pattern_msg]}\"" if @field_config[:pattern_msg]
+          attrs << "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
+          attrs << "title=\"#{@field_config[:title]}\"" if @field_config[:title]
           attrs << 'step="any"' if subtype == :numeric
           datalist = build_datalist
           attrs << %Q{list="#{@page_config.name}_#{@field_name}_listing"} unless datalist.nil?
@@ -29,7 +33,7 @@ module Crossbeams
 
           <<-EOS
           <div class="#{div_class}">
-            <input type="#{tp}" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
+            <input type="#{tp}" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
             #{datalist}
           </div>
@@ -63,6 +67,23 @@ module Crossbeams
             #{s}
           </datalist>
           EOS
+        end
+
+        def build_pattern(pattern)
+          if pattern.is_a? String
+            val = pattern
+          else
+            val = case pattern
+                  when :no_spaces
+                    '[^\s]+'
+                  when :lowercase_underscore
+                    '[a-z_]'
+                  else
+                    nil
+                  end
+          end
+          return nil if val.nil?
+          "pattern=\"#{val}\""
         end
       end
     end

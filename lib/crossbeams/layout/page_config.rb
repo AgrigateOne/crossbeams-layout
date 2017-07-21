@@ -30,16 +30,11 @@ module Crossbeams
 
       private
 
-      # Simplify the class name if the class is a ROM::Struct class.
+      # Simplify the class name if the class is a namespaced class.
       # @param class_name [String] The name of a class.
-      # @returns [String] The class name - stripped of any ROM::Struct text.
+      # @returns [String] The class name - stripped of any preceding namespace text (Module::Class => Class).
       def name_from_object(class_name)
-        if class_name.match?(/ROM::Struct/)
-          r = Regexp.new(/ROM::Struct::(?<klass>.+)/)
-          r.match(class_name)[:klass]
-        else
-          class_name
-        end
+        class_name.split('::').last
       end
 
       # Helper to snake_case a string.
