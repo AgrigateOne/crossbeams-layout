@@ -2,7 +2,7 @@ module Crossbeams
   module Layout
     # Form object.
     class Form
-      attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row, :csrf_tag
+      attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row, :csrf_tag, :remote_form
 
       def initialize(page_config, section_sequence, sequence)
         @section_sequence = section_sequence
@@ -11,6 +11,7 @@ module Crossbeams
         @nodes            = []
         @page_config      = page_config
         @form_method      = :create
+        @remote_form      = false
         @got_row          = false
         @no_row           = false
         @csrf_tag         = nil
@@ -18,6 +19,12 @@ module Crossbeams
 
       def add_csrf_tag(tag)
         @csrf_tag = tag
+      end
+
+      # Make this a remote (AJAX) form.
+      # @returns [void]
+      def remote!
+        @remote_form = true
       end
 
       def invisible?
@@ -68,9 +75,10 @@ module Crossbeams
 
       def render
         renders = sub_renders
+        remote_str = remote_form ? ' data-remote="true"' : ''
         # TODO: fix form id...
         <<-EOS
-        <form class="crossbeams-form" id="edit_user_1" action="#{form_action}" accept-charset="utf-8" method="POST">
+        <form class="crossbeams-form" id="edit_user_1" action="#{form_action}"#{remote_str} accept-charset="utf-8" method="POST">
           #{csrf_tag}
           #{form_method_str}
           #{renders}
