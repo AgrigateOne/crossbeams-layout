@@ -64,6 +64,10 @@ module Crossbeams
         @nodes << Text.new(page_config, text)
       end
 
+      def add_sortable_list(prefix, items)
+        @nodes << SortableList.new(page_config, prefix, items)
+      end
+
       def form_method_str
         case form_method
         when :create
