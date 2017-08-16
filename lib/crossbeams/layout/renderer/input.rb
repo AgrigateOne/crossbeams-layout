@@ -29,13 +29,29 @@ module Crossbeams
                  'email'
                when :url
                  'url'
+               when :date     # yyyy-mm-dd
+                 @value_getter = lambda { |d| d.strftime('%Y-%m-%d')}
+                 'date'
+               when :datetime # yyyy-mm-ddTHH:MM or yyyy-mm-ddTHH:MM:SS.S
+                 @value_getter = if @field_config[:with_seconds] && @field_config[:with_seconds] == true
+                                   lambda { |t| t.strftime('%Y-%m-%dT%H:%M:%S.%L') }
+                                 else
+                                   lambda { |t| t.strftime('%Y-%m-%dT%H:%M') }
+                                 end
+                 'datetime-local'
+               when :month    # yyyy-mm
+                 @value_getter = lambda { |d| d.strftime('%Y-%m')}
+                 'month'
+               when :time     # HH:MM
+                 @value_getter = lambda { |t| t.strftime('%H:%M') }
+                 'time'
                else
                  'text'
                end
 
           <<-EOS
           <div class="#{div_class}">
-            <input type="#{tp}" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')}>
+            <input type="#{tp}" value="#{CGI::escapeHTML(value(tp).to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
             #{datalist}
           </div>
@@ -48,13 +64,13 @@ module Crossbeams
           @field_config[:subtype] || @field_config[:renderer]
         end
 
-        def value
+        def value(type)
           res = @page_config.form_object.send(@field_name)
           res = @page_config.form_values[@field_name] if @page_config.form_values
           if res.is_a?(BigDecimal) # TODO: read other frameworks to see best way of handling this...
             res.to_s('F')
           else
-            res
+            @value_getter.nil? ? res : @value_getter.call(res)
           end
         end
 
