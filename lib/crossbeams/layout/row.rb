@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Crossbeams
   module Layout
     # A Row is a container for Columns.

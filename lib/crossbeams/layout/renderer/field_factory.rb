@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Crossbeams
   module Layout
     module Renderer

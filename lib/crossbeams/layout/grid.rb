@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Crossbeams
   module Layout
     # Render a data grid in the Page.

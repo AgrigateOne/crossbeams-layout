@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Crossbeams
   module Layout
     module Renderer
@@ -58,7 +60,7 @@ module Crossbeams
 
         def build_datalist
           return nil unless @field_config[:datalist] && !@field_config[:datalist].empty?
-          s = ''
+          s = String.new
           @field_config[:datalist].each do |opt|
             s << "<option value=\"#{opt}\">\n"
           end

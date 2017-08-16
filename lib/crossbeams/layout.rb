@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'crossbeams/layout/version'
 require 'crossbeams/layout/page_node'
 require 'crossbeams/layout/callback_section'
@@ -19,6 +21,7 @@ require 'crossbeams/layout/renderer/hidden'
 require 'crossbeams/layout/renderer/input'
 require 'crossbeams/layout/renderer/label'
 require 'crossbeams/layout/renderer/select'
+require 'crossbeams/layout/renderer/textarea'
 require 'crossbeams/layout/renderer/field_factory'
 require 'crossbeams/layout/renderer/field_types'
 

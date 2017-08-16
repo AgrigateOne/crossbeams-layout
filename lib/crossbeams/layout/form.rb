@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Crossbeams
   module Layout
     # Form object.
@@ -111,7 +113,7 @@ module Crossbeams
           col.add_node(node)
         end
         row.add_node(col)
-        row.render << "\n"
+        row.render + "\n"
       end
     end
   end

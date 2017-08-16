@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Crossbeams
   module Layout
     module Renderer
@@ -13,6 +15,7 @@ module Crossbeams
           numeric: Renderer::Input,
           select: Renderer::Select,
           text: Renderer::Input,
+          textarea: Renderer::Textarea,
           url: Renderer::Input
         }.freeze
       end
