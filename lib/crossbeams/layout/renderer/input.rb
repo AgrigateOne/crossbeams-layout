@@ -51,7 +51,7 @@ module Crossbeams
 
           <<-EOS
           <div class="#{div_class}">
-            <input type="#{tp}" value="#{CGI::escapeHTML(value(tp).to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')}>
+            <input type="#{tp}" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
             #{datalist}
           </div>
@@ -64,7 +64,7 @@ module Crossbeams
           @field_config[:subtype] || @field_config[:renderer]
         end
 
-        def value(type)
+        def value
           res = @page_config.form_object.send(@field_name)
           res = @page_config.form_values[@field_name] if @page_config.form_values
           if res.is_a?(BigDecimal) # TODO: read other frameworks to see best way of handling this...
