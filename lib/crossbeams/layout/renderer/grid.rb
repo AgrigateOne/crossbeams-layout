@@ -22,6 +22,9 @@ module Crossbeams
           head_section = <<-EOH
         <div class="grid-head">
           <label style="margin-left: 20px;">
+              <button onclick="crossbeamsGridEvents.toFullScreen('#{@grid_id}')" title="show in fullscreen mode"><i class="fa fa-arrows-alt"></i></button>
+          </label>
+          <label style="margin-left: 20px;">
               <button class="pure-button" onclick="crossbeamsGridEvents.csvExport('#{@grid_id}', '#{file_name_from_caption(@caption)}')"><i class="fa fa-file"></i> Export to CSV</button>
           </label>
           <label style="margin-left: 20px;">
@@ -36,10 +39,11 @@ module Crossbeams
           <span class="grid-caption">
             #{@caption}
           </span>
+          <span id="#{@grid_id}_rowcount" class="crossbeams-rowcount"></span>
         </div>
           EOH
           <<-EOS
-        <div style="height:40em">#{head_section}
+        <div id="#{@grid_id}-frame" style="height:40em">#{head_section}
           <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{@url}" data-grid="grid" #{denote_nested_grid}></div>
         </div>
           EOS
