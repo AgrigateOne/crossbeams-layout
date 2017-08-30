@@ -22,7 +22,7 @@ module Crossbeams
           head_section = <<-EOH
         <div class="grid-head">
           <label style="margin-left: 20px;">
-              <button onclick="crossbeamsGridEvents.toFullScreen('#{@grid_id}')" title="show in fullscreen mode"><i class="fa fa-arrows-alt"></i></button>
+              <button class="crossbeams-to-fullscreen" onclick="crossbeamsGridEvents.toFullScreen('#{@grid_id}')" title="show in fullscreen mode"><i class="fa fa-arrows-alt"></i></button>
           </label>
           <label style="margin-left: 20px;">
               <button class="pure-button" onclick="crossbeamsGridEvents.csvExport('#{@grid_id}', '#{file_name_from_caption(@caption)}')"><i class="fa fa-file"></i> Export to CSV</button>
