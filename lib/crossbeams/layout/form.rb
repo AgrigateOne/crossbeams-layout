@@ -14,6 +14,7 @@ module Crossbeams
         @page_config      = page_config
         @form_method      = :create
         @remote_form      = false
+        @view_only        = false
         @got_row          = false
         @no_row           = false
         @csrf_tag         = nil
@@ -27,6 +28,12 @@ module Crossbeams
       # @returns [void]
       def remote!
         @remote_form = true
+      end
+
+      # Make this a view-only form.
+      # @returns [void]
+      def view_only!
+        @view_only = true
       end
 
       def invisible?
@@ -83,13 +90,13 @@ module Crossbeams
         renders = sub_renders
         remote_str = remote_form ? ' data-remote="true"' : ''
         # TODO: fix form id...
-        <<-EOS
+        <<~EOS
         <form class="crossbeams-form" id="edit_user_1" action="#{form_action}"#{remote_str} accept-charset="utf-8" method="POST">
           #{csrf_tag}
           #{form_method_str}
           #{renders}
         <div class="crossbeams-actions">
-          <input type="submit" name="commit" value="Submit" data-disable-with="Submitting" class="white bg-green br2 dim pa3 ba b--near-white">
+          #{submit_button}
         </div>
         </form>
         EOS
@@ -114,6 +121,14 @@ module Crossbeams
         end
         row.add_node(col)
         row.render + "\n"
+      end
+
+      def submit_button
+        if @view_only
+          %Q{<input type="submit" name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white">}
+        else
+          %Q{<input type="submit" name="commit" value="Submit" data-disable-with="Submitting" class="white bg-green br2 dim pa3 ba b--near-white">}
+        end
       end
     end
   end

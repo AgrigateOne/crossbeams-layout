@@ -34,7 +34,7 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-EOS
-        <a href="#{url}" #{class_strings}>#{text}</a>
+        <a href="#{url}" #{class_strings}#{behaviour_string}>#{text}</a>
         EOS
       end
 
@@ -43,6 +43,14 @@ module Crossbeams
       def class_strings
         if style == :button
           %Q{class="f6 link dim br2 ph3 pv2 mb2 dib white bg-silver"}
+        else
+          ''
+        end
+      end
+
+      def behaviour_string
+        if @behaviour == :popup
+          ' data-popup-dialog="true"'
         else
           ''
         end
