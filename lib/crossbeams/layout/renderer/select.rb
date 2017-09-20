@@ -16,6 +16,7 @@ module Crossbeams
           attrs = [] # For class, prompt etc...
           cls   = []
           cls   << 'searchable-select' # if @field_config[:searchable]
+          # cls   << 'cbl-input' if !@field_config[:searchable]
           attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
           sel = @field_config[:selected] ? @field_config[:selected] : @page_config.form_object.send(@field_name)
 

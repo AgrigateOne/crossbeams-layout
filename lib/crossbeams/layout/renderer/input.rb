@@ -14,6 +14,7 @@ module Crossbeams
 
         def render
           attrs = []
+          attrs << 'class="cbl-input"'
           attrs << "size=\"#{@field_config[:length]}\"" if @field_config[:length]
           attrs << build_pattern(@field_config[:pattern]) if @field_config[:pattern]
           attrs << "title=\"#{@field_config[:pattern_msg]}\"" if @field_config[:pattern_msg]

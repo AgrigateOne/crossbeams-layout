@@ -17,6 +17,7 @@ module Crossbeams
           rows = @field_config[:rows] || 10
 
           attrs = []
+          attrs << 'class="cbl-input"'
           attrs << "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
           attrs << "title=\"#{@field_config[:title]}\"" if @field_config[:title]
           attrs << "maxlength=\"#{@field_config[:maxlength]}\"" if @field_config[:maxlength]
