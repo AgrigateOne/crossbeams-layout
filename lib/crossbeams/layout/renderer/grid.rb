@@ -36,6 +36,9 @@ module Crossbeams
                 <button class="crossbeams-to-fullscreen" onclick="crossbeamsGridEvents.toFullScreen('#{grid_id}')" title="show in fullscreen mode"><i class="fa fa-arrows-alt"></i></button>
             </label>
             <label style="margin-left: 20px;">
+                <button class="crossbeams-view-row" onclick="crossbeamsGridEvents.viewSelectedRow('#{grid_id}')" title="view selected row"><i class="fa fa-eye"></i></button>
+            </label>
+            <label style="margin-left: 20px;">
                 <button class="pure-button" onclick="crossbeamsGridEvents.csvExport('#{grid_id}', '#{Grid.file_name_from_caption(caption)}')"><i class="fa fa-file"></i> Export to CSV</button>
             </label>
             <label style="margin-left: 20px;">
@@ -44,6 +47,11 @@ module Crossbeams
             #{print_section}
             <label style="margin-left: 20px;">
                 <input class="un-formed-input" onkeyup="crossbeamsGridEvents.quickSearch(event)" placeholder='Search...' data-grid-id="#{grid_id}"/>
+            </label>
+            <label style="margin-left: 20px;">
+                <select id='#{grid_id}-scrollcol' onchange="crossbeamsGridEvents.scrollToColumn(event)" data-grid-id="#{grid_id}"/>
+                  <option value=''>Scroll to column</option>
+                <select>
             </label>
             <span class="grid-caption">
               #{caption}
