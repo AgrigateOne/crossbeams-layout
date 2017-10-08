@@ -67,10 +67,10 @@ module Crossbeams
         @nodes << Field.new(page_config, name, options)
       end
 
-      def add_text(text)
+      def add_text(text, opts = {})
         @no_row = true
         raise 'Cannot mix row and text' if got_row
-        @nodes << Text.new(page_config, text)
+        @nodes << Text.new(page_config, text, opts)
       end
 
       def add_sortable_list(prefix, items)

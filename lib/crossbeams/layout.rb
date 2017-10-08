@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'rouge'
 require 'crossbeams/layout/version'
 require 'crossbeams/layout/page_node'
 require 'crossbeams/layout/callback_section'

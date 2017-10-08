@@ -40,6 +40,10 @@ module Crossbeams
         @nodes << Grid.new(page_config, grid_id, url, options)
       end
 
+      def add_text(text, opts = {})
+        @nodes << Text.new(page_config, text, opts)
+      end
+
       # Add a control (button, link) to the page.
       #
       # @return [void]
