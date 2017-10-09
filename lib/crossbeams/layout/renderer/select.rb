@@ -18,7 +18,8 @@ module Crossbeams
           cls   << 'searchable-select' # if @field_config[:searchable]
           # cls   << 'cbl-input' if !@field_config[:searchable]
           attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
-          sel = @field_config[:selected] ? @field_config[:selected] : @page_config.form_object.send(@field_name)
+          sel = @field_config[:selected] ? @field_config[:selected] : @page_config.form_object.public_send(@field_name)
+          sel = @page_config.form_values[@field_name] if @page_config.form_values
 
           render_string(attrs, sel)
         end
@@ -48,7 +49,7 @@ module Crossbeams
               sel = a.last == selected ? ' selected ' : ''
               "<option value=\"#{CGI::escapeHTML(a.last.to_s)}\"#{sel}>#{CGI::escapeHTML(a.first.to_s)}</option>"
             else
-              sel = a == selected ? ' selected ' : ''
+              sel = selected && a.to_s == selected.to_s ? ' selected ' : ''
               "<option value=\"#{CGI::escapeHTML(a.to_s)}\"#{sel}>#{CGI::escapeHTML(a.to_s)}</option>"
             end
           end.join("\n")
