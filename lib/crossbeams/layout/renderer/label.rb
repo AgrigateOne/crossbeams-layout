@@ -13,8 +13,12 @@ module Crossbeams
         end
 
         def render
-          value = @page_config.form_object.send(@field_name)
-          value = value.to_s('F') if value.is_a?(BigDecimal)
+          if @field_config[:with_value]
+            value = @field_config[:with_value]
+          else
+            value = @page_config.form_object.send(@field_name)
+            value = value.to_s('F') if value.is_a?(BigDecimal)
+          end
           <<-EOS
           <div class="crossbeams-field">
             <input type="text" readonly class="cbl-input label-field bg-light-gray" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">

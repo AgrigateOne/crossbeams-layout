@@ -21,6 +21,7 @@ module Crossbeams
           attrs << "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
           attrs << "title=\"#{@field_config[:title]}\"" if @field_config[:title]
           attrs << 'step="any"' if subtype == :numeric
+          attrs << "disabled" if @field_config[:disabled]
           datalist = build_datalist
           attrs << %Q{list="#{@page_config.name}_#{@field_name}_listing"} unless datalist.nil?
           tp = case subtype
