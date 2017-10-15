@@ -16,6 +16,7 @@ module Crossbeams
           attrs = []
           val = @page_config.form_object.send(@field_name)
           checked = val && val != false && val != 'f' && val != 'false' && val.to_s != '0' ? 'checked' : ''
+          attrs << behaviours
           <<-EOS
           <div class="#{div_class}">
             <input name="#{@page_config.name}[#{@field_name}]" type="hidden" value="f">

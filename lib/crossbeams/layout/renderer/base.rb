@@ -22,6 +22,28 @@ module Crossbeams
             "<br><span class='crossbeams-form-error'>#{@page_config.form_errors[@field_name].join('; ')}</span>"
           end
         end
+
+        def behaviours
+          rules = @page_config.options[:behaviours]
+          return nil if rules.nil?
+          res = []
+          rules.each do |element|
+            element.each do |field, rule|
+              res << build_behaviour(rule) if field == @field_name
+            end
+          end
+          return nil if res.empty?
+          res.join(' ')
+        end
+
+        def build_behaviour(rule)
+          if rule[:change_affects]
+            return %Q{data-change-values="#{@page_config.name}_#{rule[:change_affects]}"}
+          end
+          if rule[:enable_on_change]
+            return %Q{data-enable-on-values="#{rule[:enable_on_change].join(',')}"}
+          end
+        end
       end
     end
   end

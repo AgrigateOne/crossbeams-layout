@@ -25,6 +25,7 @@ module Crossbeams
           attrs << 'readonly="true"' if @field_config[:readonly] && @field_config[:readonly] == true
           attrs << 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
           attrs << 'required="true"' if @field_config[:required] && @field_config[:required] == true
+          attrs << behaviours
 
           <<~EOS
           <div class="#{div_class}">
