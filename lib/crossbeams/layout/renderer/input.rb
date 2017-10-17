@@ -22,6 +22,7 @@ module Crossbeams
           attrs << "title=\"#{@field_config[:title]}\"" if @field_config[:title]
           attrs << 'step="any"' if subtype == :numeric
           attrs << "disabled" if @field_config[:disabled]
+          attrs << "readonly" if @field_config[:readonly]
           attrs << %{oninput="this.value = this.value.toUpperCase()"} if @field_config[:force_uppercase]
           attrs << %{oninput="this.value = this.value.toLowerCase()"} if @field_config[:force_lowercase]
           attrs << behaviours
