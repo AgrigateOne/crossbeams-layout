@@ -22,6 +22,8 @@ module Crossbeams
           attrs << "title=\"#{@field_config[:title]}\"" if @field_config[:title]
           attrs << 'step="any"' if subtype == :numeric
           attrs << "disabled" if @field_config[:disabled]
+          attrs << %{oninput="this.value = this.value.toUpperCase()"} if @field_config[:force_uppercase]
+          attrs << %{oninput="this.value = this.value.toLowerCase()"} if @field_config[:force_lowercase]
           attrs << behaviours
           datalist = build_datalist
           attrs << %Q{list="#{@page_config.name}_#{@field_name}_listing"} unless datalist.nil?
