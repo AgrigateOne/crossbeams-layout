@@ -13,9 +13,9 @@ module Crossbeams
         end
 
         def render
-          <<-EOS
-            <input type="hidden" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" />
-          EOS
+          <<-HTML
+            <input type="hidden" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" />
+          HTML
         end
 
         private
@@ -24,7 +24,7 @@ module Crossbeams
         #        when the ROM::Struct does not include the field.
         def value
           res = @page_config.form_values[@field_name] if @page_config.form_values
-          res = @page_config.form_object.send(@field_name) unless res
+          res ||= @page_config.form_object.send(@field_name)
           res
         end
       end

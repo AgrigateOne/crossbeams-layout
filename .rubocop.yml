@@ -27,3 +27,6 @@ Metrics/BlockLength:
 
 Layout/SpaceAroundOperators:
   AllowForAlignment: true
+
+Performance/UnfreezeString:
+  Enabled: false

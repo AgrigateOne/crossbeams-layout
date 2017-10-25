@@ -27,14 +27,14 @@ module Crossbeams
           attrs << 'required="true"' if @field_config[:required] && @field_config[:required] == true
           attrs << behaviours
 
-          <<~EOS
-          <div class="#{div_class}">
-            <textarea name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')} cols="#{cols}" rows="#{rows}">
-            #{CGI::escapeHTML(value.to_s)}
-            </textarea>
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
-          </div>
-          EOS
+          <<~HTML
+            <div class="#{div_class}">
+              <textarea name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')} cols="#{cols}" rows="#{rows}">
+              #{CGI.escapeHTML(value.to_s)}
+              </textarea>
+              <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
+            </div>
+          HTML
         end
 
         private
@@ -48,4 +48,3 @@ module Crossbeams
     end
   end
 end
-

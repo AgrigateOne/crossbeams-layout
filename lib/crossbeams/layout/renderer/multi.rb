@@ -26,14 +26,14 @@ module Crossbeams
         private
 
         def render_string(attrs, sel)
-          <<-EOS
+          <<-HTML
           <div class="#{div_class}">
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
             <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}][]" id="#{@page_config.name}_#{@field_name}" multiple="multiple" data-multi="true">
             #{make_prompt}#{make_options(@field_config[:options], sel)}
             </select>
           </div>
-          EOS
+          HTML
         end
 
         def make_prompt
@@ -47,11 +47,11 @@ module Crossbeams
             if a.is_a?(Array)
               # sel = a.last == selected ? ' selected ' : ''
               sel = selected.include?(a.last) ? ' selected ' : ''
-              "<option value=\"#{CGI::escapeHTML(a.last.to_s)}\"#{sel}>#{CGI::escapeHTML(a.first.to_s)}</option>"
+              "<option value=\"#{CGI.escapeHTML(a.last.to_s)}\"#{sel}>#{CGI.escapeHTML(a.first.to_s)}</option>"
             else
               # sel = a == selected ? ' selected ' : ''
               sel = selected.include?(a) ? ' selected ' : ''
-              "<option value=\"#{CGI::escapeHTML(a.to_s)}\"#{sel}>#{CGI::escapeHTML(a.to_s)}</option>"
+              "<option value=\"#{CGI.escapeHTML(a.to_s)}\"#{sel}>#{CGI.escapeHTML(a.to_s)}</option>"
             end
           end.join("\n")
         end
@@ -59,4 +59,3 @@ module Crossbeams
     end
   end
 end
-

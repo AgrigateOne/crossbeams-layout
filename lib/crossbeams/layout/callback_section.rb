@@ -26,17 +26,17 @@ module Crossbeams
 
       # This render uses XHR via javascript
       # def render
-      #   <<-EOS
+      #   <<-HTML
       #   <section id="section-#{sequence}" data-crossbeams_callback_section="#{url}" class="crossbeams_layout">
       #   <h2>#{caption}</h2>
       #   <div class="content-target content-loading"></div>
       #   </section>
-      #   EOS
+      #   HTML
       # end
 
       # This render uses inline javascript fetch.
       def render
-        <<-EOS
+        <<-HTML
       <section id="section-#{sequence}" class="crossbeams_layout">
       <h2>#{caption}</h2>
       <div id="crossbeams_callback_target_#{sequence}" class="content-target content-loading"></div>
@@ -53,7 +53,7 @@ module Crossbeams
           content_div.innerHTML = responseText;
         });
       </script>
-        EOS
+        HTML
       end
     end
   end

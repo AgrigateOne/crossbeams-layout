@@ -34,9 +34,9 @@ module Crossbeams
 
       def render_for_print
         # puts ">>> In grid: #{page_config.options.inspect}"
-        <<-EOS
+        <<-HTML
         <div id="#{grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{page_config.options[:grid_url]}" data-grid="grid" data-grid-print="forPrint"></div>
-        EOS
+        HTML
       end
 
       def render_for_screen

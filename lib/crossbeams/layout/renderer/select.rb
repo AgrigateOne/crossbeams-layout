@@ -28,14 +28,14 @@ module Crossbeams
         private
 
         def render_string(attrs, sel)
-          <<-EOS
+          <<-HTML
           <div class="#{div_class}">
             <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
             #{make_prompt}#{make_options(@field_config[:options], sel)}
             </select>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
           </div>
-          EOS
+          HTML
         end
 
         def make_prompt
@@ -48,10 +48,10 @@ module Crossbeams
           ar.map do |a|
             if a.is_a?(Array)
               sel = a.last == selected ? ' selected ' : ''
-              "<option value=\"#{CGI::escapeHTML(a.last.to_s)}\"#{sel}>#{CGI::escapeHTML(a.first.to_s)}</option>"
+              "<option value=\"#{CGI.escapeHTML(a.last.to_s)}\"#{sel}>#{CGI.escapeHTML(a.first.to_s)}</option>"
             else
               sel = selected && a.to_s == selected.to_s ? ' selected ' : ''
-              "<option value=\"#{CGI::escapeHTML(a.to_s)}\"#{sel}>#{CGI::escapeHTML(a.to_s)}</option>"
+              "<option value=\"#{CGI.escapeHTML(a.to_s)}\"#{sel}>#{CGI.escapeHTML(a.to_s)}</option>"
             end
           end.join("\n")
         end

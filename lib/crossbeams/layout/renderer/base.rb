@@ -18,9 +18,7 @@ module Crossbeams
         end
 
         def error_state
-          if @page_config.form_errors && @page_config.form_errors[@field_name]
-            "<br><span class='crossbeams-form-error'>#{@page_config.form_errors[@field_name].join('; ')}</span>"
-          end
+          "<br><span class='crossbeams-form-error'>#{@page_config.form_errors[@field_name].join('; ')}</span>" if @page_config.form_errors && @page_config.form_errors[@field_name]
         end
 
         def behaviours
@@ -37,12 +35,8 @@ module Crossbeams
         end
 
         def build_behaviour(rule)
-          if rule[:change_affects]
-            return %Q{data-change-values="#{@page_config.name}_#{rule[:change_affects]}"}
-          end
-          if rule[:enable_on_change]
-            return %Q{data-enable-on-values="#{rule[:enable_on_change].join(',')}"}
-          end
+          return %(data-change-values="#{@page_config.name}_#{rule[:change_affects]}") if rule[:change_affects]
+          return %(data-enable-on-values="#{rule[:enable_on_change].join(',')}") if rule[:enable_on_change]
         end
       end
     end

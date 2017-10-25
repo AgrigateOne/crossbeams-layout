@@ -32,7 +32,7 @@ module Crossbeams
       #
       # @return [string] - HTML representation of this node.
       def render
-        <<-EOS
+        <<-HTML
         <ol id="#{prefix}-sortable-items">
         #{item_renders}
         </ol>
@@ -40,7 +40,7 @@ module Crossbeams
         <script type="text/javascript">
           crossbeamsUtils.makeListSortable('#{prefix}');
         </script>
-        EOS
+        HTML
       end
 
       private
@@ -49,7 +49,7 @@ module Crossbeams
         @item_ids = []
         @items.map do |text, id|
           @item_ids << id
-          %Q{<li id="si_#{id}" class="crossbeams-draggable"><span class="crossbeams-drag-handle">&nbsp;&nbsp;&nbsp;&nbsp;</span>#{text}</li>}
+          %(<li id="si_#{id}" class="crossbeams-draggable"><span class="crossbeams-drag-handle">&nbsp;&nbsp;&nbsp;&nbsp;</span>#{text}</li>)
         end.join("\n")
       end
 
@@ -59,4 +59,3 @@ module Crossbeams
     end
   end
 end
-

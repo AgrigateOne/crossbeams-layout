@@ -6,7 +6,7 @@ module Crossbeams
     class PageConfig
       attr_reader :form_object, :name, :options
       attr_accessor :form_values, :form_errors
-      CROSSBEAMS = 'crossbeams'.freeze
+      CROSSBEAMS = 'crossbeams'
       # Create a new PageConfig.
       # @param [Hash] options the options for applying parameters.
       # @option options [Object] :form_object The object that supplies form data.

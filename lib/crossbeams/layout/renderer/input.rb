@@ -21,13 +21,13 @@ module Crossbeams
           attrs << "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
           attrs << "title=\"#{@field_config[:title]}\"" if @field_config[:title]
           attrs << 'step="any"' if subtype == :numeric
-          attrs << "disabled" if @field_config[:disabled]
-          attrs << "readonly" if @field_config[:readonly]
+          attrs << 'disabled' if @field_config[:disabled]
+          attrs << 'readonly' if @field_config[:readonly]
           attrs << %{oninput="this.value = this.value.toUpperCase()"} if @field_config[:force_uppercase]
           attrs << %{oninput="this.value = this.value.toLowerCase()"} if @field_config[:force_lowercase]
           attrs << behaviours
           datalist = build_datalist
-          attrs << %Q{list="#{@page_config.name}_#{@field_name}_listing"} unless datalist.nil?
+          attrs << %(list="#{@page_config.name}_#{@field_name}_listing") unless datalist.nil?
           tp = case subtype
                when :integer, :numeric, :number
                  'number'
@@ -36,32 +36,32 @@ module Crossbeams
                when :url
                  'url'
                when :date     # yyyy-mm-dd
-                 @value_getter = lambda { |d| d.strftime('%Y-%m-%d')}
+                 @value_getter = ->(d) { d.strftime('%Y-%m-%d') }
                  'date'
                when :datetime # yyyy-mm-ddTHH:MM or yyyy-mm-ddTHH:MM:SS.S
                  @value_getter = if @field_config[:with_seconds] && @field_config[:with_seconds] == true
-                                   lambda { |t| t.strftime('%Y-%m-%dT%H:%M:%S.%L') }
+                                   ->(t) { t.strftime('%Y-%m-%dT%H:%M:%S.%L') }
                                  else
-                                   lambda { |t| t.strftime('%Y-%m-%dT%H:%M') }
+                                   ->(t) { t.strftime('%Y-%m-%dT%H:%M') }
                                  end
                  'datetime-local'
                when :month    # yyyy-mm
-                 @value_getter = lambda { |d| d.strftime('%Y-%m')}
+                 @value_getter = ->(d) { d.strftime('%Y-%m') }
                  'month'
                when :time     # HH:MM
-                 @value_getter = lambda { |t| t.strftime('%H:%M') }
+                 @value_getter = ->(t) { t.strftime('%H:%M') }
                  'time'
                else
                  'text'
                end
 
-          <<-EOS
+          <<-HTML
           <div class="#{div_class}">
-            <input type="#{tp}" value="#{CGI::escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')}>
+            <input type="#{tp}" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
             #{datalist}
           </div>
-          EOS
+          HTML
         end
 
         private
@@ -86,26 +86,24 @@ module Crossbeams
           @field_config[:datalist].each do |opt|
             s << "<option value=\"#{opt}\">\n"
           end
-          <<-EOS
+          <<-HTML
           <datalist id="#{@page_config.name}_#{@field_name}_listing">
             #{s}
           </datalist>
-          EOS
+          HTML
         end
 
         def build_pattern(pattern)
-          if pattern.is_a? String
-            val = pattern
-          else
-            val = case pattern
+          val = if pattern.is_a? String
+                  pattern
+                else
+                  case pattern
                   when :no_spaces
                     '[^\s]+'
                   when :lowercase_underscore
                     '[a-z_]'
-                  else
-                    nil
                   end
-          end
+                end
           return nil if val.nil?
           "pattern=\"#{val}\""
         end

@@ -29,21 +29,21 @@ module Crossbeams
       end
 
       def render
-        <<-EOS
+        <<-HTML
         <div class="crossbeams-field">
         #{preformatted || !syntax.nil? ? preformatted_text : render_text}
         </div>
-        EOS
+        HTML
       end
 
       private
 
       def preformatted_text
-        <<~EOS
-        <pre>
-        #{render_text}
-        </pre>
-        EOS
+        <<~HTML
+          <pre>
+          #{render_text}
+          </pre>
+        HTML
       end
 
       def render_text

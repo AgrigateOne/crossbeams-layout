@@ -4,8 +4,7 @@ module Crossbeams
   module Layout
     # Form object.
     class Form
-      attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row, :csrf_tag, :remote_form
-      attr_accessor :form_config
+      attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row, :csrf_tag, :remote_form, :form_config
 
       def initialize(page_config, section_sequence, sequence)
         @section_sequence = section_sequence
@@ -126,16 +125,16 @@ module Crossbeams
         renders = sub_renders
         remote_str = remote_form ? ' data-remote="true"' : ''
         # TODO: fix form id...
-        <<~EOS
-        <form class="crossbeams-form" id="edit_user_1" action="#{form_action}"#{remote_str} accept-charset="utf-8" method="POST">
-          #{csrf_tag}
-          #{form_method_str}
-          #{renders}
-        <div class="crossbeams-actions">
-          #{submit_button}
-        </div>
-        </form>
-        EOS
+        <<~HTML
+          <form class="crossbeams-form" id="edit_user_1" action="#{form_action}"#{remote_str} accept-charset="utf-8" method="POST">
+            #{csrf_tag}
+            #{form_method_str}
+            #{renders}
+          <div class="crossbeams-actions">
+            #{submit_button}
+          </div>
+          </form>
+        HTML
       end
 
       private
@@ -161,9 +160,9 @@ module Crossbeams
 
       def submit_button
         if @view_only
-          %Q{<input type="submit" name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white">}
+          %(<input type="submit" name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white">)
         else
-          %Q{<input type="submit" name="commit" value="#{@submit_caption}" data-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white">}
+          %(<input type="submit" name="commit" value="#{@submit_caption}" data-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white">)
         end
       end
     end

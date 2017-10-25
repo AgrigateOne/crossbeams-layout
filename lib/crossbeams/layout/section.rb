@@ -48,22 +48,21 @@ module Crossbeams
       #
       # @return [void]
       def add_control(page_control_definition)
-        if page_control_definition[:control_type] == :link
-          @nodes << Link.new(page_control_definition)
-        end
+        @nodes << Link.new(page_control_definition) if page_control_definition[:control_type] == :link
       end
 
       def render
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Row -->\n")
-        <<-EOS
+        <<-HTML
       <section id="section-#{sequence}" class="crossbeams_layout">
       #{render_caption}
         #{row_renders}
       </section>
-        EOS
+        HTML
       end
 
       private
+
       def render_caption
         return '' if hide_caption
         "<h2>#{caption}</h2>"

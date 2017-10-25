@@ -43,11 +43,11 @@ module Crossbeams
           ''
         else
           col_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Col -->\n")
-          <<-EOS
+          <<-HTML
           <div class="crossbeams-row">
             #{col_renders}
           </div>
-          EOS
+          HTML
         end
       end
     end

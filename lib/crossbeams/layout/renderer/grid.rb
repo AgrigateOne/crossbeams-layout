@@ -21,16 +21,16 @@ module Crossbeams
         def self.header(grid_id, caption, options = {})
           if options[:print_button]
             raise ArgumentError, 'print_url is required to print a grid' unless options[:print_url]
-            print_section = <<~EOS
+            print_section = <<~HTML
               <label style="margin-left: 20px;">
                   <button class="pure-button" onclick="crossbeamsGridEvents.printAGrid('#{grid_id}', '#{options[:print_url]}')"><i class="fa fa-print"></i> Print</button>
               </label>
-            EOS
+            HTML
           else
             print_section = ''
           end
 
-          <<-EOH
+          <<-HTML
           <div class="grid-head">
             <label style="margin-left: 20px;">
                 <button class="crossbeams-to-fullscreen" onclick="crossbeamsGridEvents.toFullScreen('#{grid_id}')" title="show in fullscreen mode"><i class="fa fa-arrows-alt"></i></button>
@@ -58,23 +58,25 @@ module Crossbeams
             </span>
             <span id="#{grid_id}_rowcount" class="crossbeams-rowcount"></span>
           </div>
-          EOH
+          HTML
         end
 
         def render
           head_section = Grid.header(@grid_id, @caption, print_button: true, print_url: @url)
-          <<~EOS
-          <div id="#{@grid_id}-frame" style="height:40em">#{head_section}
-            <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{@url}" data-grid="grid" #{denote_nested_grid}></div>
-          </div>
-          EOS
+          <<~HTML
+            <div id="#{@grid_id}-frame" style="height:40em">#{head_section}
+              <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{@url}" data-grid="grid" #{denote_nested_grid}></div>
+            </div>
+          HTML
         end
 
-        private
+        private_class_method
 
         def self.file_name_from_caption(caption)
           (caption || 'grid_contents').gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-') + '.csv'
         end
+
+        private
 
         def denote_nested_grid
           @nested_grid ? 'data-nested-grid="y"' : ''

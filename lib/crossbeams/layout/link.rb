@@ -7,7 +7,7 @@ module Crossbeams
       include PageNode
       attr_reader :text, :url, :style, :behaviour
 
-      def initialize(options) #text, url, style = nil, behaviour = nil)
+      def initialize(options)
         @text      = options[:text]
         @url       = options[:url]
         @style     = options[:style] || :link
@@ -33,16 +33,16 @@ module Crossbeams
       #
       # @return [string] - HTML representation of this node.
       def render
-        <<-EOS
+        <<-HTML
         <a href="#{url}" #{class_strings}#{behaviour_string}>#{text}</a>
-        EOS
+        HTML
       end
 
       private
 
       def class_strings
         if style == :button
-          %Q{class="f6 link dim br2 ph3 pv2 mb2 dib white bg-silver"}
+          %(class="f6 link dim br2 ph3 pv2 mb2 dib white bg-silver")
         else
           ''
         end
