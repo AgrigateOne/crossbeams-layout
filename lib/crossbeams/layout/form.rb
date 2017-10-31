@@ -3,7 +3,7 @@
 module Crossbeams
   module Layout
     # Form object.
-    class Form
+    class Form # rubocop:disable Metrics/ClassLength
       attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row, :csrf_tag, :remote_form, :form_config
 
       def initialize(page_config, section_sequence, sequence)

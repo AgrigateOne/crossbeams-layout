@@ -46,14 +46,13 @@ module Crossbeams
 
         def make_options(ar, selected = nil)
           ar.map do |a|
-            if a.is_a?(Array)
-              sel = a.last == selected ? ' selected ' : ''
-              "<option value=\"#{CGI.escapeHTML(a.last.to_s)}\"#{sel}>#{CGI.escapeHTML(a.first.to_s)}</option>"
-            else
-              sel = selected && a.to_s == selected.to_s ? ' selected ' : ''
-              "<option value=\"#{CGI.escapeHTML(a.to_s)}\"#{sel}>#{CGI.escapeHTML(a.to_s)}</option>"
-            end
+            a.is_a?(Array) ? option_string(a.first, a.last, selected) : option_string(a, a, selected)
           end.join("\n")
+        end
+
+        def option_string(text, value, selected)
+          sel = selected && value.to_s == selected.to_s ? ' selected ' : ''
+          "<option value=\"#{CGI.escapeHTML(value.to_s)}\"#{sel}>#{CGI.escapeHTML(text.to_s)}</option>"
         end
       end
     end

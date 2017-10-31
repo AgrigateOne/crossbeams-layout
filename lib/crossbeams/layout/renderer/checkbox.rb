@@ -14,8 +14,6 @@ module Crossbeams
 
         def render
           attrs = []
-          val = @page_config.form_object.send(@field_name)
-          checked = val && val != false && val != 'f' && val != 'false' && val.to_s != '0' ? 'checked' : ''
           attrs << behaviours
           <<-HTML
           <div class="#{div_class}">
@@ -24,6 +22,16 @@ module Crossbeams
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
           </div>
           HTML
+        end
+
+        private
+
+        def value
+          @val ||= @page_config.form_object.send(@field_name)
+        end
+
+        def checked
+          value && value != false && value != 'f' && value != 'false' && value.to_s != '0' ? 'checked' : ''
         end
       end
     end

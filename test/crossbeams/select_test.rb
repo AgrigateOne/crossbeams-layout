@@ -6,5 +6,10 @@ class Crossbeams::SelectTest < Minitest::Test
     assert true #false
   end
 
-end
+  # def test_single_list
+  #   s = simple_select_render(nil, ['a', 'b'])
+  #   assert_equal 'date', html_element_attribute_value(s, :input, :type)
+  #   assert_equal Date.today.strftime('%Y-%m-%d'), html_element_attribute_value(s, :input, :value)
+  # end
 
+end

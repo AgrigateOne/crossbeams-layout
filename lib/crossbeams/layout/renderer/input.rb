@@ -4,7 +4,7 @@ module Crossbeams
   module Layout
     module Renderer
       # Render an input field.
-      class Input < Base
+      class Input < Base # rubocop:disable Metrics/ClassLength
         def configure(field_name, field_config, page_config)
           @field_name   = field_name
           @field_config = field_config
@@ -13,51 +13,12 @@ module Crossbeams
         end
 
         def render
-          attrs = []
-          attrs << 'class="cbl-input"'
-          attrs << "size=\"#{@field_config[:length]}\"" if @field_config[:length]
-          attrs << build_pattern(@field_config[:pattern]) if @field_config[:pattern]
-          attrs << "title=\"#{@field_config[:pattern_msg]}\"" if @field_config[:pattern_msg]
-          attrs << "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
-          attrs << "title=\"#{@field_config[:title]}\"" if @field_config[:title]
-          attrs << 'step="any"' if subtype == :numeric
-          attrs << 'disabled' if @field_config[:disabled]
-          attrs << 'readonly' if @field_config[:readonly]
-          attrs << %{oninput="this.value = this.value.toUpperCase()"} if @field_config[:force_uppercase]
-          attrs << %{oninput="this.value = this.value.toLowerCase()"} if @field_config[:force_lowercase]
-          attrs << behaviours
           datalist = build_datalist
-          attrs << %(list="#{@page_config.name}_#{@field_name}_listing") unless datalist.nil?
-          tp = case subtype
-               when :integer, :numeric, :number
-                 'number'
-               when :email
-                 'email'
-               when :url
-                 'url'
-               when :date     # yyyy-mm-dd
-                 @value_getter = ->(d) { d.strftime('%Y-%m-%d') }
-                 'date'
-               when :datetime # yyyy-mm-ddTHH:MM or yyyy-mm-ddTHH:MM:SS.S
-                 @value_getter = if @field_config[:with_seconds] && @field_config[:with_seconds] == true
-                                   ->(t) { t.strftime('%Y-%m-%dT%H:%M:%S.%L') }
-                                 else
-                                   ->(t) { t.strftime('%Y-%m-%dT%H:%M') }
-                                 end
-                 'datetime-local'
-               when :month    # yyyy-mm
-                 @value_getter = ->(d) { d.strftime('%Y-%m') }
-                 'month'
-               when :time     # HH:MM
-                 @value_getter = ->(t) { t.strftime('%H:%M') }
-                 'time'
-               else
-                 'text'
-               end
+          date_related_value_getter
 
           <<-HTML
           <div class="#{div_class}">
-            <input type="#{tp}" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.compact.join(' ')}>
+            <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attr_list(datalist).join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
             #{datalist}
           </div>
@@ -68,6 +29,52 @@ module Crossbeams
 
         def subtype
           @field_config[:subtype] || @field_config[:renderer]
+        end
+
+        def input_type
+          case subtype
+          when :integer, :numeric, :number
+            'number'
+          when :email
+            'email'
+          when :url
+            'url'
+          when :date, :datetime, :month, :time
+            date_related_input_type(subtype)
+          else
+            'text'
+          end
+        end
+
+        def date_related_input_type(in_type)
+          case in_type
+          when :date     # yyyy-mm-dd
+            'date'
+          when :datetime # yyyy-mm-ddTHH:MM or yyyy-mm-ddTHH:MM:SS.S
+            'datetime-local'
+          when :month    # yyyy-mm
+            'month'
+          when :time     # HH:MM
+            'time'
+          end
+        end
+
+        DATE_VALUE_GETTERS = {
+          date: ->(d) { d.strftime('%Y-%m-%d') },
+          time: ->(t) { t.strftime('%H:%M') },
+          month: ->(d) { d.strftime('%Y-%m') }
+        }.freeze
+
+        def date_related_value_getter
+          @value_getter = if subtype == :datetime
+                            if @field_config[:with_seconds] && @field_config[:with_seconds] == true
+                              ->(t) { t.strftime('%Y-%m-%dT%H:%M:%S.%L') }
+                            else
+                              ->(t) { t.strftime('%Y-%m-%dT%H:%M') }
+                            end
+                          else
+                            DATE_VALUE_GETTERS[subtype]
+                          end
         end
 
         def value
@@ -106,6 +113,85 @@ module Crossbeams
                 end
           return nil if val.nil?
           "pattern=\"#{val}\""
+        end
+
+        def attr_list(datalist) # rubocop:disable Metrics/AbcSize
+          [
+            attr_class,
+            attr_placeholder,
+            attr_pattern_title,
+            attr_title,
+            attr_size,
+            attr_pattern,
+            attr_minlength,
+            attr_readonly,
+            attr_disabled,
+            attr_required,
+            attr_step,
+            attr_upper,
+            attr_lower,
+            behaviours,
+            attr_datalist(datalist)
+          ].compact
+        end
+
+        def attr_class
+          res = ['cbl-input']
+          res << 'cbl-to-upper' if @field_config[:force_uppercase]
+          res << 'cbl-to-lower' if @field_config[:force_lowercase]
+          %(class="#{res.join(' ')}")
+        end
+
+        def attr_placeholder
+          return "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
+        end
+
+        def attr_pattern_title
+          return "title=\"#{@field_config[:pattern_msg]}\"" if @field_config[:pattern_msg] && !@field_config[:title]
+        end
+
+        def attr_title
+          return "title=\"#{@field_config[:title]}\"" if @field_config[:title]
+        end
+
+        def attr_size
+          return "size=\"#{@field_config[:length]}\"" if @field_config[:length]
+        end
+
+        def attr_pattern
+          return build_pattern(@field_config[:pattern]) if @field_config[:pattern]
+        end
+
+        def attr_minlength
+          return "minlength=\"#{@field_config[:minlength]}\"" if @field_config[:minlength]
+        end
+
+        def attr_readonly
+          return 'readonly="true"' if @field_config[:readonly] && @field_config[:readonly] == true
+        end
+
+        def attr_disabled
+          return 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
+        end
+
+        def attr_required
+          return 'required="true"' if @field_config[:required] && @field_config[:required] == true
+        end
+
+        def attr_step
+          return 'step="any"' if subtype == :numeric
+        end
+
+        def attr_upper
+          return %{onblur="this.value = this.value.toUpperCase()"} if @field_config[:force_uppercase]
+        end
+
+        def attr_lower
+          return %{onblur="this.value = this.value.toLowerCase()"} if @field_config[:force_lowercase]
+        end
+
+        def attr_datalist(datalist)
+          %(list="#{@page_config.name}_#{@field_name}_listing") unless datalist.nil?
         end
       end
     end
