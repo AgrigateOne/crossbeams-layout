@@ -10,7 +10,6 @@ module Crossbeams
       def initialize(page_config, grid_id, url, options = {})
         @grid_id     = grid_id
         @url         = url
-        # puts ">>> GRID URL: #{url}"
         @page_config = page_config
         @options     = options
         @nodes       = []
@@ -33,7 +32,6 @@ module Crossbeams
       end
 
       def render_for_print
-        # puts ">>> In grid: #{page_config.options.inspect}"
         <<-HTML
         <div id="#{grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{page_config.options[:grid_url]}" data-grid="grid" data-grid-print="forPrint"></div>
         HTML
@@ -41,7 +39,8 @@ module Crossbeams
 
       def render_for_screen
         caption = options[:caption]
-        renderer = Renderer::Grid.new(grid_id, url, caption, options[:is_nested])
+        # renderer = Renderer::Grid.new(grid_id, url, caption, options[:is_nested], options[:is_multiselect])
+        renderer = Renderer::Grid.new(grid_id, url, caption, options)
         renderer.render
       end
     end

@@ -5,11 +5,13 @@ module Crossbeams
     module Renderer
       # Render a Grid.
       class Grid < Base
-        def initialize(grid_id, url, caption, nested_grid)
+        def initialize(grid_id, url, caption, options = {})
           @grid_id     = grid_id
           @url         = url
           @caption     = caption
-          @nested_grid = nested_grid
+          @nested_grid = options[:nested_grid]
+          @multiselect = options[:is_multiselect]
+          @multiselect_url = options[:multiselect_url]
         end
         # def configure(field_name, field_config, page_config)
         #   @field_name   = field_name
@@ -37,7 +39,7 @@ module Crossbeams
             </label>
             <label style="margin-left: 20px;">
                 <button class="crossbeams-view-row" onclick="crossbeamsGridEvents.viewSelectedRow('#{grid_id}')" title="view selected row"><i class="fa fa-eye"></i></button>
-            </label>
+            </label>#{save_multiselect_button(grid_id, options)}
             <label style="margin-left: 20px;">
                 <button class="pure-button" onclick="crossbeamsGridEvents.csvExport('#{grid_id}', '#{Grid.file_name_from_caption(caption)}')"><i class="fa fa-file"></i> Export to CSV</button>
             </label>
@@ -62,10 +64,11 @@ module Crossbeams
         end
 
         def render
-          head_section = Grid.header(@grid_id, @caption, print_button: true, print_url: @url)
+          head_section = Grid.header(@grid_id, @caption, print_button: true, print_url: @url, multiselect: @multiselect, multiselect_url: @multiselect_url)
           <<~HTML
             <div id="#{@grid_id}-frame" style="height:40em">#{head_section}
-              <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{@url}" data-grid="grid" #{denote_nested_grid}></div>
+              <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{@url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
+              <script>console.log('loaded #{@grid_id}');</script>
             </div>
           HTML
         end
@@ -76,10 +79,23 @@ module Crossbeams
           (caption || 'grid_contents').gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-') + '.csv'
         end
 
+        def self.save_multiselect_button(grid_id, options)
+          return '' unless options[:multiselect]
+          <<~HTML
+            <label style="margin-left: 20px;">
+                <button class="crossbeams-view-savemulti" onclick="crossbeamsGridEvents.saveSelectedRows('#{grid_id}', '#{options[:multiselect_url]}')" title="save selection"><i class="fa fa-save"></i></button>
+            </label>
+          HTML
+        end
+
         private
 
         def denote_nested_grid
           @nested_grid ? 'data-nested-grid="y"' : ''
+        end
+
+        def denote_multiselect
+          @multiselect ? 'data-grid-multi="y"' : ''
         end
       end
     end
