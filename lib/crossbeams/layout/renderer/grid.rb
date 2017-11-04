@@ -12,6 +12,8 @@ module Crossbeams
           @nested_grid = options[:nested_grid]
           @multiselect = options[:is_multiselect]
           @multiselect_url = options[:multiselect_url]
+          @multiselect_key = options[:multiselect_key]
+          @multiselect_params = options[:multiselect_params]
         end
         # def configure(field_name, field_config, page_config)
         #   @field_name   = field_name
@@ -64,10 +66,14 @@ module Crossbeams
         end
 
         def render
-          head_section = Grid.header(@grid_id, @caption, print_button: true, print_url: @url, multiselect: @multiselect, multiselect_url: @multiselect_url)
+          head_section = Grid.header(@grid_id, @caption,
+                                     print_button: true,
+                                     print_url: @url,
+                                     multiselect: @multiselect,
+                                     multiselect_url: @multiselect_url)
           <<~HTML
             <div id="#{@grid_id}-frame" style="height:40em">#{head_section}
-              <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{@url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
+              <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
               <script>console.log('loaded #{@grid_id}');</script>
             </div>
           HTML
@@ -90,12 +96,22 @@ module Crossbeams
 
         private
 
+        def url
+          return @url if @multiselect.nil?
+          parms = []
+          @multiselect_params.each do |k, v|
+            parms << "#{k}=#{v}" unless k == :key
+          end
+          qstr = parms.empty? ? '' : "?#{parms.join('&')}"
+          "#{@url}/#{@multiselect_key}#{qstr}"
+        end
+
         def denote_nested_grid
           @nested_grid ? 'data-nested-grid="y"' : ''
         end
 
         def denote_multiselect
-          @multiselect ? 'data-grid-multi="y"' : ''
+          @multiselect ? "data-grid-multi=\"#{@multiselect_key}\"" : ''
         end
       end
     end
