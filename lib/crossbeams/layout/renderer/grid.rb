@@ -14,6 +14,7 @@ module Crossbeams
           @multiselect_url = options[:multiselect_url]
           @multiselect_key = options[:multiselect_key]
           @multiselect_params = options[:multiselect_params]
+          @query_string = options[:grid_params][:query_string]
         end
         # def configure(field_name, field_config, page_config)
         #   @field_name   = field_name
@@ -97,7 +98,8 @@ module Crossbeams
         private
 
         def url
-          return @url if @multiselect.nil?
+          return @url if @multiselect.nil? && @query_string.nil?
+          return "#{@url}?#{@query_string}" unless @query_string.nil?
           parms = []
           @multiselect_params.each do |k, v|
             parms << "#{k}=#{v}" unless k == :key
