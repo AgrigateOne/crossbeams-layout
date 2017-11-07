@@ -14,7 +14,7 @@ module Crossbeams
           @multiselect_url = options[:multiselect_url]
           @multiselect_key = options[:multiselect_key]
           @multiselect_params = options[:multiselect_params]
-          @query_string = options[:grid_params][:query_string]
+          @query_string = options[:grid_params].nil? ? nil : options[:grid_params][:query_string]
         end
         # def configure(field_name, field_config, page_config)
         #   @field_name   = field_name
