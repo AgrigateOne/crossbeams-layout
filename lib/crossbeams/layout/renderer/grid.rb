@@ -15,6 +15,7 @@ module Crossbeams
           @multiselect_key = options[:multiselect_key]
           @multiselect_params = options[:multiselect_params]
           @query_string = options[:grid_params].nil? ? nil : options[:grid_params][:query_string]
+          @can_be_cleared = options[:can_be_cleared] || false
         end
         # def configure(field_name, field_config, page_config)
         #   @field_name   = field_name
@@ -71,9 +72,10 @@ module Crossbeams
                                      print_button: true,
                                      print_url: @url,
                                      multiselect: @multiselect,
-                                     multiselect_url: @multiselect_url)
+                                     multiselect_url: @multiselect_url,
+                                     can_be_cleared: @can_be_cleared)
           <<~HTML
-            <div id="#{@grid_id}-frame" style="height:40em">#{head_section}
+            <div id="#{@grid_id}-frame" style="height:20em">#{head_section}
               <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
               <script>console.log('loaded #{@grid_id}');</script>
             </div>
@@ -90,7 +92,7 @@ module Crossbeams
           return '' unless options[:multiselect]
           <<~HTML
             <label style="margin-left: 20px;">
-                <button class="crossbeams-view-savemulti" onclick="crossbeamsGridEvents.saveSelectedRows('#{grid_id}', '#{options[:multiselect_url]}')" title="save selection"><i class="fa fa-save"></i></button>
+                <button class="crossbeams-view-savemulti" onclick="crossbeamsGridEvents.saveSelectedRows('#{grid_id}', '#{options[:multiselect_url]}', #{options[:can_be_cleared] == true})" title="save selection"><i class="fa fa-save"></i></button>
             </label>
           HTML
         end

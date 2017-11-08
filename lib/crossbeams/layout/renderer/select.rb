@@ -10,13 +10,14 @@ module Crossbeams
           @field_config = field_config
           @page_config  = page_config
           @caption      = field_config[:caption] || present_field_as_label(field_name)
+          @searchable   = field_config[:searchable].nil? ? true : field_config[:searchable]
         end
 
         def render
           attrs = [] # For class, prompt etc...
           cls   = []
-          cls   << 'searchable-select' # if @field_config[:searchable]
-          # cls   << 'cbl-input' if !@field_config[:searchable]
+          cls   << 'searchable-select' if @searchable
+          cls   << 'cbl-input' unless @searchable
           attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
           attrs << behaviours
           sel = @field_config[:selected] ? @field_config[:selected] : @page_config.form_object.public_send(@field_name)
