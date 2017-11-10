@@ -111,6 +111,10 @@ module Crossbeams
         @nodes << Address.new(page_config, addresses, opts)
       end
 
+      def add_contact_method(contact_methods, options = {})
+        @nodes << ContactMethod.new(page_config, contact_methods, options)
+      end
+
       def form_method_str
         case form_method
         when :create

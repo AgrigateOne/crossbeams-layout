@@ -53,6 +53,10 @@ module Crossbeams
         @nodes << Address.new(page_config, addresses, opts)
       end
 
+      def add_contact_method(contact_methods, options = {})
+        @nodes << ContactMethod.new(page_config, contact_methods, options)
+      end
+
       # TODO: add_link; add_link_collection
 
       def add_node(node)
