@@ -44,7 +44,13 @@ module Crossbeams
       <script>
         var content_div = document.querySelector('#crossbeams_callback_target_#{sequence}');
 
-        fetch('#{url}')
+        fetch('#{url}', {
+          method: 'GET',
+          credentials: 'same-origin',
+          headers: new Headers({
+            'X-Custom-Request-Type': 'Fetch'
+          }),
+          })
         .then(function(response) {
           return response.text();
         })

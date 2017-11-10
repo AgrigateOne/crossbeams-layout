@@ -30,7 +30,7 @@ module Crossbeams
           <div class="#{div_class}">
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
             <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}][]" id="#{@page_config.name}_#{@field_name}" multiple="multiple" data-multi="true">
-            #{make_prompt}#{make_options(@field_config[:options], sel)}
+            #{make_prompt}#{make_options(Array(@field_config[:options]), sel)}
             </select>
           </div>
           HTML

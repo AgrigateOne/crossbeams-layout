@@ -44,6 +44,10 @@ module Crossbeams
         @nodes << Text.new(page_config, text, opts)
       end
 
+      def add_address(addresses, opts = {})
+        @nodes << Address.new(page_config, addresses, opts)
+      end
+
       # Add a control (button, link) to the page.
       #
       # @return [void]

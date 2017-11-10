@@ -10,7 +10,7 @@ module Crossbeams
           @field_config = field_config
           @page_config  = page_config
           @caption      = field_config[:caption] || present_field_as_label(field_name)
-          @searchable   = field_config[:searchable].nil? ? true : field_config[:searchable]
+          @searchable   = field_config.fetch(:searchable) { true }
         end
 
         def render
@@ -32,7 +32,7 @@ module Crossbeams
           <<-HTML
           <div class="#{div_class}">
             <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
-            #{make_prompt}#{make_options(@field_config[:options], sel)}
+            #{make_prompt}#{make_options(Array(@field_config[:options]), sel)}
             </select>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
           </div>

@@ -49,6 +49,10 @@ module Crossbeams
         @nodes << Grid.new(page_config, grid_id, url, options)
       end
 
+      def add_address(addresses, opts = {})
+        @nodes << Address.new(page_config, addresses, opts)
+      end
+
       # TODO: add_link; add_link_collection
 
       def add_node(node)

@@ -107,6 +107,10 @@ module Crossbeams
         @nodes << SortableList.new(page_config, prefix, items)
       end
 
+      def add_address(addresses, opts = {})
+        @nodes << Address.new(page_config, addresses, opts)
+      end
+
       def form_method_str
         case form_method
         when :create

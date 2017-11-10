@@ -8,6 +8,7 @@ module Crossbeams
       attr_reader :prefix, :items
 
       def initialize(page_config, prefix, items)
+        raise ArgumentError, 'Prefix must be alphanumeric without spaces' unless valid_prefix?(prefix)
         @prefix      = prefix
         @page_config = page_config
         @items       = Array(items)
@@ -44,6 +45,11 @@ module Crossbeams
       end
 
       private
+
+      def valid_prefix?(prefix)
+        return false if prefix.match(/\A\d/) # Cannot start with a digit.
+        prefix.match?(/\A[a-z0-9]+\Z/i)      # Must be made up of letters and digits only.
+      end
 
       def item_renders
         @item_ids = []
