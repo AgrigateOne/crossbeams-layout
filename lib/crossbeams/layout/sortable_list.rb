@@ -37,10 +37,7 @@ module Crossbeams
         <ol id="#{prefix}-sortable-items">
         #{item_renders}
         </ol>
-        <input type="hidden" name="#{prefix}_sorted_ids" id="#{prefix}-sorted_ids" value="#{item_ids}" size="50"/>
-        <script type="text/javascript">
-          crossbeamsUtils.makeListSortable('#{prefix}');
-        </script>
+        <input type="hidden" name="#{prefix}_sorted_ids" id="#{prefix}-sorted_ids" value="#{item_ids}" size="50" data-sortable-prefix="#{prefix}"/>
         HTML
       end
 
