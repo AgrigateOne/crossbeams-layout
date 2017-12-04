@@ -39,13 +39,13 @@ module Crossbeams
 
       def render_address(address)
         <<~HTML
-        <div class="center mw5 mw6-ns hidden ba mv4">
-          <h1 class="f4 bg-dark-blue white mv0 pv2 ph3" style="text-transform:lowercase"><i class="fa fa-envelope-o" style="margin-right:0.5em"></i>#{render_address_type(address)}</h1>
-          <address class="f6 f5-ns lh-copy measure mv0 pa2">
-            #{combined_address_lines(address)}<br>
-            #{city_and_code(address)}<br>
-            #{address[:country]}
-          </address>
+          <div class="center mw5 mw6-ns hidden ba mv4">
+            <h1 class="f4 bg-dark-blue white mv0 pv2 ph3" style="text-transform:lowercase"><i class="fa fa-envelope-o" style="margin-right:0.5em"></i>#{render_address_type(address)}</h1>
+            <address class="f6 f5-ns lh-copy measure mv0 pa2">
+              #{combined_address_lines(address)}<br>
+              #{city_and_code(address)}<br>
+              #{address[:country]}
+            </address>
           </div>
         HTML
       end

@@ -60,12 +60,12 @@ module Crossbeams
       end
 
       def render
-        row_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Row -->\n")
-        <<-HTML
-      <section id="section-#{sequence}" class="crossbeams_layout">
-      #{render_caption}
-        #{row_renders}
-      </section>
+        row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
+        <<~HTML
+          <section id="section-#{sequence}" class="crossbeams_layout">
+          #{render_caption}
+            #{row_renders}
+          </section>
         HTML
       end
 

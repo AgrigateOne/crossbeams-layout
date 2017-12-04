@@ -16,6 +16,8 @@ module Crossbeams
           @multiselect_params = options[:multiselect_params]
           @query_string = options[:grid_params].nil? ? nil : options[:grid_params][:query_string]
           @can_be_cleared = options[:can_be_cleared] || false
+          # Prevent a grid height less than 6em, default to 20.
+          @height = [(options[:height] || 20), 6].max
         end
         # def configure(field_name, field_config, page_config)
         #   @field_name   = field_name
@@ -75,10 +77,13 @@ module Crossbeams
                                      multiselect_url: @multiselect_url,
                                      can_be_cleared: @can_be_cleared)
           <<~HTML
-            <div id="#{@grid_id}-frame" style="height:20em">#{head_section}
-              <div id="#{@grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
+            <div id="#{@grid_id}-frame" style="margin-bottom:1em">#{head_section}
+              <div id="#{@grid_id}" style="height:#{@height}em;" class="ag-blue" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
               <script>console.log('loaded #{@grid_id}');</script>
             </div>
+            <script type="javascript">
+              console.log('called with a grid');
+            </script>
           HTML
         end
 

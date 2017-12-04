@@ -47,10 +47,10 @@ module Crossbeams
 
       def render_contact_method(contact_method)
         <<~HTML
-        <div class="center mw5 mw6-ns hidden ba mv3">
-          <h1 class="f4 bg-light-purple white mv0 pv2 ph3" style="text-transform:lowercase"><i class="fa #{icon(contact_method)}" style="margin-right:0.5em"></i>#{contact_method.contact_method_type}</h1>
-          <div class="f6 f5-ns lh-copy measure mv0 pa2">#{contact_method.contact_method_code}
-          </div>
+          <div class="center mw5 mw6-ns hidden ba mv3">
+            <h1 class="f4 bg-light-purple white mv0 pv2 ph3" style="text-transform:lowercase"><i class="fa #{icon(contact_method)}" style="margin-right:0.5em"></i>#{contact_method.contact_method_type}</h1>
+            <div class="f6 f5-ns lh-copy measure mv0 pa2">#{contact_method.contact_method_code}
+            </div>
           </div>
         HTML
       end
@@ -72,4 +72,3 @@ module Crossbeams
     end
   end
 end
-
