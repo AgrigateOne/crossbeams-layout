@@ -23,16 +23,18 @@ module Crossbeams
           sel = @field_config[:selected] ? @field_config[:selected] : @page_config.form_object.public_send(@field_name)
           sel = @page_config.form_values[@field_name] if @page_config.form_values
 
-          render_string(attrs, sel)
+          disabled_option = find_disabled_option(sel, @field_config[:disabled_options])
+
+          render_string(attrs, sel, disabled_option)
         end
 
         private
 
-        def render_string(attrs, sel)
+        def render_string(attrs, sel, disabled_option)
           <<-HTML
           <div class="#{div_class}">
             <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
-            #{make_prompt}#{make_options(Array(@field_config[:options]), sel)}
+            #{make_prompt}#{make_options(Array(@field_config[:options]), sel, disabled_option)}
             </select>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
           </div>
@@ -45,15 +47,39 @@ module Crossbeams
           "<option value=\"\">#{str}</option>\n"
         end
 
-        def make_options(ar, selected = nil)
-          ar.map do |a|
+        def make_options(ar, selected = nil, disabled_option = nil)
+          disabled = disabled_string(disabled_option, selected)
+          opts = ar.map do |a|
             a.is_a?(Array) ? option_string(a.first, a.last, selected) : option_string(a, a, selected)
-          end.join("\n")
+          end
+          opts.unshift(disabled) unless disabled.nil?
+          opts.join("\n")
         end
 
-        def option_string(text, value, selected)
+        def option_string(text, value, selected, disabled = '')
           sel = selected && value.to_s == selected.to_s ? ' selected ' : ''
-          "<option value=\"#{CGI.escapeHTML(value.to_s)}\"#{sel}>#{CGI.escapeHTML(text.to_s)}</option>"
+          "<option value=\"#{CGI.escapeHTML(value.to_s)}\"#{sel}#{disabled}>#{CGI.escapeHTML(text.to_s)}</option>"
+        end
+
+        def find_disabled_option(sel, disabled_list)
+          return nil if disabled_list.nil? || disabled_list.empty?
+          return nil if sel.nil?
+          elem = if disabled_list.first.is_a? Array
+                   disabled_list.rassoc(sel)
+                 elsif disabled_list.include?(sel)
+                   val
+                 end
+          elem
+        end
+
+        def disabled_string(disabled_option, selected)
+          return nil if disabled_option.nil?
+
+          if disabled_option.is_a?(Array)
+            option_string(disabled_option.first, disabled_option.last, selected, ' disabled')
+          else
+            option_string(disabled_option, disabled_option, selected, ' disabled')
+          end
         end
       end
     end
