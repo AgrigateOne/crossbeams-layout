@@ -54,7 +54,7 @@ module Crossbeams
             </label>
             #{print_section}
             <label style="margin-left: 20px;">
-                <input class="un-formed-input" onkeyup="crossbeamsGridEvents.quickSearch(event)" placeholder='Search...' data-grid-id="#{grid_id}"/>
+                <input class="un-formed-input" onkeyup="crossbeamsGridEvents.quickSearch(event)" placeholder='Search...' data-grid-search="true" data-grid-id="#{grid_id}"/>
             </label>
             <label style="margin-left: 20px;">
                 <select id='#{grid_id}-scrollcol' onchange="crossbeamsGridEvents.scrollToColumn(event)" data-grid-id="#{grid_id}"/>
