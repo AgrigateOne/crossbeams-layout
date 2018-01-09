@@ -121,9 +121,9 @@ module Crossbeams
             attr_placeholder,
             attr_pattern_title,
             attr_title,
-            attr_size,
             attr_pattern,
             attr_minlength,
+            attr_maxlength,
             attr_readonly,
             attr_disabled,
             attr_required,
@@ -154,16 +154,16 @@ module Crossbeams
           return "title=\"#{@field_config[:title]}\"" if @field_config[:title]
         end
 
-        def attr_size
-          return "size=\"#{@field_config[:length]}\"" if @field_config[:length]
-        end
-
         def attr_pattern
           return build_pattern(@field_config[:pattern]) if @field_config[:pattern]
         end
 
         def attr_minlength
           return "minlength=\"#{@field_config[:minlength]}\"" if @field_config[:minlength]
+        end
+
+        def attr_maxlength
+          return "maxlength=\"#{@field_config[:maxlength]}\"" if @field_config[:maxlength]
         end
 
         def attr_readonly
