@@ -39,6 +39,8 @@ module Crossbeams
             'email'
           when :url
             'url'
+          when :password
+            'password'
           when :date, :datetime, :month, :time
             date_related_input_type(subtype)
           else
