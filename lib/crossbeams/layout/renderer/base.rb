@@ -34,9 +34,27 @@ module Crossbeams
           res.join(' ')
         end
 
+        private
+
         def build_behaviour(rule)
           return %(data-change-values="#{@page_config.name}_#{rule[:change_affects]}") if rule[:change_affects]
           return %(data-enable-on-values="#{rule[:enable_on_change].join(',')}") if rule[:enable_on_change]
+          return %(data-observe-change=#{build_observe_change(rule[:notify])}) if rule[:notify]
+        end
+
+        def build_observe_change(notify_rules)
+          combined = notify_rules.map do |rule|
+            %({"url":"#{rule[:url]}","param_keys":#{param_keys_str(rule)},"param_values":{#{param_values_str(rule)}}})
+          end.join(',')
+          %('[#{combined}]')
+        end
+
+        def param_keys_str(rule)
+          rule[:param_keys].nil? || rule[:param_keys].empty? ? '[]' : %(["#{rule[:param_keys].join('","')}"])
+        end
+
+        def param_values_str(rule)
+          rule[:param_values].map { |k, v| "\"#{k}\":\"#{v}\"" }.join(',')
         end
       end
     end
