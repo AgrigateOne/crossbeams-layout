@@ -44,6 +44,11 @@ module Crossbeams
         @nodes << Text.new(page_config, text, opts)
       end
 
+      # Add a table to the section.
+      def add_table(rows, columns = [], options = {})
+        @nodes << Table.new(page_config, rows, columns, options)
+      end
+
       def add_address(addresses, opts = {})
         @nodes << Address.new(page_config, addresses, opts)
       end

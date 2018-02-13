@@ -1,0 +1,81 @@
+# frozen_string_literal: true
+
+module Crossbeams
+  module Layout
+    # A table of data.
+    class Table
+      attr_reader :columns, :rows, :options
+
+      def initialize(page_config, rows, columns = [], options = {})
+        @page_config = page_config
+        @columns     = columns
+        @rows        = Array(rows)
+        @columns     = columns_from_rows if columns.empty?
+        @options     = { has_columns: !columns.empty? }.merge(options)
+      end
+
+      # Is this node invisible?
+      #
+      # @return [boolean] - true if it should not be rendered at all, else false.
+      def invisible?
+        false
+      end
+
+      # Is this node hidden?
+      #
+      # @return [boolean] - true if it should be rendered as hidden, else false.
+      def hidden?
+        false
+      end
+
+      # Render this node as HTML link.
+      #
+      # @return [string] - HTML representation of this node.
+      def render
+        <<~HTML
+          <table class="thinbordertable">
+            #{head if @options[:has_columns]}
+            <tbody>
+              #{strings.join("\n")}
+            </tbody>
+          </table>
+        HTML
+      end
+
+      private
+
+      def head
+        <<~HTML
+          <thead>
+            <tr>
+              #{format_columns}
+            </tr>
+          </thead>
+        HTML
+      end
+
+      def format_columns
+        @columns.map { |c| "<th>#{c}</th>" }.join
+      end
+
+      def strings
+        @rows.map do |row|
+          "<tr class='hover-row'>#{@columns.map { |c| "<td#{classes_for_col(c)}>#{row[c]}</td>" }.join}</tr>"
+        end
+      end
+
+      def classes_for_col(col)
+        if @options[:alignment] && @options[:alignment][col]
+          %( align="#{@options[:alignment][col]}")
+        else
+          ''
+        end
+      end
+
+      def columns_from_rows
+        return [] if @rows.empty?
+        @rows.first.keys
+      end
+    end
+  end
+end

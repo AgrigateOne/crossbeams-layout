@@ -87,6 +87,11 @@ module Crossbeams
         @nodes << Grid.new(page_config, grid_id, url, options)
       end
 
+      # Add a table to the page.
+      def add_table(rows, columns = [], options = {})
+        @nodes << Table.new(page_config, rows, columns, options)
+      end
+
       # Render the page and all its child nodes.
       def render
         # "A string rendered from Crossbeams<br>" << nodes.map {|s| s.render }.join("\n<!-- End Section -->\n")
