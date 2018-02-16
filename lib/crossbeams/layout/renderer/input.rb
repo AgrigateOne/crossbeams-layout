@@ -17,9 +17,9 @@ module Crossbeams
           date_related_value_getter
 
           <<-HTML
-          <div class="#{div_class}">
+          <div class="#{div_class}">#{hint_text}
             <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attr_list(datalist).join(' ')}>
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
+            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
             #{datalist}
           </div>
           HTML
@@ -194,6 +194,20 @@ module Crossbeams
 
         def attr_datalist(datalist)
           %(list="#{@page_config.name}_#{@field_name}_listing") unless datalist.nil?
+        end
+
+        def hint_text
+          return '' unless @field_config[:hint]
+          <<~HTML
+            <div style="display:none" data-cb-hint="#{@page_config.name}_#{@field_name}">
+              #{@field_config[:hint]}
+            </div>
+          HTML
+        end
+
+        def hint_trigger
+          return '' unless @field_config[:hint]
+          %( <i class="fa fa-question-circle" title="Click for hint" data-cb-hint-for="#{@page_config.name}_#{@field_name}"></i>)
         end
       end
     end

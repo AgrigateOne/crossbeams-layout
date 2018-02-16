@@ -32,11 +32,11 @@ module Crossbeams
 
         def render_string(attrs, sel, disabled_option)
           <<-HTML
-          <div class="#{div_class}">
+          <div class="#{div_class}">#{hint_text}
             <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
             #{make_prompt}#{make_options(Array(@field_config[:options]), sel, disabled_option)}
             </select>
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
+            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
           HTML
         end
@@ -80,6 +80,20 @@ module Crossbeams
           else
             option_string(disabled_option, disabled_option, selected, ' disabled')
           end
+        end
+
+        def hint_text
+          return '' unless @field_config[:hint]
+          <<~HTML
+            <div style="display:none" data-cb-hint="#{@page_config.name}_#{@field_name}">
+              #{@field_config[:hint]}
+            </div>
+          HTML
+        end
+
+        def hint_trigger
+          return '' unless @field_config[:hint]
+          %( <i class="fa fa-question-circle" title="Click for hint" data-cb-hint-for="#{@page_config.name}_#{@field_name}"></i>)
         end
       end
     end

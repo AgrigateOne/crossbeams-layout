@@ -17,11 +17,11 @@ module Crossbeams
           rows = @field_config[:rows] || 10
 
           <<~HTML
-            <div class="#{div_class}">
+            <div class="#{div_class}">#{hint_text}
               <textarea name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">
               #{CGI.escapeHTML(value.to_s)}
               </textarea>
-              <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
+              <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
             </div>
           HTML
         end
@@ -74,6 +74,20 @@ module Crossbeams
 
         def attr_required
           return 'required="true"' if @field_config[:required] && @field_config[:required] == true
+        end
+
+        def hint_text
+          return '' unless @field_config[:hint]
+          <<~HTML
+            <div style="display:none" data-cb-hint="#{@page_config.name}_#{@field_name}">
+              #{@field_config[:hint]}
+            </div>
+          HTML
+        end
+
+        def hint_trigger
+          return '' unless @field_config[:hint]
+          %( <i class="fa fa-question-circle" title="Click for hint" data-cb-hint-for="#{@page_config.name}_#{@field_name}"></i>)
         end
       end
     end
