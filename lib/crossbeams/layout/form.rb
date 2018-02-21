@@ -149,7 +149,7 @@ module Crossbeams
         renders = sub_renders
         remote_str = remote_form ? ' data-remote="true"' : ''
         multipart_str = multipart_form ? ' enctype="multipart/form-data"' : ''
-        submit_button = if @inline
+        submit_markup = if @inline
                           ''
                         else
                           <<~HTML
@@ -164,7 +164,7 @@ module Crossbeams
             #{csrf_tag}
             #{form_method_str}
             #{renders}
-            #{submit_button}
+            #{submit_markup}
           </form>
         HTML
       end
