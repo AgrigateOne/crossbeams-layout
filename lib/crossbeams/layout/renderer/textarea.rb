@@ -18,9 +18,7 @@ module Crossbeams
 
           <<~HTML
             <div class="#{div_class}">#{hint_text}
-              <textarea name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">
-              #{CGI.escapeHTML(value.to_s)}
-              </textarea>
+              <textarea name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>
               <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
             </div>
           HTML

@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # Form object.
     class Form # rubocop:disable Metrics/ClassLength
-      attr_reader :sequence, :nodes, :page_config, :form_action, :form_method, :got_row, :no_row, :csrf_tag, :remote_form, :form_config
+      attr_reader :sequence, :nodes, :page_config, :form_action, :form_method,
+                  :got_row, :no_row, :csrf_tag, :remote_form, :form_config,
+                  :multipart_form
 
       def initialize(page_config, section_sequence, sequence)
         @section_sequence = section_sequence
@@ -15,7 +17,9 @@ module Crossbeams
         @form_config      = PageConfig.new({}) # OpenStruct.new
         @form_method      = :create
         @remote_form      = false
+        @multipart_form   = false
         @view_only        = false
+        @inline           = false
         @got_row          = false
         @no_row           = false
         @csrf_tag         = nil
@@ -37,10 +41,22 @@ module Crossbeams
         @remote_form = true
       end
 
+      # Make this a multipart form (for uploading files).
+      # @returns [void]
+      def multipart!
+        @multipart_form = true
+      end
+
       # Make this a view-only form.
       # @returns [void]
       def view_only!
         @view_only = true
+      end
+
+      # Include the submit button on the same line as input.
+      # @returns [void]
+      def inline!
+        @inline = true
       end
 
       def invisible?
@@ -132,15 +148,23 @@ module Crossbeams
       def render
         renders = sub_renders
         remote_str = remote_form ? ' data-remote="true"' : ''
+        multipart_str = multipart_form ? ' enctype="multipart/form-data"' : ''
+        submit_button = if @inline
+                          ''
+                        else
+                          <<~HTML
+                            <div class="crossbeams-actions">
+                              #{submit_button}
+                            </div>
+                          HTML
+                        end
         # TODO: fix form id...
         <<~HTML
-          <form class="crossbeams-form" id="edit_user_1" action="#{form_action}"#{remote_str} accept-charset="utf-8" method="POST">
+          <form class="crossbeams-form" id="edit_user_1" action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
             #{csrf_tag}
             #{form_method_str}
             #{renders}
-          <div class="crossbeams-actions">
             #{submit_button}
-          </div>
           </form>
         HTML
       end
@@ -162,6 +186,11 @@ module Crossbeams
         nodes.reject(&:invisible?).each do |node|
           col.add_node(node)
         end
+        if @inline
+          row.add_node(col)
+          col = Column.make_column(page_config)
+          col.add_node(inline_submit)
+        end
         row.add_node(col)
         row.render + "\n"
       end
@@ -171,6 +200,46 @@ module Crossbeams
           %(<input type="submit" name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white">)
         else
           %(<input type="submit" name="commit" value="#{@submit_caption}" data-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white">)
+        end
+      end
+
+      def inline_submit
+        sub = InlineSubmit.new(@view_only, @submit_caption, @disable_caption)
+        sub
+      end
+
+      class InlineSubmit
+        include PageNode
+
+        def initialize(view_only, submit_caption, disable_caption)
+          @view_only = view_only
+          @submit_caption = submit_caption
+          @disable_caption = disable_caption
+        end
+
+        # Is this node invisible?
+        #
+        # @return [boolean] - true if it should not be rendered at all, else false.
+        def invisible?
+          false
+        end
+
+        # Is this node hidden?
+        #
+        # @return [boolean] - true if it should be rendered as hidden, else false.
+        def hidden?
+          false
+        end
+
+        # Render this node as HTML link.
+        #
+        # @return [string] - HTML representation of this node.
+        def render
+          if @view_only
+            %(<input type="submit" name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white">)
+          else
+            %(<input type="submit" name="commit" value="#{@submit_caption}" data-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white">)
+          end
         end
       end
     end
