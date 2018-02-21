@@ -92,6 +92,10 @@ module Crossbeams
         @nodes << Table.new(page_config, rows, columns, options)
       end
 
+      def add_text(text, opts = {})
+        @nodes << Text.new(page_config, text, opts)
+      end
+
       # Render the page and all its child nodes.
       def render
         # "A string rendered from Crossbeams<br>" << nodes.map {|s| s.render }.join("\n<!-- End Section -->\n")
