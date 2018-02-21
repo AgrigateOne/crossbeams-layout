@@ -8,6 +8,7 @@ module Crossbeams
         BUILT_IN_RENDERERS = {
           checkbox: Renderer::Checkbox,
           email: Renderer::Input,
+          file: Renderer::Input,
           hidden: Renderer::Hidden,
           integer: Renderer::Input,
           label: Renderer::Label,

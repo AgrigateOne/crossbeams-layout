@@ -43,6 +43,8 @@ module Crossbeams
             'password'
           when :date, :datetime, :month, :time
             date_related_input_type(subtype)
+          when :file
+            'file'
           else
             'text'
           end
@@ -132,6 +134,7 @@ module Crossbeams
             attr_step,
             attr_upper,
             attr_lower,
+            attr_accept,
             behaviours,
             attr_datalist(datalist)
           ].compact
@@ -190,6 +193,10 @@ module Crossbeams
 
         def attr_lower
           return %{onblur="this.value = this.value.toLowerCase()"} if @field_config[:force_lowercase]
+        end
+
+        def attr_accept
+          return %(accept="#{@field_config[:accept]}") if @field_config[:accept]
         end
 
         def attr_datalist(datalist)
