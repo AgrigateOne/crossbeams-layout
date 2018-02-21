@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.1.2] - 2018-02-21
+### Added
 - This changelog.
 - Hint option for field renderers.
 - File input type for file uploads.
