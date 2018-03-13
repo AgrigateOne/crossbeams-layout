@@ -50,14 +50,6 @@ class Crossbeams::InputTest < Minitest::Test
     assert_equal 'text', html_element_attribute_value(s, :input, :title)
   end
 
-  def test_size_attribute
-    s = simple_input_render(:input, '123', length: 12)
-    assert_equal '12', html_element_attribute_value(s, :input, :size)
-
-    s = simple_input_render(:input, '123')
-    assert_nil html_element_attribute_value(s, :input, :size)
-  end
-
   def test_pattern_attribute
     s = simple_input_render(:input, '123', pattern: :no_spaces)
     assert_equal '[^\s]+', html_element_attribute_value(s, :input, :pattern)

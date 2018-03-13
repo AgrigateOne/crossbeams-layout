@@ -96,7 +96,7 @@ module Crossbeams
       def row
         @got_row = true
         raise 'Cannot mix row and non-row text or fields' if no_row
-        row = Row.new(page_config, sequence, nodes.length + 1)
+        row = Row.new(config_for_field, sequence, nodes.length + 1)
         yield row
         @nodes << row
       end
@@ -119,8 +119,8 @@ module Crossbeams
         @nodes << Text.new(page_config, text, opts)
       end
 
-      def add_sortable_list(prefix, items)
-        @nodes << SortableList.new(page_config, prefix, items)
+      def add_sortable_list(prefix, items, options = {})
+        @nodes << SortableList.new(page_config, prefix, items, options)
       end
 
       def add_address(addresses, opts = {})

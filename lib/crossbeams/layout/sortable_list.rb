@@ -7,12 +7,13 @@ module Crossbeams
       # include PageNode
       attr_reader :prefix, :items
 
-      def initialize(page_config, prefix, items)
+      def initialize(page_config, prefix, items, options = {})
         raise ArgumentError, 'Prefix must be alphanumeric without spaces' unless valid_prefix?(prefix)
         @prefix      = prefix
         @page_config = page_config
         @items       = Array(items)
         @item_ids    = []
+        @options     = options
       end
 
       # Is this node invisible?
@@ -34,14 +35,29 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        <ol id="#{prefix}-sortable-items">
+        #{caption}<ol id="#{prefix}-sortable-items" class="cbl-sortable-items">
         #{item_renders}
         </ol>
-        <input type="hidden" name="#{prefix}_sorted_ids" id="#{prefix}-sorted_ids" value="#{item_ids}" size="50" data-sortable-prefix="#{prefix}"/>
+        <input type="hidden" name="#{input_name}" id="#{prefix}-sorted_ids" value="#{item_ids}" size="50" data-sortable-prefix="#{prefix}"/>
         HTML
       end
 
       private
+
+      def caption
+        return '' if @options[:caption].nil?
+        <<~HTML
+          <label for="#{prefix}-sortable-items">#{@options[:caption]}</label>
+        HTML
+      end
+
+      def input_name
+        if @page_config.name == 'crossbeams' # default name - therefore there is no form
+          "#{prefix}_sorted_ids"
+        else
+          "#{@page_config.name}[#{prefix}_sorted_ids]"
+        end
+      end
 
       def valid_prefix?(prefix)
         return false if prefix.match(/\A\d/) # Cannot start with a digit.
