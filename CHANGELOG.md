@@ -10,6 +10,12 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Fixed
 
+## [0.1.3] - 2018-03-13
+### Added
+- observe-selected behaviour to copy selected items from a multi to a sortable control.
+- Remote forms re-enable their submit buttons after a brief delay.
+- Sortable can be included in a column. This allows it to be used in forms.
+
 ## [0.1.2] - 2018-02-21
 ### Added
 - This changelog.

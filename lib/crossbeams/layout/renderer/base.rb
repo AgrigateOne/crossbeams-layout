@@ -40,11 +40,19 @@ module Crossbeams
           return %(data-change-values="#{@page_config.name}_#{rule[:change_affects]}") if rule[:change_affects]
           return %(data-enable-on-values="#{rule[:enable_on_change].join(',')}") if rule[:enable_on_change]
           return %(data-observe-change=#{build_observe_change(rule[:notify])}) if rule[:notify]
+          return %(data-observe-selected=#{build_observe_selected(rule[:populate_from_selected])}) if rule[:populate_from_selected]
         end
 
         def build_observe_change(notify_rules)
           combined = notify_rules.map do |rule|
             %({"url":"#{rule[:url]}","param_keys":#{param_keys_str(rule)},"param_values":{#{param_values_str(rule)}}})
+          end.join(',')
+          %('[#{combined}]')
+        end
+
+        def build_observe_selected(selected_rules)
+          combined = selected_rules.map do |rule|
+            %({"sortable":"#{rule[:sortable]}"})
           end.join(',')
           %('[#{combined}]')
         end
