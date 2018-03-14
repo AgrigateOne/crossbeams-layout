@@ -196,10 +196,11 @@ module Crossbeams
       end
 
       def submit_button
+        disabler = @remote_form ? 'briefly-disable' : 'disable'
         if @view_only
           %(<input type="submit" name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white">)
         else
-          %(<input type="submit" name="commit" value="#{@submit_caption}" data-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white">)
+          %(<input type="submit" name="commit" value="#{@submit_caption}" data-#{disabler}-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white">)
         end
       end
 
