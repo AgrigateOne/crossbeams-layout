@@ -33,7 +33,7 @@ module Crossbeams
 
       def render_for_print
         <<-HTML
-        <div id="#{grid_id}" style="height: 100%;" class="ag-blue" data-gridurl="#{page_config.options[:grid_url]}" data-grid="grid" data-grid-print="forPrint"></div>
+        <div id="#{grid_id}" style="height: 100%;" class="ag-theme-balham" data-gridurl="#{page_config.options[:grid_url]}" data-grid="grid" data-grid-print="forPrint"></div>
         HTML
       end
 
