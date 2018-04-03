@@ -50,9 +50,6 @@ module Crossbeams
             <label style="margin-left: 10px;">
                 <button class="pure-button" onclick="crossbeamsGridEvents.csvExport('#{grid_id}', '#{Grid.file_name_from_caption(caption)}')" title="Export to CSV"><i class="fa fa-file"></i></button>
             </label>
-            <label style="margin-left: 10px;">
-                <button class="pure-button" onclick="crossbeamsGridEvents.toggleToolPanel('#{grid_id}')" title="Tool panel"><i class="fa fa-cog"></i></button>
-            </label>
             #{print_section}
             <label class="crossbeams-column-jump" style="margin-left: 10px;">
                 <button><i class="fa fa-arrows-h" title="Scroll to column"></i>
@@ -80,7 +77,7 @@ module Crossbeams
                                      multiselect_save_remote: @multiselect_save_remote)
           <<~HTML
             <div id="#{@grid_id}-frame" style="height:#{@height}em;margin-bottom:4em">#{head_section}
-              <div id="#{@grid_id}" style="height:100%;" class="ag-blue" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
+              <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
               <script>console.log('loaded #{@grid_id}');</script>
             </div>
             <script type="javascript">
