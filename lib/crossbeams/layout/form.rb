@@ -22,6 +22,7 @@ module Crossbeams
         @inline           = false
         @got_row          = false
         @no_row           = false
+        @no_submit        = false
         @csrf_tag         = nil
         @submit_caption   = 'Submit'
         @disable_caption  = 'Submitting'
@@ -51,6 +52,13 @@ module Crossbeams
       # @returns [void]
       def view_only!
         @view_only = true
+      end
+
+      # This form does not need a submit button.
+      # - usually for a view form.
+      # @returns [void]
+      def no_submit!
+        @no_submit = true
       end
 
       # Include the submit button on the same line as input.
@@ -149,7 +157,7 @@ module Crossbeams
         renders = sub_renders
         remote_str = remote_form ? ' data-remote="true"' : ''
         multipart_str = multipart_form ? ' enctype="multipart/form-data"' : ''
-        submit_markup = if @inline
+        submit_markup = if @inline || @no_submit
                           ''
                         else
                           <<~HTML
