@@ -10,6 +10,10 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Fixed
 
+## [0.1.5] - 2018-05-15
+### Added
+- New List element for forms and columns.
+
 ## [0.1.4] - 2018-04-03
 ### Changed
 - AG-Grid upgraded to version 17.
