@@ -12,6 +12,7 @@ module Crossbeams
           hidden: Renderer::Hidden,
           integer: Renderer::Input,
           label: Renderer::Label,
+          list: Renderer::List,
           multi: Renderer::Multi,
           number: Renderer::Input,
           numeric: Renderer::Input,

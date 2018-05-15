@@ -41,6 +41,10 @@ module Crossbeams
         @nodes << Field.new(page_config, name, options)
       end
 
+      def add_list(items, options = {})
+        @nodes << List.new(page_config, items, options)
+      end
+
       def add_sortable_list(prefix, items, options = {})
         @nodes << SortableList.new(page_config, prefix, items, options)
       end
