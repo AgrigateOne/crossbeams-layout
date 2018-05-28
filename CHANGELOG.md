@@ -10,6 +10,10 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Fixed
 
+## [0.1.6] - 2018-05-28
+### Added
+- New Diff element.
+
 ## [0.1.5] - 2018-05-15
 ### Added
 - New List element for forms and columns.

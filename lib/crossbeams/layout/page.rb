@@ -96,6 +96,10 @@ module Crossbeams
         @nodes << Text.new(page_config, text, opts)
       end
 
+      def add_diff(key)
+        @nodes << Diff.new(page_config, key)
+      end
+
       # Render the page and all its child nodes.
       def render
         # "A string rendered from Crossbeams<br>" << nodes.map {|s| s.render }.join("\n<!-- End Section -->\n")
