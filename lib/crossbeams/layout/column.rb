@@ -65,6 +65,10 @@ module Crossbeams
         @nodes << ContactMethod.new(page_config, contact_methods, options)
       end
 
+      def add_diff(key)
+        @nodes << Diff.new(page_config, key)
+      end
+
       # TODO: add_link; add_link_collection
 
       def add_node(node)

@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require 'diffy'
 require 'rouge'
 require 'crossbeams/layout/version'
 require 'crossbeams/layout/page_node'
 require 'crossbeams/layout/callback_section'
 require 'crossbeams/layout/column'
+require 'crossbeams/layout/diff'
 require 'crossbeams/layout/field'
 require 'crossbeams/layout/form'
 require 'crossbeams/layout/grid'

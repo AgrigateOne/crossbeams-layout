@@ -57,6 +57,10 @@ module Crossbeams
         @nodes << ContactMethod.new(page_config, contact_methods, options)
       end
 
+      def add_diff(key)
+        @nodes << Diff.new(page_config, key)
+      end
+
       # Add a control (button, link) to the page.
       #
       # @return [void]
