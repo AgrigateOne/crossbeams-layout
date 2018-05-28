@@ -18,7 +18,7 @@ module Crossbeams
           cls   << 'searchable-multi'
           attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
           attrs << behaviours
-          sel = @field_config[:selected] ? @field_config[:selected] : @page_config.form_object.send(@field_name)
+          sel = @field_config[:selected] ? @field_config[:selected] : @page_config.form_object[@field_name]
 
           render_string(attrs, sel)
         end

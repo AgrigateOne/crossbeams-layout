@@ -24,7 +24,7 @@ module Crossbeams
         #        when the ROM::Struct does not include the field.
         def value
           res = @page_config.form_values[@field_name] if @page_config.form_values
-          res ||= @page_config.form_object.send(@field_name)
+          res ||= @page_config.form_object[@field_name]
           res
         end
       end

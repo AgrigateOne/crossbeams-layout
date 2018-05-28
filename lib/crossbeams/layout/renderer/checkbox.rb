@@ -27,7 +27,7 @@ module Crossbeams
         private
 
         def value
-          @val ||= @page_config.form_object.send(@field_name)
+          @value ||= @page_config.form_object[@field_name]
         end
 
         def checked

@@ -82,7 +82,7 @@ module Crossbeams
         end
 
         def value
-          res = @page_config.form_object.send(@field_name)
+          res = @page_config.form_object[@field_name]
           res = @page_config.form_values[@field_name] if @page_config.form_values
           if res.is_a?(BigDecimal) # TODO: read other frameworks to see best way of handling this...
             res.to_s('F')
