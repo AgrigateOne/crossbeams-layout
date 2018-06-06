@@ -17,8 +17,8 @@ module Crossbeams
           date_related_value_getter
 
           <<-HTML
-          <div class="#{div_class}">#{hint_text}
-            <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attr_list(datalist).join(' ')}>
+          <div class="#{div_class}">#{hint_text}#{copy_prefix}
+            <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attr_list(datalist).join(' ')}>#{copy_suffix}
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
             #{datalist}
           </div>
@@ -26,6 +26,18 @@ module Crossbeams
         end
 
         private
+
+        def copy_prefix
+          return '' unless @field_config[:copy_to_clipboard]
+          '<div class="cbl-copy-wrapper">'
+        end
+
+        def copy_suffix
+          return '' unless @field_config[:copy_to_clipboard]
+          %(<button type="button" id="#{@page_config.name}_#{@field_name}_clip" class="cbl-clipcopy" data-clipboard="copy" title="Copy to clipboard">
+              <i id="#{@page_config.name}_#{@field_name}_clip_i" class="fa fa-copy" data-clipboard="copy"></i>
+            </button></div>)
+        end
 
         def subtype
           @field_config[:subtype] || @field_config[:renderer]
