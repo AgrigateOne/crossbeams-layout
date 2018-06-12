@@ -8,6 +8,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- A sortable list can drag elements out to another sortable list by giving both lists the same value for `drag_between_lists_name`.
+- Inputs can be renedered with a `copy_to_clipboard` button at the right.
 ### Fixed
 
 ## [0.1.6] - 2018-05-28

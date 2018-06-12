@@ -49,8 +49,8 @@ module Crossbeams
         @nodes << SortableList.new(page_config, prefix, items, options)
       end
 
-      def add_text(text)
-        @nodes << Text.new(page_config, text)
+      def add_text(text, opts = {})
+        @nodes << Text.new(page_config, text, opts)
       end
 
       def add_grid(grid_id, url, options = {})

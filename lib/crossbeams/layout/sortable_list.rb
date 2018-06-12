@@ -38,7 +38,7 @@ module Crossbeams
         #{caption}<ol id="#{prefix}-sortable-items" class="cbl-sortable-items">
         #{item_renders}
         </ol>
-        <input type="hidden" name="#{input_name}" id="#{prefix}-sorted_ids" value="#{item_ids}" size="50" data-sortable-prefix="#{prefix}"/>
+        <input type="hidden" name="#{input_name}" id="#{prefix}-sorted_ids" value="#{item_ids}" size="50" data-sortable-prefix="#{prefix}"#{grouping}/>
         HTML
       end
 
@@ -60,7 +60,7 @@ module Crossbeams
       end
 
       def valid_prefix?(prefix)
-        return false if prefix.match(/\A\d/) # Cannot start with a digit.
+        return false if prefix =~ /\A\d/     # Cannot start with a digit.
         prefix.match?(/\A[a-z0-9]+\Z/i)      # Must be made up of letters and digits only.
       end
 
@@ -74,6 +74,14 @@ module Crossbeams
 
       def item_ids
         @item_ids.join(',')
+      end
+
+      def grouping
+        if @options[:drag_between_lists_name]
+          %(data-sortable-group="#{@options[:drag_between_lists_name]}")
+        else
+          ''
+        end
       end
     end
   end
