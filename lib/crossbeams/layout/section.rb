@@ -5,7 +5,7 @@ module Crossbeams
     # A page can optionally contain one or more sections.
     class Section
       include PageNode
-      attr_accessor :caption, :hide_caption
+      attr_accessor :caption, :hide_caption, :show_border
       attr_reader :sequence, :nodes, :page_config
 
       def initialize(page_config, sequence)
@@ -14,6 +14,16 @@ module Crossbeams
         @nodes        = []
         @page_config  = page_config
         @hide_caption = true
+        @show_border  = false
+      end
+
+      def add_caption(caption)
+        @caption = caption
+        @hide_caption = false
+      end
+
+      def show_border!
+        @show_border = true
       end
 
       def invisible?
@@ -70,8 +80,9 @@ module Crossbeams
 
       def render
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
+        css_class = show_border ? ' crossbeams_layout-border' : ''
         <<~HTML
-          <section id="section-#{sequence}" class="crossbeams_layout">
+          <section id="section-#{sequence}" class="crossbeams_layout#{css_class}">
           #{render_caption}
             #{row_renders}
           </section>

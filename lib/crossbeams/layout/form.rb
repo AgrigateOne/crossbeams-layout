@@ -165,14 +165,13 @@ module Crossbeams
                           ''
                         else
                           <<~HTML
-                            <div class="crossbeams-actions">
+                            <div class="crossbeams-actions pa2">
                               #{submit_button}
                             </div>
                           HTML
                         end
-        # TODO: fix form id...
         <<~HTML
-          <form class="crossbeams-form" id="edit_user_1" action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
+          <form class="crossbeams-form" action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
             #{csrf_tag}
             #{form_method_str}
             #{renders}
