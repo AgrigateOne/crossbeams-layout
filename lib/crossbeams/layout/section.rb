@@ -6,7 +6,7 @@ module Crossbeams
     class Section
       include PageNode
       attr_accessor :caption, :hide_caption, :show_border
-      attr_reader :sequence, :nodes, :page_config
+      attr_reader :sequence, :nodes, :page_config, :fit_height
 
       def initialize(page_config, sequence)
         @caption      = 'Section'
@@ -15,6 +15,8 @@ module Crossbeams
         @page_config  = page_config
         @hide_caption = true
         @show_border  = false
+        @fit_height   = false
+        @css_classes  = ['pa2']
       end
 
       def add_caption(caption)
@@ -24,6 +26,10 @@ module Crossbeams
 
       def show_border!
         @show_border = true
+      end
+
+      def fit_height!
+        @fit_height = true
       end
 
       def invisible?
@@ -47,7 +53,7 @@ module Crossbeams
       end
 
       def add_grid(grid_id, url, options = {})
-        @nodes << Grid.new(page_config, grid_id, url, options)
+        @nodes << Grid.new(page_config, grid_id, url, options.merge(fit_height: @fit_height))
       end
 
       def add_text(text, opts = {})
@@ -80,9 +86,10 @@ module Crossbeams
 
       def render
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
-        css_class = show_border ? ' crossbeams_layout-border' : ''
+        add_extra_css_classes
+
         <<~HTML
-          <section id="section-#{sequence}" class="crossbeams_layout#{css_class}">
+          <section id="section-#{sequence}" class="#{@css_classes.join(' ')}">
           #{render_caption}
             #{row_renders}
           </section>
@@ -94,6 +101,11 @@ module Crossbeams
       def render_caption
         return '' if hide_caption
         "<h2>#{caption}</h2>"
+      end
+
+      def add_extra_css_classes
+        @css_classes << 'crossbeams_layout-border' if show_border
+        @css_classes << 'crossbeams_layout-fit-height' if fit_height
       end
     end
   end
