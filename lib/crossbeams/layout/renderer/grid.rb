@@ -19,13 +19,8 @@ module Crossbeams
           @multiselect_save_remote = options[:multiselect_save_remote] || false
           # Prevent a grid height less than 6em, default to 20.
           @height = [(options[:height] || 20), 6].max
+          @fit_height = options[:fit_height] || false
         end
-        # def configure(field_name, field_config, page_config)
-        #   @field_name   = field_name
-        #   @field_config = field_config
-        #   @page_config  = page_config
-        #   @caption      = field_config[:caption] || present_field_as_label(field_name)
-        # end
 
         def self.header(grid_id, caption, options = {})
           if options[:print_button]
@@ -76,7 +71,7 @@ module Crossbeams
                                      can_be_cleared: @can_be_cleared,
                                      multiselect_save_remote: @multiselect_save_remote)
           <<~HTML
-            <div id="#{@grid_id}-frame" style="height:#{@height}em;margin-bottom:4em">#{head_section}
+            <div id="#{@grid_id}-frame" style="#{height_style};margin-bottom:4em">#{head_section}
               <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
               <script>console.log('loaded #{@grid_id}');</script>
             </div>
@@ -87,6 +82,14 @@ module Crossbeams
         end
 
         private_class_method
+
+        def height_style
+          if @fit_height
+            'flex-grow:1'
+          else
+            "height:#{@height}em"
+          end
+        end
 
         def self.file_name_from_caption(caption)
           (caption || 'grid_contents').gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-') + '.csv'

@@ -8,9 +8,15 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+### Fixed
+
+## [0.1.7] - 2018-06-29
+### Changed
 - A sortable list can drag elements out to another sortable list by giving both lists the same value for `drag_between_lists_name`.
 - Inputs can be renedered with a `copy_to_clipboard` button at the right.
-### Fixed
+- Sections (and grids within) can be renedered to take up available height by using `section.fit_height!`.
+- Grids can be rendered to take up available height if they are not in a section by setting option `fit_height: true`. Note that the containing element must have the css property `display: flex`.
+- A section can render with a border by using `section.show_border!`.
 
 ## [0.1.6] - 2018-05-28
 ### Added
