@@ -89,8 +89,9 @@ module Crossbeams
         add_extra_css_classes
 
         <<~HTML
+          #{render_fit_height_caption}
           <section id="section-#{sequence}" class="#{@css_classes.join(' ')}">
-          #{render_caption}
+          #{render_normal_caption}
             #{row_renders}
           </section>
         HTML
@@ -98,9 +99,17 @@ module Crossbeams
 
       private
 
+      def render_fit_height_caption
+        render_caption if @fit_height
+      end
+
+      def render_normal_caption
+        render_caption unless @fit_height
+      end
+
       def render_caption
         return '' if hide_caption
-        "<h2>#{caption}</h2>"
+        "<h2 class='ma1'>#{caption}</h2>"
       end
 
       def add_extra_css_classes
