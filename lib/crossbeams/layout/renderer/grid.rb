@@ -16,7 +16,7 @@ module Crossbeams
           @multiselect_params = options[:multiselect_params]
           @query_string = options[:grid_params].nil? ? nil : options[:grid_params][:query_string]
           @can_be_cleared = options[:can_be_cleared] || false
-          @multiselect_save_remote = options[:multiselect_save_remote] || false
+          @multiselect_save_method = options[:multiselect_save_method] || 'http'
           # Prevent a grid height less than 6em, default to 20.
           @height = [(options[:height] || 20), 6].max
           @fit_height = options[:fit_height] || false
@@ -69,7 +69,7 @@ module Crossbeams
                                      multiselect: @multiselect,
                                      multiselect_url: @multiselect_url,
                                      can_be_cleared: @can_be_cleared,
-                                     multiselect_save_remote: @multiselect_save_remote)
+                                     multiselect_save_method: @multiselect_save_method)
           <<~HTML
             <div id="#{@grid_id}-frame" style="#{height_style};margin-bottom:4em">#{head_section}
               <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
@@ -97,9 +97,10 @@ module Crossbeams
 
         def self.save_multiselect_button(grid_id, options)
           return '' unless options[:multiselect]
+          save_method = options[:multiselect_save_method] || 'http'
           <<~HTML
             <label style="margin-left: 10px;">
-                <button class="crossbeams-view-savemulti" onclick="crossbeamsGridEvents.saveSelectedRows('#{grid_id}', '#{options[:multiselect_url]}', #{options[:can_be_cleared] == true}, #{options[:multiselect_save_remote] == true})" title="save selection"><i class="fa fa-save"></i></button>
+                <button class="crossbeams-view-savemulti" onclick="crossbeamsGridEvents.saveSelectedRows('#{grid_id}', '#{options[:multiselect_url]}', #{options[:can_be_cleared] == true}, '#{save_method}')" title="save selection"><i class="fa fa-save"></i></button>
             </label>
           HTML
         end
