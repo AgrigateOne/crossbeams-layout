@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 - Caption of a Section renders above the section when fit-height is set. This prevents it from rendering alongside other content due to the flex display css styling.
+- `multiselect_save_remote` renamed to `multiselect_save_method`.
 ### Fixed
 
 ## [0.1.7] - 2018-06-29
