@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+- A Multi control without any selected values was not rendering. Changed the default from `nil` to `[]`.
 
 ## [0.1.8] - 2018-07-06
 ### Changed
