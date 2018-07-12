@@ -100,6 +100,11 @@ module Crossbeams
         @nodes << Diff.new(page_config, key)
       end
 
+      # Add a repeating request to the page.
+      def add_repeating_request(url, interval, content)
+        @nodes << RepeatingRequest.new(page_config, url, interval, content)
+      end
+
       # Render the page and all its child nodes.
       def render
         # "A string rendered from Crossbeams<br>" << nodes.map {|s| s.render }.join("\n<!-- End Section -->\n")

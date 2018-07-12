@@ -3,7 +3,7 @@
 module Crossbeams
   module Layout
     # A CallbackSection is a section that does not render itself,
-    # but calls an actin to render within the section once the page is loaded.
+    # but calls an action to render within the section once the page is loaded.
     class CallbackSection
       include PageNode
       attr_accessor :caption, :url
@@ -16,49 +16,28 @@ module Crossbeams
         @nodes       = []
       end
 
+      # Is this control invisible?
       def invisible?
         false
       end
 
+      # Is this control hidden?
       def hidden?
         false
       end
 
-      # This render uses XHR via javascript
-      # def render
-      #   <<-HTML
-      #   <section id="section-#{sequence}" data-crossbeams_callback_section="#{url}" class="crossbeams_layout">
-      #   <h2>#{caption}</h2>
-      #   <div class="content-target content-loading"></div>
-      #   </section>
-      #   HTML
-      # end
-
-      # This render uses inline javascript fetch.
+      # Render the control
       def render
         <<-HTML
-      <section id="section-#{sequence}" class="crossbeams_layout">
-      <h2>#{caption}</h2>
-      <div id="crossbeams_callback_target_#{sequence}" class="content-target content-loading"></div>
-      </section>
-      <script>
-        var content_div = document.querySelector('#crossbeams_callback_target_#{sequence}');
-
-        fetch('#{url}', {
-          method: 'GET',
-          credentials: 'same-origin',
-          headers: new Headers({
-            'X-Custom-Request-Type': 'Fetch'
-          }),
-          })
-        .then(function(response) {
-          return response.text();
-        })
-        .then(function(responseText) {
-          content_div.classList.remove('content-loading');
-          content_div.innerHTML = responseText;
-        });
-      </script>
+          <section id="section-#{sequence}" class="crossbeams_layout">
+          <h2>#{caption}</h2>
+          <div id="crossbeams_callback_target_#{sequence}" class="content-target content-loading"></div>
+          </section>
+          <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              crossbeamsUtils.loadCallBackSection('#crossbeams_callback_target_#{sequence}', '#{url}');
+            });
+          </script>
         HTML
       end
     end

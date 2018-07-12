@@ -69,6 +69,11 @@ module Crossbeams
         @nodes << Diff.new(page_config, key)
       end
 
+      # Add a repeating request to the column.
+      def add_repeating_request(url, interval, content)
+        @nodes << RepeatingRequest.new(page_config, url, interval, content)
+      end
+
       # TODO: add_link; add_link_collection
 
       def add_node(node)

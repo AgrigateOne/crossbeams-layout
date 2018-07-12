@@ -7,7 +7,10 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- A progress step control for showing the state of progress as a line with circle nodes at each step.
+- A repeating request control for rendering a div and calling a url to modify it at intervals.
 ### Changed
+- Removed the inline javascript `fetch` code for a Callback section. The inline javascript now calls `crossbeamsUtils.loadCallBackSection` to do the loading.
 ### Fixed
 - A Multi control without any selected values was not rendering. Changed the default from `nil` to `[]`.
 
