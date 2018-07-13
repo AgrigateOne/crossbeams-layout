@@ -60,15 +60,23 @@ module Crossbeams
 
       def strings
         @rows.map do |row|
-          "<tr class='hover-row'>#{@columns.map { |c| "<td#{classes_for_col(c)}>#{row[c]}</td>" }.join}</tr>"
+          "<tr class='hover-row'>#{@columns.map { |c| "<td#{attr_for_col(c)} #{classes_for_col(c, row[c])}>#{row[c]}</td>" }.join}</tr>"
         end
       end
 
-      def classes_for_col(col)
+      def classes_for_col(col, val)
+        if @options[:cell_classes] && @options[:cell_classes][col]
+          "class='#{@options[:cell_classes][col].call(val)}'"
+        else
+          ''
+        end
+      end
+
+      def attr_for_col(col)
         if @options[:alignment] && @options[:alignment][col]
           %( align="#{@options[:alignment][col]}")
         else
-          ''
+          ' '
         end
       end
 

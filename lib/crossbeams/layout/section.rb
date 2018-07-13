@@ -65,6 +65,16 @@ module Crossbeams
         @nodes << Table.new(page_config, rows, columns, options)
       end
 
+      # Add a progress_step to the section.
+      def add_progress_step(steps, options = {})
+        @nodes << ProgressStep.new(page_config, steps, options)
+      end
+
+      # Add a repeating request to the section.
+      def add_repeating_request(url, interval, content)
+        @nodes << RepeatingRequest.new(page_config, url, interval, content)
+      end
+
       def add_address(addresses, opts = {})
         @nodes << Address.new(page_config, addresses, opts)
       end
