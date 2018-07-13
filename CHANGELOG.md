@@ -11,6 +11,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - A repeating request control for rendering a div and calling a url to modify it at intervals.
 ### Changed
 - Removed the inline javascript `fetch` code for a Callback section. The inline javascript now calls `crossbeamsUtils.loadCallBackSection` to do the loading.
+- Table cells can apply classes based on the results of lambda calls.
 ### Fixed
 - A Multi control without any selected values was not rendering. Changed the default from `nil` to `[]`.
 
