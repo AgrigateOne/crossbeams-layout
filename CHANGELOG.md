@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.1.9] - 2018-07-13
+### Added
 - A progress step control for showing the state of progress as a line with circle nodes at each step.
 - A repeating request control for rendering a div and calling a url to modify it at intervals.
 ### Changed
