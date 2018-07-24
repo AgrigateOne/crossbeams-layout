@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- Multi can have a `required` attribute set to true. If true, the user must choose at least one option of the multiselect.
 ### Fixed
 
 ## [0.1.9] - 2018-07-13

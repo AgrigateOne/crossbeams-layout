@@ -29,11 +29,15 @@ module Crossbeams
           <<-HTML
           <div class="#{div_class}">#{hint_text}
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
-            <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}][]" id="#{@page_config.name}_#{@field_name}" multiple="multiple" data-multi="true">
+            <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}][]" id="#{@page_config.name}_#{@field_name}" multiple="multiple" data-multi="true"#{required_str}>
             #{make_prompt}#{make_options(Array(@field_config[:options]), sel)}
             </select>
           </div>
           HTML
+        end
+
+        def required_str
+          @field_config[:required] ? ' required' : ''
         end
 
         def make_prompt
