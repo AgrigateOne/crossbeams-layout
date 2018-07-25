@@ -21,7 +21,7 @@ module Crossbeams
           attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
           attrs << 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
           attrs << behaviours
-          sel = @field_config[:selected] ? @field_config[:selected] : @page_config.form_object[@field_name]
+          sel = @field_config[:selected] || @page_config.form_object[@field_name]
           sel = @page_config.form_values[@field_name] if @page_config.form_values
 
           disabled_option = find_disabled_option(sel, @field_config[:disabled_options])
@@ -48,9 +48,9 @@ module Crossbeams
           "<option value=\"\">#{str}</option>\n"
         end
 
-        def make_options(ar, selected = nil, disabled_option = nil)
+        def make_options(list, selected = nil, disabled_option = nil)
           disabled = disabled_string(disabled_option, selected)
-          opts = ar.map do |a|
+          opts = list.map do |a|
             a.is_a?(Array) ? option_string(a.first, a.last, selected) : option_string(a, a, selected)
           end
           opts.unshift(disabled) unless disabled.nil?
@@ -68,7 +68,7 @@ module Crossbeams
           elem = if disabled_list.first.is_a? Array
                    disabled_list.rassoc(sel)
                  elsif disabled_list.include?(sel)
-                   val
+                   sel
                  end
           elem
         end

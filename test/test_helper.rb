@@ -23,6 +23,28 @@ class RenderResult
       list: xp[0].children.select { |c| c.attributes.key?('value') }.map { |c| c.attributes['value'].text }
     }
   end
+
+  def selected_value
+    xp = @doc.xpath("//option[@selected]")
+    return nil if xp.length.zero?
+    xp[0].attributes['value'].value
+  end
+
+  def option_values
+    xp = @doc.xpath("//select/option/@value")
+    xp.map { |x| x.value }
+  end
+
+  def option_labels
+    xp = @doc.xpath("//select/option")
+    xp.map { |x| x.children }.flatten.map { |x| x.text }
+  end
+
+  def disabled_option
+    xp = @doc.xpath('//select/option[@disabled]')
+    return nil if xp.length.zero?
+    xp[0].attribute('value').value
+  end
 end
 
 def html_element_attribute_value(html_string, element_type, attribute)
@@ -31,6 +53,22 @@ end
 
 def html_datalist_element(html_string)
   RenderResult.new(html_string).datalist
+end
+
+def html_selected_value(html_string)
+  RenderResult.new(html_string).selected_value
+end
+
+def html_select_disabled_value(html_string)
+  RenderResult.new(html_string).disabled_option
+end
+
+def html_select_values(html_string)
+  RenderResult.new(html_string).option_values
+end
+
+def html_select_labels(html_string)
+  RenderResult.new(html_string).option_labels
 end
 
 def simple_input_render(renderer, value, extra_configs = {})
@@ -43,9 +81,12 @@ def simple_input_render(renderer, value, extra_configs = {})
 end
 
 def simple_select_render(value, list, extra_configs = {})
-  page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(the_test_field: value) })
+  config_opts = { name: 'test_form', form_object: OpenStruct.new(the_test_field: value) }
+  form_value = extra_configs.delete(:form_value)
+  config_opts[:form_values] = { the_test_field: form_value } unless form_value.nil?
+  page_config = Crossbeams::Layout::PageConfig.new(config_opts)
   field_name = :the_test_field
-  field_config = { renderer: :select }.merge(extra_configs)
+  field_config = { renderer: :select, options: list }.merge(extra_configs)
   input = Crossbeams::Layout::Renderer::Select.new
   input.configure(field_name, field_config, page_config)
   input.render
