@@ -35,7 +35,7 @@ module Crossbeams
           <<-HTML
           <div class="#{div_class}">#{hint_text}
             <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
-            #{make_prompt}#{make_options(Array(@field_config[:options]), sel, disabled_option)}
+            #{make_prompt}#{build_options(@field_config[:options], sel, disabled_option)}
             </select>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
@@ -48,7 +48,23 @@ module Crossbeams
           "<option value=\"\">#{str}</option>\n"
         end
 
-        def make_options(list, selected = nil, disabled_option = nil)
+        def build_options(list, selected = nil, disabled_option = nil)
+          if list.is_a?(Hash)
+            grp_disabled = disabled_option
+            opts = []
+            list.each do |group, sublist|
+              opts << %(<optgroup label="#{group}">)
+              opts << make_options(Array(sublist), selected, grp_disabled)
+              opts << '</optgroup>'
+              grp_disabled = nil # This might not be quite the right position...
+            end
+            opts.join("\n")
+          else
+            make_options(Array(list), selected, disabled_option)
+          end
+        end
+
+        def make_options(list, selected, disabled_option)
           disabled = disabled_string(disabled_option, selected)
           opts = list.map do |a|
             a.is_a?(Array) ? option_string(a.first, a.last, selected) : option_string(a, a, selected)

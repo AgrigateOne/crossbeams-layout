@@ -59,6 +59,9 @@ class Crossbeams::SelectTest < Minitest::Test
     assert_equal ['MAKE A CHOICE', 'a', 'b'], html_select_labels(s)
   end
 
-  # optgroups - [[1,2,3], [1,4,5]] OR { 1 => [[2,3], [4,5]] } OR  { 1 => [[1,2,3], [1,4,5]] }
-
+  def test_optgroup
+    opts = { 'grp1' => [['a', '1'], ['b', '2']], 'grp2' => [['e', '5'], ['f', '6']] }
+    s = simple_select_render(nil, opts)
+    assert_equal ['1', '2', '5', '6'], html_select_values(s, true)
+  end
 end

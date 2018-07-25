@@ -30,13 +30,22 @@ class RenderResult
     xp[0].attributes['value'].value
   end
 
-  def option_values
-    xp = @doc.xpath("//select/option/@value")
+  def option_values(with_optgroup = false)
+    xp = if with_optgroup
+           @doc.xpath("//select/optgroup/option/@value")
+         else
+           @doc.xpath("//select/option/@value")
+         end
     xp.map { |x| x.value }
   end
 
-  def option_labels
-    xp = @doc.xpath("//select/option")
+  def option_labels(with_optgroup = false)
+    xp = if with_optgroup
+           @doc.xpath("//select/optgroup/option")
+         else
+           @doc.xpath("//select/option")
+         end
+    # xp = @doc.xpath("//select/option")
     xp.map { |x| x.children }.flatten.map { |x| x.text }
   end
 
@@ -63,12 +72,12 @@ def html_select_disabled_value(html_string)
   RenderResult.new(html_string).disabled_option
 end
 
-def html_select_values(html_string)
-  RenderResult.new(html_string).option_values
+def html_select_values(html_string, with_optgroup = false)
+  RenderResult.new(html_string).option_values(with_optgroup)
 end
 
-def html_select_labels(html_string)
-  RenderResult.new(html_string).option_labels
+def html_select_labels(html_string, with_optgroup = false)
+  RenderResult.new(html_string).option_labels(with_optgroup)
 end
 
 def simple_input_render(renderer, value, extra_configs = {})
