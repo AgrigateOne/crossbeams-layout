@@ -4,14 +4,16 @@ module Crossbeams
   module Layout
     # A table of data.
     class Table
+      include PageNode
       attr_reader :columns, :rows, :options
 
-      def initialize(page_config, rows, columns = [], options = {})
+      def initialize(page_config, rows, columns, options = {})
         @page_config = page_config
-        @columns     = columns
+        @columns     = columns || []
         @rows        = Array(rows)
-        @columns     = columns_from_rows if columns.empty?
-        @options     = { has_columns: !columns.empty? }.merge(options)
+        @columns     = columns_from_rows if @columns.empty?
+        @options     = { has_columns: !@columns.empty? }.merge(options)
+        @nodes       = []
       end
 
       # Is this node invisible?

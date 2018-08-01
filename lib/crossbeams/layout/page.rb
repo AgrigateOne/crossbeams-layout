@@ -88,7 +88,7 @@ module Crossbeams
       end
 
       # Add a table to the page.
-      def add_table(rows, columns = [], options = {})
+      def add_table(rows, columns, options = {})
         @nodes << Table.new(page_config, rows, columns, options)
       end
 
