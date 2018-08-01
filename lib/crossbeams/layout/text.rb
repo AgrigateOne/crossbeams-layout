@@ -5,7 +5,8 @@ module Crossbeams
     # A text renderer - for rendering text without form controls.
     class Text
       include PageNode
-      attr_reader :text, :page_config, :preformatted, :syntax, :wrapper
+      attr_reader :text, :page_config, :preformatted, :syntax, :wrapper,
+                  :toggle_button, :toggle_caption
       WRAP_START = {
         p: '<p>',
         h1: '<h1>',
@@ -30,13 +31,14 @@ module Crossbeams
       }.freeze
 
       def initialize(page_config, text, opts = {})
-        @text         = text
-        @page_config  = page_config
-        @nodes        = []
-        @wrapper      = Array(opts[:wrapper] || :none)
-        @preformatted = opts[:preformatted] || false
-        # @preformatted = opts.fetch(:preformatted) { false }
-        @syntax       = opts[:syntax]
+        @text           = text
+        @page_config    = page_config
+        @nodes          = []
+        @wrapper        = Array(opts[:wrapper] || :none)
+        @preformatted   = opts[:preformatted] || false
+        @syntax         = opts[:syntax]
+        @toggle_button  = opts[:toggle_button] || false
+        @toggle_caption = opts[:toggle_caption] || 'Show/Hide Text'
       end
 
       def invisible?
@@ -53,13 +55,33 @@ module Crossbeams
 
       def render
         <<-HTML
-        <div class="crossbeams-field">
+        #{render_toggle_button}
+        <div class="crossbeams-field"#{render_toggle_id}>
         #{preformatted || !syntax.nil? ? preformatted_text : render_text}
         </div>
         HTML
       end
 
       private
+
+      def render_toggle_button
+        return '' unless toggle_button
+        <<~HTML
+          <a href="#" class="f6 link dim br2 ph3 pv2 dib white bg-silver"
+            onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}', this);return false">
+          <i class="fa fa-info"></i> #{toggle_caption}</a>
+        HTML
+      end
+
+      def render_toggle_id
+        return '' unless toggle_button
+        " id='#{toggle_id}' style='display:none'"
+      end
+
+      def toggle_id
+        return '' unless toggle_button
+        toggle_caption.downcase.tr(' ', '_')
+      end
 
       def preformatted_text
         <<~HTML

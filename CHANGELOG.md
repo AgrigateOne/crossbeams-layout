@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Text can be rendered with a button to toggle the showing/hiding of text.
 - Select can render with option groups. The `:options` must be a hash where the key is the group label and the value is an Array of 2-dimensional Arrays ([label, value]).
 ### Changed
 - Multi can have a `required` attribute set to true. If true, the user must choose at least one option of the multiselect.
