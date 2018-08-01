@@ -7,6 +7,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Link can be styled as a back button.
+- Table can render a 2-dimensional array as well as an array of hashes.
 - Text can be rendered with a button to toggle the showing/hiding of text.
 - Select can render with option groups. The `:options` must be a hash where the key is the group label and the value is an Array of 2-dimensional Arrays ([label, value]).
 ### Changed

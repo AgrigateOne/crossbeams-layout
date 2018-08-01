@@ -10,6 +10,7 @@ module Crossbeams
       def initialize(options)
         @text      = options[:text]
         @url       = options[:url]
+        raise ArgumentError, 'Crossbeams::Layout::Link requires text and url options' if @text.nil? || @url.nil?
         @style     = options[:style] || :link
         @behaviour = options[:behaviour] || :direct # popup window, popup dialog, modal...
         @nodes     = []
@@ -34,7 +35,7 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        <a href="#{url}" #{class_strings}#{behaviour_string}>#{text}</a>
+        <a href="#{url}"#{class_strings}#{behaviour_string}>#{render_text}</a>
         HTML
       end
 
@@ -42,9 +43,19 @@ module Crossbeams
 
       def class_strings
         if style == :button
-          %(class="f6 link dim br2 ph3 pv2 dib white bg-silver")
+          %( class="f6 link dim br2 ph3 pv2 dib white bg-silver")
+        elsif style == :back_button
+          %( class="f6 link dim br2 ph3 pv2 dib white bg-dark-blue")
         else
           ''
+        end
+      end
+
+      def render_text
+        if style == :back_button
+          "<i class='fa fa-arrow-left'></i> #{text}"
+        else
+          text
         end
       end
 

@@ -34,6 +34,7 @@ module Crossbeams
       #
       # @return [string] - HTML representation of this node.
       def render
+        return '' if rows.empty?
         <<~HTML
           <table class="thinbordertable">
             #{head if @options[:has_columns]}
@@ -62,7 +63,11 @@ module Crossbeams
 
       def strings
         @rows.map do |row|
-          "<tr class='hover-row'>#{@columns.map { |c| "<td#{attr_for_col(c)} #{classes_for_col(c, row[c])}>#{row[c]}</td>" }.join}</tr>"
+          if @columns.empty?
+            "<tr class='hover-row'>#{row.map { |r| "<td>#{r}</td>" }.join}</tr>"
+          else
+            "<tr class='hover-row'>#{@columns.map { |c| "<td#{attr_for_col(c)} #{classes_for_col(c, row[c])}>#{row[c]}</td>" }.join}</tr>"
+          end
         end
       end
 
@@ -84,6 +89,7 @@ module Crossbeams
 
       def columns_from_rows
         return [] if @rows.empty?
+        return [] unless @rows.first.is_a?(Hash)
         @rows.first.keys
       end
     end
