@@ -33,13 +33,17 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        #{caption}<ol>
+        #{caption}<ol id="#{dom_id}">
         #{item_renders}
         </ol>
         HTML
       end
 
       private
+
+      def dom_id
+        @options[:dom_id] || "cbl-list-#{Time.now.to_i}"
+      end
 
       def caption
         return '' if @options[:caption].nil?
