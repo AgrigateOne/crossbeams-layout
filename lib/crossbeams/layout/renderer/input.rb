@@ -226,7 +226,12 @@ module Crossbeams
 
         def hint_trigger
           return '' unless @field_config[:hint]
-          %( <i class="fa fa-question-circle" title="Click for hint" data-cb-hint-for="#{@page_config.name}_#{@field_name}"></i>)
+          Icon.new(:question,
+                   css_class: 'ml1',
+                   attrs: [
+                     'title="Click for hint"',
+                     "data-cb-hint-for='#{@page_config.name}_#{@field_name}'"
+                   ]).render
         end
       end
     end

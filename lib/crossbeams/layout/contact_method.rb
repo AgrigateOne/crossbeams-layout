@@ -48,7 +48,7 @@ module Crossbeams
       def render_contact_method(contact_method)
         <<~HTML
           <div class="center mw5 mw6-ns hidden ba mv3">
-            <h1 class="f4 bg-light-purple white mv0 pv2 ph3" style="text-transform:lowercase"><i class="fa #{icon(contact_method)}" style="margin-right:0.5em"></i>#{contact_method.contact_method_type}</h1>
+            <h1 class="f4 bg-light-purple white mv0 pv2 ph3" style="text-transform:lowercase">#{icon(contact_method)}#{contact_method.contact_method_type}</h1>
             <div class="f6 f5-ns lh-copy measure mv0 pa2">#{contact_method.contact_method_code}
             </div>
           </div>
@@ -58,15 +58,16 @@ module Crossbeams
       def icon(contact_method)
         case lookup_icon[contact_method.contact_method_type.downcase]
         when 'tel'
-          'fa-phone'
+          Icon.new(:phone, css_class: 'mr1').render
         when 'cell'
-          'fa-mobile'
+          Icon.new(:cell, css_class: 'mr1').render
         when 'fax'
-          'fa-fax'
+          # TODO: get a fax svg...
+          Icon.new(:printer, css_class: 'mr1').render
         when 'social'
-          'fa-at'
+          Icon.new(:at, css_class: 'mr1').render
         else
-          'fa-asterisk'
+          Icon.new(:star, css_class: 'mr1').render
         end
       end
     end
