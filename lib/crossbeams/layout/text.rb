@@ -56,7 +56,7 @@ module Crossbeams
       def render
         <<-HTML
         #{render_toggle_button}
-        <div class="crossbeams-field"#{render_toggle_id}>
+        <div class="crossbeams-field no-flex"#{render_toggle_id}>
         #{preformatted || !syntax.nil? ? preformatted_text : render_text}
         </div>
         HTML
@@ -69,8 +69,12 @@ module Crossbeams
         <<~HTML
           <a href="#" class="f6 link dim br2 ph3 pv2 dib white bg-silver"
             onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}', this);return false">
-          <i class="fa fa-info"></i> #{toggle_caption}</a>
+          #{info_icon} #{toggle_caption}</a>
         HTML
+      end
+
+      def info_icon
+        Icon.render(:info)
       end
 
       def render_toggle_id

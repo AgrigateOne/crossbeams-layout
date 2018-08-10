@@ -33,20 +33,6 @@ module Crossbeams
         def checked
           value && value != false && value != 'f' && value != 'false' && value.to_s != '0' ? 'checked' : ''
         end
-
-        def hint_text
-          return '' unless @field_config[:hint]
-          <<~HTML
-            <div style="display:none" data-cb-hint="#{@page_config.name}_#{@field_name}">
-              #{@field_config[:hint]}
-            </div>
-          HTML
-        end
-
-        def hint_trigger
-          return '' unless @field_config[:hint]
-          %( <i class="fa fa-question-circle" title="Click for hint" data-cb-hint-for="#{@page_config.name}_#{@field_name}"></i>)
-        end
       end
     end
   end

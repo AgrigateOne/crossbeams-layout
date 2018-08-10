@@ -21,6 +21,25 @@ module Crossbeams
           "<br><span class='crossbeams-form-error'>#{@page_config.form_errors[@field_name].join('; ')}</span>" if @page_config.form_errors && @page_config.form_errors[@field_name]
         end
 
+        def hint_text
+          return '' unless @field_config[:hint]
+          <<~HTML
+            <div style="display:none" data-cb-hint="#{@page_config.name}_#{@field_name}">
+              #{@field_config[:hint]}
+            </div>
+          HTML
+        end
+
+        def hint_trigger
+          return '' unless @field_config[:hint]
+          Icon.render(:question,
+                      css_class: 'ml1',
+                      attrs: [
+                        'title="Click for hint"',
+                        "data-cb-hint-for='#{@page_config.name}_#{@field_name}'"
+                      ])
+        end
+
         def behaviours
           rules = @page_config.options[:behaviours]
           return nil if rules.nil?

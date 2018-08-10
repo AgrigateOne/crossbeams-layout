@@ -79,7 +79,12 @@ module Crossbeams
         @nodes << RepeatingRequest.new(page_config, url, interval, content)
       end
 
-      # TODO: add_link; add_link_collection
+      # Add a control (button, link) to the column.
+      #
+      # @return [void]
+      def add_control(page_control_definition)
+        @nodes << Link.new(page_control_definition) if page_control_definition[:control_type] == :link
+      end
 
       def add_node(node)
         @nodes << node
