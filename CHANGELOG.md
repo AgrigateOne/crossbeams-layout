@@ -7,13 +7,18 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.1.10] - 2018-08-10
+### Added
 - Link can be styled as a back button.
 - Table can render a 2-dimensional array as well as an array of hashes.
 - Text can be rendered with a button to toggle the showing/hiding of text.
 - Select can render with option groups. The `:options` must be a hash where the key is the group label and the value is an Array of 2-dimensional Arrays ([label, value]).
 ### Changed
+- All icon usage changed from using FontAwesome to using embedded SVG icons.
 - Multi can have a `required` attribute set to true. If true, the user must choose at least one option of the multiselect.
-### Fixed
 
 ## [0.1.9] - 2018-07-13
 ### Added
