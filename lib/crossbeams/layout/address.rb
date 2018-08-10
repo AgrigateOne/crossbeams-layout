@@ -51,7 +51,7 @@ module Crossbeams
       end
 
       def address_icon
-        Icon.new(:envelope, css_class: 'mr1').render
+        Icon.render(:envelope, css_class: 'mr1')
       end
 
       def combined_address_lines(address)

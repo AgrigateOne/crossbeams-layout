@@ -35,7 +35,7 @@ module Crossbeams
         def copy_suffix
           return '' unless @field_config[:copy_to_clipboard]
           %(<button type="button" id="#{@page_config.name}_#{@field_name}_clip" class="cbl-clipcopy" data-clipboard="copy" title="Copy to clipboard">
-              <i id="#{@page_config.name}_#{@field_name}_clip_i" class="fa fa-copy" data-clipboard="copy"></i>
+          #{Icon.render(:copy, attrs: ["id='#{@page_config.name}_#{@field_name}_clip_i'", 'data-clipboard="copy"'])}
             </button></div>)
         end
 
@@ -213,25 +213,6 @@ module Crossbeams
 
         def attr_datalist(datalist)
           %(list="#{@page_config.name}_#{@field_name}_listing") unless datalist.nil?
-        end
-
-        def hint_text
-          return '' unless @field_config[:hint]
-          <<~HTML
-            <div style="display:none" data-cb-hint="#{@page_config.name}_#{@field_name}">
-              #{@field_config[:hint]}
-            </div>
-          HTML
-        end
-
-        def hint_trigger
-          return '' unless @field_config[:hint]
-          Icon.new(:question,
-                   css_class: 'ml1',
-                   attrs: [
-                     'title="Click for hint"',
-                     "data-cb-hint-for='#{@page_config.name}_#{@field_name}'"
-                   ]).render
         end
       end
     end

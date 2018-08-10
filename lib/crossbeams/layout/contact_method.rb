@@ -58,16 +58,16 @@ module Crossbeams
       def icon(contact_method)
         case lookup_icon[contact_method.contact_method_type.downcase]
         when 'tel'
-          Icon.new(:phone, css_class: 'mr1').render
+          Icon.render(:phone, css_class: 'mr1')
         when 'cell'
-          Icon.new(:cell, css_class: 'mr1').render
+          Icon.render(:cell, css_class: 'mr1')
         when 'fax'
           # TODO: get a fax svg...
-          Icon.new(:printer, css_class: 'mr1').render
+          Icon.render(:printer, css_class: 'mr1')
         when 'social'
-          Icon.new(:at, css_class: 'mr1').render
+          Icon.render(:at, css_class: 'mr1')
         else
-          Icon.new(:star, css_class: 'mr1').render
+          Icon.render(:star, css_class: 'mr1')
         end
       end
     end

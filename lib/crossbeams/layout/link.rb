@@ -5,7 +5,7 @@ module Crossbeams
     # A link renderer - for rendering a link outside a form.
     class Link
       include PageNode
-      attr_reader :text, :url, :style, :behaviour
+      attr_reader :text, :url, :style, :behaviour, :css_class
 
       def initialize(options)
         @text      = options[:text]
@@ -13,6 +13,7 @@ module Crossbeams
         raise ArgumentError, 'Crossbeams::Layout::Link requires text and url options' if @text.nil? || @url.nil?
         @style     = options[:style] || :link
         @behaviour = options[:behaviour] || :direct # popup window, popup dialog, modal...
+        @css_class = options[:css_class] || ''
         @nodes     = []
       end
 
@@ -43,11 +44,11 @@ module Crossbeams
 
       def class_strings
         if style == :button
-          %( class="f6 link dim br2 ph3 pv2 dib white bg-silver")
+          %( class="f6 link dim br2 ph3 pv2 dib white bg-silver #{css_class}")
         elsif style == :back_button
-          %( class="f6 link dim br2 ph3 pv2 dib white bg-dark-blue")
+          %( class="f6 link dim br2 ph3 pv2 dib white bg-dark-blue #{css_class}")
         else
-          ''
+          css_class.empty? ? '' : css_class
         end
       end
 
