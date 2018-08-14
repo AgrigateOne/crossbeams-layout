@@ -20,6 +20,7 @@ module Crossbeams
           cls   << 'cbl-input' unless @searchable
           attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
           attrs << 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
+          attrs << 'required="true"' if @field_config[:required] && @field_config[:required] == true
           attrs << behaviours
           sel = @field_config[:selected] || @page_config.form_object[@field_name]
           sel = @page_config.form_values[@field_name] if @page_config.form_values
