@@ -79,6 +79,10 @@ module Crossbeams
         @form_action = act
       end
 
+      def form_id(val)
+        @dom_id = val
+      end
+
       # --- FROM PAGE FOR OVERRIDE (also need rules, renderer needs to get obj from form, not page)...
       # Register the form object.
       def form_object(obj)
@@ -122,9 +126,7 @@ module Crossbeams
       end
 
       def config_for_field
-        # @form_config.to_h.empty? ? @page_config : @form_config
         @form_config.form_object.nil? ? @page_config : @form_config
-        # @form_config.to_h.empty? ? @page_config : PageConfig.new(@form_config)
       end
 
       def add_text(text, opts = {})
@@ -177,7 +179,7 @@ module Crossbeams
                           HTML
                         end
         <<~HTML
-          <form class="crossbeams-form" action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
+          <form #{render_id}class="crossbeams-form" action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
             #{error_head}
             #{csrf_tag}
             #{form_method_str}
@@ -188,6 +190,10 @@ module Crossbeams
       end
 
       private
+
+      def render_id
+        @dom_id.nil? ? '' : "id='#{@dom_id}' "
+      end
 
       def error_head
         return '' unless page_config.form_errors && (page_config.form_errors[:base] || page_config.form_errors[:base_with_highlights])
