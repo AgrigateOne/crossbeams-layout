@@ -11,14 +11,14 @@ module Crossbeams
 
         def div_class
           if @page_config.form_errors && @page_config.form_errors[@field_name]
-            'crossbeams-field crossbeams-div-error'
+            'crossbeams-field crossbeams-div-error bg-washed-red'
           else
             'crossbeams-field'
           end
         end
 
         def error_state
-          "<br><span class='crossbeams-form-error'>#{@page_config.form_errors[@field_name].join('; ')}</span>" if @page_config.form_errors && @page_config.form_errors[@field_name]
+          "<span class='brown crossbeams-form-error'><br>#{@page_config.form_errors[@field_name].compact.join('; ')}</span>" if @page_config.form_errors && @page_config.form_errors[@field_name]
         end
 
         def hint_text

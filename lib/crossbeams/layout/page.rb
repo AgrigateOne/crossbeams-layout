@@ -44,6 +44,12 @@ module Crossbeams
       # Register the error conditions for a form.
       def form_errors(errors)
         @page_config.form_errors = errors
+        return unless errors && errors[:base_with_highlights]
+
+        Array(errors[:base_with_highlights][:highlights]).each do |field|
+          @page_config.form_errors[field] ||= []
+          @page_config.form_errors[field] << nil
+        end
       end
 
       # Define a section in the page.

@@ -7,6 +7,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Select can have `required` attribute set. This is just for styling by the Selectr javascript library.
+- Forms can display validation errors for the `:base` of the form.
 ### Changed
 ### Fixed
 

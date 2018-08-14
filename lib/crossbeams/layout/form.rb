@@ -93,6 +93,12 @@ module Crossbeams
       # Register the error conditions for a form.
       def form_errors(errors)
         @form_config.form_errors = errors
+        return unless errors && errors[:base_with_highlights]
+
+        Array(errors[:base_with_highlights][:highlights]).each do |field|
+          @form_config.form_errors[field] ||= []
+          @form_config.form_errors[field] << nil
+        end
       end
       # --- ...FROM PAGE FOR OVERRIDE
 
@@ -172,6 +178,7 @@ module Crossbeams
                         end
         <<~HTML
           <form class="crossbeams-form" action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
+            #{error_head}
             #{csrf_tag}
             #{form_method_str}
             #{renders}
@@ -181,6 +188,23 @@ module Crossbeams
       end
 
       private
+
+      def error_head
+        return '' unless page_config.form_errors && (page_config.form_errors[:base] || page_config.form_errors[:base_with_highlights])
+        <<~HTML
+          <div class="crossbeams-form-base-error pa1 mb1 bg-washed-red brown">
+            <ul class="list"><li>#{base_messages.join('</li><li>')}</li></ul>
+          </div>
+        HTML
+      end
+
+      def base_messages
+        messages = page_config.form_errors[:base] || []
+        if page_config.form_errors[:base_with_highlights]
+          messages += page_config.form_errors[:base_with_highlights][:messages]
+        end
+        messages
+      end
 
       def sub_renders
         if got_row
