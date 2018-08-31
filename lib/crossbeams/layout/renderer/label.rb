@@ -21,10 +21,34 @@ module Crossbeams
           end
           <<-HTML
           <div class="crossbeams-field">#{hint_text}
-            <input type="text" readonly class="cbl-input label-field bg-light-gray" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
+            #{render_field(value)}
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{hint_trigger}</label>
           </div>
           HTML
+        end
+
+        private
+
+        def render_field(value)
+          if @field_config[:as_boolean]
+            if value
+              <<~HTML
+                <div class="cbl-input dark-green">
+                  #{Icon.render(:checkon, css_class: 'mr1')}
+                </div>
+              HTML
+            else
+              <<~HTML
+                <div class="cbl-input light-red">
+                  #{Icon.render(:checkoff, css_class: 'mr1')}
+                </div>
+              HTML
+            end
+          else
+            <<-HTML
+              <input type="text" readonly class="cbl-input label-field bg-light-gray" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
+            HTML
+          end
         end
       end
     end

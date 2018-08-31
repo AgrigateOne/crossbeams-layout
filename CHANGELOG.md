@@ -10,6 +10,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Select can have `required` attribute set. This is just for styling by the Selectr javascript library.
 - Forms can display validation errors for the `:base` of the form.
 - Forms can have a DOM id set.
+- Grids can render as trees.
+- Labels for boolean fields can render as `checkon` or `checkoff` icons.
 ### Changed
 ### Fixed
 
