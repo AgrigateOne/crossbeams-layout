@@ -20,6 +20,7 @@ module Crossbeams
           # Prevent a grid height less than 6em, default to 20.
           @height = [(options[:height] || 20), 6].max
           @fit_height = options[:fit_height] || false
+          @tree_config = options[:tree]
         end
 
         def self.header(grid_id, caption, options = {})
@@ -76,7 +77,7 @@ module Crossbeams
                                      multiselect_save_method: @multiselect_save_method)
           <<~HTML
             <div id="#{@grid_id}-frame" style="#{height_style};margin-bottom:4em">#{head_section}
-              <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} onload="console.log('onl'); "></div>
+              <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_tree} onload="console.log('onl'); "></div>
               <script>console.log('loaded #{@grid_id}');</script>
             </div>
             <script type="javascript">
@@ -129,6 +130,10 @@ module Crossbeams
 
         def denote_multiselect
           @multiselect ? "data-grid-multi=\"#{@multiselect_key}\"" : ''
+        end
+
+        def denote_tree
+          @tree_config ? "data-grid-tree='{\"treeColumn\":\"#{@tree_config[:tree_column]}\",\"treeCaption\":\"#{@tree_config[:tree_caption]}\",\"suppressNodeCounts\":#{@tree_config[:suppress_node_counts]}}'" : ''
         end
       end
     end
