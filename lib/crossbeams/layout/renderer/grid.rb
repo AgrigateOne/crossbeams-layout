@@ -133,7 +133,7 @@ module Crossbeams
         end
 
         def denote_tree
-          @tree_config ? "data-grid-tree='{\"treeColumn\":\"#{@tree_config[:tree_column]}\",\"treeCaption\":\"#{@tree_config[:tree_caption]}\",\"suppressNodeCounts\":#{@tree_config[:suppress_node_counts]}}'" : ''
+          @tree_config ? "data-grid-tree='{\"treeColumn\":\"#{@tree_config[:tree_column]}\",\"treeCaption\":\"#{@tree_config[:tree_caption]}\",\"suppressNodeCounts\":#{@tree_config[:suppress_node_counts]},\"groupDefaultExpanded\":#{@tree_config[:groupDefaultExpanded] || 0}}'" : ''
         end
       end
     end

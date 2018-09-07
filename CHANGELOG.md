@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Grid trees can open collapsed or expanded to any level.
 ### Changed
 ### Fixed
 
