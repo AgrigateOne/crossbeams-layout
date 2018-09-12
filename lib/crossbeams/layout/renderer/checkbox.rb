@@ -19,7 +19,8 @@ module Crossbeams
           <div class="#{div_class}">#{hint_text}
             <input name="#{@page_config.name}[#{@field_name}]" type="hidden" value="f">
             <input type="checkbox" value="t" #{checked} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
+            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
+            <div class="order-1">#{hint_trigger}</div>
           </div>
           HTML
         end
