@@ -33,7 +33,7 @@ module Crossbeams
         def hint_trigger
           return '' unless @field_config[:hint]
           Icon.render(:question,
-                      css_class: 'ml1',
+                      css_class: 'ml1 blue pointer',
                       attrs: [
                         'title="Click for hint"',
                         "data-cb-hint-for='#{@page_config.name}_#{@field_name}'"
