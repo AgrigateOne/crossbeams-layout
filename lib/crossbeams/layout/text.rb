@@ -6,7 +6,7 @@ module Crossbeams
     class Text
       include PageNode
       attr_reader :text, :page_config, :preformatted, :syntax, :wrapper,
-                  :toggle_button, :toggle_caption
+                  :toggle_button, :toggle_caption, :toggle_element_id
       WRAP_START = {
         p: '<p>',
         h1: '<h1>',
@@ -39,6 +39,13 @@ module Crossbeams
         @syntax         = opts[:syntax]
         @toggle_button  = opts[:toggle_button] || false
         @toggle_caption = opts[:toggle_caption] || 'Show/Hide Text'
+        @toggle_element_id = opts[:toggle_element_id]
+        assert_element_id_in_text!
+      end
+
+      def assert_element_id_in_text!
+        return nil if @toggle_element_id.nil?
+        raise ArgumentError, 'toggle element id is not present in text' unless @text.match?(/id=['"]#{@toggle_element_id}['"]/)
       end
 
       def invisible?
@@ -79,12 +86,13 @@ module Crossbeams
 
       def render_toggle_id
         return '' unless toggle_button
+        return '' if  toggle_element_id
         " id='#{toggle_id}' style='display:none'"
       end
 
       def toggle_id
         return '' unless toggle_button
-        toggle_caption.downcase.tr(' ', '_')
+        (toggle_element_id || toggle_caption).downcase.tr(' ', '_')
       end
 
       def preformatted_text
