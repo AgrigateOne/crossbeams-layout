@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 - Grid trees can open collapsed or expanded to any level.
 - Text can be toggled based on an id within the text - rather than only on the id of the wrapper around the text.
+- Link can store the grid-id in the datalist (`data-grid-id`).
 ### Changed
 ### Fixed
 

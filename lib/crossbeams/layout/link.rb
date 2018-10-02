@@ -7,13 +7,14 @@ module Crossbeams
       include PageNode
       attr_reader :text, :url, :style, :behaviour, :css_class
 
-      def initialize(options)
+      def initialize(options) # rubocop:disable Metrics/CyclomaticComplexity
         @text      = options[:text]
         @url       = options[:url]
         raise ArgumentError, 'Crossbeams::Layout::Link requires text and url options' if @text.nil? || @url.nil?
         @style     = options[:style] || :link
         @behaviour = options[:behaviour] || :direct # popup window, popup dialog, modal...
         @css_class = options[:css_class] || ''
+        @grid_id   = options[:grid_id] || ''
         @nodes     = []
       end
 
@@ -36,7 +37,7 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        <a href="#{url}"#{class_strings}#{behaviour_string}>#{render_text}</a>
+        <a href="#{url}"#{class_strings}#{behaviour_string}#{grid_string}>#{render_text}</a>
         HTML
       end
 
@@ -66,6 +67,10 @@ module Crossbeams
         else
           ''
         end
+      end
+
+      def grid_string
+        @grid_id == '' ? '' : %( data-grid-id="#{@grid_id}")
       end
     end
   end

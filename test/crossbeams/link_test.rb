@@ -30,4 +30,12 @@ class Crossbeams::LinkTest < Minitest::Test
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :popup)
     assert_equal '<a href="/" data-popup-dialog="true">ClickMe</a>', renderer.render.strip
   end
+
+  def test_grid
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/')
+    assert_equal '<a href="/">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', grid_id: 'a_grid_id')
+    assert_equal '<a href="/" data-grid-id="a_grid_id">ClickMe</a>', renderer.render.strip
+  end
 end
