@@ -64,6 +64,8 @@ module Crossbeams
       def behaviour_string
         if @behaviour == :popup
           ' data-popup-dialog="true"'
+        elsif @behaviour == :replace_dialog
+          ' data-replace-dialog="true"'
         else
           ''
         end
