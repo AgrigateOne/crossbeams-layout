@@ -10,6 +10,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Grid trees can open collapsed or expanded to any level.
 - Text can be toggled based on an id within the text - rather than only on the id of the wrapper around the text.
 - Link can store the grid-id in the datalist (`data-grid-id`).
+- Label has a new option - `:css_class` - for specifying additional CSS classes.
+- Table has a new option - `:header_captions` - for overriding the captions in the table header.
 ### Changed
 ### Fixed
 

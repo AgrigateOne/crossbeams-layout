@@ -46,7 +46,7 @@ module Crossbeams
             end
           else
             <<-HTML
-              <input type="text" readonly class="cbl-input label-field bg-light-gray" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
+              <input type="text" readonly class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
             HTML
           end
         end

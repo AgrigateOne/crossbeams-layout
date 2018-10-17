@@ -57,8 +57,12 @@ module Crossbeams
         HTML
       end
 
+      def header_translate
+        @header_translate ||= @options[:header_captions] || {}
+      end
+
       def format_columns
-        @columns.map { |c| "<th>#{c}</th>" }.join
+        @columns.map { |c| "<th>#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>" }.join
       end
 
       def strings
