@@ -14,7 +14,9 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Table has a new option - `:header_captions` - for overriding the captions in the table header.
 - Link gets new behaviour - `:replace_dialog`. It should only be set for a link displayed in a dialog. When the link is clicked, the current dialog's contents will be replaced by calling the link's href.
 ### Changed
+- `FieldFactory` renders `date`, `time` and `datetime` as `Input` renderers (don't have to specify subtype in the config).
 ### Fixed
+- Inputs for `date`, `datetime` and `time` handle null values correctly.
 
 ## [0.1.11] - 2018-08-31
 ### Added

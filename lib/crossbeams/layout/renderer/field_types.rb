@@ -7,6 +7,8 @@ module Crossbeams
       class FieldTypes
         BUILT_IN_RENDERERS = {
           checkbox: Renderer::Checkbox,
+          date: Renderer::Input,
+          datetime: Renderer::Input,
           email: Renderer::Input,
           file: Renderer::Input,
           hidden: Renderer::Hidden,
@@ -20,6 +22,7 @@ module Crossbeams
           select: Renderer::Select,
           text: Renderer::Input,
           textarea: Renderer::Textarea,
+          time: Renderer::Input,
           url: Renderer::Input
         }.freeze
       end

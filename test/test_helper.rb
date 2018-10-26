@@ -4,6 +4,7 @@ require 'crossbeams/layout'
 require 'minitest/autorun'
 require 'bigdecimal'
 require 'nokogiri'
+require 'minitest/rg'
 
 class RenderResult
   def initialize(html)
@@ -84,9 +85,8 @@ def simple_input_render(renderer, value, extra_configs = {})
   page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(the_test_field: value) })
   field_name = :the_test_field
   field_config = { renderer: renderer }.merge(extra_configs)
-  input = Crossbeams::Layout::Renderer::Input.new
-  input.configure(field_name, field_config, page_config)
-  input.render
+  factory = Crossbeams::Layout::Renderer::FieldFactory.new(field_name, field_config, page_config)
+  factory.render
 end
 
 def simple_select_render(value, list, extra_configs = {})
