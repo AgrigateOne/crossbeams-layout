@@ -76,18 +76,16 @@ module Crossbeams
         end
 
         DATE_VALUE_GETTERS = {
-          date: ->(d) { d.strftime('%Y-%m-%d') },
-          time: ->(t) { t.strftime('%H:%M') },
-          month: ->(d) { d.strftime('%Y-%m') }
+          date: ->(d) { d.nil? ? '' : d.strftime('%Y-%m-%d') },
+          time: ->(t) { t.nil? ? '' : t.strftime('%H:%M') },
+          month: ->(d) { d.nil? ? '' : d.strftime('%Y-%m') },
+          datetime_with_seconds: ->(t) { t.nil? ? '' : t.strftime('%Y-%m-%dT%H:%M:%S.%L') },
+          datetime: ->(t) { t.nil? ? '' : t.strftime('%Y-%m-%dT%H:%M') }
         }.freeze
 
         def date_related_value_getter
-          @value_getter = if subtype == :datetime
-                            if @field_config[:with_seconds] && @field_config[:with_seconds] == true
-                              ->(t) { t.strftime('%Y-%m-%dT%H:%M:%S.%L') }
-                            else
-                              ->(t) { t.strftime('%Y-%m-%dT%H:%M') }
-                            end
+          @value_getter = if subtype == :datetime && @field_config[:with_seconds] && @field_config[:with_seconds] == true
+                            DATE_VALUE_GETTERS[:datetime_with_seconds]
                           else
                             DATE_VALUE_GETTERS[subtype]
                           end

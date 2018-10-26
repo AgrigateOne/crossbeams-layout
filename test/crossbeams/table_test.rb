@@ -12,7 +12,7 @@ class Crossbeams::TableTest < Minitest::Test
     assert_equal [{ a: 1, b: 2 }, { a: 3, b: 4 }], renderer.rows
     assert_equal [:a, :b], renderer.columns
     assert renderer.options[:has_columns]
-    assert renderer.render.include?('<th>a</th>')
+    assert renderer.render.include?('<th>A</th>')
     assert renderer.render.match?(/<td\s*>1<\/td>/)
   end
 
