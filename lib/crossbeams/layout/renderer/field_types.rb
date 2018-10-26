@@ -11,6 +11,7 @@ module Crossbeams
           file: Renderer::Input,
           hidden: Renderer::Hidden,
           integer: Renderer::Input,
+          input: Renderer::Input,
           label: Renderer::Label,
           list: Renderer::List,
           multi: Renderer::Multi,
