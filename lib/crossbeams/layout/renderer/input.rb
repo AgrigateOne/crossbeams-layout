@@ -76,23 +76,23 @@ module Crossbeams
         end
 
         DATE_VALUE_GETTERS = {
-          date: lambda(d) {
+          date: lambda { |d|
             return '' if d.nil?
             d.is_a?(String) ? d : d.strftime('%Y-%m-%d')
           },
-          time: lambda(t) {
+          time: lambda { |t|
             return '' if t.nil?
             t.is_a?(String) ? t : t.strftime('%H:%M')
           },
-          month: lambda(d) {
+          month: lambda { |d|
             return '' if d.nil?
             d.is_a?(String) ? d : d.strftime('%Y-%m')
           },
-          datetime_with_seconds: lambda(t) {
+          datetime_with_seconds: lambda { |t|
             return '' if t.nil?
             t.is_a?(String) ? t : t.strftime('%Y-%m-%dT%H:%M:%S.%L')
           },
-          datetime: lambda(t) {
+          datetime: lambda { |t|
             return '' if t.nil?
             t.is_a?(String) ? t : t.strftime('%Y-%m-%dT%H:%M')
           }
