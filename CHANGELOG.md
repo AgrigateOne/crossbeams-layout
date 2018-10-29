@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+- Return String value for input if a date/time is passed in as a string.
 
 ## [0.1.12] - 2018-10-26
 ### Added

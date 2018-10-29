@@ -76,11 +76,26 @@ module Crossbeams
         end
 
         DATE_VALUE_GETTERS = {
-          date: ->(d) { d.nil? ? '' : d.strftime('%Y-%m-%d') },
-          time: ->(t) { t.nil? ? '' : t.strftime('%H:%M') },
-          month: ->(d) { d.nil? ? '' : d.strftime('%Y-%m') },
-          datetime_with_seconds: ->(t) { t.nil? ? '' : t.strftime('%Y-%m-%dT%H:%M:%S.%L') },
-          datetime: ->(t) { t.nil? ? '' : t.strftime('%Y-%m-%dT%H:%M') }
+          date: lambda(d) {
+            return '' if d.nil?
+            d.is_a?(String) ? d : d.strftime('%Y-%m-%d')
+          },
+          time: lambda(t) {
+            return '' if t.nil?
+            t.is_a?(String) ? t : t.strftime('%H:%M')
+          },
+          month: lambda(d) {
+            return '' if d.nil?
+            d.is_a?(String) ? d : d.strftime('%Y-%m')
+          },
+          datetime_with_seconds: lambda(t) {
+            return '' if t.nil?
+            t.is_a?(String) ? t : t.strftime('%Y-%m-%dT%H:%M:%S.%L')
+          },
+          datetime: lambda(t) {
+            return '' if t.nil?
+            t.is_a?(String) ? t : t.strftime('%Y-%m-%dT%H:%M')
+          }
         }.freeze
 
         def date_related_value_getter
