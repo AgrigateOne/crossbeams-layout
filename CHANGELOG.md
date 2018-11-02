@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Table renderer can render pivoted (columns become rows).
 ### Changed
 ### Fixed
 - Return String value for input if a date/time is passed in as a string.

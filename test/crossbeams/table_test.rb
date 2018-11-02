@@ -49,4 +49,11 @@ class Crossbeams::TableTest < Minitest::Test
     renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, cell_classes: { a: ->(a) { a && a > 1 ? 'red' : '' }})
     assert renderer.render.match?(/<td\s+class='red'>3<\/td>/)
   end
+
+  def test_pivot
+    rows = [{ a: 1, b: 2 }, { a: 3, b: 4 }]
+    cols = [:a, :b]
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, pivot: true)
+    assert renderer.render.match?(/<th align='right'>A<\/th><td\s+>1<\/td>/)
+  end
 end

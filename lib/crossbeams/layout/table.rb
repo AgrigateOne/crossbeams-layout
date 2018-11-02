@@ -35,6 +35,26 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         return '' if rows.empty?
+        if options[:pivot] && @options[:pivot] == true
+          pivot_render
+        else
+          standard_render
+        end
+      end
+
+      private
+
+      def head
+        <<~HTML
+          <thead>
+            <tr>
+              #{format_columns.join}
+            </tr>
+          </thead>
+        HTML
+      end
+
+      def standard_render
         <<~HTML
           <table class="thinbordertable">
             #{head if @options[:has_columns]}
@@ -45,16 +65,38 @@ module Crossbeams
         HTML
       end
 
-      private
+      def pivot_render
+        raise ArgumentError, 'Pivot must have column headers' unless @options[:has_columns]
 
-      def head
+        elements = @columns.map { |c| [c, @rows.map { |row| row[c] }].flatten }
         <<~HTML
-          <thead>
-            <tr>
-              #{format_columns}
-            </tr>
-          </thead>
+          <table class="thinbordertable">
+            <tbody>
+              #{pivot_strings(elements).join("\n")}
+            </tbody>
+          </table>
         HTML
+      end
+
+      def pivot_strings(elements)
+        out = []
+        elements.each do |elem|
+          out << pivot_row(elem).join
+        end
+        out
+      end
+
+      def pivot_row(elem)
+        this_row = ["<tr class='hover-row'>"]
+        elem.each_with_index do |e, i|
+          col = e if i.zero?
+          this_row << if i.zero?
+                        "<th align='right'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>"
+                      else
+                        "<td#{attr_for_col(col)} #{classes_for_col(col, e)}>#{e || '&nbsp;'}</td>"
+                      end
+        end
+        this_row << '</tr>'
       end
 
       def header_translate
@@ -62,7 +104,7 @@ module Crossbeams
       end
 
       def format_columns
-        @columns.map { |c| "<th>#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>" }.join
+        @columns.map { |c| "<th>#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>" }
       end
 
       def strings
