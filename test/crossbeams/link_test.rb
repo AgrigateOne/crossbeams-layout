@@ -38,4 +38,24 @@ class Crossbeams::LinkTest < Minitest::Test
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', grid_id: 'a_grid_id')
     assert_equal '<a href="/" data-grid-id="a_grid_id">ClickMe</a>', renderer.render.strip
   end
+
+  def test_prompt
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/')
+    assert_equal '<a href="/">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: 'Is this OK?')
+    assert_equal '<a href="/" data-prompt="Is this OK?">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: true)
+    assert_equal '<a href="/" data-prompt="Are you sure?">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: false)
+    assert_equal '<a href="/">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: 'y')
+    assert_equal '<a href="/" data-prompt="Are you sure?">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: 'Y')
+    assert_equal '<a href="/" data-prompt="Are you sure?">ClickMe</a>', renderer.render.strip
+  end
 end

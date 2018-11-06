@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Table renderer can render pivoted (columns become rows).
+- A link can have a prompt which will force the user to confirm their action or cancel it.
 ### Changed
 ### Fixed
 - Return String value for input if a date/time is passed in as a string.

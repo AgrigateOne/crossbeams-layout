@@ -15,6 +15,7 @@ module Crossbeams
         @behaviour = options[:behaviour] || :direct # popup window, popup dialog, modal...
         @css_class = options[:css_class] || ''
         @grid_id   = options[:grid_id] || ''
+        @prompt    = options[:prompt]
         @nodes     = []
       end
 
@@ -37,7 +38,7 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        <a href="#{url}"#{class_strings}#{behaviour_string}#{grid_string}>#{render_text}</a>
+        <a href="#{url}"#{class_strings}#{behaviour_string}#{grid_string}#{prompt_string}>#{render_text}</a>
         HTML
       end
 
@@ -73,6 +74,15 @@ module Crossbeams
 
       def grid_string
         @grid_id == '' ? '' : %( data-grid-id="#{@grid_id}")
+      end
+
+      def prompt_string
+        return '' if @prompt.nil? || @prompt == false
+        if @prompt == true || @prompt.casecmp('Y').zero?
+          ' data-prompt="Are you sure?"'
+        else
+          " data-prompt=\"#{@prompt}\""
+        end
       end
     end
   end
