@@ -9,7 +9,9 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 - Table renderer can render pivoted (columns become rows).
 - A link can have a prompt which will force the user to confirm their action or cancel it.
+- An input can validate ip v4 format ip addresses.
 ### Changed
+- List and SortableList get `add_csrf` methods that are noop.
 ### Fixed
 - Return String value for input if a date/time is passed in as a string.
 

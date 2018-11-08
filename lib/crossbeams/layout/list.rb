@@ -21,6 +21,10 @@ module Crossbeams
         false
       end
 
+      def add_csrf_tag(tag)
+        # noop
+      end
+
       # Is this node hidden?
       #
       # @return [boolean] - true if it should be rendered as hidden, else false.

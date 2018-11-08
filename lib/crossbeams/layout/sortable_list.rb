@@ -30,6 +30,10 @@ module Crossbeams
         false
       end
 
+      def add_csrf_tag(tag)
+        # noop
+      end
+
       # Render this node as HTML link.
       #
       # @return [string] - HTML representation of this node.
