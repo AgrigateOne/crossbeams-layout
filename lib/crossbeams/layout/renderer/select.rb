@@ -35,12 +35,19 @@ module Crossbeams
         def render_string(attrs, sel, disabled_option)
           <<-HTML
           <div class="#{div_class}">#{hint_text}
+            #{backup_empty_select}
             <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
             #{make_prompt}#{build_options(@field_config[:options], sel, disabled_option)}
             </select>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
           HTML
+        end
+
+        def backup_empty_select
+          # Hidden blank value to be submitted as a param if the Selectr box is cleared.
+          return '' unless @searchable
+          %(<input name="#{@page_config.name}[#{@field_name}]" type="hidden" value="">)
         end
 
         def make_prompt

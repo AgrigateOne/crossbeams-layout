@@ -12,6 +12,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - An input can validate ip v4 format ip addresses.
 ### Changed
 - List and SortableList get `add_csrf` methods that are noop.
+- Selectr select will send an empty parameter when options are cleared.
 ### Fixed
 - Return String value for input if a date/time is passed in as a string.
 
