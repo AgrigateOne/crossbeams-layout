@@ -8,8 +8,11 @@ class Crossbeams::LinkTest < Minitest::Test
 
   def test_invalid_args
     assert_raises(ArgumentError) { Crossbeams::Layout::Link.new }
-    assert_raises(ArgumentError) { Crossbeams::Layout::Link.new(text: 'ClickMe') }
-    assert_raises(ArgumentError) { Crossbeams::Layout::Link.new(url: '/') }
+    assert_raises(KeyError) { Crossbeams::Layout::Link.new(text: 'ClickMe') }
+    assert_raises(KeyError) { Crossbeams::Layout::Link.new(url: '/') }
+
+    assert_raises(ArgumentError) { Crossbeams::Layout::Link.new(url: '/', text: 'ClickMe', behaviour: :popup, loading_window: true) }
+    assert_raises(ArgumentError) { Crossbeams::Layout::Link.new(url: '/', text: 'ClickMe', behaviour: :replace_dialog, loading_window: true) }
   end
 
   def test_styles
@@ -57,5 +60,10 @@ class Crossbeams::LinkTest < Minitest::Test
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: 'Y')
     assert_equal '<a href="/" data-prompt="Are you sure?">ClickMe</a>', renderer.render.strip
+  end
+
+  def test_loading_window
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', loading_window: 'Y')
+    assert_equal '<a href="/" data-loading-window="true">ClickMe</a>', renderer.render.strip
   end
 end

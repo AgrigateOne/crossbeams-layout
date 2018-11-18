@@ -7,16 +7,17 @@ module Crossbeams
       include PageNode
       attr_reader :text, :url, :style, :behaviour, :css_class
 
-      def initialize(options) # rubocop:disable Metrics/CyclomaticComplexity
-        @text      = options[:text]
-        @url       = options[:url]
-        raise ArgumentError, 'Crossbeams::Layout::Link requires text and url options' if @text.nil? || @url.nil?
+      def initialize(options)
+        @text      = options.fetch(:text)
+        @url       = options.fetch(:url)
         @style     = options[:style] || :link
         @behaviour = options[:behaviour] || :direct # popup window, popup dialog, modal...
         @css_class = options[:css_class] || ''
         @grid_id   = options[:grid_id] || ''
         @prompt    = options[:prompt]
+        @window    = options[:loading_window]
         @nodes     = []
+        assert_options_ok!
       end
 
       # Is this node invisible?
@@ -38,11 +39,16 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        <a href="#{url}"#{class_strings}#{behaviour_string}#{grid_string}#{prompt_string}>#{render_text}</a>
+        <a href="#{url}"#{class_strings}#{behaviour_string}#{grid_string}#{prompt_string}#{loading_window_string}>#{render_text}</a>
         HTML
       end
 
       private
+
+      def assert_options_ok!
+        return unless @window
+        raise ArgumentError, 'Crossbeams::Layout::Link you cannot have a loading window that is also a popup' if %i[popup replace_dialog].include?(@behaviour)
+      end
 
       def class_strings
         if style == :button
@@ -83,6 +89,11 @@ module Crossbeams
         else
           " data-prompt=\"#{@prompt}\""
         end
+      end
+
+      def loading_window_string
+        return '' if @window.nil? || @window == false
+        ' data-loading-window="true"'
       end
     end
   end

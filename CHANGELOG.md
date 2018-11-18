@@ -10,6 +10,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Table renderer can render pivoted (columns become rows).
 - A link can have a prompt which will force the user to confirm their action or cancel it.
 - An input can validate ip v4 format ip addresses.
+- A link can load in a new window if the `loading_window` option is set.
 ### Changed
 - List and SortableList get `add_csrf` methods that are noop.
 - Selectr select will send an empty parameter when options are cleared.
