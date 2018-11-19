@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.1.13] - 2018-11-19
+### Added
 - Table renderer can render pivoted (columns become rows).
 - A link can have a prompt which will force the user to confirm their action or cancel it.
 - An input can validate ip v4 format ip addresses.
