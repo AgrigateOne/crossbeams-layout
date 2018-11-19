@@ -62,7 +62,9 @@ module Crossbeams
 
       def render_text
         if style == :back_button
-          %(<svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><polygon points="3.828 9 9.899 2.929 8.485 1.515 0 10 .707 10.707 8.485 18.485 9.899 17.071 3.828 11 20 11 20 9 3.828 9"/></svg> #{text})
+          "#{Icon.new(:back).render} #{text}"
+        elsif @window
+          "#{Icon.new(:newwindow).render} #{text}"
         else
           text
         end
@@ -93,7 +95,7 @@ module Crossbeams
 
       def loading_window_string
         return '' if @window.nil? || @window == false
-        ' data-loading-window="true"'
+        ' data-loading-window="true" title="opens in a new window"'
       end
     end
   end
