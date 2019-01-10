@@ -31,7 +31,9 @@ module Crossbeams
         <<-HTML
           <section id="section-#{sequence}" class="crossbeams_layout">
           <h2>#{caption}</h2>
-          <div id="crossbeams_callback_target_#{sequence}" class="content-target content-loading"></div>
+          <div id="crossbeams_callback_target_#{sequence}" class="content-target content-loading">
+            <div></div><div></div><div></div>
+          </div>
           </section>
           <script>
             document.addEventListener('DOMContentLoaded', () => {

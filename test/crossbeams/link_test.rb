@@ -23,7 +23,7 @@ class Crossbeams::LinkTest < Minitest::Test
     assert_equal '<a href="/" class="f6 link dim br2 ph3 pv2 dib white bg-silver ">ClickMe</a>', renderer.render.strip
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :back_button)
-    assert renderer.render.include?('<svg class="cbl-icon"')
+    assert_match(/<svg class=["|']cbl-icon["|']/, renderer.render)
   end
 
   def test_behaviour
@@ -63,7 +63,8 @@ class Crossbeams::LinkTest < Minitest::Test
   end
 
   def test_loading_window
+    match_str = '<a href="/" data-loading-window="true"'
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', loading_window: 'Y')
-    assert_equal '<a href="/" data-loading-window="true">ClickMe</a>', renderer.render.strip
+    assert_equal match_str, renderer.render.strip[0, match_str.length]
   end
 end
