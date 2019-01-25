@@ -102,6 +102,10 @@ module Crossbeams
         @nodes << Text.new(page_config, text, opts)
       end
 
+      def add_notice(text, opts = {})
+        @nodes << Notice.new(page_config, text, opts)
+      end
+
       def add_diff(key)
         @nodes << Diff.new(page_config, key)
       end
