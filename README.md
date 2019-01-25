@@ -1,8 +1,6 @@
 # Crossbeams::Layout
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/crossbeams/layout`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A DSL for designing an HTML page layout. Build up the structure of the page in Ruby code and then call `render` to generate an HTML string.
 
 ## Installation
 
@@ -25,7 +23,16 @@ Or install it yourself as:
 Basic example:
 
 ```ruby
-layout = Crossbeams::Layout::Page.build(rules) do |page|
+
+ui_rule = {
+  fields: {
+    a_field: { renderer: :select, options: ['Value X', 'Values Y'], required: true }
+  },
+  form_object: OpenStruct.new(a_field: 'Value X'),
+  name: 'formname'
+}
+
+layout = Crossbeams::Layout::Page.build(ui_rule) do |page|
   page.section do |section|
     section.add_caption 'Main'
     section.add_text 'An explanation'
