@@ -3,7 +3,7 @@
 module Crossbeams
   module Layout
     # A table of data.
-    class Table
+    class Table # rubocop:disable Metrics/ClassLength
       include PageNode
       attr_reader :columns, :rows, :options
 

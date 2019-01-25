@@ -135,6 +135,12 @@ module Crossbeams
         @nodes << Text.new(page_config, text, opts)
       end
 
+      def add_notice(text, opts = {})
+        @no_row = true
+        raise 'Cannot mix row and text' if got_row
+        @nodes << Notice.new(page_config, text, opts)
+      end
+
       def add_list(items, options = {})
         @nodes << List.new(page_config, items, options)
       end

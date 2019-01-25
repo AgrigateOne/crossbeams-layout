@@ -60,6 +60,10 @@ module Crossbeams
         @nodes << Text.new(page_config, text, opts)
       end
 
+      def add_notice(text, opts = {})
+        @nodes << Notice.new(page_config, text, opts)
+      end
+
       # Add a table to the section.
       def add_table(rows, columns, options = {})
         @nodes << Table.new(page_config, rows, columns, options)
