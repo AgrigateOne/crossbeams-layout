@@ -7,9 +7,12 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- New control: `Notice`. Use it to display highlighted text as a warning, error, info or success notice.
 ### Changed
 ### Fixed
+
+## [0.1.14] - 2019-01-25
+### Added
+- New control: `Notice`. Use it to display highlighted text as a warning, error, info or success notice.
 
 ## [0.1.13] - 2018-11-19
 ### Added
