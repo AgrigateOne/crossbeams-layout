@@ -22,7 +22,39 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Basic example:
+
+```ruby
+layout = Crossbeams::Layout::Page.build(rules) do |page|
+  page.section do |section|
+    section.add_caption 'Main'
+    section.add_text 'An explanation'
+    section.show_border!
+  end
+
+  page.form_object ui_rule.form_object
+  page.form_values form_values
+  page.form_errors form_errors
+  page.form do |form|
+    form.action '/path/to/save_form'
+    form.remote!
+    form.add_field :a_field
+  end
+
+  page.row do |row|
+    row.col do |col|
+      col.add_text 'Some minor heading', wrapper: :h2
+    end
+    row.col do |col|
+      col.add_text 'Some other text', wrapper: :p
+    end
+  end
+end
+
+# In a view:
+layout.add_csrf_tag(csrf_tag) # (if csrf used in forms)
+layout.render
+```
 
 ## Development
 
