@@ -68,7 +68,7 @@ module Crossbeams
         @inline = true
       end
 
-      def caption(value, level: 1)
+      def caption(value, level: 2)
         @form_caption = value
         raise ArgumentError, 'Caption level can only be 1, 2, 3 or 4' unless [1, 2, 3, 4].include?(level)
         @caption_level = level

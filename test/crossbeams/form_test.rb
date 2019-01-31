@@ -21,23 +21,23 @@ class Crossbeams::Layout::FormTest < Minitest::Test
     form = new_form
     assert_nil form.form_caption
     render = form.render
-    refute_match '<h1>', render
+    refute_match '<h2>', render
 
     form.caption 'A Caption'
     assert_equal 'A Caption', form.form_caption
 
     render = form.render
-    assert_match '<h1>A Caption</h1>', render
-
-    form.caption 'A Caption', level: 2
-    render = form.render
     assert_match '<h2>A Caption</h2>', render
+
+    form.caption 'A Caption', level: 1
+    render = form.render
+    assert_match '<h1>A Caption</h1>', render
 
     form.caption 'A Caption'
     form.remote!
     assert form.remote_form
     render = form.render
-    refute_match '<h1>A Caption</h1>', render
+    refute_match '<h2>A Caption</h2>', render
 
     assert_raises(ArgumentError) { form.caption 'X', level: 'a' }
     assert_raises(ArgumentError) { form.caption 'X', level: 5 }
