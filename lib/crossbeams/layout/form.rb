@@ -6,9 +6,9 @@ module Crossbeams
     class Form # rubocop:disable Metrics/ClassLength
       attr_reader :sequence, :nodes, :page_config, :form_action, :form_method,
                   :got_row, :no_row, :csrf_tag, :remote_form, :form_config,
-                  :multipart_form
+                  :multipart_form, :form_caption, :caption_level
 
-      def initialize(page_config, section_sequence, sequence)
+      def initialize(page_config, section_sequence, sequence) # rubocop:disable Metrics/AbcSize
         @section_sequence = section_sequence
         @sequence         = sequence
         @form_action      = '/' # work out from page_config.object?
@@ -26,6 +26,7 @@ module Crossbeams
         @csrf_tag         = nil
         @submit_caption   = 'Submit'
         @disable_caption  = 'Submitting'
+        @form_caption     = nil
       end
 
       def form_config=(value)
@@ -65,6 +66,12 @@ module Crossbeams
       # @returns [void]
       def inline!
         @inline = true
+      end
+
+      def caption(value, level: 1)
+        @form_caption = value
+        raise ArgumentError, 'Caption level can only be 1, 2, 3 or 4' unless [1, 2, 3, 4].include?(level)
+        @caption_level = level
       end
 
       def invisible?
@@ -185,7 +192,7 @@ module Crossbeams
                           HTML
                         end
         <<~HTML
-          <form #{render_id}class="crossbeams-form" action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
+          #{render_caption}<form #{render_id}class="crossbeams-form" action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
             #{error_head}
             #{csrf_tag}
             #{form_method_str}
@@ -196,6 +203,11 @@ module Crossbeams
       end
 
       private
+
+      def render_caption
+        return '' if remote_form || form_caption.nil?
+        "<h#{caption_level}>#{form_caption}</h#{caption_level}>\n"
+      end
 
       def render_id
         @dom_id.nil? ? '' : "id='#{@dom_id}' "

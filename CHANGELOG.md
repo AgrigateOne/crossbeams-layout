@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Form can render a caption above non-remote forms.
 ### Changed
 ### Fixed
 
