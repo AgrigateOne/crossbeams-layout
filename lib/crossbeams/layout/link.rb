@@ -53,6 +53,8 @@ module Crossbeams
       def class_strings
         if style == :button
           %( class="f6 link dim br2 ph3 pv2 dib white bg-silver #{css_class}")
+        elsif style == :small_button
+          %( class="link dim br1 ph2 dib white bg-silver #{css_class}")
         elsif style == :back_button
           %( class="f6 link dim br2 ph3 pv2 dib white bg-dark-blue #{css_class}")
         else

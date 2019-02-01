@@ -10,6 +10,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Form can render a caption above non-remote forms.
 - Table can render a caption.
 - Table can be rendered with a top margin which can be in the range 0 to 7.
+- Link can be styled as a small button.
 ### Changed
 ### Fixed
 
