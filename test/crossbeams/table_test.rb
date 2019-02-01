@@ -56,4 +56,24 @@ class Crossbeams::TableTest < Minitest::Test
     renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, pivot: true)
     assert renderer.render.match?(/<th align='right'>A<\/th><td\s+>1<\/td>/)
   end
+
+  def test_caption
+    rows = [{ a: 1, b: 2 }, { a: 3, b: 4 }]
+    cols = [:a, :b]
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, caption: 'Something')
+    assert renderer.render.include?('<caption>Something</caption>')
+  end
+
+  def test_top_margin
+    rows = [{ a: 1, b: 2 }, { a: 3, b: 4 }]
+    cols = [:a, :b]
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, top_margin: 2)
+    assert renderer.render.include?('class="thinbordertable mt2"')
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, top_margin: 6)
+    assert renderer.render.include?('class="thinbordertable mt6"')
+
+    assert_raises(ArgumentError) { Crossbeams::Layout::Table.new(page_config, rows, cols, top_margin: 8).render }
+    assert_raises(ArgumentError) { Crossbeams::Layout::Table.new(page_config, rows, cols, top_margin: -1).render }
+    assert_raises(ArgumentError) { Crossbeams::Layout::Table.new(page_config, rows, cols, top_margin: '2').render }
+  end
 end

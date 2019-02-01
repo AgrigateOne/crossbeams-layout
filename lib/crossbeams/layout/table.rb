@@ -56,7 +56,7 @@ module Crossbeams
 
       def standard_render
         <<~HTML
-          <table class="thinbordertable">
+          <table class="thinbordertable#{top_margin}">#{table_caption}
             #{head if @options[:has_columns]}
             <tbody>
               #{strings.join("\n")}
@@ -65,12 +65,23 @@ module Crossbeams
         HTML
       end
 
+      def top_margin
+        return '' unless options[:top_margin]
+        raise ArgumentError, 'Top margin must be in the range 0..7' unless (0..7).cover?(options[:top_margin])
+        " mt#{options[:top_margin]}"
+      end
+
+      def table_caption
+        return '' unless options[:caption]
+        "\n<caption>#{options[:caption]}</caption>"
+      end
+
       def pivot_render
         raise ArgumentError, 'Pivot must have column headers' unless @options[:has_columns]
 
         elements = @columns.map { |c| [c, @rows.map { |row| row[c] }].flatten }
         <<~HTML
-          <table class="thinbordertable">
+          <table class="thinbordertable#{top_margin}">#{table_caption}
             <tbody>
               #{pivot_strings(elements).join("\n")}
             </tbody>
