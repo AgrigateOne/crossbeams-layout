@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.1.15] - 2019-02-04
+### Added
 - The div surrounding an input field gets a DOM id (the field's id with "_wrapper" appended). Useful to hide/show an input and its label.
 - Form can render a caption above non-remote forms.
 - Table can render a caption.
@@ -14,7 +19,6 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Link can be styled as a small button.
 ### Changed
 - Checkbox and Multi can be disabled.
-### Fixed
 
 ## [0.1.14] - 2019-01-25
 ### Added
