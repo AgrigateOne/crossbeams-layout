@@ -12,13 +12,14 @@ module Crossbeams
           @caption      = field_config[:caption] || present_field_as_label(field_name)
         end
 
-        def render
+        def render # rubocop:disable Metrics/AbcSize
           attrs = []
           attrs << behaviours
+          attrs << 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
           <<-HTML
-          <div class="#{div_class}">#{hint_text}
-            <input name="#{@page_config.name}[#{@field_name}]" type="hidden" value="f">
-            <input type="checkbox" value="t" #{checked} name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attrs.join(' ')}>
+          <div #{wrapper_id} class="#{div_class}">#{hint_text}
+            <input #{name_attribute} type="hidden" value="f">
+            <input type="checkbox" value="t" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}</label>
             <div class="order-1">#{hint_trigger}</div>
           </div>

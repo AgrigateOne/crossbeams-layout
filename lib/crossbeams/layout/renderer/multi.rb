@@ -27,9 +27,9 @@ module Crossbeams
 
         def render_string(attrs, sel)
           <<-HTML
-          <div class="#{div_class}">#{hint_text}
+          <div #{wrapper_id} class="#{div_class}">#{hint_text}
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
-            <select #{attrs.join(' ')} name="#{@page_config.name}[#{@field_name}][]" id="#{@page_config.name}_#{@field_name}" multiple="multiple" data-multi="true"#{required_str}>
+            <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple="multiple" data-multi="true"#{required_str}#{disabled_str}>
             #{make_prompt}#{make_options(Array(@field_config[:options]), sel)}
             </select>
           </div>
@@ -38,6 +38,10 @@ module Crossbeams
 
         def required_str
           @field_config[:required] ? ' required' : ''
+        end
+
+        def disabled_str
+          @field_config[:disabled] ? ' disabled' : ''
         end
 
         def make_prompt

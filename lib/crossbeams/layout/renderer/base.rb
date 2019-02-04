@@ -5,10 +5,13 @@ module Crossbeams
     module Renderer
       # Base class for all field renderers.
       class Base
+        # Create reasonable label text from a field name.
         def present_field_as_label(field)
           field.to_s.sub(/_id$/, '').split('_').map(&:capitalize).join(' ')
         end
 
+        # The class for the field wrapper.
+        # (the div surrounding label and input is the wrapper)
         def div_class
           if @page_config.form_errors && @page_config.form_errors[@field_name]
             'crossbeams-field crossbeams-div-error bg-washed-red'
@@ -17,10 +20,42 @@ module Crossbeams
           end
         end
 
+        # The value for an input's DOM id.
+        def id_base
+          "#{@page_config.name}_#{@field_name}"
+        end
+
+        # The element's id attribute.
+        def field_id
+          %(id="#{id_base}")
+        end
+
+        # The field wrapper div's id attribute.
+        def wrapper_id
+          %(id="#{id_base}_field_wrapper")
+        end
+
+        # The value for an input's DOM name.
+        def name_base
+          %(#{@page_config.name}[#{@field_name}])
+        end
+
+        # The element's name attribute.
+        def name_attribute
+          %(name="#{name_base}")
+        end
+
+        # The element's name attribute with array suffix.
+        def name_attribute_multi
+          %(name="#{name_base}[]")
+        end
+
+        # Styling for a field in error. Returns nil if the field is not in error.
         def error_state
           "<span class='brown crossbeams-form-error'><br>#{@page_config.form_errors[@field_name].compact.join('; ')}</span>" if @page_config.form_errors && @page_config.form_errors[@field_name]
         end
 
+        # Render hint text associated with the field.
         def hint_text
           return '' unless @field_config[:hint]
           <<~HTML
@@ -30,6 +65,7 @@ module Crossbeams
           HTML
         end
 
+        # Render the icon to be clicked to display hint text.
         def hint_trigger
           return '' unless @field_config[:hint]
           Icon.render(:question,
@@ -40,6 +76,7 @@ module Crossbeams
                       ])
         end
 
+        # Return behaviour rules for rendering.
         def behaviours
           rules = @page_config.options[:behaviours]
           return nil if rules.nil?
