@@ -20,7 +20,7 @@ module Crossbeams
             value = value.to_s('F') if value.is_a?(BigDecimal)
           end
           <<-HTML
-          <div class="crossbeams-field">#{hint_text}
+          <div #{wrapper_id} class="crossbeams-field">#{hint_text}
             #{render_field(value)}
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{hint_trigger}</label>
           </div>
@@ -46,7 +46,7 @@ module Crossbeams
             end
           else
             <<-HTML
-              <input type="text" readonly class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}">
+              <input type="text" readonly class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id}>
             HTML
           end
         end

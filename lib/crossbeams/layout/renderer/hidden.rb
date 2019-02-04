@@ -14,7 +14,7 @@ module Crossbeams
 
         def render
           <<-HTML
-            <input type="hidden" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" />
+            <input type="hidden" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} />
           HTML
         end
 

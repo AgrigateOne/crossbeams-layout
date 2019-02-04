@@ -16,8 +16,8 @@ module Crossbeams
           attrs = [] # For class, prompt etc...
           attrs << "class=\"cbl-input #{@field_config[:class]}\""
           <<-HTML
-          <div class="#{div_class}">#{hint_text}
-            <ol #{attrs.join(' ')} id="#{@page_config.name}_#{@field_name}">
+          <div #{wrapper_id} class="#{div_class}">#{hint_text}
+            <ol #{attrs.join(' ')} #{field_id}>
             #{item_renders}
             </ol>
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>

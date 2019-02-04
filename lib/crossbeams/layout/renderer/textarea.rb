@@ -12,13 +12,13 @@ module Crossbeams
           @caption      = field_config[:caption] || present_field_as_label(field_name)
         end
 
-        def render
+        def render # rubocop:disable Metrics/AbcSize
           cols = @field_config[:cols] || 20
           rows = @field_config[:rows] || 10
 
           <<~HTML
-            <div class="#{div_class}">#{hint_text}
-              <textarea name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>
+            <div #{wrapper_id} class="#{div_class}">#{hint_text}
+              <textarea #{name_attribute} #{field_id} #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>
               <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
             </div>
           HTML

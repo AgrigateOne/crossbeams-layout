@@ -12,13 +12,13 @@ module Crossbeams
           @caption      = field_config[:caption] || present_field_as_label(field_name)
         end
 
-        def render
+        def render # rubocop:disable Metrics/AbcSize
           datalist = build_datalist
           date_related_value_getter
 
           <<-HTML
-          <div class="#{div_class}">#{hint_text}#{copy_prefix}
-            <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" name="#{@page_config.name}[#{@field_name}]" id="#{@page_config.name}_#{@field_name}" #{attr_list(datalist).join(' ')}>#{copy_suffix}
+          <div #{wrapper_id} class="#{div_class}">#{hint_text}#{copy_prefix}
+            <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
             #{datalist}
           </div>
@@ -34,8 +34,8 @@ module Crossbeams
 
         def copy_suffix
           return '' unless @field_config[:copy_to_clipboard]
-          %(<button type="button" id="#{@page_config.name}_#{@field_name}_clip" class="cbl-clipcopy" data-clipboard="copy" title="Copy to clipboard">
-          #{Icon.render(:copy, attrs: ["id='#{@page_config.name}_#{@field_name}_clip_i'", 'data-clipboard="copy"'])}
+          %(<button type="button" id="#{id_base}_clip" class="cbl-clipcopy" data-clipboard="copy" title="Copy to clipboard">
+          #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
             </button></div>)
         end
 
@@ -43,7 +43,7 @@ module Crossbeams
           @field_config[:subtype] || @field_config[:renderer]
         end
 
-        def input_type
+        def input_type # rubocop:disable Metrics/CyclomaticComplexity
           case subtype
           when :integer, :numeric, :number
             'number'
@@ -123,7 +123,7 @@ module Crossbeams
             s << "<option value=\"#{opt}\">\n"
           end
           <<-HTML
-          <datalist id="#{@page_config.name}_#{@field_name}_listing">
+          <datalist id="#{id_base}_listing">
             #{s}
           </datalist>
           HTML
