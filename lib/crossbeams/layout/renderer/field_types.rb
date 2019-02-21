@@ -16,6 +16,7 @@ module Crossbeams
           input: Renderer::Input,
           label: Renderer::Label,
           list: Renderer::List,
+          lookup: Renderer::Lookup,
           multi: Renderer::Multi,
           number: Renderer::Input,
           numeric: Renderer::Input,

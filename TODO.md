@@ -1,5 +1,14 @@
 # TODO and ideas
 
+## Styling
+
+- style for button
+- Style for small button
+- etc
+(add these to a Crossbeams::Layout::Styling class)
+  constant Hash with key: class entries
+    render command takes a key and returns the class string(s)
+
 ## Fields
 
 * Fields should be layout nodes only.

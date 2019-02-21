@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- New Lookup control - render a button to link to a grid to lookup a row.
 ### Changed
 ### Fixed
 

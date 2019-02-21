@@ -55,6 +55,38 @@ class RenderResult
     return nil if xp.length.zero?
     xp[0].attribute('value').value
   end
+
+  def lookup_show
+    xp = @doc.xpath('//input[@readonly]')
+    return nil if xp.length.zero?
+    {
+      id: xp[0].attributes['id'].value,
+      name: xp[0].attributes['name'].value,
+      value: xp[0].attributes['value'].value
+    }
+  end
+
+  def lookup_hidden
+    xp = @doc.xpath('//input[@type="hidden"]')
+    return [] if xp.length.zero?
+    xp.map do |item|
+      {
+        id: item.attributes['id'].value,
+        name: item.attributes['name'].value,
+        value: item.attributes['value'].value
+      }
+    end
+  end
+
+  def lookup_button_caption
+    xp = @doc.xpath('//button')
+    xp.children.first.text
+  end
+
+  def lookup_button_data(key)
+    xp = @doc.xpath('//button')
+    xp.attribute("data-#{key}")&.value
+  end
 end
 
 def html_element_attribute_value(html_string, element_type, attribute)
@@ -79,6 +111,22 @@ end
 
 def html_select_labels(html_string, with_optgroup = false)
   RenderResult.new(html_string).option_labels(with_optgroup)
+end
+
+def html_lookup_show(html_string)
+  RenderResult.new(html_string).lookup_show
+end
+
+def html_lookup_hidden(html_string)
+  RenderResult.new(html_string).lookup_hidden
+end
+
+def html_lookup_button_caption(html_string)
+  RenderResult.new(html_string).lookup_button_caption
+end
+
+def html_lookup_button_data(html_string, key)
+  RenderResult.new(html_string).lookup_button_data(key)
 end
 
 def simple_input_render(renderer, value, extra_configs = {})
