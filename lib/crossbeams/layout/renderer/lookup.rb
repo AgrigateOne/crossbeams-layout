@@ -45,7 +45,8 @@ module Crossbeams
         private
 
         def render_param_keys
-          str = param_keys.empty? ? '[]' : %(["#{param_keys.join('","')}"])
+          keys = (param_keys + param_values.keys).uniq
+          str = keys.empty? ? '[]' : %(["#{keys.join('","')}"])
           %(data-param-keys='#{str}')
         end
 
@@ -86,8 +87,8 @@ module Crossbeams
         end
 
         def value(field)
-          res = @page_config.form_values[field] if @page_config.form_values
-          res ||= @page_config.form_object[field]
+          res = @page_config.form_values.to_h[field] if @page_config.form_values
+          res ||= @page_config.form_object.to_h[field]
           res
         end
       end

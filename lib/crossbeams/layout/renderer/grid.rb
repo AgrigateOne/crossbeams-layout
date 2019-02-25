@@ -4,23 +4,19 @@ module Crossbeams
   module Layout
     module Renderer
       # Render a Grid.
-      class Grid < Base
+      class Grid < Base # rubocop:disable Metrics/ClassLength
         def initialize(grid_id, url, caption, options = {})
           @grid_id     = grid_id
           @url         = url
           @caption     = caption
           @nested_grid = options[:nested_grid]
-          @multiselect = options[:is_multiselect]
-          @multiselect_url = options[:multiselect_url]
-          @multiselect_key = options[:multiselect_key]
-          @multiselect_params = options[:multiselect_params]
           @query_string = options[:grid_params].nil? ? nil : options[:grid_params][:query_string]
-          @can_be_cleared = options[:can_be_cleared] || false
-          @multiselect_save_method = options[:multiselect_save_method] || 'http'
           # Prevent a grid height less than 6em, default to 20.
           @height = [(options[:height] || 20), 6].max
           @fit_height = options[:fit_height] || false
           @tree_config = options[:tree]
+          unpack_multiselect_options(options)
+          unpack_lookup_options(options)
         end
 
         def self.header(grid_id, caption, options = {})
@@ -113,15 +109,46 @@ module Crossbeams
 
         private
 
+        def unpack_multiselect_options(options)
+          @multiselect = options[:is_multiselect]
+          @multiselect_url = options[:multiselect_url]
+          @multiselect_key = options[:multiselect_key]
+          @multiselect_params = options[:multiselect_params]
+          @can_be_cleared = options[:can_be_cleared] || false
+          @multiselect_save_method = options[:multiselect_save_method] || 'http'
+        end
+
+        def unpack_lookup_options(options)
+          @lookup_key = options[:lookup_key]
+          @lookup_params = options[:grid_params]
+        end
+
         def url
-          return @url if @multiselect.nil? && @query_string.nil?
+          return @url if @multiselect.nil? && @query_string.nil? && @lookup_key.nil?
           return "#{@url}?#{@query_string}" unless @query_string.nil?
+          if @multiselect
+            multiselect_url
+          else
+            lookup_url
+          end
+        end
+
+        def multiselect_url
           parms = []
           @multiselect_params.each do |k, v|
             parms << "#{k}=#{v}" unless k == :key
           end
           qstr = parms.empty? ? '' : "?#{parms.join('&')}"
           "#{@url}/#{@multiselect_key}#{qstr}"
+        end
+
+        def lookup_url
+          parms = []
+          @lookup_params.each do |k, v|
+            parms << "#{k}=#{v}" unless k == :key
+          end
+          qstr = parms.empty? ? '' : "?#{parms.join('&')}"
+          "#{@url}/#{@id}/#{@lookup_key}#{qstr}"
         end
 
         def denote_nested_grid

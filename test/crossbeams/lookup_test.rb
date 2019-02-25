@@ -141,4 +141,8 @@ class Crossbeams::InputTest < Minitest::Test
     s = lookup.render
     assert_equal '{"some_form_id":"123","another_form_id":"12"}', html_lookup_button_data(s, 'param-values')
   end
+
+  def test_invalid_field
+    skip 'Need to test the rendering with error message'
+  end
 end
