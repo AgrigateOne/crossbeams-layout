@@ -51,8 +51,8 @@ module Crossbeams
         end
 
         # Styling for a field in error. Returns nil if the field is not in error.
-        def error_state
-          "<span class='brown crossbeams-form-error'><br>#{@page_config.form_errors[@field_name].compact.join('; ')}</span>" if @page_config.form_errors && @page_config.form_errors[@field_name]
+        def error_state(newline: true)
+          "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{@page_config.form_errors[@field_name].compact.join('; ')}</span>" if @page_config.form_errors && @page_config.form_errors[@field_name]
         end
 
         # Render hint text associated with the field.

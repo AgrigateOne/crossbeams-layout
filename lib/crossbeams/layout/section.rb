@@ -52,6 +52,13 @@ module Crossbeams
         @nodes << row
       end
 
+      # Define a fold-up in the section.
+      def fold_up
+        fold_up = FoldUp.new(page_config, nodes.length + 1)
+        yield fold_up
+        @nodes << fold_up
+      end
+
       def add_grid(grid_id, url, options = {})
         @nodes << Grid.new(page_config, grid_id, url, options.merge(fit_height: @fit_height))
       end

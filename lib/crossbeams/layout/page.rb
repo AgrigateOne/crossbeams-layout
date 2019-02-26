@@ -73,6 +73,13 @@ module Crossbeams
         @nodes << row
       end
 
+      # Define a fold-up in the page.
+      def fold_up
+        fold_up = FoldUp.new(page_config, nodes.length + 1)
+        yield fold_up
+        @nodes << fold_up
+      end
+
       # Define a form in the page.
       def form
         form = Form.new(page_config, sequence, nodes.length + 1)

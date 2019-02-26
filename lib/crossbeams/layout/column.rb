@@ -37,6 +37,13 @@ module Crossbeams
         new(page_config, :full, nil, nil)
       end
 
+      # Include a fold-up in the column.
+      def fold_up
+        fold_up = FoldUp.new(page_config, nodes.length + 1)
+        yield fold_up
+        @nodes << fold_up
+      end
+
       def add_field(name, options = {})
         @nodes << Field.new(page_config, name, options)
       end

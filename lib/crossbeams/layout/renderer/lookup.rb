@@ -18,27 +18,14 @@ module Crossbeams
           @lookup_key    = field_config.fetch(:lookup_key)
           @param_keys    = Array(field_config[:param_keys])
           @param_values  = field_config[:param_values] || {}
-          # dom_id, lookup_name, conditions_key, hidden_fields, show_field, URL (? could be part of lkp def)
-          # lookup_name, conditions_key, hidden_fields, show_field
         end
-        #
-        # conditions
-        #   standard
-        #   - col:
-        #     op:
-        #     val:
-        # lookup:
-        #   standard
-        #     url: ''
-        #     caption?
-        #     conditions?
 
         def render
           @current_field = @field_name
           <<-HTML
           <div #{wrapper_id} class="#{div_class}">#{hint_text}
             <button data-lookup-name="#{lookup_name}" data-lookup-key="#{lookup_key}" #{render_param_keys} #{render_param_values}>#{@caption}</button>#{render_show_field}#{render_hidden_fields}
-          </div>
+          </div>#{error_state(newline: false)}
           HTML
         end
 
