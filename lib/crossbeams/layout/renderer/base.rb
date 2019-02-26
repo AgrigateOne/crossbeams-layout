@@ -87,16 +87,22 @@ module Crossbeams
             end
           end
           return nil if res.empty?
+          keys = res.map { |r| r[/\A.+=/].chomp('=') }
+          raise ArgumentError, "Renderer: cannot have more than one of the same behaviour for field \"#{@field_name}\"" unless keys.length == keys.uniq.length
           res.join(' ')
         end
 
         private
 
         def build_behaviour(rule)
-          return %(data-change-values="#{@page_config.name}_#{rule[:change_affects]}") if rule[:change_affects]
+          return %(data-change-values="#{split_change_affects(rule[:change_affects])}") if rule[:change_affects]
           return %(data-enable-on-values="#{rule[:enable_on_change].join(',')}") if rule[:enable_on_change]
           return %(data-observe-change=#{build_observe_change(rule[:notify])}) if rule[:notify]
           return %(data-observe-selected=#{build_observe_selected(rule[:populate_from_selected])}) if rule[:populate_from_selected]
+        end
+
+        def split_change_affects(change_affects)
+          change_affects.split(';').map { |c| "#{@page_config.name}_#{c}" }.join(',')
         end
 
         def build_observe_change(notify_rules)
