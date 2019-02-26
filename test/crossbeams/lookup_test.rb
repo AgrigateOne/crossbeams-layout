@@ -143,6 +143,6 @@ class Crossbeams::InputTest < Minitest::Test
   end
 
   def test_invalid_field
-    skip 'Need to test the rendering with error message'
+    skip 'Need to test the rendering when highlighted with error message'
   end
 end

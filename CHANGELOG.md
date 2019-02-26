@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - New Lookup control - render a button to link to a grid to lookup a row.
+- New FoldUp control - nodes inside the control are folded-up using HTML5 `display` tag. A mouse click toggles the open/close state.
 ### Changed
 ### Fixed
 

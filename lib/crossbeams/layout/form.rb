@@ -126,6 +126,13 @@ module Crossbeams
         @nodes << row
       end
 
+      # Include a fold-up in the form.
+      def fold_up
+        fold_up = FoldUp.new(config_for_field, nodes.length + 1)
+        yield fold_up
+        @nodes << fold_up
+      end
+
       def add_field(name, options = {})
         @no_row = true
         raise 'Cannot mix row and fields' if got_row
@@ -164,15 +171,6 @@ module Crossbeams
         @nodes << ContactMethod.new(page_config, contact_methods, options)
       end
 
-      def form_method_str
-        case form_method
-        when :create
-          ''
-        when :update
-          '<input type="hidden" name="_method" value="PATCH">'
-        end
-      end
-
       def submit_captions(value, disabled_value = nil)
         @submit_caption = value
         @disable_caption = disabled_value || value
@@ -203,6 +201,15 @@ module Crossbeams
       end
 
       private
+
+      def form_method_str
+        case form_method
+        when :create
+          ''
+        when :update
+          '<input type="hidden" name="_method" value="PATCH">'
+        end
+      end
 
       def render_caption
         return '' if remote_form || form_caption.nil?
