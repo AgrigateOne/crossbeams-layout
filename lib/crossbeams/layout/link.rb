@@ -5,9 +5,9 @@ module Crossbeams
     # A link renderer - for rendering a link outside a form.
     class Link
       include PageNode
-      attr_reader :text, :url, :style, :behaviour, :css_class
+      attr_reader :text, :url, :style, :behaviour, :css_class, :id, :visible
 
-      def initialize(options)
+      def initialize(options) # rubocop:disable Metrics/AbcSize
         @text      = options.fetch(:text)
         @url       = options.fetch(:url)
         @style     = options[:style] || :link
@@ -15,6 +15,8 @@ module Crossbeams
         @css_class = options[:css_class] || ''
         @grid_id   = options[:grid_id] || ''
         @prompt    = options[:prompt]
+        @id        = options[:id]
+        @visible   = options.fetch(:visible, true)
         @window    = options[:loading_window]
         @nodes     = []
         assert_options_ok!
@@ -39,11 +41,28 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        <a href="#{url}"#{class_strings}#{behaviour_string}#{grid_string}#{prompt_string}#{loading_window_string}>#{render_text}</a>
+          <a #{render_id}href="#{url}"#{attrs}>#{render_text}</a>
         HTML
       end
 
       private
+
+      def attrs
+        [
+          ' ',
+          class_strings,
+          style_string,
+          behaviour_string,
+          grid_string,
+          prompt_string,
+          loading_window_string
+        ].join(' ').squeeze(' ').rstrip
+      end
+
+      def render_id
+        return '' unless id
+        %(id="#{id}" )
+      end
 
       def assert_options_ok!
         return unless @window
@@ -52,14 +71,23 @@ module Crossbeams
 
       def class_strings
         if style == :button
-          %( class="f6 link dim br2 ph3 pv2 dib white bg-silver #{css_class}")
+          %(class="f6 link dim br2 ph3 pv2 dib white bg-silver#{user_class}")
         elsif style == :small_button
-          %( class="link dim br1 ph2 dib white bg-silver #{css_class}")
+          %(class="link dim br1 ph2 dib white bg-silver#{user_class}")
         elsif style == :back_button
-          %( class="f6 link dim br2 ph3 pv2 dib white bg-dark-blue #{css_class}")
+          %(class="f6 link dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
         else
-          css_class.empty? ? '' : css_class
+          css_class.empty? ? '' : %(class="#{css_class}")
         end
+      end
+
+      def user_class
+        css_class.empty? ? '' : " #{css_class}"
+      end
+
+      def style_string
+        return '' if visible
+        %(style="visibility:hidden")
       end
 
       def render_text
@@ -74,30 +102,30 @@ module Crossbeams
 
       def behaviour_string
         if @behaviour == :popup
-          ' data-popup-dialog="true"'
+          'data-popup-dialog="true"'
         elsif @behaviour == :replace_dialog
-          ' data-replace-dialog="true"'
+          'data-replace-dialog="true"'
         else
           ''
         end
       end
 
       def grid_string
-        @grid_id == '' ? '' : %( data-grid-id="#{@grid_id}")
+        @grid_id == '' ? '' : %(data-grid-id="#{@grid_id}")
       end
 
       def prompt_string
         return '' if @prompt.nil? || @prompt == false
         if @prompt == true || @prompt.casecmp('Y').zero?
-          ' data-prompt="Are you sure?"'
+          'data-prompt="Are you sure?"'
         else
-          " data-prompt=\"#{@prompt}\""
+          "data-prompt=\"#{@prompt}\""
         end
       end
 
       def loading_window_string
         return '' if @window.nil? || @window == false
-        ' data-loading-window="true" title="opens in a new window"'
+        'data-loading-window="true" title="opens in a new window"'
       end
     end
   end

@@ -8,6 +8,9 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- Link control: new options: `id` and `visible`.
+  Id becomes the anchor's DOM id.
+  If visible is false, the anchor will be rendered with style `visibility:hidden`.
 ### Fixed
 
 ## [0.2.0] - 2019-02-26

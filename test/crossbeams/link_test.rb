@@ -20,10 +20,10 @@ class Crossbeams::LinkTest < Minitest::Test
     assert_equal '<a href="/">ClickMe</a>', renderer.render.strip
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :button)
-    assert_equal '<a href="/" class="f6 link dim br2 ph3 pv2 dib white bg-silver ">ClickMe</a>', renderer.render.strip
+    assert_equal '<a href="/" class="f6 link dim br2 ph3 pv2 dib white bg-silver">ClickMe</a>', renderer.render.strip
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :small_button)
-    assert_equal '<a href="/" class="link dim br1 ph2 dib white bg-silver ">ClickMe</a>', renderer.render.strip
+    assert_equal '<a href="/" class="link dim br1 ph2 dib white bg-silver">ClickMe</a>', renderer.render.strip
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :back_button)
     assert_match(/<svg class=["|']cbl-icon["|']/, renderer.render)
@@ -69,5 +69,21 @@ class Crossbeams::LinkTest < Minitest::Test
     match_str = '<a href="/" data-loading-window="true"'
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', loading_window: 'Y')
     assert_equal match_str, renderer.render.strip[0, match_str.length]
+  end
+
+  def test_visible
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', visible: false)
+    assert_equal '<a href="/" style="visibility:hidden">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', visible: true)
+    assert_equal '<a href="/">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', visible: 'ANY NON-FALSE VALUE')
+    assert_equal '<a href="/">ClickMe</a>', renderer.render.strip
+  end
+
+  def test_id
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', id: 'an_id')
+    assert_equal '<a id="an_id" href="/">ClickMe</a>', renderer.render.strip
   end
 end
