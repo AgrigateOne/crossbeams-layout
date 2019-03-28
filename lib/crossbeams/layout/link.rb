@@ -51,7 +51,7 @@ module Crossbeams
         [
           ' ',
           class_strings,
-          style_string,
+          hidden_string,
           behaviour_string,
           grid_string,
           prompt_string,
@@ -85,9 +85,9 @@ module Crossbeams
         css_class.empty? ? '' : " #{css_class}"
       end
 
-      def style_string
+      def hidden_string
         return '' if visible
-        %(style="visibility:hidden")
+        'hidden'
       end
 
       def render_text

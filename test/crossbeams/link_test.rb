@@ -73,7 +73,7 @@ class Crossbeams::LinkTest < Minitest::Test
 
   def test_visible
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', visible: false)
-    assert_equal '<a href="/" style="visibility:hidden">ClickMe</a>', renderer.render.strip
+    assert_equal '<a href="/" hidden>ClickMe</a>', renderer.render.strip
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', visible: true)
     assert_equal '<a href="/">ClickMe</a>', renderer.render.strip
