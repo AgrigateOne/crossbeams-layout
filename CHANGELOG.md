@@ -10,7 +10,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Link control: new options: `id` and `visible`.
   Id becomes the anchor's DOM id.
-  If visible is false, the anchor will be rendered with style `visibility:hidden`.
+  If visible is false, the anchor will be rendered with attribute `hidden`.
+- Text control uses `hidden` attribute for the toggle target, instead of `display:none`.
 ### Fixed
 
 ## [0.2.0] - 2019-02-26

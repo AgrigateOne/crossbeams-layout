@@ -3,7 +3,7 @@
 module Crossbeams
   module Layout
     # A text renderer - for rendering text without form controls.
-    class Text
+    class Text # rubocop:disable Metrics/ClassLength
       include PageNode
       attr_reader :text, :page_config, :preformatted, :syntax, :wrapper,
                   :toggle_button, :toggle_caption, :toggle_element_id
@@ -87,7 +87,7 @@ module Crossbeams
       def render_toggle_id
         return '' unless toggle_button
         return '' if  toggle_element_id
-        " id='#{toggle_id}' style='display:none'"
+        " id='#{toggle_id}' hidden"
       end
 
       def toggle_id

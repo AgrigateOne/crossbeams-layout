@@ -64,11 +64,13 @@ class Crossbeams::TextTest < Minitest::Test
     assert res.match?(/crossbeamsUtils.toggleVisibility/)
     assert res.match?(/Show\/Hide Text/)
     assert res.match?(/id='show\/hide_text'/)
-    assert res.match?(/display:none/)
+    # assert res.match?(/display:none/)
+    assert res.match?(/hidden/)
 
     renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT', toggle_button: true, toggle_caption: 'Toggle The Display')
     res = scrub(renderer.render)
-    assert_match(/<div class="crossbeams-field no-flex" id='toggle_the_display' style='display:none'>\sTEXT\s<\/div>/, res)
+    # assert_match(/<div class="crossbeams-field no-flex" id='toggle_the_display' style='display:none'>\sTEXT\s<\/div>/, res)
+    assert_match(/<div class="crossbeams-field no-flex" id='toggle_the_display' hidden>\sTEXT\s<\/div>/, res)
     assert res.match?(/crossbeamsUtils.toggleVisibility/)
     assert res.match?(/Toggle The Display/)
   end
