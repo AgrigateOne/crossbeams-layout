@@ -75,7 +75,7 @@ module Crossbeams
         return '' unless toggle_button
         <<~HTML
           <a href="#" class="f6 link dim br2 ph3 pv2 dib white bg-silver"
-            onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}', this);return false">
+            onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">
           #{info_icon} #{toggle_caption}</a>
         HTML
       end
