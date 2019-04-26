@@ -16,7 +16,7 @@ module Crossbeams
           if @field_config[:with_value]
             value = @field_config[:with_value]
           else
-            value = @page_config.form_object[@field_name]
+            value = form_object_value
             value = value.to_s('F') if value.is_a?(BigDecimal)
           end
           <<-HTML
