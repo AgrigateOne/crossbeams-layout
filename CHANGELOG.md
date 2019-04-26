@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Base helper method to extract field values from `extended_columns` field if required.
 ### Changed
 ### Fixed
 

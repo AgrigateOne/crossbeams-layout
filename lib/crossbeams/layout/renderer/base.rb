@@ -20,6 +20,16 @@ module Crossbeams
           end
         end
 
+        # The value of the field extracted from the form object.
+        # This method will dig values out of an +extended_columns+ field if required.
+        def form_object_value
+          if @field_name.to_s.start_with?('extcol_')
+            (@page_config.form_object[:extended_columns] || {})[@field_name.to_s.delete_prefix('extcol_')]
+          else
+            @page_config.form_object[@field_name]
+          end
+        end
+
         # The value for an input's DOM id.
         def id_base
           "#{@page_config.name}_#{@field_name}"
