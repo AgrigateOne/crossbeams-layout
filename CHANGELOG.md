@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Base helper method to extract field values from `extended_columns` field if required.
+- Tooltip attribute for checkboxes - sets `title` attribute of `label` tag.
 ### Changed
 ### Fixed
 
