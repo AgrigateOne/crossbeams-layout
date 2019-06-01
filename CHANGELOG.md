@@ -11,6 +11,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Tooltip attribute for checkboxes - sets `title` attribute of `label` tag.
 ### Changed
 ### Fixed
+- Label controls render `disabled` so they do not form part of a form's submission.
 
 ## [0.2.1] - 2019-03-28
 ### Changed
