@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 - Base helper method to extract field values from `extended_columns` field if required.
 - Tooltip attribute for checkboxes - sets `title` attribute of `label` tag.
+- Expand/Collapse control for FoldUps to open or close all foldups in the same form.
 ### Changed
 ### Fixed
 - Label controls render `disabled` so they do not form part of a form's submission.

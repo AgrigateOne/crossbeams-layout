@@ -3,7 +3,7 @@
 module Crossbeams
   module Layout
     # SVG icons
-    class Icon
+    class Icon # rubocop:disable Metrics/ClassLength
       attr_reader :icon, :css_class, :attrs
 
       ICONS = {
