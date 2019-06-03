@@ -126,6 +126,11 @@ module Crossbeams
         @nodes << row
       end
 
+      def expand_collapse(options = {})
+        exp_col = ExpandCollapseFolds.new(config_for_field, nodes.length + 1, options)
+        @nodes << exp_col
+      end
+
       # Include a fold-up in the form.
       def fold_up
         fold_up = FoldUp.new(config_for_field, nodes.length + 1)
