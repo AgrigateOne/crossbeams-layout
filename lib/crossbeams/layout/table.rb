@@ -35,6 +35,7 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         return '' if rows.empty?
+
         if options[:pivot] && @options[:pivot] == true
           pivot_render
         else
@@ -68,11 +69,13 @@ module Crossbeams
       def top_margin
         return '' unless options[:top_margin]
         raise ArgumentError, 'Top margin must be in the range 0..7' unless (0..7).cover?(options[:top_margin])
+
         " mt#{options[:top_margin]}"
       end
 
       def table_caption
         return '' unless options[:caption]
+
         "\n<caption>#{options[:caption]}</caption>"
       end
 
@@ -147,6 +150,7 @@ module Crossbeams
       def columns_from_rows
         return [] if @rows.empty?
         return [] unless @rows.first.is_a?(Hash)
+
         @rows.first.keys
       end
     end

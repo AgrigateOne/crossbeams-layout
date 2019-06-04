@@ -9,6 +9,7 @@ module Crossbeams
 
       def initialize(page_config, prefix, items, options = {})
         raise ArgumentError, 'Prefix must be alphanumeric without spaces' unless valid_prefix?(prefix)
+
         @prefix      = prefix
         @page_config = page_config
         @items       = Array(items)
@@ -50,6 +51,7 @@ module Crossbeams
 
       def caption
         return '' if @options[:caption].nil?
+
         <<~HTML
           <label for="#{prefix}-sortable-items">#{@options[:caption]}</label>
         HTML
@@ -65,6 +67,7 @@ module Crossbeams
 
       def valid_prefix?(prefix)
         return false if prefix =~ /\A\d/     # Cannot start with a digit.
+
         prefix.match?(/\A[a-z0-9]+\Z/i)      # Must be made up of letters and digits only.
       end
 

@@ -29,6 +29,7 @@ module Crossbeams
 
         def item_renders
           return '' if @field_config[:items].nil? || @field_config[:items].empty?
+
           items = @field_config[:items].first.is_a?(Array) ? @field_config[:items].map(&:first) : @field_config[:items]
           items.map do |text|
             %(<li>#{text}</li>)

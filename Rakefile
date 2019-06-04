@@ -16,6 +16,8 @@ YARD::Rake::YardocTask.new(:doc) do |t|
 end
 
 RuboCop::RakeTask.new(:rubocop) do |t|
+  # require 'rubocop'
+  # p RuboCop::Version.version
   t.options = ['--display-cop-names']
 end
 

@@ -36,4 +36,3 @@ module Crossbeams
     end
   end
 end
-

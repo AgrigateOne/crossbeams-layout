@@ -130,6 +130,7 @@ module Crossbeams
 
       def render_caption
         return '' if hide_caption
+
         "<h2 class='ma1'>#{caption}</h2>"
       end
 

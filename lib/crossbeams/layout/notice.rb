@@ -47,6 +47,7 @@ module Crossbeams
 
       def notice_caption
         return '' unless show_caption
+
         "<p><strong>#{caption}:</strong></p>"
       end
     end

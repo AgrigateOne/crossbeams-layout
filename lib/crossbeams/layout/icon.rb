@@ -109,6 +109,7 @@ module Crossbeams
 
       def render
         return '' if ICONS[icon].nil?
+
         format(ICONS[icon], css_class, attrs)
       end
 

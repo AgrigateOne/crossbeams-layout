@@ -71,6 +71,7 @@ module Crossbeams
       def caption(value, level: 2)
         @form_caption = value
         raise ArgumentError, 'Caption level can only be 1, 2, 3 or 4' unless [1, 2, 3, 4].include?(level)
+
         @caption_level = level
       end
 
@@ -115,12 +116,14 @@ module Crossbeams
 
       def method(method)
         raise ArgumentError, "Invalid form method \"#{method}\"" unless %i[create update].include?(method)
+
         @form_method = method
       end
 
       def row
         @got_row = true
         raise 'Cannot mix row and non-row text or fields' if no_row
+
         row = Row.new(config_for_field, sequence, nodes.length + 1)
         yield row
         @nodes << row
@@ -141,6 +144,7 @@ module Crossbeams
       def add_field(name, options = {})
         @no_row = true
         raise 'Cannot mix row and fields' if got_row
+
         @nodes << Field.new(config_for_field, name, options)
       end
 
@@ -151,12 +155,14 @@ module Crossbeams
       def add_text(text, opts = {})
         @no_row = true
         raise 'Cannot mix row and text' if got_row
+
         @nodes << Text.new(page_config, text, opts)
       end
 
       def add_notice(text, opts = {})
         @no_row = true
         raise 'Cannot mix row and text' if got_row
+
         @nodes << Notice.new(page_config, text, opts)
       end
 
@@ -218,6 +224,7 @@ module Crossbeams
 
       def render_caption
         return '' if remote_form || form_caption.nil?
+
         "<h#{caption_level}>#{form_caption}</h#{caption_level}>\n"
       end
 
@@ -227,6 +234,7 @@ module Crossbeams
 
       def error_head
         return '' unless page_config.form_errors && (page_config.form_errors[:base] || page_config.form_errors[:base_with_highlights])
+
         <<~HTML
           <div class="crossbeams-form-base-error pa1 mb1 bg-washed-red brown">
             <ul class="list"><li>#{base_messages.join('</li><li>')}</li></ul>
@@ -236,9 +244,7 @@ module Crossbeams
 
       def base_messages
         messages = page_config.form_errors[:base] || []
-        if page_config.form_errors[:base_with_highlights]
-          messages += page_config.form_errors[:base_with_highlights][:messages]
-        end
+        messages += page_config.form_errors[:base_with_highlights][:messages] if page_config.form_errors[:base_with_highlights]
         messages
       end
 
@@ -250,7 +256,7 @@ module Crossbeams
         end
       end
 
-      def render_nodes_inside_generated_row
+      def render_nodes_inside_generated_row # rubocop:disable Metrics/AbcSize
         # wrap nodes in row & cols.
         row = Row.make_row(page_config, sequence, 1)
         col = Column.make_column(page_config)
@@ -280,6 +286,7 @@ module Crossbeams
         sub
       end
 
+      # Render a submit button inline - without surrounding div.
       class InlineSubmit
         include PageNode
 

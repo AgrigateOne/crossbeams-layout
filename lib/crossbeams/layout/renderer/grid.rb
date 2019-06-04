@@ -22,6 +22,7 @@ module Crossbeams
         def self.header(grid_id, caption, options = {})
           if options[:print_button]
             raise ArgumentError, 'print_url is required to print a grid' unless options[:print_url]
+
             print_section = <<~HTML
               <label style="margin-left: 10px;">
                 <button class="pure-button" onclick="crossbeamsGridEvents.printAGrid('#{grid_id}', '#{options[:print_url]}')" title="Print"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 16H0V6h20v10h-4v4H4v-4zm2-4v6h8v-6H6zM4 0h12v5H4V0zM2 8v2h2V8H2zm4 0v2h2V8H6z"/></svg>
@@ -45,6 +46,9 @@ module Crossbeams
                 <button class="pure-button" onclick="crossbeamsGridEvents.csvExport('#{grid_id}', '#{Grid.file_name_from_caption(caption)}')" title="Export to CSV"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 18h12V6h-4V2H4v16zm-2 1V0h12l4 4v16H2v-1z"/></svg>
               </button>
             </label>
+            <!-- label style="margin-left: 10px;">
+            <button>JMP</button>
+            </label -->
             #{print_section}
             <label class="crossbeams-column-jump" style="margin-left: 10px;">
                 <button><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
@@ -72,7 +76,7 @@ module Crossbeams
                                      can_be_cleared: @can_be_cleared,
                                      multiselect_save_method: @multiselect_save_method)
           <<~HTML
-            <div id="#{@grid_id}-frame" style="#{height_style};margin-bottom:4em">#{head_section}
+            <div id="#{@grid_id}-frame" class="grid-frame" style="#{height_style};margin-bottom:4em">#{head_section}
               <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_tree} onload="console.log('onl'); "></div>
               <script>console.log('loaded #{@grid_id}');</script>
             </div>
@@ -82,22 +86,13 @@ module Crossbeams
           HTML
         end
 
-        private_class_method
-
-        def height_style
-          if @fit_height
-            'flex-grow:1'
-          else
-            "height:#{@height}em"
-          end
-        end
-
         def self.file_name_from_caption(caption)
           (caption || 'grid_contents').gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-') + '.csv'
         end
 
         def self.save_multiselect_button(grid_id, options)
           return '' unless options[:multiselect]
+
           save_method = options[:multiselect_save_method] || 'http'
           <<~HTML
             <label style="margin-left: 10px;">
@@ -107,7 +102,17 @@ module Crossbeams
           HTML
         end
 
+        private_class_method :file_name_from_caption, :save_multiselect_button
+
         private
+
+        def height_style
+          if @fit_height
+            'flex-grow:1'
+          else
+            "height:#{@height}em"
+          end
+        end
 
         def unpack_multiselect_options(options)
           @multiselect = options[:is_multiselect]
@@ -126,6 +131,7 @@ module Crossbeams
         def url
           return @url if @multiselect.nil? && @query_string.nil? && @lookup_key.nil?
           return "#{@url}?#{@query_string}" unless @query_string.nil?
+
           if @multiselect
             multiselect_url
           else

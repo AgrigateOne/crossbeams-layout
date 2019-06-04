@@ -7,8 +7,7 @@ module Crossbeams
       include PageNode
       attr_reader :css_class, :nodes, :page_config
 
-      # def initialize(page_config, size, seq1, seq2)
-      def initialize(page_config, size, _, _)
+      def initialize(page_config, size, _seq1, _seq2)
         @nodes = []
         case size
         when :full

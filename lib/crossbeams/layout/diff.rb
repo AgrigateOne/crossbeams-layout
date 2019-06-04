@@ -11,6 +11,7 @@ module Crossbeams
         @key = key
         @rules = page_config.options[:fields][key]
         raise ArgumentError, 'Diff renderer must have keys :left and :right, :left_record and :right_record or :left_file and :right_file' unless valid_keys?
+
         @use_files = @rules.key?(:left_file)
         @nodes = []
       end
@@ -50,11 +51,13 @@ module Crossbeams
 
       def left_text
         return rules[:left] if rules[:left]
+
         rec_to_s(rules[:left_record], len + 2)
       end
 
       def right_text
         return rules[:right] if rules[:right]
+
         rec_to_s(rules[:right_record], len + 2)
       end
 

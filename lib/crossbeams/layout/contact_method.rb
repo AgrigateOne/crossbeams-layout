@@ -12,9 +12,9 @@ module Crossbeams
         @nodes           = []
         @contact_methods = Array(contact_methods)
         @lookup_icon     = {
-          'tel'   => 'tel',
-          'cell'  => 'cell',
-          'fax'   => 'fax',
+          'tel' => 'tel',
+          'cell' => 'cell',
+          'fax' => 'fax',
           'email' => 'email'
         }
         (options[:icon_lookups] || {}).each do |method_type, icon|

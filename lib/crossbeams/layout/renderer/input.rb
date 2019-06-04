@@ -29,11 +29,13 @@ module Crossbeams
 
         def copy_prefix
           return '' unless @field_config[:copy_to_clipboard]
+
           '<div class="cbl-copy-wrapper">'
         end
 
         def copy_suffix
           return '' unless @field_config[:copy_to_clipboard]
+
           %(<button type="button" id="#{id_base}_clip" class="cbl-clipcopy" data-clipboard="copy" title="Copy to clipboard">
           #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
             </button></div>)
@@ -78,22 +80,27 @@ module Crossbeams
         DATE_VALUE_GETTERS = {
           date: lambda { |d|
             return '' if d.nil?
+
             d.is_a?(String) ? d : d.strftime('%Y-%m-%d')
           },
           time: lambda { |t|
             return '' if t.nil?
+
             t.is_a?(String) ? t : t.strftime('%H:%M')
           },
           month: lambda { |d|
             return '' if d.nil?
+
             d.is_a?(String) ? d : d.strftime('%Y-%m')
           },
           datetime_with_seconds: lambda { |t|
             return '' if t.nil?
+
             t.is_a?(String) ? t : t.strftime('%Y-%m-%dT%H:%M:%S.%L')
           },
           datetime: lambda { |t|
             return '' if t.nil?
+
             t.is_a?(String) ? t : t.strftime('%Y-%m-%dT%H:%M')
           }
         }.freeze
@@ -118,7 +125,8 @@ module Crossbeams
 
         def build_datalist
           return nil unless @field_config[:datalist] && !@field_config[:datalist].empty?
-          s = String.new
+
+          s = +''
           @field_config[:datalist].each do |opt|
             s << "<option value=\"#{opt}\">\n"
           end
@@ -144,6 +152,7 @@ module Crossbeams
                   end
                 end
           return nil if val.nil?
+
           "pattern=\"#{val}\""
         end
 

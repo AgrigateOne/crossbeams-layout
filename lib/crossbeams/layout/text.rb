@@ -73,6 +73,7 @@ module Crossbeams
 
       def render_toggle_button
         return '' unless toggle_button
+
         <<~HTML
           <a href="#" class="f6 link dim br2 ph3 pv2 dib white bg-silver"
             onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">
@@ -87,11 +88,13 @@ module Crossbeams
       def render_toggle_id
         return '' unless toggle_button
         return '' if  toggle_element_id
+
         " id='#{toggle_id}' hidden"
       end
 
       def toggle_id
         return '' unless toggle_button
+
         (toggle_element_id || toggle_caption).downcase.tr(' ', '_')
       end
 

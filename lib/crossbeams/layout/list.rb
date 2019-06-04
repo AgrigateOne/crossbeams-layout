@@ -51,6 +51,7 @@ module Crossbeams
 
       def caption
         return '' if @options[:caption].nil?
+
         <<~HTML
           <label>#{@options[:caption]}</label>
         HTML

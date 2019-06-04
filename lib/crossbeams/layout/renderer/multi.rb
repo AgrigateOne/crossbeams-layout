@@ -46,6 +46,7 @@ module Crossbeams
 
         def make_prompt
           return '' unless @field_config[:prompt]
+
           str = @field_config[:prompt].is_a?(String) ? @field_config[:prompt] : 'Select a value'
           "<option value=\"\">#{str}</option>\n"
         end

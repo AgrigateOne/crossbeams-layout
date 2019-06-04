@@ -43,6 +43,7 @@ module Crossbeams
 
       def title(open)
         return '' unless @options[:mini]
+
         if open
           'title="Expand all"'
         else

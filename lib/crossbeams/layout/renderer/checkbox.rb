@@ -39,6 +39,7 @@ module Crossbeams
 
         def tooltip
           return '' unless @tooltip
+
           %( title="#{@tooltip}")
         end
       end

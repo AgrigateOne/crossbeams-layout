@@ -68,6 +68,7 @@ module Crossbeams
         # Render hint text associated with the field.
         def hint_text
           return '' unless @field_config[:hint]
+
           <<~HTML
             <div style="display:none" data-cb-hint="#{@page_config.name}_#{@field_name}">
               #{@field_config[:hint]}
@@ -78,6 +79,7 @@ module Crossbeams
         # Render the icon to be clicked to display hint text.
         def hint_trigger
           return '' unless @field_config[:hint]
+
           Icon.render(:question,
                       css_class: 'ml1 blue pointer',
                       attrs: [
@@ -87,9 +89,10 @@ module Crossbeams
         end
 
         # Return behaviour rules for rendering.
-        def behaviours
+        def behaviours # rubocop:disable Metrics/AbcSize
           rules = @page_config.options[:behaviours]
           return nil if rules.nil?
+
           res = []
           rules.each do |element|
             element.each do |field, rule|
@@ -97,8 +100,10 @@ module Crossbeams
             end
           end
           return nil if res.empty?
+
           keys = res.map { |r| r[/\A.+=/].chomp('=') }
           raise ArgumentError, "Renderer: cannot have more than one of the same behaviour for field \"#{@field_name}\"" unless keys.length == keys.uniq.length
+
           res.join(' ')
         end
 

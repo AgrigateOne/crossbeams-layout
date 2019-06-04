@@ -61,6 +61,7 @@ module Crossbeams
 
       def render_id
         return '' unless id
+
         %(id="#{id}" )
       end
 
@@ -87,6 +88,7 @@ module Crossbeams
 
       def hidden_string
         return '' if visible
+
         'hidden'
       end
 
@@ -116,6 +118,7 @@ module Crossbeams
 
       def prompt_string
         return '' if @prompt.nil? || @prompt == false
+
         if @prompt == true || @prompt.casecmp('Y').zero?
           'data-prompt="Are you sure?"'
         else
@@ -125,6 +128,7 @@ module Crossbeams
 
       def loading_window_string
         return '' if @window.nil? || @window == false
+
         'data-loading-window="true" title="opens in a new window"'
       end
     end

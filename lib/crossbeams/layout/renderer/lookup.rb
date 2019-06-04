@@ -44,6 +44,7 @@ module Crossbeams
 
         def render_show_field
           return '' if show_field.nil?
+
           @current_field = show_field
           <<~HTML
 
@@ -53,6 +54,7 @@ module Crossbeams
 
         def render_hidden_fields
           return '' if hidden_fields.empty?
+
           out = []
           hidden_fields.each do |field|
             @current_field = field

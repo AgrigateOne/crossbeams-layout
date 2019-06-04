@@ -14,14 +14,7 @@ module Crossbeams
         end
 
         def render
-          attrs = [] # For class, prompt etc...
-          cls   = []
-          cls   << 'searchable-select' if @searchable
-          cls   << 'cbl-input' unless @searchable
-          attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
-          attrs << 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
-          attrs << 'required="true"' if @field_config[:required] && @field_config[:required] == true
-          attrs << behaviours
+          attrs = apply_attrs # For class, prompt etc...
           sel = @field_config[:selected] || form_object_value
           sel = @page_config.form_values[@field_name] if @page_config.form_values
 
@@ -31,6 +24,21 @@ module Crossbeams
         end
 
         private
+
+        def apply_attrs
+          attrs = [] # For class, prompt etc...
+          cls   = apply_classes
+          attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
+          attrs << 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
+          attrs << 'required="true"' if @field_config[:required] && @field_config[:required] == true
+          attrs << behaviours
+        end
+
+        def apply_classes
+          cls = []
+          cls << 'searchable-select' if @searchable
+          cls << 'cbl-input' unless @searchable
+        end
 
         def render_string(attrs, sel, disabled_option)
           <<-HTML
@@ -47,11 +55,13 @@ module Crossbeams
         def backup_empty_select
           # Hidden blank value to be submitted as a param if the Selectr box is cleared.
           return '' unless @searchable
+
           %(<input #{name_attribute} type="hidden" value="">)
         end
 
         def make_prompt
           return '' unless @field_config[:prompt]
+
           str = @field_config[:prompt].is_a?(String) ? @field_config[:prompt] : 'Select a value'
           "<option value=\"\">#{str}</option>\n"
         end
@@ -89,6 +99,7 @@ module Crossbeams
         def find_disabled_option(sel, disabled_list)
           return nil if disabled_list.nil? || disabled_list.empty?
           return nil if sel.nil?
+
           elem = if disabled_list.first.is_a? Array
                    disabled_list.rassoc(sel)
                  elsif disabled_list.include?(sel)

@@ -68,6 +68,7 @@ module Crossbeams
 
       def render_address_type(address)
         return '' if !@include_type || !address.key?(:address_type)
+
         "#{address[:address_type]}<br>"
       end
     end

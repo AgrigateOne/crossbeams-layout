@@ -66,6 +66,7 @@ module Crossbeams
 
       def current_position
         return 0 if position.zero?
+
         100.0 / (steps.length - 1) * position
       end
 
@@ -103,6 +104,7 @@ module Crossbeams
 
       def render_state
         return nil if state_description.empty?
+
         <<-HTML
           <div class="cbl-progress-bar-text">
             <ul class="cbl-progress-state">
