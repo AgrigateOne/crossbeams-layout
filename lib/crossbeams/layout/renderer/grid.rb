@@ -102,8 +102,6 @@ module Crossbeams
           HTML
         end
 
-        private_class_method :file_name_from_caption, :save_multiselect_button
-
         private
 
         def height_style
