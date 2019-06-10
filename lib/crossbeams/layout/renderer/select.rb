@@ -38,6 +38,7 @@ module Crossbeams
           cls = []
           cls << 'searchable-select' if @searchable
           cls << 'cbl-input' unless @searchable
+          cls
         end
 
         def render_string(attrs, sel, disabled_option)
