@@ -46,7 +46,7 @@ module Crossbeams
             end
           else
             <<-HTML
-              <input type="text" readonly disabled class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id}>
+              <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{field_id}>#{CGI.escapeHTML(value.to_s)}</div>
             HTML
           end
         end

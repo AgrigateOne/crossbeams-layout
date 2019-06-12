@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- Label renders as a div instead of a disabled input. This allows selecting of the text in the label.
 ### Fixed
 
 ## [0.2.2] - 2019-06-03
