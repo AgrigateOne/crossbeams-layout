@@ -78,11 +78,7 @@ module Crossbeams
           <<~HTML
             <div id="#{@grid_id}-frame" class="grid-frame" style="#{height_style};margin-bottom:4em">#{head_section}
               <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_tree} onload="console.log('onl'); "></div>
-              <script>console.log('loaded #{@grid_id}');</script>
             </div>
-            <script type="javascript">
-              console.log('called with a grid');
-            </script>
           HTML
         end
 
