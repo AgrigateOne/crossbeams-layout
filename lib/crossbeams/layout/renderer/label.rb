@@ -45,8 +45,9 @@ module Crossbeams
               HTML
             end
           else
+            val = value.to_s.strip.empty? ? '&nbsp;' : CGI.escapeHTML(value.to_s)
             <<-HTML
-              <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{field_id}>#{CGI.escapeHTML(value.to_s)}</div>
+              <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{field_id}>#{val}</div>
             HTML
           end
         end
