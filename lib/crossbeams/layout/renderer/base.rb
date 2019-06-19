@@ -109,11 +109,13 @@ module Crossbeams
 
         private
 
-        def build_behaviour(rule)
+        def build_behaviour(rule) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
           return %(data-change-values="#{split_change_affects(rule[:change_affects])}") if rule[:change_affects]
           return %(data-enable-on-values="#{rule[:enable_on_change].join(',')}") if rule[:enable_on_change]
           return %(data-observe-change=#{build_observe_change(rule[:notify])}) if rule[:notify]
           return %(data-observe-selected=#{build_observe_selected(rule[:populate_from_selected])}) if rule[:populate_from_selected]
+          return %(data-observe-keyup=#{build_observe_change(rule[:keyup])}) if rule[:keyup]
+          return %(data-observe-lose-focus=#{build_observe_change(rule[:lose_focus])}) if rule[:lose_focus]
         end
 
         def split_change_affects(change_affects)

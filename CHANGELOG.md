@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- New behaviours: `keyup` and `lose_focus`.
 ### Changed
 - Label renders as a div instead of a disabled input. This allows selecting of the text in the label.
 ### Fixed
