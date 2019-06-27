@@ -4,13 +4,15 @@ module Crossbeams
   module Layout
     module Renderer
       # Render a select Field.
-      class Select < Base
+      class Select < Base # rubocop:disable Metrics/ClassLength
         def configure(field_name, field_config, page_config)
-          @field_name   = field_name
+          @field_name = field_name
           @field_config = field_config
-          @page_config  = page_config
-          @caption      = field_config[:caption] || present_field_as_label(field_name)
-          @searchable   = field_config.fetch(:searchable) { true }
+          @page_config = page_config
+          @caption = field_config[:caption] || present_field_as_label(field_name)
+          @searchable = field_config.fetch(:searchable) { true }
+          @native = field_config.fetch(:native) { false }
+          @remove_search_for_small_list = field_config.fetch(:remove_search_for_small_list) { true }
         end
 
         def render
@@ -25,25 +27,46 @@ module Crossbeams
 
         private
 
-        def apply_attrs
+        def apply_attrs # rubocop:disable Metrics/AbcSize
           attrs = [] # For class, prompt etc...
           cls   = apply_classes
           attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
-          attrs << 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
-          attrs << 'required="true"' if @field_config[:required] && @field_config[:required] == true
+          attrs << disabled
+          attrs << required
+          attrs << clearable
           attrs << behaviours
+          attrs << non_searchable
+          attrs << auto_hide_search
+          attrs << sort_items
+          attrs.compact
+        end
+
+        def clearable
+          %(data-clearable="#{@field_config[:prompt] ? 'true' : 'false'}")
+        end
+
+        def disabled
+          return nil unless @field_config[:disabled] && @field_config[:disabled] == true
+
+          'disabled="true"'
+        end
+
+        def required
+          return nil unless @field_config[:required] && @field_config[:required] == true
+
+          'required="true"'
         end
 
         def apply_classes
           cls = []
-          cls << 'searchable-select' if @searchable
-          cls << 'cbl-input' unless @searchable
+          cls << 'searchable-select' unless @native
+          cls << 'cbl-input' if @native
           cls
         end
 
         def render_string(attrs, sel, disabled_option)
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}">#{hint_text}
+          <div #{wrapper_id} class="#{div_class}"#{css_style}>#{hint_text}
             #{backup_empty_select}
             <select #{attrs.join(' ')} #{name_attribute} #{field_id}>
             #{make_prompt}#{build_options(@field_config[:options], sel, disabled_option)}
@@ -54,8 +77,8 @@ module Crossbeams
         end
 
         def backup_empty_select
-          # Hidden blank value to be submitted as a param if the Selectr box is cleared.
-          return '' unless @searchable
+          # Hidden blank value to be submitted as a param if the Searchable component box is cleared.
+          return '' if @native
 
           %(<input #{name_attribute} type="hidden" value="">)
         end
@@ -64,7 +87,28 @@ module Crossbeams
           return '' unless @field_config[:prompt]
 
           str = @field_config[:prompt].is_a?(String) ? @field_config[:prompt] : 'Select a value'
-          "<option value=\"\">#{str}</option>\n"
+          "<option value=\"\" placeholder>#{str}</option>\n"
+        end
+
+        def non_searchable
+          return nil if @searchable
+
+          %( data-no-search="Y")
+        end
+
+        def auto_hide_search
+          %( data-auto-hide-search="#{@remove_search_for_small_list ? 'Y' : 'N'}")
+        end
+
+        def sort_items
+          sort_items = @field_config.fetch(:sort_items) { true } ? 'Y' : 'N'
+          %( data-sort-items="#{sort_items}")
+        end
+
+        def css_style
+          return '' unless @field_config[:min_charwidth]
+
+          %( style="min-width:#{@field_config[:min_charwidth]}rem;")
         end
 
         def build_options(list, selected = nil, disabled_option = nil)
