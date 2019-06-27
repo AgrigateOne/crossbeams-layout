@@ -50,7 +50,7 @@ module Crossbeams
             <button>JMP</button>
             </label -->
             #{print_section}
-            <label class="crossbeams-column-jump" style="margin-left: 10px;">
+            <label class="crossbeams-column-jump" style="margin-left: 10px;" hidden>
                 <button><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
 
                 </button>
