@@ -5,7 +5,7 @@ class Crossbeams::SelectTest < Minitest::Test
     s = simple_select_render(nil, ['a', 'b'])
     assert_nil html_selected_value(s)
     assert_equal 'searchable-select', html_element_attribute_value(s, :select, :class)
-    s = simple_select_render(nil, ['a', 'b'], searchable: false)
+    s = simple_select_render(nil, ['a', 'b'], native: true)
     assert_equal 'cbl-input', html_element_attribute_value(s, :select, :class)
     s = simple_select_render(nil, ['a', 'b'], disabled: true)
     assert_equal 'true', html_element_attribute_value(s, :select, :disabled)
@@ -63,5 +63,48 @@ class Crossbeams::SelectTest < Minitest::Test
     opts = { 'grp1' => [['a', '1'], ['b', '2']], 'grp2' => [['e', '5'], ['f', '6']] }
     s = simple_select_render(nil, opts)
     assert_equal ['1', '2', '5', '6'], html_select_values(s, true)
+  end
+
+  def test_searchable
+    s = simple_select_render(nil, ['a', 'b'], searchable: false)
+    assert_equal 'Y', html_element_attribute_value(s, :select, "data-no-search")
+  end
+
+  def test_clearable
+    s = simple_select_render(nil, ['a', 'b'], prompt: false)
+    assert_equal 'false', html_element_attribute_value(s, :select, "data-clearable")
+
+    s = simple_select_render(nil, ['a', 'b'], prompt: true)
+    assert_equal 'true', html_element_attribute_value(s, :select, "data-clearable")
+
+    s = simple_select_render(nil, ['a', 'b'], prompt: 'Something')
+    assert_equal 'true', html_element_attribute_value(s, :select, "data-clearable")
+  end
+
+  def test_remove_search
+    s = simple_select_render(nil, ['a', 'b'])
+    assert_equal 'Y', html_element_attribute_value(s, :select, "data-auto-hide-search")
+
+    s = simple_select_render(nil, ['a', 'b'], remove_search_for_small_list: true)
+    assert_equal 'Y', html_element_attribute_value(s, :select, "data-auto-hide-search")
+
+    s = simple_select_render(nil, ['a', 'b'], remove_search_for_small_list: false)
+    assert_equal 'N', html_element_attribute_value(s, :select, "data-auto-hide-search")
+  end
+
+  def test_sort_items
+    s = simple_select_render(nil, ['a', 'b'])
+    assert_equal 'Y', html_element_attribute_value(s, :select, "data-sort-items")
+
+    s = simple_select_render(nil, ['a', 'b'], sort_items: true)
+    assert_equal 'Y', html_element_attribute_value(s, :select, "data-sort-items")
+
+    s = simple_select_render(nil, ['a', 'b'], sort_items: false)
+    assert_equal 'N', html_element_attribute_value(s, :select, "data-sort-items")
+  end
+
+  def test_min_charwidth
+    s = simple_select_render(nil, ['a', 'b'], min_charwidth: 30)
+    assert_equal 'min-width:30rem;', html_element_attribute_value(s, :div, :style)
   end
 end
