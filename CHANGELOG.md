@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.3.0] - 2019-06-23
+### Added
 - New behaviours: `keyup` and `lose_focus`.
 - Select changes to make use of the `Choices` javascript library instead of the `Selectr` library.
 - Select: `min_charwidth` option to set the `min-width` style in rem.
@@ -16,7 +21,6 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Select: if `prompt` is not set, ensure the dropdown is not clearable.
 ### Changed
 - Label renders as a div instead of a disabled input. This allows selecting of the text in the label.
-### Fixed
 
 ## [0.2.2] - 2019-06-03
 ### Added
