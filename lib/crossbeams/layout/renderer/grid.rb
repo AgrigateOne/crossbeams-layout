@@ -5,7 +5,7 @@ module Crossbeams
     module Renderer
       # Render a Grid.
       class Grid < Base # rubocop:disable Metrics/ClassLength
-        def initialize(grid_id, url, caption, options = {})
+        def initialize(grid_id, url, caption, options = {}) # rubocop:disable Metrics/AbcSize
           @grid_id     = grid_id
           @url         = url
           @caption     = caption
@@ -15,6 +15,7 @@ module Crossbeams
           @height = [(options[:height] || 20), 6].max
           @fit_height = options[:fit_height] || false
           @tree_config = options[:tree]
+          @bookmark_row_on_action = options[:grid_params].nil? ? false : options[:grid_params][:bookmark_row_on_action] || false
           unpack_multiselect_options(options)
           unpack_lookup_options(options)
         end
@@ -25,13 +26,25 @@ module Crossbeams
 
             print_section = <<~HTML
               <label style="margin-left: 10px;">
-                <button class="pure-button" onclick="crossbeamsGridEvents.printAGrid('#{grid_id}', '#{options[:print_url]}')" title="Print"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 16H0V6h20v10h-4v4H4v-4zm2-4v6h8v-6H6zM4 0h12v5H4V0zM2 8v2h2V8H2zm4 0v2h2V8H6z"/></svg>
+                <button onclick="crossbeamsGridEvents.printAGrid('#{grid_id}', '#{options[:print_url]}')" title="Print"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 16H0V6h20v10h-4v4H4v-4zm2-4v6h8v-6H6zM4 0h12v5H4V0zM2 8v2h2V8H2zm4 0v2h2V8H6z"/></svg>
                 </button>
               </label>
             HTML
           else
             print_section = ''
           end
+
+          bookmark_button = if options[:bookmark_row_on_action]
+                              <<~HTML
+                                <label style="margin-left: 10px;">
+                                <button class="crossbeams-row-bookmark" title="Jump to bookmarked row" hidden>
+                                  <svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2 2c0-1.1.9-2 2-2h12a2 2 0 0 1 2 2v18l-8-4-8 4V2z"/></svg>
+                                </button>
+                                </label>
+                              HTML
+                            else
+                              ''
+                            end
 
           <<-HTML
           <div class="grid-head">
@@ -46,9 +59,7 @@ module Crossbeams
                 <button class="pure-button" onclick="crossbeamsGridEvents.csvExport('#{grid_id}', '#{Grid.file_name_from_caption(caption)}')" title="Export to CSV"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 18h12V6h-4V2H4v16zm-2 1V0h12l4 4v16H2v-1z"/></svg>
               </button>
             </label>
-            <!-- label style="margin-left: 10px;">
-            <button>JMP</button>
-            </label -->
+            #{bookmark_button}
             #{print_section}
             <label class="crossbeams-column-jump" style="margin-left: 10px;" hidden>
                 <button><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
@@ -74,7 +85,8 @@ module Crossbeams
                                      multiselect: @multiselect,
                                      multiselect_url: @multiselect_url,
                                      can_be_cleared: @can_be_cleared,
-                                     multiselect_save_method: @multiselect_save_method)
+                                     multiselect_save_method: @multiselect_save_method,
+                                     bookmark_row_on_action: @bookmark_row_on_action)
           <<~HTML
             <div id="#{@grid_id}-frame" class="grid-frame" style="#{height_style};margin-bottom:4em">#{head_section}
               <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_tree} onload="console.log('onl'); "></div>

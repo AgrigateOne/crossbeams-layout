@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Grid can render with a row bookmark button.
 ### Changed
 ### Fixed
 
