@@ -10,6 +10,10 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Fixed
 
+## [0.3.1] - 2019-07-01
+### Added
+- Grid can render with a row bookmark button.
+
 ## [0.3.0] - 2019-06-23
 ### Added
 - New behaviours: `keyup` and `lose_focus`.
