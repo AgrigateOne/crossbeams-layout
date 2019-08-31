@@ -7,9 +7,12 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Grids can include a colour_key option. This hash of `css_class: description` will display in the header to explain what each coloured row means.
 ### Changed
 ### Fixed
+
+## [0.3.2] - 2019-08-31
+### Added
+- Grids can include a colour_key option. This hash of `css_class: description` will display in the header to explain what each coloured row means.
 
 ## [0.3.1] - 2019-07-01
 ### Added
