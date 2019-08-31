@@ -15,6 +15,7 @@ module Crossbeams
           @height = [(options[:height] || 20), 6].max
           @fit_height = options[:fit_height] || false
           @tree_config = options[:tree]
+          @colour_key = options[:colour_key]
           @bookmark_row_on_action = options[:grid_params].nil? ? false : options[:grid_params][:bookmark_row_on_action] || false
           unpack_multiselect_options(options)
           unpack_lookup_options(options)
@@ -46,6 +47,32 @@ module Crossbeams
                               ''
                             end
 
+          col_translate = {
+            'error' => 'red',
+            'warning' => 'orange',
+            'inactive' => 'gray i',
+            'ready' => 'blue',
+            'ok' => 'green',
+            'inprogress' => 'purple'
+          }
+          colour_btn = if options[:colour_key]
+                         <<~HTML
+                           <label style="margin-left: 10px;">
+                           <button class="crossbeams-colour-key">
+                             <svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9 20v-1.7l.01-.24L15.07 12h2.94c1.1 0 1.99.89 1.99 2v4a2 2 0 0 1-2 2H9zm0-3.34V5.34l2.08-2.07a1.99 1.99 0 0 1 2.82 0l2.83 2.83a2 2 0 0 1 0 2.82L9 16.66zM0 1.99C0 .9.89 0 2 0h4a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zM4 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+                           </button>
+                           <div class="crossbeams-colour-key-list ba b--light-silver pa1 bg-white">
+                           <h3 class="gray">Key for coloured rows</h3>
+                           <ul class="list pl0">
+                             #{options[:colour_key].map { |k, v| "<li class='#{col_translate[k] || k}'>#{v}</li>" }.join}
+                           </ul>
+                           </div>
+                           </label>
+                         HTML
+                       else
+                         ''
+                       end
+
           <<-HTML
           <div class="grid-head">
             <label style="margin-left: 10px;">
@@ -60,6 +87,7 @@ module Crossbeams
               </button>
             </label>
             #{bookmark_button}
+            #{colour_btn}
             #{print_section}
             <label class="crossbeams-column-jump" style="margin-left: 10px;" hidden>
                 <button><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
@@ -86,7 +114,8 @@ module Crossbeams
                                      multiselect_url: @multiselect_url,
                                      can_be_cleared: @can_be_cleared,
                                      multiselect_save_method: @multiselect_save_method,
-                                     bookmark_row_on_action: @bookmark_row_on_action)
+                                     bookmark_row_on_action: @bookmark_row_on_action,
+                                     colour_key: @colour_key)
           <<~HTML
             <div id="#{@grid_id}-frame" class="grid-frame" style="#{height_style};margin-bottom:4em">#{head_section}
               <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_tree} onload="console.log('onl'); "></div>
