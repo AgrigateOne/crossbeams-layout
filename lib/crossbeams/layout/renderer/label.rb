@@ -20,7 +20,7 @@ module Crossbeams
             value = value.to_s('F') if value.is_a?(BigDecimal)
           end
           <<-HTML
-          <div #{wrapper_id} class="crossbeams-field">#{hint_text}
+          <div #{wrapper_id} class="crossbeams-field"#{wrapper_visibility}>#{hint_text}
             #{render_field(value)}
             <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{hint_trigger}</label>
           </div>

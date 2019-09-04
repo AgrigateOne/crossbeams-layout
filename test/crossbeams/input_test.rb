@@ -121,4 +121,13 @@ class Crossbeams::InputTest < Minitest::Test
     assert_equal [], (['a', 'b'] - dl[:list])
   end
 
+  def test_hide_on_load
+    s = simple_input_render(:input, '123', hide_on_load: true)
+    attrs = html_element_wrapper(s)
+    assert_includes attrs.keys, 'hidden'
+
+    s = simple_input_render(:input, '123')
+    attrs = html_element_wrapper(s)
+    refute_includes attrs.keys, 'hidden'
+  end
 end

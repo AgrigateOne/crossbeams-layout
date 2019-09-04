@@ -87,6 +87,12 @@ class RenderResult
     xp = @doc.xpath('//button')
     xp.attribute("data-#{key}")&.value
   end
+
+  def element_wrapper
+    xp = @doc.xpath('//div')
+    return {} if xp.length.zero?
+    Hash[xp.first.attributes.map { |k, v| [v.name, v.value] }]
+  end
 end
 
 def html_element_attribute_value(html_string, element_type, attribute)
@@ -127,6 +133,10 @@ end
 
 def html_lookup_button_data(html_string, key)
   RenderResult.new(html_string).lookup_button_data(key)
+end
+
+def html_element_wrapper(html_string)
+  RenderResult.new(html_string).element_wrapper
 end
 
 def simple_input_render(renderer, value, extra_configs = {})

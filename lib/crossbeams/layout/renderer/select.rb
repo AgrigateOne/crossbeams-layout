@@ -66,7 +66,7 @@ module Crossbeams
 
         def render_string(attrs, sel, disabled_option)
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{css_style}>#{hint_text}
+          <div #{wrapper_id} class="#{div_class}"#{css_style}#{wrapper_visibility}>#{hint_text}
             #{backup_empty_select}
             <select #{attrs.join(' ')} #{name_attribute} #{field_id}>
             #{make_prompt}#{build_options(@field_config[:options], sel, disabled_option)}

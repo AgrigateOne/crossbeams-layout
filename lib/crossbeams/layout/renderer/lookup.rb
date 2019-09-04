@@ -23,7 +23,7 @@ module Crossbeams
         def render
           @current_field = @field_name
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}">#{hint_text}
+          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
             <button data-lookup-name="#{lookup_name}" data-lookup-key="#{lookup_key}" #{render_param_keys} #{render_param_values}>#{@caption}</button>#{render_show_field}#{render_hidden_fields}
           </div>#{error_state(newline: false)}
           HTML

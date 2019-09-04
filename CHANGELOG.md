@@ -10,6 +10,10 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Fixed
 
+## [0.3.3] - 2019-09-04
+### Added
+- New field config option `:hide_on_load`. When set, the form control and label will be rendered hidden.
+
 ## [0.3.2] - 2019-08-31
 ### Added
 - Grids can include a colour_key option. This hash of `css_class: description` will display in the header to explain what each coloured row means.

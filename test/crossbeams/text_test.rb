@@ -54,8 +54,8 @@ class Crossbeams::TextTest < Minitest::Test
   end
 
   def test_syntax
-    renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT', syntax: :sql)
-    assert_equal scrub(render_wrap("<pre>\n<span style=\"background-color: #f8f8f8\">TEXT</span>\n</pre>")), scrub(renderer.render)
+    renderer = Crossbeams::Layout::Text.new(page_config, 'SELECT', syntax: :sql)
+    assert_equal scrub(render_wrap("<pre>\n<span style=\"color: #000000;font-weight: bold\">SELECT</span>\n</pre>")), scrub(renderer.render)
   end
 
   def test_toggle_button
