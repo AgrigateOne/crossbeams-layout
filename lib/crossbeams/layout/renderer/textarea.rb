@@ -17,7 +17,7 @@ module Crossbeams
           rows = @field_config[:rows] || 10
 
           <<~HTML
-            <div #{wrapper_id} class="#{div_class}">#{hint_text}
+            <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
               <textarea #{name_attribute} #{field_id} #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>
               <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
             </div>

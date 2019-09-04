@@ -45,6 +45,13 @@ module Crossbeams
           %(id="#{id_base}_field_wrapper")
         end
 
+        # Initially hide the wrapper.
+        def wrapper_visibility
+          return '' unless @field_config[:hide_on_load]
+
+          ' hidden'
+        end
+
         # The value for an input's DOM name.
         def name_base
           %(#{@page_config.name}[#{@field_name}])

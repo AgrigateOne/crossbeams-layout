@@ -18,7 +18,7 @@ module Crossbeams
           attrs << behaviours
           attrs << 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}">#{hint_text}
+          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
             <input #{name_attribute} type="hidden" value="f">
             <input type="checkbox" value="t" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>
             <label for="#{@page_config.name}_#{@field_name}"#{tooltip}>#{@caption}#{error_state}</label>

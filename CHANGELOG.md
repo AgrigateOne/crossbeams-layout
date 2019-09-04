@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- New field config option `:hide_on_load`. When set, the form control and label will be rendered hidden.
 ### Changed
 ### Fixed
 
