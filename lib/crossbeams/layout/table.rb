@@ -34,7 +34,7 @@ module Crossbeams
       #
       # @return [string] - HTML representation of this node.
       def render
-        return '' if rows.empty?
+        return "#{dom_start}#{dom_end}" if rows.empty?
 
         if options[:pivot] && @options[:pivot] == true
           pivot_render
@@ -57,12 +57,12 @@ module Crossbeams
 
       def standard_render
         <<~HTML
-          <table class="thinbordertable#{top_margin}">#{table_caption}
+          #{dom_start}<table class="thinbordertable#{top_margin}">#{table_caption}
             #{head if @options[:has_columns]}
             <tbody>
               #{strings.join("\n")}
             </tbody>
-          </table>
+          </table>#{dom_end}
         HTML
       end
 
@@ -84,12 +84,24 @@ module Crossbeams
 
         elements = @columns.map { |c| [c, @rows.map { |row| row[c] }].flatten }
         <<~HTML
-          <table class="thinbordertable#{top_margin}">#{table_caption}
+          #{dom_start}<table class="thinbordertable#{top_margin}">#{table_caption}
             <tbody>
               #{pivot_strings(elements).join("\n")}
             </tbody>
-          </table>
+          </table>#{dom_end}
         HTML
+      end
+
+      def dom_start
+        return '' unless options[:dom_id]
+
+        %(<div id="#{options[:dom_id]}">)
+      end
+
+      def dom_end
+        return '' unless options[:dom_id]
+
+        '</div>'
       end
 
       def pivot_strings(elements)
