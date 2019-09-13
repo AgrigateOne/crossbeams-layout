@@ -7,6 +7,12 @@ module Crossbeams
       include PageNode
       attr_reader :columns, :rows, :options
 
+      BUILT_IN_TRANSFORMERS = {
+        integer: ->(a) { a && format('%d', a) },
+        decimal: ->(a) { a && format('%.2f', a) },
+        decimal_4: ->(a) { a && format('%.4f', a) }
+      }.freeze
+
       def initialize(page_config, rows, columns, options = {})
         @page_config = page_config
         @columns     = columns || []
@@ -34,9 +40,9 @@ module Crossbeams
       #
       # @return [string] - HTML representation of this node.
       def render
-        return '' if rows.empty?
+        return "#{dom_start}#{dom_end}" if rows.empty?
 
-        if options[:pivot] && @options[:pivot] == true
+        if options[:pivot] && options[:pivot] == true
           pivot_render
         else
           standard_render
@@ -49,7 +55,7 @@ module Crossbeams
         <<~HTML
           <thead>
             <tr>
-              #{format_columns.join}
+              #{format_column_headers.join}
             </tr>
           </thead>
         HTML
@@ -57,12 +63,12 @@ module Crossbeams
 
       def standard_render
         <<~HTML
-          <table class="thinbordertable#{top_margin}">#{table_caption}
-            #{head if @options[:has_columns]}
+          #{dom_start}<table class="thinbordertable#{top_margin}">#{table_caption}
+            #{head if options[:has_columns]}
             <tbody>
               #{strings.join("\n")}
             </tbody>
-          </table>
+          </table>#{dom_end}
         HTML
       end
 
@@ -80,16 +86,37 @@ module Crossbeams
       end
 
       def pivot_render
-        raise ArgumentError, 'Pivot must have column headers' unless @options[:has_columns]
+        raise ArgumentError, 'Pivot must have column headers' unless options[:has_columns]
 
-        elements = @columns.map { |c| [c, @rows.map { |row| row[c] }].flatten }
+        elements = pivot_rows
         <<~HTML
-          <table class="thinbordertable#{top_margin}">#{table_caption}
+          #{dom_start}<table class="thinbordertable#{top_margin}">#{table_caption}
             <tbody>
               #{pivot_strings(elements).join("\n")}
             </tbody>
-          </table>
+          </table>#{dom_end}
         HTML
+      end
+
+      def pivot_rows
+        columns.map do |col|
+          [
+            col,
+            rows.map { |row| transform_cell(col, row[col]) }
+          ].flatten
+        end
+      end
+
+      def dom_start
+        return '' unless options[:dom_id]
+
+        %(<div id="#{options[:dom_id]}">)
+      end
+
+      def dom_end
+        return '' unless options[:dom_id]
+
+        '</div>'
       end
 
       def pivot_strings(elements)
@@ -114,44 +141,50 @@ module Crossbeams
       end
 
       def header_translate
-        @header_translate ||= @options[:header_captions] || {}
+        @header_translate ||= options[:header_captions] || {}
       end
 
-      def format_columns
-        @columns.map { |c| "<th>#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>" }
+      def format_column_headers
+        columns.map { |c| "<th>#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>" }
       end
 
       def strings
-        @rows.map do |row|
-          if @columns.empty?
+        rows.map do |row|
+          if columns.empty?
             "<tr class='hover-row'>#{row.map { |r| "<td>#{r}</td>" }.join}</tr>"
           else
-            "<tr class='hover-row'>#{@columns.map { |c| "<td#{attr_for_col(c)} #{classes_for_col(c, row[c])}>#{row[c]}</td>" }.join}</tr>"
+            "<tr class='hover-row'>#{columns.map { |c| "<td#{attr_for_col(c)}#{classes_for_col(c, row[c])}>#{transform_cell(c, row[c])}</td>" }.join}</tr>"
           end
         end
       end
 
       def classes_for_col(col, val)
-        if @options[:cell_classes] && @options[:cell_classes][col]
-          "class='#{@options[:cell_classes][col].call(val)}'"
-        else
-          ''
-        end
+        class_calc = options.dig(:cell_classes, col)
+        return '' if class_calc.nil?
+
+        " class='#{class_calc.call(val)}'"
+      end
+
+      def transform_cell(col, val)
+        transformer = options.dig(:cell_transformers, col)
+        return val if transformer.nil?
+        return transformer.call(val) if transformer.respond_to?(:call)
+
+        BUILT_IN_TRANSFORMERS[transformer].call(val)
       end
 
       def attr_for_col(col)
-        if @options[:alignment] && @options[:alignment][col]
-          %( align="#{@options[:alignment][col]}")
-        else
-          ' '
-        end
+        alignment = options.dig(:alignment, col)
+        return '' if alignment.nil?
+
+        %( align="#{alignment}")
       end
 
       def columns_from_rows
-        return [] if @rows.empty?
-        return [] unless @rows.first.is_a?(Hash)
+        return [] if rows.empty?
+        return [] unless rows.first.is_a?(Hash)
 
-        @rows.first.keys
+        rows.first.keys
       end
     end
   end
