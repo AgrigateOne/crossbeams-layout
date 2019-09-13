@@ -76,4 +76,36 @@ class Crossbeams::TableTest < Minitest::Test
     assert_raises(ArgumentError) { Crossbeams::Layout::Table.new(page_config, rows, cols, top_margin: -1).render }
     assert_raises(ArgumentError) { Crossbeams::Layout::Table.new(page_config, rows, cols, top_margin: '2').render }
   end
+
+  def test_wrapper_div
+    renderer = Crossbeams::Layout::Table.new(page_config, [], [])
+    assert_equal '', renderer.render
+
+    renderer = Crossbeams::Layout::Table.new(page_config, [], [], dom_id: 'abc')
+    assert_equal '<div id="abc"></div>', renderer.render
+
+    rows = [{ a: 1, b: 2 }]
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, [])
+    refute renderer.render.include?('<div id="abc">')
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, [], dom_id: 'abc')
+    assert renderer.render.include?('<div id="abc">')
+  end
+
+  def test_transform_data
+    rows = [{ a: 1, b: 2 }]
+    cols = [:a, :b]
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols)
+    assert renderer.render.include?('<td>1</td>')
+
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, cell_transformers: { a: ->(a) { "==#{a}==" }})
+    assert renderer.render.include?('<td>==1==</td>')
+
+    rows = [{ a: BigDecimal('1.2'), b: BigDecimal('2') }]
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, cell_transformers: { a: :decimal })
+    assert renderer.render.include?('<td>1.20</td>')
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, cell_transformers: { a: :decimal_4 })
+    assert renderer.render.include?('<td>1.2000</td>')
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, cell_transformers: { a: :integer })
+    assert renderer.render.include?('<td>1</td>')
+  end
 end
