@@ -7,10 +7,13 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `dom_id` option for Table will wrap the table in a div with the given id for dynamic replacement.
-- Table can receive a `cell_transformers` option to dynamically format values in a cell.
 ### Changed
 ### Fixed
+
+## [0.3.4] - 2019-09-13
+### Added
+- `dom_id` option for Table will wrap the table in a div with the given id for dynamic replacement.
+- Table can receive a `cell_transformers` option to dynamically format values in a cell.
 
 ## [0.3.3] - 2019-09-04
 ### Added
