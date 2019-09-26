@@ -43,6 +43,11 @@ module Crossbeams
         @nodes << fold_up
       end
 
+      def expand_collapse(options = {})
+        exp_col = ExpandCollapseFolds.new(page_config, nodes.length + 1, options)
+        @nodes << exp_col
+      end
+
       def add_field(name, options = {})
         @nodes << Field.new(page_config, name, options)
       end

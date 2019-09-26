@@ -82,7 +82,7 @@ module Crossbeams
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
         <<~HTML
           <details class="pointer pv2"#{open_state}>
-            <summary>#{caption_text}</summary>
+            <summary class="b blue shadow-3 pa1 mr2">#{caption_text}</summary>
             #{row_renders}
           </details>
         HTML
