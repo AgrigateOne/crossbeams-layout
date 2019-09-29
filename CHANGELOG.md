@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- HelpLink for displaying a button to open a help page.
 ### Changed
 - Styling of fold_ups improved.
 - Expand/Collapse can be called within a Column.

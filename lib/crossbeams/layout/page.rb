@@ -105,6 +105,10 @@ module Crossbeams
         @nodes << Table.new(page_config, rows, columns, options)
       end
 
+      def add_help_link(options)
+        @nodes << HelpLink.new(options)
+      end
+
       def add_text(text, opts = {})
         @nodes << Text.new(page_config, text, opts)
       end
