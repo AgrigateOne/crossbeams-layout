@@ -35,7 +35,7 @@ module Crossbeams
       def render
         <<-HTML
           <div class="relative">
-            <a href="#{url}"class="#{position_classes}f6 link dim br2 ph3 pv2 dib white bg-blue" target="cbf-help">#{Icon.new(:question).render} #{text}</a>
+            <a href="#{url}"class="#{position_classes}f6 link dim br2 ph3 pv2 dib white bg-blue" data-help-link="Y" target="cbf-help">#{Icon.new(:question).render} #{text}</a>
           </div>
         HTML
       end
