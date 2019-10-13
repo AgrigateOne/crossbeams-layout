@@ -22,9 +22,11 @@ module Crossbeams
 
         # The value of the field extracted from the form object.
         # This method will dig values out of an +extended_columns+ field if required.
-        def form_object_value
+        def form_object_value # rubocop:disable Metrics/AbcSize
           if @field_name.to_s.start_with?('extcol_')
             (@page_config.form_object[:extended_columns] || {})[@field_name.to_s.delete_prefix('extcol_')]
+          elsif @field_config[:parent_field]
+            (@page_config.form_object[@field_config[:parent_field].to_sym] || {})[@field_name.to_s]
           else
             @page_config.form_object[@field_name]
           end
@@ -32,7 +34,7 @@ module Crossbeams
 
         # The value for an input's DOM id.
         def id_base
-          "#{@page_config.name}_#{@field_name}"
+          "#{@page_config.name}_#{parent_field_id}#{@field_name}"
         end
 
         # The element's id attribute.
@@ -52,9 +54,23 @@ module Crossbeams
           ' hidden'
         end
 
+        # Parent field name (for a field that is part of a Hash)
+        def parent_field
+          return '' unless @field_config[:parent_field]
+
+          "[#{@field_config[:parent_field]}]"
+        end
+
+        # Parent field id (for a field that is part of a Hash)
+        def parent_field_id
+          return '' unless @field_config[:parent_field]
+
+          "#{@field_config[:parent_field]}_"
+        end
+
         # The value for an input's DOM name.
         def name_base
-          %(#{@page_config.name}[#{@field_name}])
+          %(#{@page_config.name}#{parent_field}[#{@field_name}])
         end
 
         # The element's name attribute.
