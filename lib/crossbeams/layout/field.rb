@@ -13,7 +13,7 @@ module Crossbeams
       end
 
       def invisible?
-        false
+        field_config[:invisible]
       end
 
       def hidden?

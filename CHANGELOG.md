@@ -8,9 +8,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - HelpLink for displaying a button to open a help page.
+- `parent_field` attribute for fields. Set this to the name of an encompasing Hash (JSONB) column.
 ### Changed
 - Styling of fold_ups improved.
 - Expand/Collapse can be called within a Column.
+- invisible property of fields can be set and if true, the field will not be rendered.
 ### Fixed
 
 ## [0.3.4] - 2019-09-13
