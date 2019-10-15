@@ -139,8 +139,10 @@ def html_element_wrapper(html_string)
   RenderResult.new(html_string).element_wrapper
 end
 
-def simple_input_render(renderer, value, extra_configs = {})
+def simple_input_render(renderer, value, extra_configs = {}, form_values = nil, form_errors = nil)
   page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(the_test_field: value) })
+  page_config.form_values = form_values unless form_values.nil?
+  page_config.form_errors = form_errors unless form_errors.nil?
   field_name = :the_test_field
   field_config = { renderer: renderer }.merge(extra_configs)
   factory = Crossbeams::Layout::Renderer::FieldFactory.new(field_name, field_config, page_config)

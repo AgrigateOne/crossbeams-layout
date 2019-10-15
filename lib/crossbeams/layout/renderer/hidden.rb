@@ -23,8 +23,8 @@ module Crossbeams
         # FIXME: allows for hard-coded value to be used from form_values
         #        when the ROM::Struct does not include the field.
         def value
-          res = @page_config.form_values[@field_name] if @page_config.form_values
-          res ||= @page_config.form_object[@field_name]
+          res = form_object_value
+          res = override_with_form_value(res)
           res
         end
       end

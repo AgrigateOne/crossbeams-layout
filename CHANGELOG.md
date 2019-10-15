@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+- `form_values` correctly applied to a field with a `parent_field`.
 
 ## [0.3.5] - 2019-09-13
 ### Added

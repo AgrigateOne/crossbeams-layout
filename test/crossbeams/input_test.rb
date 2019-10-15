@@ -130,4 +130,25 @@ class Crossbeams::InputTest < Minitest::Test
     attrs = html_element_wrapper(s)
     refute_includes attrs.keys, 'hidden'
   end
+
+  def test_form_values
+    s = simple_input_render(:input, '123', {}, the_test_field: '222')
+    assert_equal '222', html_element_attribute_value(s, :input, :value)
+
+    page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(id: 1, boss: { 'the_test_field' => '123' }) })
+    page_config.form_values = { boss: { 'the_test_field' => '222' } }
+    field_name = :the_test_field
+    field_config = { renderer: :input, parent_field: :boss }
+    factory = Crossbeams::Layout::Renderer::FieldFactory.new(field_name, field_config, page_config)
+    s = factory.render
+    assert_equal '222', html_element_attribute_value(s, :input, :value)
+
+    page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(id: 1, boss: { the_test_field: '123' }) })
+    page_config.form_values = { boss: { the_test_field: '222' } }
+    field_name = :the_test_field
+    field_config = { renderer: :input, parent_field: :boss }
+    factory = Crossbeams::Layout::Renderer::FieldFactory.new(field_name, field_config, page_config)
+    s = factory.render
+    assert_equal '222', html_element_attribute_value(s, :input, :value)
+  end
 end

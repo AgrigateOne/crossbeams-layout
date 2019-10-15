@@ -115,7 +115,7 @@ module Crossbeams
 
         def value
           res = form_object_value
-          res = @page_config.form_values[@field_name] if @page_config.form_values
+          res = override_with_form_value(res)
           if res.is_a?(BigDecimal) # TODO: read other frameworks to see best way of handling this...
             res.to_s('F')
           else

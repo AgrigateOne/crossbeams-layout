@@ -26,10 +26,23 @@ module Crossbeams
           if @field_name.to_s.start_with?('extcol_')
             (@page_config.form_object[:extended_columns] || {})[@field_name.to_s.delete_prefix('extcol_')]
           elsif @field_config[:parent_field]
-            (@page_config.form_object[@field_config[:parent_field].to_sym] || {})[@field_name.to_s]
+            parent_hash[@field_name.to_s] || parent_hash[@field_name]
           else
             @page_config.form_object[@field_name]
           end
+        end
+
+        # If there is a value in form_values for this field, use it to
+        # override the already-set value.
+        def override_with_form_value(value)
+          return value unless @page_config.form_values
+
+          temp = if @field_config[:parent_field]
+                   parent_form_values_hash[@field_name.to_s] || parent_form_values_hash[@field_name]
+                 else
+                   @page_config.form_values[@field_name]
+                 end
+          temp.nil? ? value : temp
         end
 
         # The value for an input's DOM id.
@@ -165,6 +178,14 @@ module Crossbeams
 
         def param_values_str(rule)
           rule[:param_values].map { |k, v| "\"#{k}\":\"#{v}\"" }.join(',')
+        end
+
+        def parent_hash
+          @page_config.form_object[@field_config[:parent_field].to_sym] || {}
+        end
+
+        def parent_form_values_hash
+          @page_config.form_values[@field_config[:parent_field].to_sym] || {}
         end
       end
     end

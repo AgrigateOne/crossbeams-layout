@@ -27,8 +27,8 @@ module Crossbeams
         private
 
         def value
-          res = @page_config.form_object[@field_name]
-          res = @page_config.form_values[@field_name] if @page_config.form_values
+          res = form_object_value
+          res = override_with_form_value(res)
           res
         end
 

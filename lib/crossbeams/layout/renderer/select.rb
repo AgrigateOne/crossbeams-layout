@@ -18,7 +18,7 @@ module Crossbeams
         def render
           attrs = apply_attrs # For class, prompt etc...
           sel = @field_config[:selected] || form_object_value
-          sel = @page_config.form_values[@field_name] if @page_config.form_values
+          sel = override_with_form_value(sel)
 
           disabled_option = find_disabled_option(sel, @field_config[:disabled_options])
 
