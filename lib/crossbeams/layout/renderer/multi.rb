@@ -18,7 +18,7 @@ module Crossbeams
           cls   << 'searchable-multi'
           attrs << "class=\"#{cls.join(' ')}\"" unless cls.empty?
           attrs << behaviours
-          sel = @field_config[:selected] || @page_config.form_object[@field_name] || []
+          sel = (@field_config[:selected] || @page_config.form_object[@field_name] || []).map(&:to_s)
 
           render_string(attrs, sel)
         end
@@ -58,7 +58,7 @@ module Crossbeams
         end
 
         def option_string(text, value, selected)
-          sel = selected.include?(value) ? ' selected ' : ''
+          sel = selected.include?(value.to_s) ? ' selected ' : ''
           "<option value=\"#{CGI.escapeHTML(value.to_s)}\"#{sel}>#{CGI.escapeHTML(text.to_s)}</option>"
         end
       end

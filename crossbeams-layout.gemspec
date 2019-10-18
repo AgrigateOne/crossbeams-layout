@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'Layout renderer.'
   spec.description   = 'Layout renderer. Produces complex layouts from ruby DSL.'
-  spec.homepage      = 'https://github.com/JMT-SA'
+  spec.homepage      = 'https://github.com/NoSoft-SA'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
