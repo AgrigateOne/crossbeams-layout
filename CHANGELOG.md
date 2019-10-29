@@ -9,8 +9,14 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+
+## [0.3.6] - 2019-10-29
+### Changed
+- Table: give pivot data column a minimum width.
+### Fixed
 - `form_values` correctly applied to a field with a `parent_field`.
 - Multi control was not picking up default selection properly when options were integers and selection was strings. Forced both to string.
+- Alignment was not applied to pivoted columns.
 
 ## [0.3.5] - 2019-09-13
 ### Added

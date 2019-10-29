@@ -129,12 +129,13 @@ module Crossbeams
 
       def pivot_row(elem)
         this_row = ["<tr class='hover-row'>"]
+        col = nil
         elem.each_with_index do |e, i|
           col = e if i.zero?
           this_row << if i.zero?
                         "<th align='right'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>"
                       else
-                        "<td#{attr_for_col(col)} #{classes_for_col(col, e)}>#{e || '&nbsp;'}</td>"
+                        "<td#{attr_for_col(col)} #{classes_for_col(col, e)} style='min-width:3rem'>#{e || '&nbsp;'}</td>"
                       end
         end
         this_row << '</tr>'
