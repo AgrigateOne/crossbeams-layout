@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- Table: give pivot data column a minimum width.
 ### Fixed
 - `form_values` correctly applied to a field with a `parent_field`.
 - Multi control was not picking up default selection properly when options were integers and selection was strings. Forced both to string.
