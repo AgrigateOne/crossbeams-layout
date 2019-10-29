@@ -8,6 +8,10 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+### Fixed
+
+## [0.3.6] - 2019-10-29
+### Changed
 - Table: give pivot data column a minimum width.
 ### Fixed
 - `form_values` correctly applied to a field with a `parent_field`.
