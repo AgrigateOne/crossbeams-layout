@@ -129,6 +129,7 @@ module Crossbeams
 
       def pivot_row(elem)
         this_row = ["<tr class='hover-row'>"]
+        col = nil
         elem.each_with_index do |e, i|
           col = e if i.zero?
           this_row << if i.zero?

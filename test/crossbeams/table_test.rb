@@ -41,6 +41,11 @@ class Crossbeams::TableTest < Minitest::Test
     cols = [:a, :b]
     renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, alignment: { b: :right})
     assert renderer.render.match?(/<td align="right"\s*>2<\/td>/)
+
+    rows = [{ a: 1, b: 2 }]
+    cols = [:a, :b]
+    renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, alignment: { b: :right}, pivot: true)
+    assert renderer.render.match?(/<td align="right"\s*>2<\/td>/)
   end
 
   def test_cell_class
