@@ -42,4 +42,19 @@ class Crossbeams::Layout::FormTest < Minitest::Test
     assert_raises(ArgumentError) { form.caption 'X', level: 'a' }
     assert_raises(ArgumentError) { form.caption 'X', level: 5 }
   end
+
+  def test_button
+    form = new_form
+    render = form.render
+    assert_match '<input type="submit"', render
+
+    form.button_id 'test_id'
+    render = form.render
+    assert_match '<input type="submit" id="test_id"', render
+    refute_match ' hidden>', render
+
+    form.initially_hide_button
+    render = form.render
+    assert_match ' hidden>', render
+  end
 end

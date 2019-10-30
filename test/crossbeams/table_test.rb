@@ -45,7 +45,7 @@ class Crossbeams::TableTest < Minitest::Test
     rows = [{ a: 1, b: 2 }]
     cols = [:a, :b]
     renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, alignment: { b: :right}, pivot: true)
-    assert renderer.render.match?(/<td align="right"\s*>2<\/td>/)
+    assert renderer.render.match?(/<th align='right'>A<\/th>/)
   end
 
   def test_cell_class
@@ -59,7 +59,7 @@ class Crossbeams::TableTest < Minitest::Test
     rows = [{ a: 1, b: 2 }, { a: 3, b: 4 }]
     cols = [:a, :b]
     renderer = Crossbeams::Layout::Table.new(page_config, rows, cols, pivot: true)
-    assert renderer.render.match?(/<th align='right'>A<\/th><td\s+>1<\/td>/)
+    assert renderer.render.match?(/<th align='right'>A<\/th><td\s+style='min-width:3rem'>1<\/td>/)
   end
 
   def test_caption

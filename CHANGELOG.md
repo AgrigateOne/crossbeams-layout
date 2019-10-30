@@ -7,6 +7,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- New Form method: `button_id` for setting the DOM id of the submit button.
+- New Form method: `initially_hide_button` for hiding the submit button on initial render.
 ### Changed
 ### Fixed
 

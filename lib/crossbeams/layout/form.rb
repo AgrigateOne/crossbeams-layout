@@ -23,6 +23,8 @@ module Crossbeams
         @got_row          = false
         @no_row           = false
         @no_submit        = false
+        @hidden_submit    = false
+        @submit_id        = nil
         @csrf_tag         = nil
         @submit_caption   = 'Submit'
         @disable_caption  = 'Submitting'
@@ -60,6 +62,20 @@ module Crossbeams
       # @returns [void]
       def no_submit!
         @no_submit = true
+      end
+
+      # Render the form with a hidden submit button.
+      # - typically for a behaviour to show it later.
+      # @returns [void]
+      def initially_hide_button
+        @hidden_submit = true
+      end
+
+      # Provide an id for the submit button.
+      # @param value [string] the id value.
+      # @returns [void]
+      def button_id(value)
+        @submit_id = value
       end
 
       # Include the submit button on the same line as input.
@@ -274,15 +290,17 @@ module Crossbeams
 
       def submit_button
         disabler = @remote_form ? 'briefly-disable' : 'disable'
+        id_str = @submit_id.nil? ? '' : %( id="#{@submit_id}")
+        hidden_str = @hidden_submit ? ' hidden' : ''
         if @view_only
-          %(<input type="submit" name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white">)
+          %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
         else
-          %(<input type="submit" name="commit" value="#{@submit_caption}" data-#{disabler}-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white">)
+          %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}" data-#{disabler}-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
         end
       end
 
       def inline_submit
-        sub = InlineSubmit.new(@view_only, @submit_caption, @disable_caption)
+        sub = InlineSubmit.new(@view_only, @submit_caption, @disable_caption, @submit_id, @hidden_submit)
         sub
       end
 
@@ -290,10 +308,12 @@ module Crossbeams
       class InlineSubmit
         include PageNode
 
-        def initialize(view_only, submit_caption, disable_caption)
+        def initialize(view_only, submit_caption, disable_caption, submit_id, hidden_submit)
           @view_only = view_only
           @submit_caption = submit_caption
           @disable_caption = disable_caption
+          @submit_id = submit_id
+          @hidden_submit = hidden_submit
         end
 
         # Is this node invisible?
@@ -314,10 +334,12 @@ module Crossbeams
         #
         # @return [string] - HTML representation of this node.
         def render
+          id_str = @submit_id.nil? ? '' : %( id="#{@submit_id}")
+          hidden_str = @hidden_submit ? ' hidden' : ''
           if @view_only
-            %(<input type="submit" name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white">)
+            %(<input type="submit" name="commit"#{id_str} value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
           else
-            %(<input type="submit" name="commit" value="#{@submit_caption}" data-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white">)
+            %(<input type="submit" name="commit"#{id_str} value="#{@submit_caption}" data-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
           end
         end
       end
