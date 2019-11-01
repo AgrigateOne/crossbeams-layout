@@ -94,6 +94,18 @@ class Crossbeams::InputTest < Minitest::Test
 
     s = simple_input_render(:input, '123')
     assert_nil html_element_attribute_value(s, :input, :minlength)
+
+    assert_raises(ArgumentError) { simple_input_render(:integer, '123', minlength: 12) }
+  end
+
+  def test_minvalue_attribute
+    s = simple_input_render(:integer, '123', minvalue: 12)
+    assert_equal '12', html_element_attribute_value(s, :input, :min)
+
+    s = simple_input_render(:integer, '123')
+    assert_nil html_element_attribute_value(s, :input, :min)
+
+    assert_raises(ArgumentError) { simple_input_render(:input, '123', minvalue: 12) }
   end
 
   def test_step_attribute
