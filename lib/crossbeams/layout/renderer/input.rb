@@ -163,6 +163,8 @@ module Crossbeams
             attr_pattern_title,
             attr_title,
             attr_pattern,
+            attr_minvalue,
+            attr_maxvalue,
             attr_minlength,
             attr_maxlength,
             attr_readonly,
@@ -200,12 +202,32 @@ module Crossbeams
           return build_pattern(@field_config[:pattern]) if @field_config[:pattern]
         end
 
+        def attr_minvalue
+          return '' unless @field_config[:minvalue]
+          raise ArgumentError, "Input: minvalue is not applicable for type #{input_type}" unless %w[date month week time datetime-local number range].include?(input_type)
+
+          "min=\"#{@field_config[:minvalue]}\""
+        end
+
+        def attr_maxvalue
+          return '' unless @field_config[:maxvalue]
+          raise ArgumentError, "Input: maxvalue is not applicable for type #{input_type}" unless %w[date month week time datetime-local number range].include?(input_type)
+
+          "max=\"#{@field_config[:maxvalue]}\""
+        end
+
         def attr_minlength
-          return "minlength=\"#{@field_config[:minlength]}\"" if @field_config[:minlength]
+          return '' unless @field_config[:minlength]
+          raise ArgumentError, "Input: minlength is not applicable for type #{input_type}" unless %w[text search url tel email password].include?(input_type)
+
+          "minlength=\"#{@field_config[:minlength]}\""
         end
 
         def attr_maxlength
-          return "maxlength=\"#{@field_config[:maxlength]}\"" if @field_config[:maxlength]
+          return '' unless @field_config[:maxlength]
+          raise ArgumentError, "Input: maxlength is not applicable for type #{input_type}" unless %w[text search url tel email password].include?(input_type)
+
+          "maxlength=\"#{@field_config[:maxlength]}\""
         end
 
         def attr_readonly
