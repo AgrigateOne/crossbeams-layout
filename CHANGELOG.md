@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `input_change` behaviour added to listen to input changes (particularly for checkboxes).
 ### Changed
 ### Fixed
 
