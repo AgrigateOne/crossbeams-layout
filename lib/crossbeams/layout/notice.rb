@@ -5,7 +5,7 @@ module Crossbeams
     # A notice renderer - for rendering text in an error, warning or information box.
     class Notice
       include PageNode
-      attr_reader :text, :page_config, :notice_type, :caption, :show_caption, :within_field
+      attr_reader :text, :page_config, :notice_type, :caption, :show_caption, :inline_caption, :within_field
 
       def initialize(page_config, text, opts = {})
         @text           = text
@@ -14,6 +14,7 @@ module Crossbeams
         @notice_type    = opts[:notice_type] || :info
         @caption        = opts[:caption] || @notice_type.to_s.capitalize
         @caption        = 'Note' if @caption == 'Info'
+        @inline_caption = opts[:inline_caption]
         @show_caption   = opts.fetch(:show_caption, true)
         @within_field   = opts.fetch(:within_field, true)
         assert_valid_notice_type!
@@ -33,7 +34,7 @@ module Crossbeams
         css = "crossbeams-#{notice_type}-note"
         <<~HTML
           #{div_start}<div class='#{css}'>#{notice_caption}
-            <p>#{text}</p>
+            <p>#{inline_notice_caption}#{text}</p>
           </div>#{div_end}
         HTML
       end
@@ -47,8 +48,16 @@ module Crossbeams
 
       def notice_caption
         return '' unless show_caption
+        return '' if inline_caption
 
         "<p><strong>#{caption}:</strong></p>"
+      end
+
+      def inline_notice_caption
+        return '' unless show_caption
+        return '' unless inline_caption
+
+        "<strong>#{caption}:</strong> "
       end
     end
   end
