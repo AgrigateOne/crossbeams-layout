@@ -5,22 +5,13 @@ module Crossbeams
     # A column is part of a Row.
     class Column
       include PageNode
-      attr_reader :css_class, :nodes, :page_config
+      attr_reader :css_class, :nodes, :page_config, :colwidth
 
       def initialize(page_config, size, _seq1, _seq2)
         @nodes = []
-        case size
-        when :full
-          @css_class = 'pure-u-1'
-        when :half
-          @css_class = 'pure-u-1 pure-u-md-1-2'
-        when :third
-          @css_class = 'pure-u-1 pure-u-md-1-3'
-        when :quarter
-          @css_class = 'pure-u-1 pure-u-md-1-4'
-        else
-          raise ArgumentError, "Unknown column size \"#{size}\"."
-        end
+        raise ArgumentError, %(Unknown column size "#{size}".) unless %i[full half third quarter].include?(size)
+
+        @colwidth = size || :full
         @page_config = page_config
       end
 
@@ -111,11 +102,21 @@ module Crossbeams
         else
           field_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Col -->\n")
           <<-HTML
-          <div class="crossbeams-col">
+          <div class="crossbeams-col#{column_width}">
             #{field_renders}
           </div>
           HTML
         end
+      end
+
+      private
+
+      def column_width
+        return '' if colwidth == :full
+        return ' w-50-ns' if colwidth == :half
+        return ' w-33-ns' if colwidth == :third
+
+        ' w-25-ns'
       end
     end
   end

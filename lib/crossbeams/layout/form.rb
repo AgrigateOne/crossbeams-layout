@@ -6,33 +6,34 @@ module Crossbeams
     class Form # rubocop:disable Metrics/ClassLength
       attr_reader :sequence, :nodes, :page_config, :form_action, :form_method,
                   :got_row, :no_row, :csrf_tag, :remote_form, :form_config,
-                  :multipart_form, :form_caption, :caption_level
+                  :multipart_form, :form_caption, :caption_level, :in_loading_page
 
       def initialize(page_config, section_sequence, sequence) # rubocop:disable Metrics/AbcSize
-        @section_sequence = section_sequence
-        @sequence         = sequence
-        @form_action      = '/' # work out from page_config.object?
-        @nodes            = []
-        @page_config      = page_config
-        @form_config      = PageConfig.new({}) # OpenStruct.new
-        @form_method      = :create
-        @remote_form      = false
-        @multipart_form   = false
-        @view_only        = false
-        @inline           = false
-        @got_row          = false
-        @no_row           = false
-        @no_submit        = false
-        @hidden_submit    = false
-        @submit_id        = nil
-        @csrf_tag         = nil
-        @submit_caption   = 'Submit'
-        @disable_caption  = 'Submitting'
-        @form_caption     = nil
+        @section_sequence       = section_sequence
+        @sequence               = sequence
+        @form_action            = '/' # work out from page_config.object?
+        @nodes                  = []
+        @page_config            = page_config
+        @form_config            = PageConfig.new({}) # OpenStruct.new
+        @form_method            = :create
+        @remote_form            = false
+        @multipart_form         = false
+        @view_only              = false
+        @inline                 = false
+        @got_row                = false
+        @no_row                 = false
+        @no_submit              = false
+        @hidden_submit          = false
+        @submit_in_loading_page = false
+        @submit_id              = nil
+        @csrf_tag               = nil
+        @submit_caption         = 'Submit'
+        @disable_caption        = 'Submitting'
+        @form_caption           = nil
       end
 
       def form_config=(value)
-        @form_config      = PageConfig.new(value) # OpenStruct.new
+        @form_config = PageConfig.new(value) # OpenStruct.new
       end
 
       def add_csrf_tag(tag)
@@ -49,6 +50,12 @@ module Crossbeams
       # @returns [void]
       def multipart!
         @multipart_form = true
+      end
+
+      # Make this form submit to its action in a "loading" page as a GET request.
+      # @returns [void]
+      def submit_in_loading_page!
+        @submit_in_loading_page = true
       end
 
       # Make this a view-only form.
@@ -217,7 +224,7 @@ module Crossbeams
                           HTML
                         end
         <<~HTML
-          #{render_caption}<form #{render_id}class="crossbeams-form" action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
+          #{render_caption}<form #{render_id}class="crossbeams-form" #{as_loading}action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
             #{error_head}
             #{csrf_tag}
             #{form_method_str}
@@ -228,6 +235,12 @@ module Crossbeams
       end
 
       private
+
+      def as_loading
+        return '' unless @submit_in_loading_page
+
+        'data-convert-to-loading="true" '
+      end
 
       def form_method_str
         case form_method
@@ -290,12 +303,13 @@ module Crossbeams
 
       def submit_button
         disabler = @remote_form ? 'briefly-disable' : 'disable'
+        disable_command = @submit_in_loading_page ? '' : %( data-#{disabler}-with="#{@disable_caption}")
         id_str = @submit_id.nil? ? '' : %( id="#{@submit_id}")
         hidden_str = @hidden_submit ? ' hidden' : ''
         if @view_only
           %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
         else
-          %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}" data-#{disabler}-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
+          %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
         end
       end
 

@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 - `input_change` behaviour added to listen to input changes (particularly for checkboxes).
 - `inline_caption` option for Notice control: displays `Note`, `Error` etc caption on the same line as the text.
+- `submit_in_loading_page!` for forms to convert the POST to a GET and call the action inside a "loading" window. 
 ### Changed
 ### Fixed
 
