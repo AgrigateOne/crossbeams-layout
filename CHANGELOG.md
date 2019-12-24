@@ -12,6 +12,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - `submit_in_loading_page!` for forms to convert the POST to a GET and call the action inside a "loading" window. 
 ### Changed
 ### Fixed
+- Buttons in grid header - set the type to "button" to prevent the default submit when rendered inside a form.
 
 ## [0.3.7] - 2019-11-01
 ### Added
