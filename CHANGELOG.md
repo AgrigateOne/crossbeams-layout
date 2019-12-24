@@ -7,11 +7,16 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.3.8] - 2019-12-24
+### Added
 - `input_change` behaviour added to listen to input changes (particularly for checkboxes).
 - `inline_caption` option for Notice control: displays `Note`, `Error` etc caption on the same line as the text.
 - `submit_in_loading_page!` for forms to convert the POST to a GET and call the action inside a "loading" window. 
-### Changed
 ### Fixed
+- Buttons in grid header - set the type to "button" to prevent the default submit when rendered inside a form.
 
 ## [0.3.7] - 2019-11-01
 ### Added
