@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+- FoldUp: make the cursor a pointer only on the summary and not also on the enclosed details content.
 
 ## [0.3.8] - 2019-12-24
 ### Added
