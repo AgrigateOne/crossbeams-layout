@@ -51,8 +51,10 @@ module Crossbeams
         end
 
         # The element's id attribute.
-        def field_id
-          %(id="#{id_base}")
+        def field_id(suffix = nil)
+          extra = suffix ? "_#{suffix}" : ''
+
+          %(id="#{id_base}#{extra}")
         end
 
         # The field wrapper div's id attribute.
@@ -87,8 +89,9 @@ module Crossbeams
         end
 
         # The element's name attribute.
-        def name_attribute
-          %(name="#{name_base}")
+        def name_attribute(suffix = nil)
+          extra = suffix ? "_#{suffix}" : ''
+          %(name="#{name_base}#{extra}")
         end
 
         # The element's name attribute with array suffix.
