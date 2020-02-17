@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `Datetime` renderer created - replaces the `datetime` subtype of the `Input` renderer. This renders a date and time control together.
 ### Changed
 ### Fixed
 - FoldUp: make the cursor a pointer only on the summary and not also on the enclosed details content.

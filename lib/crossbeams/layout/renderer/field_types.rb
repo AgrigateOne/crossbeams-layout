@@ -8,7 +8,7 @@ module Crossbeams
         BUILT_IN_RENDERERS = {
           checkbox: Renderer::Checkbox,
           date: Renderer::Input,
-          datetime: Renderer::Input,
+          datetime: Renderer::Datetime,
           email: Renderer::Input,
           file: Renderer::Input,
           hidden: Renderer::Hidden,

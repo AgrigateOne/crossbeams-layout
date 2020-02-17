@@ -55,7 +55,7 @@ module Crossbeams
             'url'
           when :password
             'password'
-          when :date, :datetime, :month, :time
+          when :date, :month, :time
             date_related_input_type(subtype)
           when :file
             'file'
@@ -68,8 +68,6 @@ module Crossbeams
           case in_type
           when :date     # yyyy-mm-dd
             'date'
-          when :datetime # yyyy-mm-ddTHH:MM or yyyy-mm-ddTHH:MM:SS.S
-            'datetime-local'
           when :month    # yyyy-mm
             'month'
           when :time     # HH:MM
@@ -92,25 +90,11 @@ module Crossbeams
             return '' if d.nil?
 
             d.is_a?(String) ? d : d.strftime('%Y-%m')
-          },
-          datetime_with_seconds: lambda { |t|
-            return '' if t.nil?
-
-            t.is_a?(String) ? t : t.strftime('%Y-%m-%dT%H:%M:%S.%L')
-          },
-          datetime: lambda { |t|
-            return '' if t.nil?
-
-            t.is_a?(String) ? t : t.strftime('%Y-%m-%dT%H:%M')
           }
         }.freeze
 
         def date_related_value_getter
-          @value_getter = if subtype == :datetime && @field_config[:with_seconds] && @field_config[:with_seconds] == true
-                            DATE_VALUE_GETTERS[:datetime_with_seconds]
-                          else
-                            DATE_VALUE_GETTERS[subtype]
-                          end
+          @value_getter = DATE_VALUE_GETTERS[subtype]
         end
 
         def value
@@ -147,7 +131,6 @@ module Crossbeams
                   when :lowercase_underscore
                     '[a-z_]'
                   when :ipv4_address
-                    # '((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$'
                     '^(?:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(\.(?!$)|$)){4}$'
                   end
                 end
@@ -204,14 +187,14 @@ module Crossbeams
 
         def attr_minvalue
           return '' unless @field_config[:minvalue]
-          raise ArgumentError, "Input: minvalue is not applicable for type #{input_type}" unless %w[date month week time datetime-local number range].include?(input_type)
+          raise ArgumentError, "Input: minvalue is not applicable for type #{input_type}" unless %w[date month week time number range].include?(input_type)
 
           "min=\"#{@field_config[:minvalue]}\""
         end
 
         def attr_maxvalue
           return '' unless @field_config[:maxvalue]
-          raise ArgumentError, "Input: maxvalue is not applicable for type #{input_type}" unless %w[date month week time datetime-local number range].include?(input_type)
+          raise ArgumentError, "Input: maxvalue is not applicable for type #{input_type}" unless %w[date month week time number range].include?(input_type)
 
           "max=\"#{@field_config[:maxvalue]}\""
         end
