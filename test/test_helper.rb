@@ -16,6 +16,11 @@ class RenderResult
     Hash[xp[0].attributes.map { |k,v| [k, v.value] }]
   end
 
+  def inputs_attributes(element_type)
+    xp = @doc.xpath("//#{element_type}")
+    xp.map { |x| Hash[x.attributes.map { |k,v| [k, v.value] }] }
+  end
+
   def datalist
     xp = @doc.xpath("//datalist")
     {
@@ -97,6 +102,10 @@ end
 
 def html_element_attribute_value(html_string, element_type, attribute)
   RenderResult.new(html_string).input_attributes(element_type)[attribute.to_s]
+end
+
+def html_elements_attribute_value(html_string, element_type, attribute)
+  RenderResult.new(html_string).inputs_attributes(element_type).map { |a| a[attribute.to_s] }
 end
 
 def html_datalist_element(html_string)

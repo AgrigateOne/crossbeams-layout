@@ -20,7 +20,7 @@ module Crossbeams
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
             <input type="date" value="#{CGI.escapeHTML(date_portion.to_s)}" #{name_attribute(:date)}_date #{field_id(:date)}_date data-datetime="date" #{attr_list(:date).join(' ')}>
             <input type="time" value="#{CGI.escapeHTML(time_portion.to_s)}" #{name_attribute(:time)}_time #{field_id(:time)}_time data-datetime="time" #{attr_list(:time).join(' ')}>
-            <input type="hidden" value="#{CGI.escapeHTML(value&.strftime('%Y-%m-%dT%H:%M'))}" #{name_attribute} #{field_id}>
+            <input type="hidden" value="#{CGI.escapeHTML(value&.strftime('%Y-%m-%dT%H:%M').to_s)}" #{name_attribute} #{field_id}>
             <label for="#{@page_config.name}_#{@field_name}_date">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
           HTML
@@ -32,6 +32,7 @@ module Crossbeams
           @value ||= begin
                        res = form_object_value
                        val = override_with_form_value(res)
+                       val = nil if val.is_a?(String) && val.empty?
                        val.is_a?(String) ? Time.mktime(*val.split(/-|T|:/)) : val
                      end
         end

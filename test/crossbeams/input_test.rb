@@ -11,24 +11,6 @@ class Crossbeams::InputTest < Minitest::Test
     assert_equal '', html_element_attribute_value(s, :input, :value)
   end
 
-  def test_datetime_value
-    the_time = Time.now
-    s = simple_input_render(:datetime, the_time)
-    assert_equal 'datetime-local', html_element_attribute_value(s, :input, :type)
-    assert_equal the_time.strftime('%Y-%m-%dT%H:%M'), html_element_attribute_value(s, :input, :value)
-
-    s = simple_input_render(:datetime, nil)
-    assert_equal 'datetime-local', html_element_attribute_value(s, :input, :type)
-    assert_equal '', html_element_attribute_value(s, :input, :value)
-  end
-
-  def test_datetime_with_seconds
-    the_time = Time.now
-    s = simple_input_render(:datetime, the_time, with_seconds: true)
-    assert_equal 'datetime-local', html_element_attribute_value(s, :input, :type)
-    assert_equal the_time.strftime('%Y-%m-%dT%H:%M:%S.%L'), html_element_attribute_value(s, :input, :value)
-  end
-
   def test_time_value
     the_time = Time.now
     s = simple_input_render(:input, the_time, subtype: :time)
