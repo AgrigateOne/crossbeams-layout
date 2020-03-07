@@ -34,7 +34,7 @@ module Crossbeams
         right =  diff.right
 
         <<-HTML
-        <div class="crossbeams-field">
+        <div class="crossbeams-field"#{no_padding}>
           <div class="cbl-diff-container">
             <p class="cbl-diff-caption">#{rules[:left_caption] || 'Left'}</p>
             #{left}
@@ -48,6 +48,12 @@ module Crossbeams
       end
 
       private
+
+      def no_padding
+        return '' unless @rules[:no_padding]
+
+        ' style="padding:0"'
+      end
 
       def left_text
         return rules[:left] if rules[:left]

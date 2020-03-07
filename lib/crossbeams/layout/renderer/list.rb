@@ -14,7 +14,7 @@ module Crossbeams
 
         def render
           attrs = [] # For class, prompt etc...
-          attrs << "class=\"cbl-input #{@field_config[:class]}#{scroll_class}#{bg_class}\""
+          attrs << "class=\"cbl-input ma0 #{@field_config[:class]}#{scroll_class}#{bg_class}\""
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
             <ol #{attrs.join(' ')} #{field_id}>
