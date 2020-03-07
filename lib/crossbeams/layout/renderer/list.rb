@@ -14,7 +14,7 @@ module Crossbeams
 
         def render
           attrs = [] # For class, prompt etc...
-          attrs << "class=\"cbl-input #{@field_config[:class]}\""
+          attrs << "class=\"cbl-input #{@field_config[:class]}#{scroll_class}#{bg_class}\""
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
             <ol #{attrs.join(' ')} #{field_id}>
@@ -26,6 +26,18 @@ module Crossbeams
         end
 
         private
+
+        def bg_class
+          return '' unless @field_config[:filled_background]
+
+          ' bg-light-gray ba b--silver br2'
+        end
+
+        def scroll_class
+          return '' unless @field_config[:scroll_height]
+
+          " cbl-list-scroll-#{@field_config[:scroll_height]}"
+        end
 
         def item_renders
           return '' if @field_config[:items].nil? || @field_config[:items].empty?

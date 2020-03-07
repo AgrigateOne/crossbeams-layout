@@ -8,6 +8,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- List can be rendered with a border and bg (`:filled_background: true`).
+- List can be restricted to a particular height (`scroll_height: :short/:medium`)
 ### Fixed
 
 ## [0.4.0] - 2020-02-17
