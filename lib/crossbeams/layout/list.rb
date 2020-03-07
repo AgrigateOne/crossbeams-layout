@@ -37,13 +37,22 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        #{caption}<ol id="#{dom_id}">
+        #{caption}<ol id="#{dom_id}"#{classes}>
         #{item_renders}
         </ol>
         HTML
       end
 
       private
+
+      def classes
+        return '' unless @options[:scroll_height] || @options[:filled_background]
+
+        ar = []
+        ar << ' bg-light-gray ba b--silver br2' if @options[:filled_background]
+        ar << " cbl-list-scroll-#{@field_config[:scroll_height]}" if @options[:scroll_height]
+        ar.join
+      end
 
       def dom_id
         @options[:dom_id] || "cbl-list-#{Time.now.to_i}"
