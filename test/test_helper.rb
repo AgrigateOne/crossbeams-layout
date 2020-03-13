@@ -98,6 +98,24 @@ class RenderResult
     return {} if xp.length.zero?
     Hash[xp.first.attributes.map { |k, v| [v.name, v.value] }]
   end
+
+  def label_value
+    xp = @doc.xpath('//div[@class="cbl-input label-field bg-light-gray "]')
+    return {} if xp.length.zero?
+    Hash[xp.first.attributes.map { |k, v| [v.name, v.value] }]
+  end
+
+  def label_value
+    xp = @doc.xpath('//div[contains(@class, "label-field")]')
+    return nil if xp.length.zero?
+    xp.first.text
+  end
+
+  def field_caption
+    xp = @doc.xpath('//label')
+    return nil if xp.length.zero?
+    xp.first.text
+  end
 end
 
 def html_element_attribute_value(html_string, element_type, attribute)
@@ -148,6 +166,14 @@ def html_element_wrapper(html_string)
   RenderResult.new(html_string).element_wrapper
 end
 
+def html_label_element_value(html_string)
+  RenderResult.new(html_string).label_value
+end
+
+def html_element_field_caption(html_string)
+  RenderResult.new(html_string).field_caption
+end
+
 def simple_input_render(renderer, value, extra_configs = {}, form_values = nil, form_errors = nil)
   page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(the_test_field: value) })
   page_config.form_values = form_values unless form_values.nil?
@@ -168,4 +194,12 @@ def simple_select_render(value, list, extra_configs = {})
   input = Crossbeams::Layout::Renderer::Select.new
   input.configure(field_name, field_config, page_config)
   input.render
+end
+
+def simple_label_render(value, extra_configs = {})
+  page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(the_test_field: value) })
+  field_name = :the_test_field
+  field_config = { renderer: :label }.merge(extra_configs)
+  factory = Crossbeams::Layout::Renderer::FieldFactory.new(field_name, field_config, page_config)
+  factory.render
 end

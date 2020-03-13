@@ -45,10 +45,23 @@ module Crossbeams
               HTML
             end
           else
-            val = value.to_s.strip.empty? ? '&nbsp;' : CGI.escapeHTML(value.to_s)
+            val = value.to_s.strip.empty? ? '&nbsp;' : CGI.escapeHTML(apply_formatting(value).to_s)
             <<-HTML
               <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{field_id}>#{val}</div>
             HTML
+          end
+        end
+
+        def apply_formatting(val)
+          return val unless @field_config[:format]
+
+          case @field_config[:format]
+          when :without_timezone
+            val.to_s.sub(/ \+\d\d\d\d$/, '')
+          when :without_timezone_or_seconds
+            val.to_s.sub(/:\d\d \+\d\d\d\d$/, '')
+          else
+            val
           end
         end
       end
