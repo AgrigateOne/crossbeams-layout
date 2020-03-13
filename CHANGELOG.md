@@ -8,8 +8,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
-- Label with time values can be formatted: `format: :without_timezone` or `format: :without_timezone_or_seconds`.
 ### Fixed
+
+## [0.4.2] - 2020-03-13
+### Changed
+- Label with time values can be formatted: `format: :without_timezone` or `format: :without_timezone_or_seconds`.
 
 ## [0.4.1] - 2020-03-07
 ### Changed
