@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Extra options for Text - `hide_on_load`, `dom_id` and `css_classes`.
 ### Changed
 ### Fixed
 

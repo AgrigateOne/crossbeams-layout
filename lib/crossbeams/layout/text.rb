@@ -6,7 +6,8 @@ module Crossbeams
     class Text # rubocop:disable Metrics/ClassLength
       include PageNode
       attr_reader :text, :page_config, :preformatted, :syntax, :wrapper,
-                  :toggle_button, :toggle_caption, :toggle_element_id
+                  :toggle_button, :toggle_caption, :toggle_element_id,
+                  :options
       WRAP_START = {
         p: '<p>',
         h1: '<h1>',
@@ -40,6 +41,7 @@ module Crossbeams
         @toggle_button  = opts[:toggle_button] || false
         @toggle_caption = opts[:toggle_caption] || 'Show/Hide Text'
         @toggle_element_id = opts[:toggle_element_id]
+        @options = opts
         assert_element_id_in_text!
       end
 
@@ -63,13 +65,32 @@ module Crossbeams
       def render
         <<-HTML
         #{render_toggle_button}
-        <div class="crossbeams-field no-flex"#{render_toggle_id}>
+        <div class="crossbeams-field no-flex#{css_classes}"#{render_toggle_id}#{wrapper_id}#{wrapper_visibility}>
         #{preformatted || !syntax.nil? ? preformatted_text : render_text}
         </div>
         HTML
       end
 
       private
+
+      # Initially hide the wrapper.
+      def wrapper_visibility
+        return '' unless @options[:hide_on_load]
+
+        ' hidden'
+      end
+
+      def wrapper_id
+        return '' unless @options[:dom_id]
+
+        %( id="#{@options[:dom_id]}")
+      end
+
+      def css_classes
+        return '' unless @options[:css_classes]
+
+        " #{@options[:css_classes]}"
+      end
 
       def render_toggle_button
         return '' unless toggle_button
