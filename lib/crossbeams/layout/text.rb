@@ -153,6 +153,8 @@ module Crossbeams
                   Rouge::Lexers::SQL.new
                 when :yaml, :yml
                   Rouge::Lexers::YAML.new
+                when :xml
+                  Rouge::Lexers::XML.new
                 else
                   Rouge::Lexers::PlainText.new
                 end
