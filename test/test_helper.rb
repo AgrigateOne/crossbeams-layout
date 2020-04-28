@@ -100,12 +100,6 @@ class RenderResult
   end
 
   def label_value
-    xp = @doc.xpath('//div[@class="cbl-input label-field bg-light-gray "]')
-    return {} if xp.length.zero?
-    Hash[xp.first.attributes.map { |k, v| [v.name, v.value] }]
-  end
-
-  def label_value
     xp = @doc.xpath('//div[contains(@class, "label-field")]')
     return nil if xp.length.zero?
     xp.first.text

@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 - Extra options for Text - `hide_on_load`, `dom_id` and `css_classes`.
 - Text control can display XML with syntax highlighting.
+- Label can be rendered within `<pre>` tags: `format: :preformat`.
 ### Changed
 ### Fixed
 

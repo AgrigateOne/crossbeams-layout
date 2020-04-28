@@ -30,5 +30,16 @@ class Crossbeams::LabelTest < Minitest::Test
     s = simple_label_render(time_str, format: :without_timezone_or_seconds)
     assert_equal '2020-01-01 11:34', html_label_element_value(s)
   end
+
+  def test_preformat
+    str = "Line 1\nLine 2"
+    s = simple_label_render(str)
+    assert_equal str, html_label_element_value(s)
+
+    s = simple_label_render(str, format: :preformat)
+    assert_equal str, html_label_element_value(s)
+
+    assert_match(/<pre>#{str}<\/pre>/, s)
+  end
 end
 

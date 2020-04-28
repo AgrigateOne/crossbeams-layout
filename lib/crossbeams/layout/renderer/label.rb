@@ -47,7 +47,7 @@ module Crossbeams
           else
             val = value.to_s.strip.empty? ? '&nbsp;' : CGI.escapeHTML(apply_formatting(value).to_s)
             <<-HTML
-              <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{field_id}>#{val}</div>
+              <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{field_id}>#{preformat_start}#{val}#{preformat_end}</div>
             HTML
           end
         end
@@ -63,6 +63,18 @@ module Crossbeams
           else
             val
           end
+        end
+
+        def preformat_start
+          return '' unless @field_config[:format] == :preformat
+
+          '<pre>'
+        end
+
+        def preformat_end
+          return '' unless @field_config[:format] == :preformat
+
+          '</pre>'
         end
       end
     end
