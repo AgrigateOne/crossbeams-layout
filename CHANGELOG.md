@@ -7,13 +7,16 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.4.3] - 2020-05-08
+### Added
 - Extra options for Text - `hide_on_load`, `dom_id` and `css_classes`.
 - Text control can display XML with syntax highlighting.
 - Label can be rendered within `<pre>` tags: `format: :preformat`.
 - Raise an `ArgumentError` if a field has no renderer defined.
 - List controls can be rendered with an icon to remove an item by calling a URL. Uses the `remove_item_url` property which **must** include a `$:id$` token to be replaced by the item's id value.
-### Changed
-### Fixed
 
 ## [0.4.2] - 2020-03-13
 ### Changed
