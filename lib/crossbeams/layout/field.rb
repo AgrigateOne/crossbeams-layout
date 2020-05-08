@@ -10,6 +10,7 @@ module Crossbeams
         @name        = name
         @caption     = options[:caption] || name
         @page_config = page_config
+        raise ArgumentError, "There is no renderer defined for #{@name}" if field_config.nil?
       end
 
       def invisible?
