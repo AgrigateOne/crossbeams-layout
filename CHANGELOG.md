@@ -8,6 +8,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- New style for Link control - `:action_button` - renders a green button.
+- New option for Link control - `:icon` - renders a valid `Icon` to the left of the given text.
 ### Fixed
 
 ## [0.4.3] - 2020-05-08

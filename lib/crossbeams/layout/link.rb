@@ -11,6 +11,7 @@ module Crossbeams
         @text      = options.fetch(:text)
         @url       = options.fetch(:url)
         @style     = options[:style] || :link
+        @icon      = options[:icon]
         @behaviour = options[:behaviour] || :direct # popup window, popup dialog, modal...
         @css_class = options[:css_class] || ''
         @grid_id   = options[:grid_id] || ''
@@ -66,8 +67,10 @@ module Crossbeams
       end
 
       def assert_options_ok!
-        return unless @window
+        return unless @window || @icon
         raise ArgumentError, 'Crossbeams::Layout::Link you cannot have a loading window that is also a popup' if %i[popup replace_dialog].include?(@behaviour)
+        raise ArgumentError, "Crossbeams::Layout::Link - icon #{@icon} is not a valid choice" unless @icon.nil? || Icon::ICONS.keys.include?(@icon)
+        raise ArgumentError, 'Crossbeams::Layout::Link icon is not applicable for back button or loading window' if @icon && (style == :back_button || @window)
       end
 
       def class_strings
@@ -77,6 +80,8 @@ module Crossbeams
           %(class="link dim br1 ph2 dib white bg-silver#{user_class}")
         elsif style == :back_button
           %(class="f6 link dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
+        elsif style == :action_button
+          %(class="f6 link dim br2 ph3 pv2 dib white bg-green#{user_class}")
         else
           css_class.empty? ? '' : %(class="#{css_class}")
         end
@@ -95,6 +100,8 @@ module Crossbeams
       def render_text
         if style == :back_button
           "#{Icon.new(:back).render} #{text}"
+        elsif @icon
+          "#{Icon.new(@icon).render} #{text}"
         elsif @window
           "#{Icon.new(:newwindow).render} #{text}"
         else
