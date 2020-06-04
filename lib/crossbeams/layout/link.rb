@@ -68,7 +68,7 @@ module Crossbeams
 
       def assert_options_ok!
         return unless @window || @icon
-        raise ArgumentError, 'Crossbeams::Layout::Link you cannot have a loading window that is also a popup' if %i[popup replace_dialog].include?(@behaviour)
+        raise ArgumentError, 'Crossbeams::Layout::Link you cannot have a loading window that is also a popup' if @window && %i[popup replace_dialog].include?(@behaviour)
         raise ArgumentError, "Crossbeams::Layout::Link - icon #{@icon} is not a valid choice" unless @icon.nil? || Icon::ICONS.keys.include?(@icon)
         raise ArgumentError, 'Crossbeams::Layout::Link icon is not applicable for back button or loading window' if @icon && (style == :back_button || @window)
       end
