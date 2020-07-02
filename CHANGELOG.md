@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Download icon.
 ### Changed
 - New style for Link control - `:action_button` - renders a green button.
 - New option for Link control - `:icon` - renders a valid `Icon` to the left of the given text.
