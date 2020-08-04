@@ -7,12 +7,16 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.4.4] - 2020-07-04
+### Added
 - Download icon.
 - LoadingMessage for rendering a loading graphic with optional caption.
 ### Changed
 - New style for Link control - `:action_button` - renders a green button.
 - New option for Link control - `:icon` - renders a valid `Icon` to the left of the given text.
-### Fixed
 
 ## [0.4.3] - 2020-05-08
 ### Added
