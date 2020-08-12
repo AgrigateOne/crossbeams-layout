@@ -86,7 +86,7 @@ module Crossbeams
       end
 
       def rec_to_s(hash, len = 30)
-        hash.map { |k, v| "#{k.to_s.ljust(len)}: #{v}" }.join("\n")
+        hash.map { |k, v| "#{k.to_s.ljust(len)}: #{format(v)}" }.join("\n")
       end
 
       def unnest_rec(hash, side)
@@ -145,18 +145,20 @@ module Crossbeams
           pfx = []
           pfx << prefix unless prefix == ''
           pfx << key unless key == ''
-          instance[pfx.join('_').to_sym] = to_str(val)
+          instance[pfx.join('_').to_sym] = val
         end
       end
 
-      def to_str(val)
+      def format(val)
         case val
         when BigDecimal
-          val.to_f.to_s
+          val.to_s('F')
         when Date
           val.strftime('%Y-%m-%d')
         when Time
-          val.tstrftime('%Y-%m-%d %H:%M')
+          val.strftime('%Y-%m-%d %H:%M:%S')
+        when String
+          val.match?(/^-?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)$/) ? BigDecimal(val).to_s('F') : val
         else
           val
         end
