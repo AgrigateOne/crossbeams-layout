@@ -7,6 +7,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Diff control: `max_pane_width` setting in px to force horizontal scrollbars if content is wider.
+- Diff control: `unnest_records` setting to "flatten" nested hashes. A nested value appears with its ancestor keys on the same line.
 ### Changed
 ### Fixed
 
