@@ -5,7 +5,7 @@ module Crossbeams
     # A diff renderer - shows the difference between two texts or two hashes.
     class Diff # rubocop:disable Metrics/ClassLength
       include PageNode
-      attr_reader :key, :rules, :use_files
+      attr_reader :key, :rules, :use_files, :sort_nested
 
       def initialize(page_config, key)
         @key = key
@@ -13,6 +13,7 @@ module Crossbeams
         raise ArgumentError, 'Diff renderer must have keys :left and :right, :left_record and :right_record or :left_file and :right_file' unless valid_keys?
 
         @use_files = @rules.key?(:left_file)
+        @sort_nested = @rules.key?(:sort_nested) ? @rules[:sort_nested] : true
         @nodes = []
       end
 
@@ -114,7 +115,11 @@ module Crossbeams
 
         inter_hash = symbolize_keys(in_hash)
         hash = {}
-        inter_hash.keys.sort.each { |k| hash[k] = inter_hash[k] }
+        if sort_nested
+          inter_hash.keys.sort.each { |k| hash[k] = inter_hash[k] }
+        else
+          hash = inter_hash
+        end
         instance = {}
 
         hash.each do |k, v|
@@ -134,7 +139,11 @@ module Crossbeams
           end
         elsif val.is_a?(Hash)
           hash = {}
-          val.keys.sort.each { |k| hash[k] = val[k] }
+          if sort_nested
+            val.keys.sort.each { |k| hash[k] = val[k] }
+          else
+            hash = val
+          end
           hash.each do |k, v|
             pfx = []
             pfx << prefix unless prefix == ''
