@@ -129,7 +129,7 @@ module Crossbeams
                   when :no_spaces
                     '[^\s]+'
                   when :lowercase_underscore
-                    '[a-z_]'
+                    '[a-z_]*'
                   when :ipv4_address
                     '^(?:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(\.(?!$)|$)){4}$'
                   end
