@@ -15,6 +15,7 @@ module Crossbeams
         def render # rubocop:disable Metrics/AbcSize
           datalist = build_datalist
           date_related_value_getter
+          setup_pattern_title
 
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}#{copy_prefix}
@@ -121,22 +122,36 @@ module Crossbeams
           HTML
         end
 
+        PATTERN_REGEX = {
+          no_spaces: '[^\s]+',
+          lowercase_underscore: '[a-z_]*',
+          alphanumeric: '[a-zA-Z0-9]*',
+          ipv4_address: '^(?:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(\.(?!$)|$)){4}$'
+        }.freeze
+
+        PATTERN_TITLES = {
+          no_spaces: 'No spaces allowed',
+          lowercase_underscore: 'Only alphabetic characters and underscore (_) allowed',
+          alphanumeric: 'Only alphanumeric characters allowed (a-z and 0-9)',
+          ipv4_address: 'Must be a valid IP v4 address'
+        }.freeze
+
         def build_pattern(pattern)
           val = if pattern.is_a? String
                   pattern
                 else
-                  case pattern
-                  when :no_spaces
-                    '[^\s]+'
-                  when :lowercase_underscore
-                    '[a-z_]*'
-                  when :ipv4_address
-                    '^(?:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(\.(?!$)|$)){4}$'
-                  end
+                  PATTERN_REGEX[pattern]
                 end
           return nil if val.nil?
 
           "pattern=\"#{val}\""
+        end
+
+        def setup_pattern_title
+          return if @field_config[:pattern_msg]
+
+          title = PATTERN_TITLES[@field_config[:pattern]]
+          @field_config[:pattern_msg] = title unless title.nil?
         end
 
         def attr_list(datalist) # rubocop:disable Metrics/AbcSize
