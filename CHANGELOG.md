@@ -7,12 +7,17 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.4.5] - 2020-09-14
+### Added
 - Diff control: `max_pane_width` setting in px to force horizontal scrollbars if content is wider.
 - Diff control: `unnest_records` setting to "flatten" nested hashes. A nested value appears with its ancestor keys on the same line.
 - Diff control: `sort_nested` setting defaults to true. If true, unnested hashes will be sorted. If false the order will depend on the calling code.
+- Form control: base validation messages can have a `nil` key (Dry-Validation 1.x onwards) as well as a `:base` key (Crossbeams apps).
 ### Changed
 - Input control: Add `:alphanumeric` pattern and set the `title` by default when a built-in pattern is used.
-### Fixed
 
 ## [0.4.4] - 2020-07-04
 ### Added

@@ -262,7 +262,7 @@ module Crossbeams
       end
 
       def error_head
-        return '' unless page_config.form_errors && (page_config.form_errors[:base] || page_config.form_errors[:base_with_highlights])
+        return '' unless page_config.form_errors && (page_config.form_errors[nil] || page_config.form_errors[:base] || page_config.form_errors[:base_with_highlights])
 
         <<~HTML
           <div class="crossbeams-form-base-error pa1 mb1 bg-washed-red brown">
@@ -271,8 +271,9 @@ module Crossbeams
         HTML
       end
 
-      def base_messages
-        messages = page_config.form_errors[:base] || []
+      def base_messages # rubocop:disable Metrics/AbcSize
+        messages = page_config.form_errors[nil] || []
+        messages += page_config.form_errors[:base] if page_config.form_errors[:base]
         messages += page_config.form_errors[:base_with_highlights][:messages] if page_config.form_errors[:base_with_highlights]
         messages
       end

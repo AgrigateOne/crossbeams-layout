@@ -42,6 +42,9 @@ module Crossbeams
       end
 
       # Register the error conditions for a form.
+      # If there are base errors with highlights,
+      # add blank errors for each field so that they will
+      # be highlighted.
       def form_errors(errors)
         @page_config.form_errors = errors
         return unless errors && errors[:base_with_highlights]
