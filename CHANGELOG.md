@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Row: `blank_column`. Renders a column with nothing in it. This forces another column in the same row to half-size.
 ### Changed
 ### Fixed
 

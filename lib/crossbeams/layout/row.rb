@@ -32,6 +32,12 @@ module Crossbeams
         @nodes << column
       end
 
+      # Render a blank column within a row to force another column in the row to half-size.
+      def blank_column
+        blank_col = '<div class="crossbeams-col"><!-- BLANK COL --></div>'
+        @nodes << OpenStruct.new(render: blank_col)
+      end
+
       def add_node(node)
         @nodes << node
       end
