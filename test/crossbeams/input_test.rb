@@ -123,6 +123,18 @@ class Crossbeams::InputTest < Minitest::Test
     s = simple_input_render(:input, '123')
     attrs = html_element_wrapper(s)
     refute_includes attrs.keys, 'hidden'
+
+    s = simple_input_render(:input, '123', initially_visible: false)
+    attrs = html_element_wrapper(s)
+    assert_includes attrs.keys, 'hidden'
+
+    s = simple_input_render(:input, '123', initially_visible: false, hide_on_load: false)
+    attrs = html_element_wrapper(s)
+    assert_includes attrs.keys, 'hidden'
+
+    s = simple_input_render(:input, '123', initially_visible: true)
+    attrs = html_element_wrapper(s)
+    refute_includes attrs.keys, 'hidden'
   end
 
   def test_form_values

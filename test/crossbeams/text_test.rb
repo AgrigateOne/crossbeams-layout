@@ -85,4 +85,26 @@ class Crossbeams::TextTest < Minitest::Test
     refute res.match?(/id='toggle_the_display'/)
     assert res.match?(/display:none/)
   end
+
+  def test_hide_on_load
+    renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT')
+    res = scrub(renderer.render)
+    refute res.match?(/ hidden/)
+
+    renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT', hide_on_load: true)
+    res = scrub(renderer.render)
+    assert res.match?(/ hidden/)
+
+    renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT', initially_visible: false)
+    res = scrub(renderer.render)
+    assert res.match?(/ hidden/)
+
+    renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT', initially_visible: false, hide_on_load: false)
+    res = scrub(renderer.render)
+    assert res.match?(/ hidden/)
+
+    renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT', initially_visible: true)
+    res = scrub(renderer.render)
+    refute res.match?(/ hidden/)
+  end
 end

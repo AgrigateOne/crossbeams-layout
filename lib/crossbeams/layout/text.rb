@@ -75,6 +75,7 @@ module Crossbeams
 
       # Initially hide the wrapper.
       def wrapper_visibility
+        @options[:hide_on_load] = !@options[:initially_visible] if @options&.key?(:initially_visible)
         return '' unless @options[:hide_on_load]
 
         ' hidden'
