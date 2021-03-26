@@ -99,7 +99,7 @@ module Crossbeams
       end
 
       def step_width
-        (100.0 / steps.length).round(2)
+        (100.0 / steps.length).floor(2)
       end
 
       def render_state
