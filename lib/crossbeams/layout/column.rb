@@ -90,6 +90,7 @@ module Crossbeams
       # @return [void]
       def add_control(page_control_definition)
         @nodes << Link.new(page_control_definition) if page_control_definition[:control_type] == :link
+        @nodes << DropdownButton.new(page_control_definition) if page_control_definition[:control_type] == :dropdown_button
       end
 
       def add_node(node)

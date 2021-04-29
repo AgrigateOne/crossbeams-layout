@@ -25,6 +25,9 @@ class Crossbeams::LinkTest < Minitest::Test
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :small_button)
     assert_equal '<a href="/" class="link dim br1 ph2 dib white bg-silver">ClickMe</a>', renderer.render.strip
 
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :action_button)
+    assert_equal '<a href="/" class="f6 link dim br2 ph3 pv2 dib white bg-green">ClickMe</a>', renderer.render.strip
+
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :back_button)
     assert_match(/<svg class=["|']cbl-icon["|']/, renderer.render)
   end

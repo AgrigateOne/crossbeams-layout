@@ -7,6 +7,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `DropdownButton` control. Renders a button with items as a dropdown list of cliackable links.
+- Icon: added two new icons: `window` and `link`.
 - Row: `blank_column`. Renders a column with nothing in it. This forces another column in the same row to half-size.
 - New option `initially_visible` as an antonym for `hide_on_load` added to Text and Inputs.
 ### Changed

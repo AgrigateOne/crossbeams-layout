@@ -11,6 +11,10 @@ class RenderResult
     @doc = Nokogiri::HTML(html)
   end
 
+  def dom_text_value(element_type)
+    @doc.xpath("//#{element_type}")[0]&.text.strip
+  end
+
   def input_attributes(element_type)
     xp = @doc.xpath("//#{element_type}")
     Hash[xp[0].attributes.map { |k,v| [k, v.value] }]
@@ -110,6 +114,10 @@ class RenderResult
     return nil if xp.length.zero?
     xp.first.text
   end
+end
+
+def html_dom_text_value(html_string, element_type)
+  RenderResult.new(html_string).dom_text_value(element_type)
 end
 
 def html_element_attribute_value(html_string, element_type, attribute)
