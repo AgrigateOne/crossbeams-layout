@@ -7,13 +7,17 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.5.0] - 2021-04-29
+### Added
 - `DropdownButton` control. Renders a button with items as a dropdown list of cliackable links.
 - Icon: added two new icons: `window` and `link`.
 - Row: `blank_column`. Renders a column with nothing in it. This forces another column in the same row to half-size.
 - New option `initially_visible` as an antonym for `hide_on_load` added to Text and Inputs.
 ### Changed
 - ProgressStep calculates step width percentages using `floor` instead of `round`. This prevents the aggregate width from exceeding 100%.
-### Fixed
 
 ## [0.4.5] - 2020-09-14
 ### Added
