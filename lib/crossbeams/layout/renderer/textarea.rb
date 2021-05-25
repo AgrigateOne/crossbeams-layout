@@ -19,7 +19,7 @@ module Crossbeams
           <<~HTML
             <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
               <textarea #{name_attribute} #{field_id} #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>
-              <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
+              <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
             </div>
           HTML
         end
@@ -28,8 +28,7 @@ module Crossbeams
 
         def value
           res = form_object_value
-          res = override_with_form_value(res)
-          res
+          override_with_form_value(res)
         end
 
         def attr_list

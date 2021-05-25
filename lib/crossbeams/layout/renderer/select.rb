@@ -71,7 +71,7 @@ module Crossbeams
             <select #{attrs.join(' ')} #{name_attribute} #{field_id}>
             #{make_prompt}#{build_options(@field_config[:options], sel, disabled_option)}
             </select>
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
+            <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
           HTML
         end

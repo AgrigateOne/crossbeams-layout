@@ -22,7 +22,7 @@ module Crossbeams
           <<-HTML
           <div #{wrapper_id} class="crossbeams-field"#{wrapper_visibility}>#{hint_text}
             #{render_field(value)}
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{hint_trigger}</label>
+            <label for="#{id_base}">#{@caption}#{hint_trigger}</label>
           </div>
           HTML
         end

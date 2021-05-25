@@ -21,7 +21,7 @@ module Crossbeams
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
             <input #{name_attribute} type="hidden" value="f">
             <input type="checkbox" value="t" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>
-            <label for="#{@page_config.name}_#{@field_name}"#{tooltip}>#{@caption}#{error_state}</label>
+            <label for="#{id_base}"#{tooltip}>#{@caption}#{error_state}</label>
             <div class="order-1">#{hint_trigger}</div>
           </div>
           HTML

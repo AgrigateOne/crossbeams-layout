@@ -28,7 +28,7 @@ module Crossbeams
         def render_string(attrs, sel) # rubocop:disable Metrics/AbcSize
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
+            <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
             <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple="multiple" data-multi="true"#{required_str}#{disabled_str}>
             #{make_prompt}#{make_options(Array(@field_config[:options]), sel)}
             </select>

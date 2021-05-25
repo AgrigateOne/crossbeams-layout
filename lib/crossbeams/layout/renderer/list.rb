@@ -22,7 +22,7 @@ module Crossbeams
             <ol #{attrs.join(' ')} #{field_id}>
             #{item_renders}
             </ol>
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
+            <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
           HTML
         end

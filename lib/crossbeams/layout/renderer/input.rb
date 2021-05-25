@@ -20,7 +20,7 @@ module Crossbeams
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}#{copy_prefix}
             <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
-            <label for="#{@page_config.name}_#{@field_name}">#{@caption}#{error_state}#{hint_trigger}</label>
+            <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
             #{datalist}
           </div>
           HTML

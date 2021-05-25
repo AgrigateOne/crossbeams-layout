@@ -21,7 +21,7 @@ module Crossbeams
             <input type="date" value="#{CGI.escapeHTML(date_portion.to_s)}" #{name_attribute(:date)}_date #{field_id(:date)}_date data-datetime="date" #{attr_list(:date).join(' ')}>
             <input type="time" value="#{CGI.escapeHTML(time_portion.to_s)}" #{name_attribute(:time)}_time #{field_id(:time)}_time data-datetime="time" #{attr_list(:time).join(' ')}>
             <input type="hidden" value="#{CGI.escapeHTML(value&.strftime('%Y-%m-%dT%H:%M').to_s)}" #{name_attribute} #{field_id}>
-            <label for="#{@page_config.name}_#{@field_name}_date">#{@caption}#{error_state}#{hint_trigger}</label>
+            <label for="#{id_base}_date">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
           HTML
         end

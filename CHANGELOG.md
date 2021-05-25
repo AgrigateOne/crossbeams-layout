@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- `for` attribute of label elements uses correct `id` attribute if there is a `:parent_field`.
 ### Fixed
 
 ## [0.5.0] - 2021-04-29
