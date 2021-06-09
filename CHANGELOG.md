@@ -7,10 +7,14 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.5.5] - 2021-06-09
+### Added
 - Grid: added icons for saving and applying grid column state.
 ### Changed
 - `for` attribute of label elements uses correct `id` attribute if there is a `:parent_field`.
-### Fixed
 
 ## [0.5.0] - 2021-04-29
 ### Added
