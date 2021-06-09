@@ -96,6 +96,26 @@ module Crossbeams
                 <ul id='#{grid_id}-scrollcol' data-grid-id="#{grid_id}" class="crossbeams-column-jump-list"></ul>
             </label>
             <label style="margin-left: 10px;">
+                <button type="button" onclick="crossbeamsGridEvents.gridStateSave('#{grid_id}')" title="Save grid column state">
+                  <svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><path d="M10 3a7 7 0 1 0 .001 13.999A7 7 0 0 0 10 3z" fill="#626262"/></svg>
+              </button>
+            </label>
+            <label style="margin-left: 0px;" class="gridStateLoad" hidden>
+                <button type="button" onclick="crossbeamsGridEvents.gridStateLoad('#{grid_id}')" title="Load previously-saved grid column state">
+                  <svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><path d="M15 10.001c0 .299-.305.514-.305.514l-8.561 5.303C5.51 16.227 5 15.924 5 15.149V4.852c0-.777.51-1.078 1.135-.67l8.561 5.305c-.001 0 .304.215.304.514z" fill="#626262"/></svg>
+              </button>
+            </label>
+            <label style="margin-left: 0px;" class="gridStateClear" hidden>
+                <button type="button" onclick="crossbeamsGridEvents.gridStateClear('#{grid_id}')" title="Back to default grid column state">
+                  <svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><path d="M16 4.995v9.808c0 .661-.536 1.197-1.196 1.197H4.997A.997.997 0 0 1 4 15.003V5.196C4 4.536 4.536 4 5.196 4h9.808c.55 0 .996.446.996.995z" fill="#626262"/></svg>
+              </button>
+            </label>
+            <label style="margin-left: 0px;" class="gridStateDelete" hidden>
+                <button type="button" onclick="crossbeamsGridEvents.gridStateDelete('#{grid_id}')" title="Discard saved grid column state">
+                  <svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100"><path d="M15.194 59.995l69.732-.074v-.014a2.493 2.493 0 0 0 2.361-2.489a2.487 2.487 0 0 0-.802-1.823L51.834 21.02l-.004.004a2.484 2.484 0 0 0-1.902-.892a2.494 2.494 0 0 0-2.02 1.041l-34.46 34.535a2.498 2.498 0 0 0 1.746 4.287z" fill="#626262"/><path d="M87.308 77.253l-.01-9.803v-.05h-.005a2.534 2.534 0 0 0-2.534-2.485v-.006l-69.751.074v.042a2.53 2.53 0 0 0-2.293 2.516c0 .033.008.063.01.096l.01 9.477c-.006.074-.022.145-.022.22a2.528 2.528 0 0 0 2.311 2.511v.023l69.751-.074a2.536 2.536 0 0 0 2.534-2.539l-.001-.002z" fill="#626262"/></svg>
+              </button>
+            </label>
+            <label style="margin-left: 10px;">
                 <input class="un-formed-input" onkeyup="crossbeamsGridEvents.quickSearch(event)" placeholder='Search...' data-grid-search="true" data-grid-id="#{grid_id}"/>
             </label>
             <span class="grid-caption">
