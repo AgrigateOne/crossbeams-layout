@@ -2,6 +2,6 @@
 
 module Crossbeams
   module Layout
-    VERSION = '0.5.0'
+    VERSION = '0.5.5'
   end
 end
