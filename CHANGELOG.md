@@ -7,6 +7,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Label: Can render with a hidden field - set `include_hidden_field: true`.
+- Label: Optionally provide a different value for the hidden field using `:hidden_value`.
 ### Changed
 ### Fixed
 

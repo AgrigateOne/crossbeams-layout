@@ -41,5 +41,15 @@ class Crossbeams::LabelTest < Minitest::Test
 
     assert_match(/<pre>#{str}<\/pre>/, s)
   end
-end
 
+  def test_hidden
+    str = "Line 1"
+    s = simple_label_render(str, include_hidden_field: true)
+    assert_equal str, html_label_element_value(s)
+    assert_match(/<input type="hidden" value="Line 1" name="test_form\[the_test_field\]" \/>/, s)
+
+    s = simple_label_render(str, include_hidden_field: true, hidden_value: 'abc')
+    assert_equal str, html_label_element_value(s)
+    assert_match(/<input type="hidden" value="abc" name="test_form\[the_test_field\]" \/>/, s)
+  end
+end

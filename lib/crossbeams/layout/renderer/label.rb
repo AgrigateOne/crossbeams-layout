@@ -22,7 +22,7 @@ module Crossbeams
           <<-HTML
           <div #{wrapper_id} class="crossbeams-field"#{wrapper_visibility}>#{hint_text}
             #{render_field(value)}
-            <label for="#{id_base}">#{@caption}#{hint_trigger}</label>
+            <label for="#{id_base}">#{@caption}#{hint_trigger}</label> #{render_hidden(value)}
           </div>
           HTML
         end
@@ -50,6 +50,13 @@ module Crossbeams
               <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{field_id}>#{preformat_start}#{val}#{preformat_end}</div>
             HTML
           end
+        end
+
+        def render_hidden(value)
+          return '' unless @field_config[:include_hidden_field]
+
+          hidden_value = @field_config[:hidden_value] || value
+          %(<input type="hidden" value="#{CGI.escapeHTML(hidden_value.to_s)}" #{name_attribute} />)
         end
 
         def apply_formatting(val)
