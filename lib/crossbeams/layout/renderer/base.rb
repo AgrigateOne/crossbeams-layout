@@ -5,6 +5,25 @@ module Crossbeams
     module Renderer
       # Base class for all field renderers.
       class Base # rubocop:disable Metrics/ClassLength
+        def initialize
+          @dom_loaded = []
+        end
+
+        # Are there any Javascript snippets to be included in the page's DOMContentLoaded event?
+        def dom_loaded?
+          !@dom_loaded.empty?
+        end
+
+        # Add a Javascript snippet to execute after DOM is loaded.
+        def add_dom_loaded(str)
+          @dom_loaded << str
+        end
+
+        # DOM loaded javascript snippets.
+        def list_dom_loaded
+          @dom_loaded
+        end
+
         # Create reasonable label text from a field name.
         def present_field_as_label(field)
           field.to_s.sub(/_id$/, '').split('_').map(&:capitalize).join(' ')
