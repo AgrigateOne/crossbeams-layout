@@ -10,6 +10,7 @@ module Crossbeams
         @nodes       = []
         @page_config = PageConfig.new(options)
         @sequence    = 1
+        @dom_loaded  = []
       end
 
       # Build a page. Instantiates a Page and calls build on it.
@@ -132,7 +133,35 @@ module Crossbeams
       # Render the page and all its child nodes.
       def render
         # "A string rendered from Crossbeams<br>" << nodes.map {|s| s.render }.join("\n<!-- End Section -->\n")
-        nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Section -->\n")
+        <<~HTML
+          #{nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Section -->\n")}
+        HTML
+      end
+
+      # Does the page or any of its nodes include javascript?
+      def includes_javascript?
+        return true unless @dom_loaded.empty?
+
+        has_js = false
+        nodes.reject(&:invisible?).each do |node|
+          has_js = true if node.respond_to?(:dom_loaded?) && node.dom_loaded?
+        end
+        has_js
+      end
+
+      # (This is possible to do, but held back until there is a real need for it)
+      # # Add a javascript string to be interpreted after the page's DOM content is loaded.
+      # def add_dom_content_loaded_js(str)
+      #   @dom_loaded << str
+      # end
+
+      # Render javascript to run after the DOM is loaded.
+      # Gathers all javascript from the page's nodes.
+      def render_dom_loaded_js
+        nodes.reject(&:invisible?).each do |node|
+          node.list_dom_loaded.each { |js| @dom_loaded << js } if node.respond_to?(:list_dom_loaded)
+        end
+        @dom_loaded.join("\n")
       end
     end
   end

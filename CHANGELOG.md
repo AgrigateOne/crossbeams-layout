@@ -7,10 +7,15 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Label: Can render with a hidden field - set `include_hidden_field: true`.
-- Label: Optionally provide a different value for the hidden field using `:hidden_value`.
 ### Changed
 ### Fixed
+
+## [0.5.6] - 2021-06-25
+### Added
+- Label: Can render with a hidden field - set `include_hidden_field: true`.
+- Label: Optionally provide a different value for the hidden field using `:hidden_value`.
+- Grids: Can pass in columns and rows directly so the grid loads with the page instead of using a URL to load rows via a delayed request.
+- Nodes can add javascript to be included in the page. Currently only used by Grid.
 
 ## [0.5.5] - 2021-06-09
 ### Added

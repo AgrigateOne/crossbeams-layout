@@ -6,6 +6,7 @@ module Crossbeams
       # Render a Grid.
       class Grid < Base # rubocop:disable Metrics/ClassLength
         def initialize(grid_id, url, caption, options = {}) # rubocop:disable Metrics/AbcSize
+          super()
           @grid_id     = grid_id
           @url         = url
           @caption     = caption
@@ -17,8 +18,20 @@ module Crossbeams
           @tree_config = options[:tree]
           @colour_key = options[:colour_key]
           @bookmark_row_on_action = options[:grid_params].nil? ? false : options[:grid_params][:bookmark_row_on_action] || false
+          @col_defs = options[:col_defs]&.to_json
+          @row_defs = options[:row_defs]&.to_json
+
           unpack_multiselect_options(options)
           unpack_lookup_options(options)
+          add_grid_data
+        end
+
+        def add_grid_data
+          return unless @col_defs
+
+          add_dom_loaded(<<~JS)
+            crossbeamsGridStaticLoader.loadGrid('#{@grid_id}', #{@col_defs}, #{@row_defs});
+          JS
         end
 
         def self.header(grid_id, caption, options = {}) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
@@ -138,7 +151,7 @@ module Crossbeams
                                      colour_key: @colour_key)
           <<~HTML
             <div id="#{@grid_id}-frame" class="grid-frame" style="#{height_style};margin-bottom:4em">#{head_section}
-              <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_tree} onload="console.log('onl'); "></div>
+              <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_tree}></div>
             </div>
           HTML
         end

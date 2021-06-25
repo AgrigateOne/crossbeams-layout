@@ -88,6 +88,24 @@ module Crossbeams
         HTML
       end
 
+      # Are there any Javascript snippets to be included in the page's DOMContentLoaded event?
+      def dom_loaded?
+        has_js = false
+        nodes.reject(&:invisible?).each do |node|
+          has_js = true if node.respond_to?(:dom_loaded?) && node.dom_loaded?
+        end
+        has_js
+      end
+
+      # DOM loaded javascript snippets.
+      def list_dom_loaded
+        ar = []
+        nodes.reject(&:invisible?).each do |node|
+          ar += node.list_dom_loaded if node.respond_to?(:dom_loaded?) && node.dom_loaded?
+        end
+        ar
+      end
+
       private
 
       def open_state

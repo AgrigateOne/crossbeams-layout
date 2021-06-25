@@ -13,6 +13,11 @@ module Crossbeams
         @page_config = page_config
         @options     = options
         @nodes       = []
+
+        return if options[:for_print]
+
+        caption = options[:caption]
+        @screen_renderer = Renderer::Grid.new(grid_id, url, caption, options)
       end
 
       def invisible?
@@ -38,9 +43,21 @@ module Crossbeams
       end
 
       def render_for_screen
-        caption = options[:caption]
-        renderer = Renderer::Grid.new(grid_id, url, caption, options)
-        renderer.render
+        @screen_renderer.render
+      end
+
+      # Are there any Javascript snippets to be included in the page's DOMContentLoaded event?
+      def dom_loaded?
+        return false if options[:for_print]
+
+        @screen_renderer.dom_loaded?
+      end
+
+      # DOM loaded javascript snippets.
+      def list_dom_loaded
+        return false if options[:for_print]
+
+        @screen_renderer.list_dom_loaded
       end
     end
   end
