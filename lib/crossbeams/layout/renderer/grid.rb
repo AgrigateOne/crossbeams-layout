@@ -187,6 +187,10 @@ module Crossbeams
           @multiselect_url = options[:multiselect_url]
           @multiselect_key = options[:multiselect_key]
           @multiselect_params = options[:multiselect_params]
+          if @multiselect
+            @multiselect_key = 'ms' if @multiselect_key.nil?
+            @multiselect_params = {} if @multiselect_params.nil?
+          end
           @can_be_cleared = options[:can_be_cleared] || false
           @multiselect_save_method = options[:multiselect_save_method] || 'http'
         end
