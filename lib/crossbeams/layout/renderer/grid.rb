@@ -20,6 +20,9 @@ module Crossbeams
           @bookmark_row_on_action = options[:grid_params].nil? ? false : options[:grid_params][:bookmark_row_on_action] || false
           @col_defs = options[:col_defs]&.to_json
           @row_defs = options[:row_defs]&.to_json
+          @field_update_url = "'#{options[:field_update_url]}'" || 'null'
+          @extra_context = (options[:extra_context] || {}).to_json
+          @multiselect_ids = options[:multiselect_ids] || 'null'
 
           unpack_multiselect_options(options)
           unpack_lookup_options(options)
@@ -30,7 +33,7 @@ module Crossbeams
           return unless @col_defs
 
           add_dom_loaded(<<~JS)
-            crossbeamsGridStaticLoader.loadGrid('#{@grid_id}', #{@col_defs}, #{@row_defs});
+            crossbeamsGridStaticLoader.loadGrid('#{@grid_id}', #{@col_defs}, #{@row_defs}, #{@field_update_url}, #{@extra_context}, #{@multiselect_ids});
           JS
         end
 
