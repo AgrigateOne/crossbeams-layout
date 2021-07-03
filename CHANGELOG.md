@@ -8,8 +8,12 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
-- Grid: If `is_multiselect` option is passed in, set defaults for `multiselect_key` and `multiselect_params` if they are not provided.
 ### Fixed
+
+## [0.5.7] - 2021-07-03
+### Changed
+- Grid: If `is_multiselect` option is passed in, set defaults for `multiselect_key` and `multiselect_params` if they are not provided.
+- Grid: When rendering with cols and rows, include extra options `multiselect_ids`, `extra_context` and `field_edit_url`.
 
 ## [0.5.6] - 2021-06-25
 ### Added
