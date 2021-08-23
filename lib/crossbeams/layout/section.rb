@@ -3,20 +3,22 @@
 module Crossbeams
   module Layout
     # A page can optionally contain one or more sections.
-    class Section
+    class Section # rubocop:disable Metrics/ClassLength
       include PageNode
       attr_accessor :caption, :hide_caption, :show_border
-      attr_reader :sequence, :nodes, :page_config, :fit_height
+      attr_reader :sequence, :nodes, :page_config, :fit_height, :full_dialog_height, :half_dialog_height
 
       def initialize(page_config, sequence)
-        @caption      = 'Section'
-        @sequence     = sequence
-        @nodes        = []
-        @page_config  = page_config
-        @hide_caption = true
-        @show_border  = false
-        @fit_height   = false
-        @css_classes  = ['pa2']
+        @caption            = 'Section'
+        @sequence           = sequence
+        @nodes              = []
+        @page_config        = page_config
+        @hide_caption       = true
+        @show_border        = false
+        @fit_height         = false
+        @full_dialog_height = false
+        @half_dialog_height = false
+        @css_classes        = ['pa2']
       end
 
       def add_caption(caption)
@@ -28,8 +30,23 @@ module Crossbeams
         @show_border = true
       end
 
+      MIX_HEIGHTS_ERR = 'Cannot use more than one of "fit_height!", "full_dialog_height!" or "half_dialog_height!"'
       def fit_height!
+        raise ArgumentError, MIX_HEIGHTS_ERR if @full_dialog_height || @half_dialog_height
+
         @fit_height = true
+      end
+
+      def full_dialog_height!
+        raise ArgumentError, MIX_HEIGHTS_ERR if @fit_height || @half_dialog_height
+
+        @full_dialog_height = true
+      end
+
+      def half_dialog_height!
+        raise ArgumentError, MIX_HEIGHTS_ERR if @fit_height || @full_dialog_height
+
+        @half_dialog_height = true
       end
 
       def invisible?
@@ -156,6 +173,8 @@ module Crossbeams
       def add_extra_css_classes
         @css_classes << 'crossbeams_layout-border' if show_border
         @css_classes << 'crossbeams_layout-fit-height' if fit_height
+        @css_classes << 'crossbeams_layout-full_dlg-height' if full_dialog_height
+        @css_classes << 'crossbeams_layout-half_dlg-height' if half_dialog_height
       end
     end
   end

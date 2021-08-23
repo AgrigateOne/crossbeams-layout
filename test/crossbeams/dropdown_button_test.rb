@@ -13,7 +13,7 @@ class Crossbeams::DropdownButtonTest < Minitest::Test
     assert_equal 'Links', html_dom_text_value(html, 'button')
     assert_equal 'Y', html_elements_attribute_value(html, 'a', 'data-button-dropdown').first
     assert_equal '/', html_elements_attribute_value(html, 'a', 'href').first
-    assert_equal 'db pa2 dim', html_elements_attribute_value(html, 'a', 'class').first
+    assert_equal 'db pa2 dim nowrap', html_elements_attribute_value(html, 'a', 'class').first
     assert_match(/ClickMe<\/a/, html)
   end
 

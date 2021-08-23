@@ -61,7 +61,7 @@ module Crossbeams
                  else
                    Icon.new(:link).render
                  end
-          %(<a data-button-dropdown="Y" href="#{item[:url]}" class="db pa2 dim"#{item_attrs(item)}>#{icon} #{item[:text]}</a>)
+          %(<a data-button-dropdown="Y" href="#{item[:url]}" class="db pa2 dim nowrap"#{item_attrs(item)}>#{icon} #{item[:text]}</a>)
         end.join("\n")
       end
 
