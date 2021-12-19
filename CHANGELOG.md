@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Section: two new methods: `full_dialog_height!` and `half_dialog_height!` to force the section to a min width for dialogs.
+- FoldUp: can include a Section.
 ### Changed
 - DropdownButton : menu items are set with `nowrap` so that items can be wider than the button width.
 ### Fixed

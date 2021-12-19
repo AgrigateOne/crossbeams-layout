@@ -31,6 +31,13 @@ module Crossbeams
         @nodes.all?(&:hidden?)
       end
 
+      # Define a section in the page.
+      def section
+        section = Section.new(page_config, nodes.length + 1)
+        yield section
+        @nodes << section
+      end
+
       def form
         form = Form.new(page_config, sequence, nodes.length + 1)
         yield form
