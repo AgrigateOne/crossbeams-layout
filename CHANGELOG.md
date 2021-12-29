@@ -11,6 +11,8 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - FoldUp: can include a Section.
 ### Changed
 - DropdownButton : menu items are set with `nowrap` so that items can be wider than the button width.
+- Raise library-specific Error exceptions instead of RuntimeError.
+- Grids: Can open with groups expanded - `group_default_expanded` can be a number for how many grouping levels to open. (0 == none; -1 == all; any positive number == that number of levels)
 ### Fixed
 
 ## [0.5.7] - 2021-07-03
