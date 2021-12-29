@@ -7,13 +7,17 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.5.8] - 2021-12-29
+### Added
 - Section: two new methods: `full_dialog_height!` and `half_dialog_height!` to force the section to a min width for dialogs.
 - FoldUp: can include a Section.
 ### Changed
 - DropdownButton : menu items are set with `nowrap` so that items can be wider than the button width.
 - Raise library-specific Error exceptions instead of RuntimeError.
 - Grids: Can open with groups expanded - `group_default_expanded` can be a number for how many grouping levels to open. (0 == none; -1 == all; any positive number == that number of levels)
-### Fixed
 
 ## [0.5.7] - 2021-07-03
 ### Changed
