@@ -3,9 +3,9 @@
 module Crossbeams
   module Layout
     module Renderer
-      # Render a Grid.
+      # Render a Grid
       class Grid < Base # rubocop:disable Metrics/ClassLength
-        def initialize(grid_id, url, caption, options = {}) # rubocop:disable Metrics/AbcSize
+        def initialize(grid_id, url, caption, options = {}) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
           super()
           @grid_id     = grid_id
           @url         = url
@@ -16,6 +16,7 @@ module Crossbeams
           @height = [(options[:height] || 20), 6].max
           @fit_height = options[:fit_height] || false
           @tree_config = options[:tree]
+          @group_default_expanded = options[:group_default_expanded]
           @colour_key = options[:colour_key]
           @bookmark_row_on_action = options[:grid_params].nil? ? false : options[:grid_params][:bookmark_row_on_action] || false
           @col_defs = options[:col_defs]&.to_json
@@ -154,7 +155,7 @@ module Crossbeams
                                      colour_key: @colour_key)
           <<~HTML
             <div id="#{@grid_id}-frame" class="grid-frame" style="#{height_style};margin-bottom:4em">#{head_section}
-              <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_tree}></div>
+              <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_group_expanded} #{denote_tree}></div>
             </div>
           HTML
         end
@@ -238,6 +239,14 @@ module Crossbeams
 
         def denote_multiselect
           @multiselect ? "data-grid-multi=\"#{@multiselect_key}\"" : ''
+        end
+
+        def denote_group_expanded
+          return '' unless @group_default_expanded
+
+          raise Error, 'Group cannot expand a negative amount. Use -1 for all, 0 for none or a positive number for a specific amount.' if @group_default_expanded.to_i < -1
+
+          %(data-group-expanded-state=\"#{@group_default_expanded}\")
         end
 
         def denote_tree
