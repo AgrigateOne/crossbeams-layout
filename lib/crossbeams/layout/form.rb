@@ -145,7 +145,7 @@ module Crossbeams
 
       def row
         @got_row = true
-        raise 'Cannot mix row and non-row text or fields' if no_row
+        raise Error, 'Cannot mix row and non-row text or fields' if no_row
 
         row = Row.new(config_for_field, sequence, nodes.length + 1)
         yield row
@@ -166,7 +166,7 @@ module Crossbeams
 
       def add_field(name, options = {})
         @no_row = true
-        raise 'Cannot mix row and fields' if got_row
+        raise Error, 'Cannot mix row and fields' if got_row
 
         @nodes << Field.new(config_for_field, name, options)
       end
@@ -177,14 +177,14 @@ module Crossbeams
 
       def add_text(text, opts = {})
         @no_row = true
-        raise 'Cannot mix row and text' if got_row
+        raise Error, 'Cannot mix row and text' if got_row
 
         @nodes << Text.new(page_config, text, opts)
       end
 
       def add_notice(text, opts = {})
         @no_row = true
-        raise 'Cannot mix row and text' if got_row
+        raise Error, 'Cannot mix row and text' if got_row
 
         @nodes << Notice.new(page_config, text, opts)
       end
