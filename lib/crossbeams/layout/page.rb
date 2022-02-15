@@ -125,6 +125,10 @@ module Crossbeams
         @nodes << Diff.new(page_config, key)
       end
 
+      def add_list(items, options = {})
+        @nodes << List.new(page_config, items, options)
+      end
+
       # Add a repeating request to the page.
       def add_repeating_request(url, interval, content)
         @nodes << RepeatingRequest.new(page_config, url, interval, content)
