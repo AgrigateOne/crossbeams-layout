@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- if `col_defs` are provided to a grid, do not attempt to build the URL from the multiselect URL. This allows the creation of multiselect grids in code.
 ### Fixed
 
 ## [0.5.8] - 2021-12-29

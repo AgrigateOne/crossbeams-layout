@@ -205,6 +205,7 @@ module Crossbeams
         end
 
         def url
+          return @url if @col_defs
           return @url if @multiselect.nil? && @query_string.nil? && @lookup_key.nil?
           return "#{@url}?#{@query_string}" unless @query_string.nil?
 
