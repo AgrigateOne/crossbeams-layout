@@ -156,6 +156,8 @@ module Crossbeams
                   Rouge::Lexers::YAML.new
                 when :xml
                   Rouge::Lexers::XML.new
+                when :json
+                  Rouge::Lexers::JSON.new
                 else
                   Rouge::Lexers::PlainText.new
                 end
