@@ -66,6 +66,12 @@ class Crossbeams::InputTest < Minitest::Test
     s = simple_input_render(:input, '123', pattern: 'this SHOULD be a valid pattern')
     assert_equal 'this SHOULD be a valid pattern', html_element_attribute_value(s, :input, :pattern)
 
+    s = simple_input_render(:input, '123', pattern: /^321$/)
+    assert_equal '321', html_element_attribute_value(s, :input, :pattern)
+
+    s = simple_input_render(:input, '123', pattern: '/^456$/')
+    assert_equal '456', html_element_attribute_value(s, :input, :pattern)
+
     s = simple_input_render(:input, '123')
     assert_nil html_element_attribute_value(s, :input, :pattern)
   end

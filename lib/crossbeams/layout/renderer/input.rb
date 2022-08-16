@@ -126,7 +126,7 @@ module Crossbeams
           no_spaces: '[^\s]+',
           lowercase_underscore: '[a-z_]*',
           alphanumeric: '[a-zA-Z0-9]*',
-          ipv4_address: '^(?:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(\.(?!$)|$)){4}$'
+          ipv4_address: '(?:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(\.(?!$)|$)){4}'
         }.freeze
 
         PATTERN_TITLES = {
@@ -137,8 +137,11 @@ module Crossbeams
         }.freeze
 
         def build_pattern(pattern)
-          val = if pattern.is_a? String
-                  pattern
+          val = case pattern
+                when String
+                  pattern.sub('/^', '').sub('$/', '')
+                when Regexp
+                  pattern.inspect.sub('/^', '').sub('$/', '')
                 else
                   PATTERN_REGEX[pattern]
                 end
