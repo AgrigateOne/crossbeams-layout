@@ -13,6 +13,7 @@ module Crossbeams
         @sequence               = sequence
         @form_action            = '/' # work out from page_config.object?
         @nodes                  = []
+        @buttons                = []
         @page_config            = page_config
         @form_config            = PageConfig.new({}) # OpenStruct.new
         @form_method            = :create
@@ -175,6 +176,10 @@ module Crossbeams
         @form_config.form_object.nil? ? @page_config : @form_config
       end
 
+      def add_button(button_caption, formaction, options = {})
+        @buttons << FormButton.new(button_caption, formaction, options)
+      end
+
       def add_text(text, opts = {})
         @no_row = true
         raise Error, 'Cannot mix row and text' if got_row
@@ -307,10 +312,11 @@ module Crossbeams
         disable_command = @submit_in_loading_page ? '' : %( data-#{disabler}-with="#{@disable_caption}")
         id_str = @submit_id.nil? ? '' : %( id="#{@submit_id}")
         hidden_str = @hidden_submit ? ' hidden' : ''
+        extra_buttons = @buttons.map { |b| b.render(@remote_form) }.join("\n")
         if @view_only
-          %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
+          %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{extra_buttons})
         else
-          %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
+          %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{extra_buttons})
         end
       end
 

@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add `add_list` method to `Page`.
 - Add `:json` as a valid syntax for `Text` controls.
+- `Form` gets a new method: `add_button` so that a form can be submitted to different URLs for different buttons.
 ### Changed
 - if `col_defs` are provided to a grid, do not attempt to build the URL from the multiselect URL. This allows the creation of multiselect grids in code.
 ### Fixed
