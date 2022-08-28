@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [0.6.0] - 2022-08-28
+### Added
 - Add `add_list` method to `Page`.
 - Add `:json` as a valid syntax for `Text` controls.
 - `Form` gets a new method: `add_button` so that a form can be submitted to different URLs for different buttons.
