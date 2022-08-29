@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- A `CallbackSection` can be rendered to work inside a dialog by calling the `remote!` method on the section.
 ### Changed
 ### Fixed
 

@@ -9,7 +9,6 @@ module Crossbeams
       def initialize(caption, formaction, options = {})
         @caption = caption
         @formaction = formaction
-        @options = options
         @remote = options[:remote].nil? ? nil : options[:remote]
         @disable_with = options[:disable_with] || 'Submitting...'
         @bg_colour = "bg-#{options[:colour] || 'gray'}"

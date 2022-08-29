@@ -13,6 +13,7 @@ module Crossbeams
         @caption  = 'Section'
         @sequence = sequence
         @page_config = page_config
+        @remote = false
         @nodes       = []
       end
 
@@ -26,8 +27,14 @@ module Crossbeams
         false
       end
 
+      def remote!
+        @remote = true
+      end
+
       # Render the control
       def render
+        return remote_render if @remote
+
         <<-HTML
           <section id="section-#{sequence}" class="crossbeams_layout">
           <h2>#{caption}</h2>
@@ -38,6 +45,16 @@ module Crossbeams
               crossbeamsUtils.loadCallBackSection('#crossbeams_callback_target_#{sequence}', '#{url}');
             });
           </script>
+        HTML
+      end
+
+      # Render the control in a dialog
+      def remote_render
+        <<-HTML
+          <section id="section-#{sequence}" class="crossbeams_layout" data-callback-section-url="#{url}">
+          <h2>#{caption}</h2>
+          #{LoadingMessage.new(dom_id: "crossbeams_callback_target_#{sequence}").render}
+          </section>
         HTML
       end
     end
