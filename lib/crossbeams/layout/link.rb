@@ -56,7 +56,8 @@ module Crossbeams
           behaviour_string,
           grid_string,
           prompt_string,
-          loading_window_string
+          loading_window_string,
+          new_page_string
         ].join(' ').squeeze(' ').rstrip
       end
 
@@ -137,6 +138,14 @@ module Crossbeams
         return '' if @window.nil? || @window == false
 
         'data-loading-window="true" title="opens in a new window"'
+      end
+
+      # Identify a link to a new page so that it can be disabled once clicked.
+      def new_page_string
+        return '' unless @behaviour == :direct
+        return '' if @window || @prompt
+
+        'data-new-page-link="true"'
       end
     end
   end
