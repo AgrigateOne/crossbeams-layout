@@ -20,8 +20,9 @@ module Crossbeams
       def render(remote_form)
         render_remote = remote.nil? ? remote_form : remote
         remote_str = render_remote ? ' data-remote="true"' : ''
+        disabler = render_remote ? 'briefly-disable' : 'disable'
         <<~HTML
-          <button#{render_id}#{render_name} formaction="#{formaction}" type="submit"#{remote_str} data-disable-with="#{disable_with}" class="dim br2 ml2 mb2 pa3 bn white #{bg_colour} mr3"#{render_disable}>
+          <button#{render_id}#{render_name} formaction="#{formaction}" type="submit"#{remote_str} data-#{disabler}-with="#{disable_with}" class="dim br2 ml2 mb2 pa3 bn white #{bg_colour} mr3"#{render_disable}>
             #{caption}
           </button>
         HTML
