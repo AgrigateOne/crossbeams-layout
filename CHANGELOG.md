@@ -7,8 +7,9 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- A `CallbackSection` can be rendered to work inside a dialog by calling the `remote!` method on the section.
+- New input: RadioGroup.
 ### Changed
+- A `CallbackSection` can be rendered to work inside a dialog by calling the `remote!` method on the section.
 - Set `data-new-page-link` on `Link`s when the link opens a new page (so that it can be disabled in the UI once clicked)
 ### Fixed
 - a `FormButton` that is remote will briefly disable instead of disable.

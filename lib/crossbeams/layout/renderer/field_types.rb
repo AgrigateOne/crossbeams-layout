@@ -20,6 +20,7 @@ module Crossbeams
           multi: Renderer::Multi,
           number: Renderer::Input,
           numeric: Renderer::Input,
+          radio_group: Renderer::RadioGroup,
           select: Renderer::Select,
           text: Renderer::Input,
           textarea: Renderer::Textarea,
