@@ -205,3 +205,11 @@ def simple_label_render(value, extra_configs = {})
   factory = Crossbeams::Layout::Renderer::FieldFactory.new(field_name, field_config, page_config)
   factory.render
 end
+
+def simple_radio_render(value, options, extra_configs = {})
+  page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(the_test_field: value) })
+  field_name = :the_test_field
+  field_config = { renderer: :radio_group, options: options }.merge(extra_configs)
+  factory = Crossbeams::Layout::Renderer::FieldFactory.new(field_name, field_config, page_config)
+  factory.render
+end
