@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [1.0.0] - 2022-09-23
+### Added
 - New input: RadioGroup.
 ### Changed
 - A `CallbackSection` can be rendered to work inside a dialog by calling the `remote!` method on the section.
