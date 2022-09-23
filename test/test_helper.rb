@@ -114,6 +114,12 @@ class RenderResult
     return nil if xp.length.zero?
     xp.first.text
   end
+
+  def labels_text
+    xp = @doc.xpath('//label')
+    return nil if xp.length.zero?
+    xp.map(&:text)
+  end
 end
 
 def html_dom_text_value(html_string, element_type)
@@ -126,6 +132,14 @@ end
 
 def html_elements_attribute_value(html_string, element_type, attribute)
   RenderResult.new(html_string).inputs_attributes(element_type).map { |a| a[attribute.to_s] }
+end
+
+def html_elements_attributes(html_string, element_type)
+  RenderResult.new(html_string).inputs_attributes(element_type)
+end
+
+def html_labels_text(html_string)
+  RenderResult.new(html_string).labels_text
 end
 
 def html_datalist_element(html_string)

@@ -30,8 +30,8 @@ module Crossbeams
         def set_defaults # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
           @options = @field_config[:options]
           raise ArgumentError, %(Options must be specified for RadioGroup "#{@field_name}") if @options.nil? || @options.empty?
-          raise ArgumentError, %(Options must be unique for RadioGroup "#{@field_name}") if @options.map(&:last).uniq.length != @options.length
           raise ArgumentError, %(Options must be 2D array for RadioGroup "#{@field_name}") unless @options.all? { |o| o.length == 2 }
+          raise ArgumentError, %(Options must be unique for RadioGroup "#{@field_name}") if @options.map(&:last).uniq.length != @options.length
 
           @disabled_options = @field_config[:disabled_options] || []
           raise ArgumentError, 'Disabled options must be an array of strings' unless @disabled_options.all? { |o| o.is_a?(String) }
