@@ -6,6 +6,7 @@ module Crossbeams
     class PageConfig
       attr_reader :form_object, :name, :options
       attr_accessor :form_values, :form_errors
+
       CROSSBEAMS = 'crossbeams'
       # Create a new PageConfig.
       # @param [Hash] options the options for applying parameters.
@@ -21,13 +22,15 @@ module Crossbeams
       end
 
       # Setter for the form object.
-      # If the +name+ has not been set, derive it form the form object's class.
-      # @param [Object] onj The object that supplies values to the form.
+      # If the +name+ has not been set, derive it from the form object's class.
+      # @param [Object] obj The object that supplies values to the form.
       # @returns [void]
       def form_object=(obj)
         @form_object = obj
+        return unless @name == CROSSBEAMS
+
         class_name   = obj.class.name || CROSSBEAMS
-        @name        = snake_case(name_from_object(class_name)) if @name == CROSSBEAMS
+        @name        = snake_case(name_from_object(class_name))
       end
 
       private
