@@ -10,6 +10,10 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Fixed
 
+## [2.0.0] - 2022-10-27
+### Changed
+- Upgrade to Ruby 3
+
 ## [1.0.0] - 2022-09-23
 ### Added
 - New input: RadioGroup.

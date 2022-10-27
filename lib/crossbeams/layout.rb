@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# require 'bigdecimal'
 require 'diffy'
+require 'ostruct'
 require 'rouge'
 require 'crossbeams/layout/version'
 require 'crossbeams/layout/page_node'
