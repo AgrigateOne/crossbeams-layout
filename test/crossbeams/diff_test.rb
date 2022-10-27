@@ -119,7 +119,7 @@ class Crossbeams::DiffTest < Minitest::Test
           ff: 'aaa',
           dd: Date.new(2020, 5, 4),
           aa: 123,
-          bb: BigDecimal.new('21.3')
+          bb: BigDecimal('21.3')
         },
         ccc: 'aaa'
       },
@@ -172,7 +172,7 @@ class Crossbeams::DiffTest < Minitest::Test
           ff: 'aaa',
           dd: Date.new(2020, 5, 4),
           aa: 123,
-          bb: BigDecimal.new('21.3')
+          bb: BigDecimal('21.3')
         },
         ccc: 'aaa'
       },
