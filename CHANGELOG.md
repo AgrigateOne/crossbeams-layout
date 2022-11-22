@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+- Validation errors are correctly styled for fields that are part of parent fields
 
 ## [2.0.0] - 2022-10-27
 ### Changed

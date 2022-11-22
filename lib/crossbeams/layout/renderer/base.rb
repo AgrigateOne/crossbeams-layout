@@ -32,7 +32,14 @@ module Crossbeams
         # The class for the field wrapper.
         # (the div surrounding label and input is the wrapper)
         def div_class
-          if @page_config.form_errors && @page_config.form_errors[@field_name]
+          return 'crossbeams-field' unless @page_config.form_errors
+
+          has_err = if @field_config[:parent_field]
+                      (@page_config.form_errors[@field_config[:parent_field]] || {})[@field_name]
+                    else
+                      @page_config.form_errors[@field_name]
+                    end
+          if has_err
             'crossbeams-field crossbeams-div-error bg-washed-red'
           else
             'crossbeams-field'
@@ -41,7 +48,7 @@ module Crossbeams
 
         # The value of the field extracted from the form object.
         # This method will dig values out of an +extended_columns+ field if required.
-        def form_object_value # rubocop:disable Metrics/AbcSize
+        def form_object_value
           if @field_name.to_s.start_with?('extcol_')
             (@page_config.form_object[:extended_columns] || {})[@field_name.to_s.delete_prefix('extcol_')]
           elsif @field_config[:parent_field]
@@ -121,7 +128,15 @@ module Crossbeams
 
         # Styling for a field in error. Returns nil if the field is not in error.
         def error_state(newline: true)
-          "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{@page_config.form_errors[@field_name].compact.join('; ')}</span>" if @page_config.form_errors && @page_config.form_errors[@field_name]
+          return unless @page_config.form_errors
+
+          errs = if @field_config[:parent_field]
+                   (@page_config.form_errors[@field_config[:parent_field]] || {})[@field_name]
+                 else
+                   @page_config.form_errors[@field_name]
+                 end
+
+          "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>" if errs
         end
 
         # Render hint text associated with the field.
@@ -148,7 +163,7 @@ module Crossbeams
         end
 
         # Return behaviour rules for rendering.
-        def behaviours # rubocop:disable Metrics/AbcSize
+        def behaviours # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
           rules = @page_config.options[:behaviours]
           return nil if rules.nil?
 
@@ -168,7 +183,7 @@ module Crossbeams
 
         private
 
-        def build_behaviour(rule) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        def build_behaviour(rule) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
           return %(data-change-values="#{split_change_affects(rule[:change_affects])}") if rule[:change_affects]
           return %(data-enable-on-values="#{rule[:enable_on_change].join(',')}") if rule[:enable_on_change]
           return %(data-observe-selected=#{build_observe_selected(rule[:populate_from_selected])}) if rule[:populate_from_selected]
