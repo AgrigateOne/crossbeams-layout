@@ -46,19 +46,13 @@ module Crossbeams
           JS
         end
 
-        def self.header(grid_id, caption, options = {}) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
-          if options[:print_button]
-            raise ArgumentError, 'print_url is required to print a grid' unless options[:print_url]
-
-            print_section = <<~HTML
-              <label style="margin-left: 10px;">
-                <button onclick="crossbeamsGridEvents.printAGrid('#{grid_id}', '#{options[:print_url]}')" title="Print"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 16H0V6h20v10h-4v4H4v-4zm2-4v6h8v-6H6zM4 0h12v5H4V0zM2 8v2h2V8H2zm4 0v2h2V8H6z"/></svg>
-                </button>
-              </label>
-            HTML
-          else
-            print_section = ''
-          end
+        def self.header(grid_id, caption, options = {}) # rubocop:disable Metrics/PerceivedComplexity
+          print_section = <<~HTML
+            <label style="margin-left: 10px;">
+              <button onclick="crossbeamsGridEvents.onBtPrint('#{grid_id}')" title="Print"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 16H0V6h20v10h-4v4H4v-4zm2-4v6h8v-6H6zM4 0h12v5H4V0zM2 8v2h2V8H2zm4 0v2h2V8H6z"/></svg>
+              </button>
+            </label>
+          HTML
 
           search_box = if @ssrm
                          ''
@@ -110,6 +104,7 @@ module Crossbeams
 
           <<-HTML
           <div class="grid-head">
+            <span id="#{grid_id}_toolbtns">
             <label style="margin-left: 10px;">
                <button type="button" class="crossbeams-to-fullscreen" onclick="crossbeamsGridEvents.toFullScreen('#{grid_id}')" title="show in fullscreen mode"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.8 15.8L0 13v7h7l-2.8-2.8 4.34-4.32-1.42-1.42L2.8 15.8zM17.2 4.2L20 7V0h-7l2.8 2.8-4.34 4.32 1.42 1.42L17.2 4.2zm-1.4 13L13 20h7v-7l-2.8 2.8-4.32-4.34-1.42 1.42 4.33 4.33zM4.2 2.8L7 0H0v7l2.8-2.8 4.32 4.34 1.42-1.42L4.2 2.8z"/></svg>
               </button>
@@ -151,6 +146,7 @@ module Crossbeams
               </button>
             </label>
             #{search_box}
+            </span>
             <span class="grid-caption">
               #{caption}
             </span>
@@ -177,7 +173,7 @@ module Crossbeams
         end
 
         def self.file_name_from_caption(caption)
-          (caption || 'grid_contents').gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-') + '.csv'
+          "#{(caption || 'grid_contents').gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-')}.csv"
         end
 
         def self.save_multiselect_button(grid_id, options)

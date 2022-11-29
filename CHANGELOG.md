@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- Brought back the print button for grids
 ### Fixed
 - Validation errors are correctly styled for fields that are part of parent fields
 
