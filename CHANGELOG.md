@@ -9,8 +9,12 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 - Brought back the print button for grids
+- Link: Can supply a colour for :button style
+- Link: Can supply a text size for buttons
+- Link: New behaviour - `:remote` to submit the URL in a fetch request
 ### Fixed
 - Validation errors are correctly styled for fields that are part of parent fields
+- Remote inline form was not re-enabling the submit button
 
 ## [2.0.0] - 2022-10-27
 ### Changed
