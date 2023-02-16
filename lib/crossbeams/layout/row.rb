@@ -12,6 +12,7 @@ module Crossbeams
         @sequence         = sequence
         @nodes            = []
         @page_config      = page_config
+        @row_width        = :standard
       end
 
       def invisible?
@@ -42,6 +43,10 @@ module Crossbeams
         @nodes << node
       end
 
+      def fit_width!
+        @row_width = :full
+      end
+
       # Use dependency-injection to wrap the render so different CSS libraries can be used for the grid.
       # Use DRY-RB? or something simpler? Russ Olsen?
       def render
@@ -50,11 +55,15 @@ module Crossbeams
         else
           col_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Col -->\n")
           <<-HTML
-          <div class="crossbeams-row">
+          <div class="#{row_class}">
             #{col_renders}
           </div>
           HTML
         end
+      end
+
+      def row_class
+        @row_width == :standard ? 'crossbeams-row' : 'crossbeams-row-wide'
       end
     end
   end
