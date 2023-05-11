@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - `fit_width!` method for rows to use wide class
+- `dom_id` for a Section
 ### Changed
 - Brought back the print button for grids
 - Link: Can supply a colour for :button style

@@ -19,11 +19,16 @@ module Crossbeams
         @full_dialog_height = false
         @half_dialog_height = false
         @css_classes        = ['pa2']
+        @section_id         = "section-#{sequence}"
       end
 
       def add_caption(caption)
         @caption = caption
         @hide_caption = false
+      end
+
+      def dom_id(id)
+        @section_id = id
       end
 
       def show_border!
@@ -129,7 +134,7 @@ module Crossbeams
 
         <<~HTML
           #{render_fit_height_caption}
-          <section id="section-#{sequence}" class="#{@css_classes.join(' ')}">
+          <section id="#{@section_id}" class="#{@css_classes.join(' ')}">
           #{render_normal_caption}
             #{row_renders}
           </section>
