@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- New control: SelectMultiple for multi-select with single dropdown
 - `fit_width!` method for rows to use wide class
 - `dom_id` for a Section
 ### Changed
