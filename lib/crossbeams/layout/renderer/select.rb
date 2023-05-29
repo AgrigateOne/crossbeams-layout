@@ -4,25 +4,26 @@ module Crossbeams
   module Layout
     module Renderer
       # Render a select Field.
-      class Select < Base # rubocop:disable Metrics/ClassLength
+      class Select < BaseSelect
         def configure(field_name, field_config, page_config)
           @field_name = field_name
           @field_config = field_config
           @page_config = page_config
           @caption = field_config[:caption] || present_field_as_label(field_name)
-          @searchable = field_config.fetch(:searchable) { true }
-          @native = field_config.fetch(:native) { false }
-          @remove_search_for_small_list = field_config.fetch(:remove_search_for_small_list) { true }
+          @searchable = field_config.fetch(:searchable, true)
+          @native = field_config.fetch(:native, false)
+          @remove_search_for_small_list = field_config.fetch(:remove_search_for_small_list, true)
+          @optgroup = optgroup?(@field_config[:options], @field_config[:disabled_options])
+          @options_2d = using_2d_options?(@field_config[:options], @field_config[:disabled_options])
+          prepare_selected
+          prepare_options
+          prepare_disabled
         end
 
         def render
           attrs = apply_attrs # For class, prompt etc...
-          sel = @field_config[:selected] || form_object_value
-          sel = override_with_form_value(sel)
 
-          disabled_option = find_disabled_option(sel, @field_config[:disabled_options])
-
-          render_string(attrs, sel, disabled_option)
+          render_string(attrs)
         end
 
         private
@@ -64,12 +65,12 @@ module Crossbeams
           cls
         end
 
-        def render_string(attrs, sel, disabled_option)
+        def render_string(attrs)
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{css_style}#{wrapper_visibility}>#{hint_text}
             #{backup_empty_select}
             <select #{attrs.join(' ')} #{name_attribute} #{field_id}>
-            #{make_prompt}#{build_options(@field_config[:options], sel, disabled_option)}
+            #{make_prompt}#{build_1_or_2_options}
             </select>
             <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
@@ -101,7 +102,7 @@ module Crossbeams
         end
 
         def sort_items
-          sort_items = @field_config.fetch(:sort_items) { true } ? 'Y' : 'N'
+          sort_items = @field_config.fetch(:sort_items, true) ? 'Y' : 'N'
           %( data-sort-items="#{sort_items}")
         end
 
@@ -109,58 +110,6 @@ module Crossbeams
           return '' unless @field_config[:min_charwidth]
 
           %( style="min-width:#{@field_config[:min_charwidth]}rem;")
-        end
-
-        def build_options(list, selected = nil, disabled_option = nil)
-          if list.is_a?(Hash)
-            grp_disabled = disabled_option
-            opts = []
-            list.each do |group, sublist|
-              opts << %(<optgroup label="#{group}">)
-              opts << make_options(Array(sublist), selected, grp_disabled)
-              opts << '</optgroup>'
-              grp_disabled = nil # This might not be quite the right position...
-            end
-            opts.join("\n")
-          else
-            make_options(Array(list), selected, disabled_option)
-          end
-        end
-
-        def make_options(list, selected, disabled_option)
-          disabled = disabled_string(disabled_option, selected)
-          opts = list.map do |a|
-            a.is_a?(Array) ? option_string(a.first, a.last, selected) : option_string(a, a, selected)
-          end
-          opts.unshift(disabled) unless disabled.nil?
-          opts.join("\n")
-        end
-
-        def option_string(text, value, selected, disabled = '')
-          sel = selected && value.to_s == selected.to_s ? ' selected ' : ''
-          "<option value=\"#{CGI.escapeHTML(value.to_s)}\"#{sel}#{disabled}>#{CGI.escapeHTML(text.to_s)}</option>"
-        end
-
-        def find_disabled_option(sel, disabled_list)
-          return nil if disabled_list.nil? || disabled_list.empty?
-          return nil if sel.nil?
-
-          elem = if disabled_list.first.is_a? Array
-                   disabled_list.rassoc(sel)
-                 elsif disabled_list.include?(sel)
-                   sel
-                 end
-          elem
-        end
-
-        def disabled_string(disabled_option, selected)
-          return nil if disabled_option.nil?
-
-          if disabled_option.is_a?(Array)
-            option_string(disabled_option.first, disabled_option.last, selected, ' disabled')
-          else
-            option_string(disabled_option, disabled_option, selected, ' disabled')
-          end
         end
       end
     end
