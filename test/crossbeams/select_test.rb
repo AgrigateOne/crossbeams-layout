@@ -13,8 +13,7 @@ class Crossbeams::SelectTest < Minitest::Test
     assert_equal 'b', html_selected_value(s)
     s = simple_select_render('b', ['a', 'b'])
     assert_equal 'b', html_selected_value(s)
-    s = simple_select_render('c', ['a', 'b'])
-    assert_nil html_selected_value(s)
+    assert_raises(Crossbeams::Layout::Error) { simple_select_render('c', ['a', 'b']) }
     s = simple_select_render('b', ['a', 'b'], form_value: 'a')
     assert_equal 'a', html_selected_value(s)
   end

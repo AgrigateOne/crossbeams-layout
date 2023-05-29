@@ -7,7 +7,13 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- New control: SelectMultiple for multi-select with single dropdown
+### Changed
+### Fixed
+
+## [2.1.0] - 2023-050-29
+### Added
+- New control: `SelectMultiple` for multi-select with single dropdown
+- `BaseSelect` class inherits from Base - takes refactored option-building logic for `Select`, `SelectMultiple` and `Multi`
 - `fit_width!` method for rows to use wide class
 - `dom_id` for a Section
 ### Changed

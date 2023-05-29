@@ -212,6 +212,18 @@ def simple_select_render(value, list, extra_configs = {})
   input.render
 end
 
+def simple_select_multiple_render(value, list, extra_configs = {})
+  config_opts = { name: 'test_form', form_object: OpenStruct.new(the_test_field: value) }
+  form_value = extra_configs.delete(:form_value)
+  config_opts[:form_values] = { the_test_field: form_value } unless form_value.nil?
+  page_config = Crossbeams::Layout::PageConfig.new(config_opts)
+  field_name = :the_test_field
+  field_config = { renderer: :select_multiple, options: list }.merge(extra_configs)
+  input = Crossbeams::Layout::Renderer::SelectMultiple.new
+  input.configure(field_name, field_config, page_config)
+  input.render
+end
+
 def simple_label_render(value, extra_configs = {})
   page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(the_test_field: value) })
   field_name = :the_test_field
