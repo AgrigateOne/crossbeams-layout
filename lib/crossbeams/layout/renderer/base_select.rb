@@ -23,7 +23,8 @@ module Crossbeams
 
         def prepare_selected
           sel = Array(@field_config[:selected] || form_object_value)
-          @selected_options = Array(override_with_form_value(sel)).map(&:to_s)
+
+          @selected_options = Array(override_with_form_value(sel)).reject { |v| v.to_s.empty? }.map(&:to_s)
         end
 
         def prepare_options # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
