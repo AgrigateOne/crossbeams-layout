@@ -15,7 +15,7 @@ module Crossbeams
           return true if options.is_a?(Hash) || disabled_options.is_a?(Hash)
 
           if options.empty?
-            disabled_options.first.is_a?(Array)
+            disabled_options && disabled_options.first.is_a?(Array)
           else
             options.first.is_a?(Array)
           end

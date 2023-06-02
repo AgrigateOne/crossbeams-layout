@@ -24,6 +24,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Validation errors are correctly styled for fields that are part of parent fields
 - Remote inline form was not re-enabling the submit button
+- Fix to checking of default options when no options are provided
 
 ## [2.0.0] - 2022-10-27
 ### Changed
