@@ -47,16 +47,22 @@ module Crossbeams
           else
             val = value.to_s.strip.empty? ? '&nbsp;' : CGI.escapeHTML(apply_formatting(value).to_s)
             <<-HTML
-              <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{field_id}>#{preformat_start}#{val}#{preformat_end}</div>
+              <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{label_field_id}>#{preformat_start}#{val}#{preformat_end}</div>
             HTML
           end
+        end
+
+        def label_field_id
+          return field_id unless @field_config[:include_hidden_field]
+
+          field_id.sub('id="', 'id="lbl_')
         end
 
         def render_hidden(value)
           return '' unless @field_config[:include_hidden_field]
 
           hidden_value = @field_config[:hidden_value] || value
-          %(<input type="hidden" value="#{CGI.escapeHTML(hidden_value.to_s)}" #{name_attribute} />)
+          %(<input #{field_id} type="hidden" value="#{CGI.escapeHTML(hidden_value.to_s)}" #{name_attribute} />)
         end
 
         def apply_formatting(val)
