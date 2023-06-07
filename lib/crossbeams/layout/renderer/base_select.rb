@@ -90,7 +90,8 @@ module Crossbeams
             if opt
               ar << opt
             elsif !options.find { |_, v| v == sel }
-              raise Crossbeams::Layout::Error, "#{self.class}: The value \"#{sel}\" is not present in options or disabled options."
+              ar << [sel, sel]
+              # raise Crossbeams::Layout::Error, "#{self.class}: The value \"#{sel}\" is not present in options or disabled options for #{@field_name}."
             end
           end
           ar
@@ -102,7 +103,8 @@ module Crossbeams
             if disabled_options.include?(sel)
               ar << sel
             elsif !options.include?(sel)
-              raise Crossbeams::Layout::Error, "#{self.class}: The value \"#{sel}\" is not present in options or disabled options."
+              ar << sel
+              # raise Crossbeams::Layout::Error, "#{self.class}: The value \"#{sel}\" is not present in options or disabled options for #{@field_name}."
             end
           end
           ar
