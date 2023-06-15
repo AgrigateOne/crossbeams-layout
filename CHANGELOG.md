@@ -11,6 +11,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - For a Label with a hidden field, apply the field's id to the hidden field, not the label div
 - Do not raise an exception if a Select has a selected value that is not included in options or disabled options
+- RadioGroup - cast everything to string before matching items to the current value
 
 ## [2.1.0] - 2023-050-29
 ### Added

@@ -55,7 +55,7 @@ module Crossbeams
         end
 
         def checked_value
-          @checked_value ||= @options.any? { |o| o.last == value } ? value : @initial_value
+          @checked_value ||= @options.any? { |o| o.last.to_s == value.to_s } ? value.to_s : @initial_value
         end
 
         def checked(opt)
