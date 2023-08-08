@@ -5,13 +5,14 @@ module Crossbeams
     # Expand-all and collapse-all control for opening/closing all FoldUps in a form.
     class ExpandCollapseFolds
       include PageNode
-      attr_reader :sequence, :nodes, :page_config
+      attr_reader :sequence, :nodes, :page_config, :parent_dom_id
 
       def initialize(page_config, sequence, options = {})
-        @options      = options
-        @sequence     = sequence
-        @nodes        = []
-        @page_config  = page_config
+        @options = options
+        @parent_dom_id = options[:parent_dom_id] || 'form'
+        @sequence = sequence
+        @nodes = []
+        @page_config = page_config
       end
 
       def invisible?
@@ -26,8 +27,8 @@ module Crossbeams
         return '' if invisible?
 
         <<~HTML
-          <a href="/" class="#{css_class.join(' ')}" #{title(true)}data-expand-collapse="open">#{expand_text}</a>
-          <a href="/" class="ml2 #{css_class.join(' ')}" #{title(false)}data-expand-collapse="close">#{collapse_text}</a>
+          <a href="/" class="#{css_class.join(' ')}" #{title(true)}data-expand-collapse="open" data-expand-collapse-dom="#{parent_dom_id}">#{expand_text}</a>
+          <a href="/" class="ml2 #{css_class.join(' ')}" #{title(false)}data-expand-collapse="close" data-expand-collapse-dom="#{parent_dom_id}">#{collapse_text}</a>
         HTML
       end
 

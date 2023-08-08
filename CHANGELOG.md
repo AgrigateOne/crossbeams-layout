@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- Expand/Collapse can be passed a `parent_dom_id` to be used as the parent node of the fold ups instead of the default (form)
 ### Fixed
 - For a Label with a hidden field, apply the field's id to the hidden field, not the label div
 - Do not raise an exception if a Select has a selected value that is not included in options or disabled options
