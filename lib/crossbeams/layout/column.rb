@@ -89,6 +89,8 @@ module Crossbeams
       #
       # @return [void]
       def add_control(page_control_definition)
+        raise ArgumentError, 'Column: "add_control" did not provide a "control_type"' unless page_control_definition[:control_type]
+
         @nodes << Link.new(page_control_definition) if page_control_definition[:control_type] == :link
         @nodes << DropdownButton.new(page_control_definition) if page_control_definition[:control_type] == :dropdown_button
       end

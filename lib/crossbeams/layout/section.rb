@@ -74,6 +74,13 @@ module Crossbeams
         @nodes << row
       end
 
+      def expand_collapse(options = {})
+        raise ArgumentError, 'ExpandCollapse inside a Section must have a parent_dom_id supplied' unless options[:parent_dom_id]
+
+        exp_col = ExpandCollapseFolds.new(page_config, nodes.length + 1, options)
+        @nodes << exp_col
+      end
+
       # Define a fold-up in the section.
       def fold_up
         fold_up = FoldUp.new(page_config, nodes.length + 1)
@@ -124,6 +131,8 @@ module Crossbeams
       #
       # @return [void]
       def add_control(page_control_definition)
+        raise ArgumentError, 'Section: "add_control" did not provide a "control_type"' unless page_control_definition[:control_type]
+
         @nodes << Link.new(page_control_definition) if page_control_definition[:control_type] == :link
         @nodes << DropdownButton.new(page_control_definition) if page_control_definition[:control_type] == :dropdown_button
       end
