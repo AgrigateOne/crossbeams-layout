@@ -65,6 +65,38 @@ class Crossbeams::DatetimeTest < Minitest::Test
     assert_time_values(values, the_time)
   end
 
+  def test_datetime_with_defaults
+    the_time = nil
+
+    # Hour without minute sets minute to 0
+    s = simple_input_render(:datetime, the_time, default_hour: 13)
+    values = html_elements_attribute_value(s, :input, :value)
+    assert_includes values, '13:00'
+
+    # Hour is zero-padded
+    s = simple_input_render(:datetime, the_time, default_hour: 3)
+    values = html_elements_attribute_value(s, :input, :value)
+    assert_includes values, '03:00'
+
+    s = simple_input_render(:datetime, the_time, default_hour: 3, default_minute: 2)
+    values = html_elements_attribute_value(s, :input, :value)
+    assert_includes values, '03:02'
+
+    s = simple_input_render(:datetime, the_time, default_hour: 3, default_minute: 12)
+    values = html_elements_attribute_value(s, :input, :value)
+    assert_includes values, '03:12'
+
+    # default minute is ignored if there is no default hour
+    s = simple_input_render(:datetime, the_time, default_minute: 12)
+    values = html_elements_attribute_value(s, :input, :value)
+    assert_equal values, ['', '', '']
+
+    # Valid hour range: 0 - 23
+    assert_raises(ArgumentError) { simple_input_render(:datetime, the_time, default_hour: 24) }
+    # Valid minute range: 0 - 59
+    assert_raises(ArgumentError) { simple_input_render(:datetime, the_time, default_minute: 60) }
+  end
+
   def test_placeholder_attribute
     s = simple_input_render(:datetime, Time.now, placeholder: 'text')
     assert_equal 'text', html_element_attribute_value(s, :input, :placeholder)
