@@ -20,6 +20,7 @@ module Crossbeams
         @id        = options[:id]
         @visible   = options.fetch(:visible, true)
         @window    = options[:loading_window]
+        @title     = options[:title]
         @text_size = options[:text_size] || '1'
         @nodes     = []
         assert_options_ok!
@@ -59,7 +60,8 @@ module Crossbeams
           grid_string,
           prompt_string,
           loading_window_string,
-          new_page_string
+          new_page_string,
+          title_string
         ].join(' ').squeeze(' ').rstrip
       end
 
@@ -173,6 +175,12 @@ module Crossbeams
         return '' if @window || @prompt
 
         'data-new-page-link="true"'
+      end
+
+      def title_string
+        return '' if @window || @title.nil?
+
+        %(title="#{@title}")
       end
 
       def button_font_size
