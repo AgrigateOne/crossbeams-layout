@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [2.1.1] - 2023-08-27
+### Added
 - Link gets a `title` attribute that will show during hover
 ### Changed
 - Expand/Collapse can be passed a `parent_dom_id` to be used as the parent node of the fold ups instead of the default (form)
