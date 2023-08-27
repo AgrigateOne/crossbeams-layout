@@ -80,6 +80,20 @@ class Crossbeams::LinkTest < Minitest::Test
     assert_equal match_str, renderer.render.strip[0, match_str.length]
   end
 
+  def test_title
+    load_match = 'title="opens in a new window"'
+    title = 'title="Some important title"'
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/')
+    refute_match(/title/, renderer.render)
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', title: title)
+    assert_match(/#{title}/, renderer.render)
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', loading_window: 'Y', title: title)
+    assert_match(/#{load_match}/, renderer.render)
+  end
+
   def test_visible
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', visible: false)
     assert_equal '<a href="/" hidden data-new-page-link="true">ClickMe</a>', renderer.render.strip

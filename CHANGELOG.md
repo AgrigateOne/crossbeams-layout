@@ -8,6 +8,12 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+### Fixed
+
+## [2.1.1] - 2023-08-27
+### Added
+- Link gets a `title` attribute that will show during hover
+### Changed
 - Expand/Collapse can be passed a `parent_dom_id` to be used as the parent node of the fold ups instead of the default (form)
 - DateTime control can optionally accept a `default_hour` and `default_minute` to set the time even if the datetime is nil
 ### Fixed
@@ -15,7 +21,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Do not raise an exception if a Select has a selected value that is not included in options or disabled options
 - RadioGroup - cast everything to string before matching items to the current value
 
-## [2.1.0] - 2023-050-29
+## [2.1.0] - 2023-05-29
 ### Added
 - New control: `SelectMultiple` for multi-select with single dropdown
 - `BaseSelect` class inherits from Base - takes refactored option-building logic for `Select`, `SelectMultiple` and `Multi`
