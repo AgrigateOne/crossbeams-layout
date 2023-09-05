@@ -11,6 +11,7 @@ module Crossbeams
         @text      = options.fetch(:text, 'Help')
         @help_type = options.fetch(:help_type, 'app')
         @path      = options.fetch(:path)
+        @lift      = options.fetch(:lift, 0) * -1
         @dialog    = options.fetch(:for_dialog, false)
         @nodes     = []
       end
@@ -51,7 +52,7 @@ module Crossbeams
       def position_classes
         return '' if dialog
 
-        'absolute top-0 right-0 '
+        "absolute top-#{@lift} right-0 "
       end
     end
   end
