@@ -135,6 +135,7 @@ module Crossbeams
 
         @nodes << Link.new(page_control_definition) if page_control_definition[:control_type] == :link
         @nodes << DropdownButton.new(page_control_definition) if page_control_definition[:control_type] == :dropdown_button
+        @nodes << HelpLink.new(page_control_definition) if page_control_definition[:control_type] == :help_link
       end
 
       def render
