@@ -77,7 +77,7 @@ module Crossbeams
         raise ArgumentError, "Crossbeams::Layout::Link Invalid button colour option - #{@colour}" if @colour && !%i[standard red green amber blue].include?(@colour)
         return unless @window || @icon
 
-        raise ArgumentError, 'Crossbeams::Layout::Link you cannot have a loading window that is also remote or a popup' if @window && %i[popup replace_dialog remote].include?(@behaviour)
+        raise ArgumentError, 'Crossbeams::Layout::Link you cannot have a loading window that is also remote, newtab or a popup' if @window && %i[popup replace_dialog newtab remote].include?(@behaviour)
         raise ArgumentError, "Crossbeams::Layout::Link - icon #{@icon} is not a valid choice" unless @icon.nil? || Icon::ICONS.keys.include?(@icon)
         raise ArgumentError, 'Crossbeams::Layout::Link icon is not applicable for back button or loading window' if @icon && (style == :back_button || @window)
       end
@@ -131,6 +131,8 @@ module Crossbeams
           "#{Icon.new(@icon).render} #{text}"
         elsif @window
           "#{Icon.new(:newwindow).render} #{text}"
+        elsif @behaviour == :newtab
+          "#{Icon.new(:newtab).render} #{text}"
         else
           text
         end
@@ -144,6 +146,8 @@ module Crossbeams
           'data-replace-dialog="true"'
         when :remote
           'data-remote-link="true"'
+        when :newtab
+          'target="_blank"'
         else
           ''
         end
@@ -178,6 +182,7 @@ module Crossbeams
       end
 
       def title_string
+        return 'title="Opens in a new tab"' if @behaviour == :newtab
         return '' if @window || @title.nil?
 
         %(title="#{@title}")
