@@ -8,8 +8,9 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
-- Render a `HelpLink` from a section.
-- Specify a `lift` value in the options for `HelpLink` to adjust the vertical positioning of a help button.
+- Render a `HelpLink` from a section
+- Specify a `lift` value in the options for `HelpLink` to adjust the vertical positioning of a help button
+- Added a new behaviour option to Link - `:newtab` for a link to open in a new tab
 ### Fixed
 
 ## [2.1.1] - 2023-08-27

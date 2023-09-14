@@ -82,6 +82,7 @@ class Crossbeams::LinkTest < Minitest::Test
 
   def test_title
     load_match = 'title="opens in a new window"'
+    newtab_match = 'title="Opens in a new tab"'
     title = 'title="Some important title"'
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/')
@@ -92,6 +93,11 @@ class Crossbeams::LinkTest < Minitest::Test
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', loading_window: 'Y', title: title)
     assert_match(/#{load_match}/, renderer.render)
+    refute_match(/#{title}/, renderer.render)
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :newtab, title: title)
+    assert_match(/#{newtab_match}/, renderer.render)
+    refute_match(/#{title}/, renderer.render)
   end
 
   def test_visible
