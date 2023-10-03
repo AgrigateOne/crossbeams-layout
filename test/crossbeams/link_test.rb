@@ -36,14 +36,22 @@ class Crossbeams::LinkTest < Minitest::Test
   end
 
   def test_behaviour
-    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :default)
-    assert_equal '<a href="/">ClickMe</a>', renderer.render.strip
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :direct)
+    assert_equal '<a href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :popup)
     assert_equal '<a href="/" data-popup-dialog="true">ClickMe</a>', renderer.render.strip
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :remote)
     assert_equal '<a href="/" data-remote-link="true">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :replace_dialog)
+    assert_equal '<a href="/" data-replace-dialog="true">ClickMe</a>', renderer.render.strip
+
+    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :newtab)
+    assert_match(/target="_blank"/, renderer.render)
+
+    assert_raises(ArgumentError) { Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :nonexist) }
   end
 
   def test_grid

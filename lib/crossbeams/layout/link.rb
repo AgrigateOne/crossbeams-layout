@@ -75,6 +75,7 @@ module Crossbeams
         raise ArgumentError, "Crossbeams::Layout::Link Invalid text size #{@text_size}" unless %w[1 2 3 4 5 6].include?(@text_size.to_s)
         raise ArgumentError, 'Crossbeams::Layout::Link Only provide button colour for a `button` style' if @colour && @style != :button
         raise ArgumentError, "Crossbeams::Layout::Link Invalid button colour option - #{@colour}" if @colour && !%i[standard red green amber blue].include?(@colour)
+        raise ArgumentError, "Crossbeams::Layout::Link - behaviour #{@behaviour} is not a valid choice" unless %i[direct popup remote replace_dialog newtab].include?(@behaviour)
         return unless @window || @icon
 
         raise ArgumentError, 'Crossbeams::Layout::Link you cannot have a loading window that is also remote, newtab or a popup' if @window && %i[popup replace_dialog newtab remote].include?(@behaviour)
