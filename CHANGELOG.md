@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Input can use a `:valid_filename` pattern to filter out characters unsuitable for file names
 ### Changed
 - Render a `HelpLink` from a section
 - Specify a `lift` value in the options for `HelpLink` to adjust the vertical positioning of a help button
