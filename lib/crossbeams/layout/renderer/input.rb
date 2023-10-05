@@ -124,7 +124,7 @@ module Crossbeams
 
         PATTERN_REGEX = {
           no_spaces: '[^\s]+',
-          valid_filename: '[^\s\/\\\*?:&quot;<>|]+',
+          valid_filename: '[^\s\/\\\*?:&quot;<>\|]+',
           lowercase_underscore: '[a-z_]*',
           alphanumeric: '[a-zA-Z0-9]*',
           ipv4_address: '(?:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(\.(?!$)|$)){4}'
@@ -132,7 +132,7 @@ module Crossbeams
 
         PATTERN_TITLES = {
           no_spaces: 'no spaces allowed',
-          valid_filename: 'no spaces, asterisks, question marks, greater-than or less-than signs, colons, quotes or slashes allowed',
+          valid_filename: 'no spaces, asterisks, question marks, greater-than or less-than signs, colons, pipes, quotes or slashes allowed',
           lowercase_underscore: 'only alphabetic characters and underscore (_) allowed',
           alphanumeric: 'only alphanumeric characters allowed (a-z and 0-9)',
           ipv4_address: 'must be a valid IP v4 address'
