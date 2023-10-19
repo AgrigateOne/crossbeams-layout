@@ -8,6 +8,10 @@ module Crossbeams
                   :got_row, :no_row, :csrf_tag, :remote_form, :form_config,
                   :multipart_form, :form_caption, :caption_level, :in_loading_page
 
+      PROGRESS_ICON = <<~HTML
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg>
+      HTML
+
       def initialize(page_config, section_sequence, sequence) # rubocop:disable Metrics/AbcSize
         @section_sequence       = section_sequence
         @sequence               = sequence
@@ -26,6 +30,9 @@ module Crossbeams
         @no_submit              = false
         @hidden_submit          = false
         @submit_in_loading_page = false
+        @brief_disable          = false
+        @grid_filter            = false
+        @grid_id                = nil
         @submit_id              = nil
         @csrf_tag               = nil
         @submit_caption         = 'Submit'
@@ -53,10 +60,26 @@ module Crossbeams
         @multipart_form = true
       end
 
+      # Make this a grid filter form (submit via javascript to refresh a grid)
+      # @returns [void]
+      def grid_filter!
+        @grid_filter = true
+      end
+
+      def grid_id(val)
+        @grid_id = val
+      end
+
       # Make this form submit to its action in a "loading" page as a GET request.
       # @returns [void]
       def submit_in_loading_page!
         @submit_in_loading_page = true
+      end
+
+      # Only disable the submit button briefly after it is pressed.
+      # @returns [void]
+      def briefly_disable_submit!
+        @brief_disable = true
       end
 
       # Make this a view-only form.
@@ -229,7 +252,7 @@ module Crossbeams
                           HTML
                         end
         <<~HTML
-          #{render_caption}<form #{render_id}class="crossbeams-form" #{as_loading}action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
+          #{render_caption}<form #{render_id}class="crossbeams-form" #{data_grid_id}#{gridfilter}#{as_loading}action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
             #{error_head}
             #{csrf_tag}
             #{form_method_str}
@@ -245,6 +268,18 @@ module Crossbeams
         return '' unless @submit_in_loading_page
 
         'data-convert-to-loading="true" '
+      end
+
+      def gridfilter
+        return '' unless @grid_filter
+
+        'data-grid-filter="true" '
+      end
+
+      def data_grid_id
+        return '' unless @grid_id
+
+        %(data-grid-id="#{@grid_id}" )
       end
 
       def form_method_str
@@ -291,7 +326,7 @@ module Crossbeams
         end
       end
 
-      def render_nodes_inside_generated_row # rubocop:disable Metrics/AbcSize
+      def render_nodes_inside_generated_row
         # wrap nodes in row & cols.
         row = Row.make_row(page_config, sequence, 1)
         col = Column.make_column(page_config)
@@ -304,11 +339,12 @@ module Crossbeams
           col.add_node(inline_submit)
         end
         row.add_node(col)
-        row.render + "\n"
+        "#{row.render}\n"
       end
 
-      def submit_button
-        disabler = @remote_form ? 'briefly-disable' : 'disable'
+      def submit_button # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+        loading = %(<span class="crossbeams-loading-button" hidden>#{PROGRESS_ICON}</span>)
+        disabler = @remote_form || @brief_disable ? 'briefly-disable' : 'disable'
         disable_command = @submit_in_loading_page ? '' : %( data-#{disabler}-with="#{@disable_caption}")
         id_str = @submit_id.nil? ? '' : %( id="#{@submit_id}")
         hidden_str = @hidden_submit ? ' hidden' : ''
@@ -316,20 +352,19 @@ module Crossbeams
         if @view_only
           %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{extra_buttons})
         else
-          %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{extra_buttons})
+          %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{loading}#{extra_buttons})
         end
       end
 
       def inline_submit
-        sub = InlineSubmit.new(@view_only, @submit_caption, @disable_caption, @submit_id, @hidden_submit, @remote_form)
-        sub
+        InlineSubmit.new(@view_only, @submit_caption, @disable_caption, @submit_id, @hidden_submit, @remote_form)
       end
 
       # Render a submit button inline - without surrounding div.
       class InlineSubmit
         include PageNode
 
-        def initialize(view_only, submit_caption, disable_caption, submit_id, hidden_submit, remote)
+        def initialize(view_only, submit_caption, disable_caption, submit_id, hidden_submit, remote) # rubocop:disable Metrics/ParameterLists
           @view_only = view_only
           @submit_caption = submit_caption
           @disable_caption = disable_caption
