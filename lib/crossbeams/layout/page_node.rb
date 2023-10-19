@@ -5,7 +5,7 @@ module Crossbeams
     # PageNode - base class for other nodes to inherit from.
     module PageNode
       def add_csrf_tag(tag)
-        @nodes.each { |node| node.add_csrf_tag(tag) }
+        @nodes.each { |node| node.add_csrf_tag(tag) if node.respond_to?(:add_csrf_tag) }
       end
     end
   end

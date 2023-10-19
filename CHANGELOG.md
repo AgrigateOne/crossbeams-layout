@@ -7,12 +7,20 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [2.1.1] - 2023-08-27
+### Added
 - Input can use a `:valid_filename` pattern to filter out characters unsuitable for file names
+- Form: can briefly disable a form submit button
+- Form: Provide a hidden progress icon next to submit button which can be revealed when needed
+- From: Grid filter - form will set an appropriate dataset value
+- From: Grid id to link a form to a grid
 ### Changed
 - Render a `HelpLink` from a section
 - Specify a `lift` value in the options for `HelpLink` to adjust the vertical positioning of a help button
 - Added a new behaviour option to Link - `:newtab` for a link to open in a new tab
-### Fixed
 
 ## [2.1.1] - 2023-08-27
 ### Added
@@ -24,6 +32,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - For a Label with a hidden field, apply the field's id to the hidden field, not the label div
 - Do not raise an exception if a Select has a selected value that is not included in options or disabled options
 - RadioGroup - cast everything to string before matching items to the current value
+- Nodes that do not implement `add_csrf_tag` are checked and not called with the CSRF tag
 
 ## [2.1.0] - 2023-05-29
 ### Added
