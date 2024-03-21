@@ -11,6 +11,7 @@ module Crossbeams
           @field_name   = field_name
           @page_config  = page_config || {}
           @field_config = field_config || {}
+          raise Crossbeams::Layout::Error, '":render" is not a valid option for a field - use ":renderer instead"' if @field_config.key?(:render)
         end
 
         def render
