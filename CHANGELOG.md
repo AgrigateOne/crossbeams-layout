@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 - `:arrow_right` icon
 ### Changed
+- The `Table` class will automatically right-align numeric data when no columns are provided
 ### Fixed
 
 ## [2.1.1] - 2023-08-27

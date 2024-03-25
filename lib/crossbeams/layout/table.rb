@@ -152,7 +152,7 @@ module Crossbeams
       def strings
         rows.map do |row|
           if columns.empty?
-            "<tr class='hover-row'>#{row.map { |r| "<td>#{r}</td>" }.join}</tr>"
+            "<tr class='hover-row'>#{row.map { |r| "<td#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>" }.join}</tr>"
           else
             "<tr class='hover-row'>#{columns.map { |c| "<td#{attr_for_col(c)}#{classes_for_col(c, row[c])}>#{transform_cell(c, row[c])}</td>" }.join}</tr>"
           end
