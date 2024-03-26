@@ -302,12 +302,24 @@ module Crossbeams
       end
 
       def error_head
-        return '' unless page_config.form_errors && (page_config.form_errors[nil] || page_config.form_errors[:base] || page_config.form_errors[:base_with_highlights])
+        return hidden_form_errors unless page_config.form_errors && (page_config.form_errors[nil] || page_config.form_errors[:base] || page_config.form_errors[:base_with_highlights])
 
         <<~HTML
           <div class="crossbeams-form-base-error pa1 mb1 bg-washed-red brown">
             <ul class="list"><li>#{base_messages.join('</li><li>')}</li></ul>
           </div>
+          #{hidden_form_errors}
+        HTML
+      end
+
+      def hidden_form_errors
+        return '' unless page_config.form_errors
+
+        <<~HTML
+          <pre style="display:none">
+            VALIDATION ERRORS
+            #{page_config.form_errors.inspect}
+          </pre>
         HTML
       end
 

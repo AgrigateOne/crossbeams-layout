@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - `:arrow_right` icon
+- Forms log all validation errors in a hidden `pre` element that can be inspected in the browser UI
 ### Changed
 - The `Table` class will automatically right-align numeric data when no columns are provided
 ### Fixed
