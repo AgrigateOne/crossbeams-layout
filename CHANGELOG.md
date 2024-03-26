@@ -7,13 +7,17 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `:arrow_right` icon
-- Forms log all validation errors in a hidden `pre` element that can be inspected in the browser UI
 ### Changed
-- The `Table` class will automatically right-align numeric data when no columns are provided
 ### Fixed
 
-## [2.1.1] - 2023-08-27
+## [2.2.1] - 2024-03-26
+### Added
+- `:arrow_right` icon
+- Form: log all validation errors in a hidden `pre` element that can be inspected in the browser UI
+### Changed
+- The `Table` class will automatically right-align numeric data when no columns are provided
+
+## [2.2.0] - 2023-10-19
 ### Added
 - Input can use a `:valid_filename` pattern to filter out characters unsuitable for file names
 - Form: can briefly disable a form submit button
