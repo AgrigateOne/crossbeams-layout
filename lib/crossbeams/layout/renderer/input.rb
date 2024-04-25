@@ -177,6 +177,7 @@ module Crossbeams
             attr_upper,
             attr_lower,
             attr_accept,
+            attr_autofocus,
             behaviours,
             attr_datalist(datalist)
           ].compact
@@ -259,6 +260,10 @@ module Crossbeams
 
         def attr_accept
           return %(accept="#{@field_config[:accept]}") if @field_config[:accept]
+        end
+
+        def attr_autofocus
+          return 'autofocus' if @field_config[:autofocus]
         end
 
         def attr_datalist(datalist)
