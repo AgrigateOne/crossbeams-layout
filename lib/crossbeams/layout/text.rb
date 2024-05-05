@@ -7,17 +7,17 @@ module Crossbeams
       include PageNode
       attr_reader :text, :page_config, :preformatted, :syntax, :wrapper,
                   :toggle_button, :toggle_caption, :toggle_element_id,
-                  :options
+                  :options, :wrapper_classes
       WRAP_START = {
-        p: '<p>',
-        h1: '<h1>',
-        h2: '<h2>',
-        h3: '<h3>',
-        h4: '<h4>',
-        i: '<em>',
-        em: '<em>',
-        b: '<strong>',
-        strong: '<strong>'
+        p: '<p%s>',
+        h1: '<h1%s>',
+        h2: '<h2%s>',
+        h3: '<h3%s>',
+        h4: '<h4%s>',
+        i: '<em%s>',
+        em: '<em%s>',
+        b: '<strong%s>',
+        strong: '<strong%s>'
       }.freeze
       WRAP_END = {
         p: '</p>',
@@ -36,6 +36,7 @@ module Crossbeams
         @page_config    = page_config
         @nodes          = []
         @wrapper        = Array(opts[:wrapper] || :none)
+        @wrapper_classes = opts[:wrapper_classes]
         @preformatted   = opts[:preformatted] || false
         @syntax         = opts[:syntax]
         @toggle_button  = opts[:toggle_button] || false
@@ -138,10 +139,16 @@ module Crossbeams
 
       def wrap_text
         if wrapper && wrapper != [:none]
-          "#{wrapper.map { |w| WRAP_START[w] }.join}#{text}#{wrapper.reverse.map { |w| WRAP_END[w] }.join}"
+          "#{wrapper.map { |w| format(WRAP_START[w], wrap_class) }.join}#{text}#{wrapper.reverse.map { |w| WRAP_END[w] }.join}"
         else
           text
         end
+      end
+
+      def wrap_class
+        return '' if wrapper_classes.nil?
+
+        %( class="#{wrapper_classes}")
       end
 
       def render_with_highlighter

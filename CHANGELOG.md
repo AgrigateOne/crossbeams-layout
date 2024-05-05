@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Input gets an `autofocus` attribute. If true, the input will receive focus on page load
+- Text: new option `wrapper_classes` to apply a class to the wrapper element
 ### Changed
 ### Fixed
 

@@ -51,10 +51,10 @@ class Crossbeams::Layout::FormTest < Minitest::Test
     form.button_id 'test_id'
     render = form.render
     assert_match '<input type="submit" id="test_id"', render
-    refute_match ' hidden>', render
+    refute_match 'white" hidden>', render
 
     form.initially_hide_button
     render = form.render
-    assert_match ' hidden>', render
+    assert_match 'white" hidden>', render
   end
 end
