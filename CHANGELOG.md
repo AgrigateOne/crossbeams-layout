@@ -10,6 +10,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Input gets an `autofocus` attribute. If true, the input will receive focus on page load
 - Text: new option `wrapper_classes` to apply a class to the wrapper element
 ### Changed
+- The Input's `valid_filename` pattern now also excludes ampersands from valid filenames
 ### Fixed
 
 ## [2.2.1] - 2024-03-26

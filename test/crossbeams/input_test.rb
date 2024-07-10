@@ -61,7 +61,7 @@ class Crossbeams::InputTest < Minitest::Test
     assert_equal '[^\s]+', html_element_attribute_value(s, :input, :pattern)
 
     s = simple_input_render(:input, '123', pattern: :valid_filename)
-    assert_equal '[^\s\/\\\*?:"<>\\|]+', html_element_attribute_value(s, :input, :pattern)
+    assert_equal '[^\s\/\\\*?:&"<>\\|]+', html_element_attribute_value(s, :input, :pattern)
 
     s = simple_input_render(:input, '123', pattern: :lowercase_underscore)
     assert_equal '[a-z_]*', html_element_attribute_value(s, :input, :pattern)
