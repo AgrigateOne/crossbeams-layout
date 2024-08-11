@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # Display one or more contact methods
     class ContactMethod
-      include PageNode
+      extend MethodBuilder
+
+      node_adders :csrf
       attr_reader :contact_methods, :lookup_icon
 
       def initialize(page_config, contact_methods, options = {})

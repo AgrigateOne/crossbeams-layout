@@ -11,6 +11,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Text: new option `wrapper_classes` to apply a class to the wrapper element
 ### Changed
 - The Input's `valid_filename` pattern now also excludes ampersands from valid filenames
+- Refactored code to use MethodBuilder and list node_adders to define available nodes in the DSL
 ### Fixed
 
 ## [2.2.1] - 2024-03-26

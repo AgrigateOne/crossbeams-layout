@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # Render a data grid in the Page.
     class Grid
-      include PageNode
+      extend MethodBuilder
+
+      node_adders :csrf
       attr_reader :grid_id, :url, :page_config, :options
 
       def initialize(page_config, grid_id, url, options = {})

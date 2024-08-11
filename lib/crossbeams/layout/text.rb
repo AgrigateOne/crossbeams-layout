@@ -4,10 +4,13 @@ module Crossbeams
   module Layout
     # A text renderer - for rendering text without form controls.
     class Text # rubocop:disable Metrics/ClassLength
-      include PageNode
+      extend MethodBuilder
+
+      node_adders :csrf
       attr_reader :text, :page_config, :preformatted, :syntax, :wrapper,
                   :toggle_button, :toggle_caption, :toggle_element_id,
                   :options, :wrapper_classes
+
       WRAP_START = {
         p: '<p%s>',
         h1: '<h1%s>',

@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # Expand-all and collapse-all control for opening/closing all FoldUps in a form.
     class ExpandCollapseFolds
-      include PageNode
+      extend MethodBuilder
+
+      node_adders :csrf
       attr_reader :sequence, :nodes, :page_config, :parent_dom_id
 
       def initialize(page_config, sequence, options = {})

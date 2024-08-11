@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # A button renderer with dropdown options - for rendering a button with a set of links to click.
     class DropdownButton # rubocop:disable Metrics/ClassLength
-      include PageNode
+      extend MethodBuilder
+
+      node_adders :csrf
       attr_reader :text, :style, :css_class, :id, :visible, :items
 
       def initialize(options)

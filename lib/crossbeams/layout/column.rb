@@ -4,7 +4,20 @@ module Crossbeams
   module Layout
     # A column is part of a Row.
     class Column
-      include PageNode
+      extend MethodBuilder
+
+      node_adders :address,
+                  :contact_method,
+                  :csrf,
+                  :diff,
+                  :fold_up,
+                  :list,
+                  :notice,
+                  :repeating_request,
+                  :sortable_list,
+                  :table,
+                  :text
+
       attr_reader :css_class, :nodes, :page_config, :colwidth
 
       def initialize(page_config, size, _seq1, _seq2)
@@ -27,13 +40,6 @@ module Crossbeams
         new(page_config, :full, nil, nil)
       end
 
-      # Include a fold-up in the column.
-      def fold_up
-        fold_up = FoldUp.new(page_config, nodes.length + 1)
-        yield fold_up
-        @nodes << fold_up
-      end
-
       def expand_collapse(options = {})
         exp_col = ExpandCollapseFolds.new(page_config, nodes.length + 1, options)
         @nodes << exp_col
@@ -41,48 +47,6 @@ module Crossbeams
 
       def add_field(name, options = {})
         @nodes << Field.new(page_config, name, options)
-      end
-
-      def add_list(items, options = {})
-        @nodes << List.new(page_config, items, options)
-      end
-
-      def add_sortable_list(prefix, items, options = {})
-        @nodes << SortableList.new(page_config, prefix, items, options)
-      end
-
-      def add_text(text, opts = {})
-        @nodes << Text.new(page_config, text, opts)
-      end
-
-      def add_notice(text, opts = {})
-        @nodes << Notice.new(page_config, text, opts)
-      end
-
-      # Add a table to the column.
-      def add_table(rows, columns, options = {})
-        @nodes << Table.new(page_config, rows, columns, options)
-      end
-
-      def add_grid(grid_id, url, options = {})
-        @nodes << Grid.new(page_config, grid_id, url, options)
-      end
-
-      def add_address(addresses, opts = {})
-        @nodes << Address.new(page_config, addresses, opts)
-      end
-
-      def add_contact_method(contact_methods, options = {})
-        @nodes << ContactMethod.new(page_config, contact_methods, options)
-      end
-
-      def add_diff(key)
-        @nodes << Diff.new(page_config, key)
-      end
-
-      # Add a repeating request to the column.
-      def add_repeating_request(url, interval, content)
-        @nodes << RepeatingRequest.new(page_config, url, interval, content)
       end
 
       # Add a control (button, link) to the column.

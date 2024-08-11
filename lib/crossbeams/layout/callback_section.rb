@@ -5,7 +5,9 @@ module Crossbeams
     # A CallbackSection is a section that does not render itself,
     # but calls an action to render within the section once the page is loaded.
     class CallbackSection
-      include PageNode
+      extend MethodBuilder
+
+      node_adders :csrf
       attr_accessor :caption, :url
       attr_reader :sequence, :page_config
 

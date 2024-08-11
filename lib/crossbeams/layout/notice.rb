@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # A notice renderer - for rendering text in an error, warning or information box.
     class Notice
-      include PageNode
+      extend MethodBuilder
+
+      node_adders :csrf
       attr_reader :text, :page_config, :notice_type, :caption, :show_caption, :inline_caption, :within_field
 
       def initialize(page_config, text, opts = {})

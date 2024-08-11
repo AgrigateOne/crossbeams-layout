@@ -374,7 +374,9 @@ module Crossbeams
 
       # Render a submit button inline - without surrounding div.
       class InlineSubmit
-        include PageNode
+        extend MethodBuilder
+
+        node_adders :csrf
 
         def initialize(view_only, submit_caption, disable_caption, submit_id, hidden_submit, remote) # rubocop:disable Metrics/ParameterLists
           @view_only = view_only

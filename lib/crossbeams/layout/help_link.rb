@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # A help link renderer - for rendering a button to open a help page.
     class HelpLink
-      include PageNode
+      extend MethodBuilder
+
+      node_adders :csrf
       attr_reader :text, :help_type, :path, :dialog
 
       def initialize(options)

@@ -4,6 +4,19 @@ module Crossbeams
   module Layout
     # A Page obejct holds all other layout elemnts.
     class Page
+      extend MethodBuilder
+
+      node_adders :diff,
+                  :fold_up,
+                  :grid,
+                  :list,
+                  :notice,
+                  :repeating_request,
+                  :row,
+                  :section,
+                  :table,
+                  :text
+
       attr_reader :nodes, :page_config, :sequence
 
       def initialize(options = {})
@@ -56,32 +69,11 @@ module Crossbeams
         end
       end
 
-      # Define a section in the page.
-      def section
-        section = Section.new(page_config, nodes.length + 1)
-        yield section
-        @nodes << section
-      end
-
       # Define a section that will lazy-load.
       def callback_section
         section = CallbackSection.new(page_config, nodes.length + 1)
         yield section
         @nodes << section
-      end
-
-      # Define a row in the page.
-      def row
-        row = Row.new(page_config, sequence, nodes.length + 1)
-        yield row
-        @nodes << row
-      end
-
-      # Define a fold-up in the page.
-      def fold_up
-        fold_up = FoldUp.new(page_config, nodes.length + 1)
-        yield fold_up
-        @nodes << fold_up
       end
 
       # Define a form in the page.
@@ -99,39 +91,8 @@ module Crossbeams
         self
       end
 
-      # Add a grid to the page.
-      def add_grid(grid_id, url, options = {})
-        @nodes << Grid.new(page_config, grid_id, url, options)
-      end
-
-      # Add a table to the page.
-      def add_table(rows, columns, options = {})
-        @nodes << Table.new(page_config, rows, columns, options)
-      end
-
       def add_help_link(options)
         @nodes << HelpLink.new(options)
-      end
-
-      def add_text(text, opts = {})
-        @nodes << Text.new(page_config, text, opts)
-      end
-
-      def add_notice(text, opts = {})
-        @nodes << Notice.new(page_config, text, opts)
-      end
-
-      def add_diff(key)
-        @nodes << Diff.new(page_config, key)
-      end
-
-      def add_list(items, options = {})
-        @nodes << List.new(page_config, items, options)
-      end
-
-      # Add a repeating request to the page.
-      def add_repeating_request(url, interval, content)
-        @nodes << RepeatingRequest.new(page_config, url, interval, content)
       end
 
       # Render the page and all its child nodes.
