@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [2.3.0] - 2024-08-17
+### Added
 - Input gets an `autofocus` attribute. If true, the input will receive focus on page load
 - Text: new option `wrapper_classes` to apply a class to the wrapper element
 ### Changed
@@ -16,7 +21,6 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Icon includes a new `:dropdown` icon
 - DropdownButton renders with a dropdown indicator to the right of the button text
 - CallbackSection: Added methods `caption_text` and `callback_url` which act the same as `caption=` and `url=`
-### Fixed
 
 ## [2.2.1] - 2024-03-26
 ### Added
