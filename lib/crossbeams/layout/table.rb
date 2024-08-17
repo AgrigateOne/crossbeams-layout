@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # A table of data.
     class Table # rubocop:disable Metrics/ClassLength
-      include PageNode
+      extend MethodBuilder
+
+      build_methods_for :csrf
       attr_reader :columns, :rows, :options
 
       BUILT_IN_TRANSFORMERS = {

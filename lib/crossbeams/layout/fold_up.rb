@@ -4,7 +4,19 @@ module Crossbeams
   module Layout
     # A FoldUp wraps its content in a <display> element which is folded up by default.
     class FoldUp
-      include PageNode
+      extend MethodBuilder
+
+      build_methods_for :address,
+                        :contact_method,
+                        :csrf,
+                        :diff,
+                        :grid,
+                        :notice,
+                        :row,
+                        :section,
+                        :table,
+                        :text
+
       attr_reader :sequence, :nodes, :page_config, :caption_text
 
       def initialize(page_config, sequence)
@@ -31,52 +43,10 @@ module Crossbeams
         @nodes.all?(&:hidden?)
       end
 
-      # Define a section in the page.
-      def section
-        section = Section.new(page_config, nodes.length + 1)
-        yield section
-        @nodes << section
-      end
-
       def form
         form = Form.new(page_config, sequence, nodes.length + 1)
         yield form
         @nodes << form
-      end
-
-      def row
-        row = Row.new(page_config, sequence, nodes.length + 1)
-        yield row
-        @nodes << row
-      end
-
-      def add_grid(grid_id, url, options = {})
-        @nodes << Grid.new(page_config, grid_id, url, options.merge(fit_height: @fit_height))
-      end
-
-      def add_text(text, opts = {})
-        @nodes << Text.new(page_config, text, opts)
-      end
-
-      def add_notice(text, opts = {})
-        @nodes << Notice.new(page_config, text, opts)
-      end
-
-      # Add a table to the section.
-      def add_table(rows, columns, options = {})
-        @nodes << Table.new(page_config, rows, columns, options)
-      end
-
-      def add_address(addresses, opts = {})
-        @nodes << Address.new(page_config, addresses, opts)
-      end
-
-      def add_contact_method(contact_methods, options = {})
-        @nodes << ContactMethod.new(page_config, contact_methods, options)
-      end
-
-      def add_diff(key)
-        @nodes << Diff.new(page_config, key)
       end
 
       def add_field(name, options = {})

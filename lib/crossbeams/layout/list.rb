@@ -4,7 +4,6 @@ module Crossbeams
   module Layout
     # A list of items.
     class List
-      # include PageNode
       attr_reader :items
 
       def initialize(page_config, items, options = {})
