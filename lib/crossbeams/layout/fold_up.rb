@@ -6,16 +6,16 @@ module Crossbeams
     class FoldUp
       extend MethodBuilder
 
-      node_adders :address,
-                  :contact_method,
-                  :csrf,
-                  :diff,
-                  :grid,
-                  :notice,
-                  :row,
-                  :section,
-                  :table,
-                  :text
+      build_methods_for :address,
+                        :contact_method,
+                        :csrf,
+                        :diff,
+                        :grid,
+                        :notice,
+                        :row,
+                        :section,
+                        :table,
+                        :text
 
       attr_reader :sequence, :nodes, :page_config, :caption_text
 

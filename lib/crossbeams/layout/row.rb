@@ -6,7 +6,7 @@ module Crossbeams
     class Row
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
 
       attr_reader :sequence, :nodes, :page_config
 

@@ -6,7 +6,7 @@ module Crossbeams
     class Address
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :include_type, :addresses
 
       def initialize(page_config, addresses, options = {})

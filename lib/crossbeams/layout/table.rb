@@ -6,7 +6,7 @@ module Crossbeams
     class Table # rubocop:disable Metrics/ClassLength
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :columns, :rows, :options
 
       BUILT_IN_TRANSFORMERS = {

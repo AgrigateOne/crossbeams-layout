@@ -6,7 +6,7 @@ module Crossbeams
     class Grid
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :grid_id, :url, :page_config, :options
 
       def initialize(page_config, grid_id, url, options = {})

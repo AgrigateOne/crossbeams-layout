@@ -6,7 +6,7 @@ module Crossbeams
     class ContactMethod
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :contact_methods, :lookup_icon
 
       def initialize(page_config, contact_methods, options = {})

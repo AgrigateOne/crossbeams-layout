@@ -6,7 +6,7 @@ module Crossbeams
     class Text # rubocop:disable Metrics/ClassLength
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :text, :page_config, :preformatted, :syntax, :wrapper,
                   :toggle_button, :toggle_caption, :toggle_element_id,
                   :options, :wrapper_classes

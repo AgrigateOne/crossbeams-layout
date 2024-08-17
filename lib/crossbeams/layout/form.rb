@@ -362,7 +362,7 @@ module Crossbeams
         hidden_str = @hidden_submit ? ' hidden' : ''
         extra_buttons = @buttons.map { |b| b.render(@remote_form) }.join("\n")
         if @view_only
-          %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{extra_buttons})
+          %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-blue br2 dim pa3 ba b--near-white"#{hidden_str}>#{extra_buttons})
         else
           %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{loading}#{extra_buttons})
         end
@@ -376,7 +376,7 @@ module Crossbeams
       class InlineSubmit
         extend MethodBuilder
 
-        node_adders :csrf
+        build_methods_for :csrf
 
         def initialize(view_only, submit_caption, disable_caption, submit_id, hidden_submit, remote) # rubocop:disable Metrics/ParameterLists
           @view_only = view_only
@@ -409,7 +409,7 @@ module Crossbeams
           id_str = @submit_id.nil? ? '' : %( id="#{@submit_id}")
           hidden_str = @hidden_submit ? ' hidden' : ''
           if @view_only
-            %(<input type="submit" name="commit"#{id_str} value="Close" class="close-dialog white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
+            %(<input type="submit" name="commit"#{id_str} value="Close" class="close-dialog white bg-blue br2 dim pa3 ba b--near-white"#{hidden_str}>)
           else
             %(<input type="submit" name="commit"#{id_str} value="#{@submit_caption}" data#{remote_inject}-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
           end

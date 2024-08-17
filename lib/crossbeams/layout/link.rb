@@ -6,7 +6,7 @@ module Crossbeams
     class Link
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :text, :url, :style, :behaviour, :css_class, :id, :visible, :text_size
 
       def initialize(options) # rubocop:disable Metrics/AbcSize

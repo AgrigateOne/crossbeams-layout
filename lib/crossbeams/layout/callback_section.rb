@@ -7,7 +7,7 @@ module Crossbeams
     class CallbackSection
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_accessor :caption, :url
       attr_reader :sequence, :page_config
 
@@ -31,6 +31,14 @@ module Crossbeams
 
       def remote!
         @remote = true
+      end
+
+      def caption_text(caption)
+        @caption = caption
+      end
+
+      def callback_url(url)
+        @url = url
       end
 
       # Render the control

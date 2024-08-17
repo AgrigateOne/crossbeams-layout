@@ -6,17 +6,17 @@ module Crossbeams
     class Column
       extend MethodBuilder
 
-      node_adders :address,
-                  :contact_method,
-                  :csrf,
-                  :diff,
-                  :fold_up,
-                  :list,
-                  :notice,
-                  :repeating_request,
-                  :sortable_list,
-                  :table,
-                  :text
+      build_methods_for :address,
+                        :contact_method,
+                        :csrf,
+                        :diff,
+                        :fold_up,
+                        :list,
+                        :notice,
+                        :repeating_request,
+                        :sortable_list,
+                        :table,
+                        :text
 
       attr_reader :css_class, :nodes, :page_config, :colwidth
 

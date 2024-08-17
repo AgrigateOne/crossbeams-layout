@@ -6,17 +6,17 @@ module Crossbeams
     class Section # rubocop:disable Metrics/ClassLength
       extend MethodBuilder
 
-      node_adders :address,
-                  :contact_method,
-                  :csrf,
-                  :diff,
-                  :fold_up,
-                  :grid,
-                  :notice,
-                  :repeating_request,
-                  :row,
-                  :table,
-                  :text
+      build_methods_for :address,
+                        :contact_method,
+                        :csrf,
+                        :diff,
+                        :fold_up,
+                        :grid,
+                        :notice,
+                        :repeating_request,
+                        :row,
+                        :table,
+                        :text
 
       attr_accessor :caption, :hide_caption, :show_border
       attr_reader :sequence, :nodes, :page_config, :fit_height, :full_dialog_height, :half_dialog_height

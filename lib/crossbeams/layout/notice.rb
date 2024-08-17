@@ -6,7 +6,7 @@ module Crossbeams
     class Notice
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :text, :page_config, :notice_type, :caption, :show_caption, :inline_caption, :within_field
 
       def initialize(page_config, text, opts = {})

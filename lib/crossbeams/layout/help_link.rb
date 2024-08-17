@@ -6,7 +6,7 @@ module Crossbeams
     class HelpLink
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :text, :help_type, :path, :dialog
 
       def initialize(options)

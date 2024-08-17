@@ -4,8 +4,8 @@ module Crossbeams
   module Layout
     # Define common methods for layout classes
     module MethodBuilder
-      def node_adders(*node_names) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-        node_names.each do |node_name|
+      def build_methods_for(*node_names) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        node_names.each do |node_name| # rubocop:disable Metrics/BlockLength
           case node_name
           when :table
             define_method(:add_table) do |rows, columns, options = {}|
@@ -74,7 +74,7 @@ module Crossbeams
               @nodes << section
             end
           else
-            raise ArgumentError, "#{node_name} is not a valid option for `node_adders`"
+            raise ArgumentError, "#{node_name} is not a valid option for `build_methods_for`"
           end
         end
       end

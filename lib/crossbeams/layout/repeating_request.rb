@@ -6,7 +6,7 @@ module Crossbeams
     class RepeatingRequest
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :page_config, :url, :interval, :content
 
       def initialize(page_config, url, interval, content)

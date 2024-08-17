@@ -6,7 +6,7 @@ module Crossbeams
     class ProgressStep
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :steps, :page_config, :position, :state_description,
                   :show_finished, :current_step_id, :size
 

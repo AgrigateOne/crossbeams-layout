@@ -6,16 +6,16 @@ module Crossbeams
     class Page
       extend MethodBuilder
 
-      node_adders :diff,
-                  :fold_up,
-                  :grid,
-                  :list,
-                  :notice,
-                  :repeating_request,
-                  :row,
-                  :section,
-                  :table,
-                  :text
+      build_methods_for :diff,
+                        :fold_up,
+                        :grid,
+                        :list,
+                        :notice,
+                        :repeating_request,
+                        :row,
+                        :section,
+                        :table,
+                        :text
 
       attr_reader :nodes, :page_config, :sequence
 

@@ -6,7 +6,7 @@ module Crossbeams
     class ExpandCollapseFolds
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :sequence, :nodes, :page_config, :parent_dom_id
 
       def initialize(page_config, sequence, options = {})

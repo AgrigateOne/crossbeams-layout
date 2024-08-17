@@ -4,10 +4,9 @@ module Crossbeams
   module Layout
     # A diff renderer - shows the difference between two texts or two hashes.
     class Diff # rubocop:disable Metrics/ClassLength
-      # include PageNode
       extend MethodBuilder
 
-      node_adders :csrf
+      build_methods_for :csrf
       attr_reader :key, :rules, :use_files, :sort_nested
 
       def initialize(page_config, key)
