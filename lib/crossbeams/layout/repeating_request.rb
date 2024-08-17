@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # Renders a div and repeatedly calls a URL via an interval.
     class RepeatingRequest
-      include PageNode
+      extend MethodBuilder
+
+      build_methods_for :csrf
       attr_reader :page_config, :url, :interval, :content
 
       def initialize(page_config, url, interval, content)

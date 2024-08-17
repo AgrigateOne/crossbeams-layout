@@ -4,7 +4,6 @@ module Crossbeams
   module Layout
     # A sortable list of items. Returns ids in a new sequence.
     class SortableList
-      # include PageNode
       attr_reader :prefix, :items
 
       def initialize(page_config, prefix, items, options = {})

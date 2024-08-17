@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # A button renderer with dropdown options - for rendering a button with a set of links to click.
     class DropdownButton # rubocop:disable Metrics/ClassLength
-      include PageNode
+      extend MethodBuilder
+
+      build_methods_for :csrf
       attr_reader :text, :style, :css_class, :id, :visible, :items
 
       def initialize(options)
@@ -143,15 +145,15 @@ module Crossbeams
         'hidden'
       end
 
-      def render_text
+      def render_text # rubocop:disable Metrics/AbcSize
         if style == :back_button
-          "#{Icon.new(:back).render} #{text}"
+          "#{Icon.new(:back).render} #{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
         elsif @icon
-          "#{Icon.new(@icon).render} #{text}"
+          "#{Icon.new(@icon).render} #{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
         elsif @window
-          "#{Icon.new(:newwindow).render} #{text}"
+          "#{Icon.new(:newwindow).render} #{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
         else
-          text
+          "#{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
         end
       end
 

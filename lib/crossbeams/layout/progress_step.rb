@@ -4,7 +4,9 @@ module Crossbeams
   module Layout
     # A progress steps renderer - for displaying positioin in amulti-step process.
     class ProgressStep
-      include PageNode
+      extend MethodBuilder
+
+      build_methods_for :csrf
       attr_reader :steps, :page_config, :position, :state_description,
                   :show_finished, :current_step_id, :size
 

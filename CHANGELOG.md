@@ -7,11 +7,20 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [2.3.0] - 2024-08-17
+### Added
 - Input gets an `autofocus` attribute. If true, the input will receive focus on page load
 - Text: new option `wrapper_classes` to apply a class to the wrapper element
 ### Changed
 - The Input's `valid_filename` pattern now also excludes ampersands from valid filenames
-### Fixed
+- Refactored code to use MethodBuilder and call `build_methods_for` to define available methods that add nodes to a control
+- A "close" button on a view-only form renders with a blue background instead of green
+- Icon includes a new `:dropdown` icon
+- DropdownButton renders with a dropdown indicator to the right of the button text
+- CallbackSection: Added methods `caption_text` and `callback_url` which act the same as `caption=` and `url=`
 
 ## [2.2.1] - 2024-03-26
 ### Added
