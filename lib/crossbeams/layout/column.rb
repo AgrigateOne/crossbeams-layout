@@ -11,6 +11,7 @@ module Crossbeams
                         :csrf,
                         :diff,
                         :fold_up,
+                        :grid,
                         :list,
                         :notice,
                         :repeating_request,
