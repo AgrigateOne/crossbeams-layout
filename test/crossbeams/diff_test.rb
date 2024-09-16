@@ -64,6 +64,16 @@ class Crossbeams::DiffTest < Minitest::Test
     assert renderer.render.include?('<li class="ins"><ins>A<strong>CB</strong></ins></li>')
   end
 
+  def test_empty_record
+    fields = { test_field: {
+          left_record: {},
+          right_record: { fld1: 123, fld2: 'acb' }
+    }}
+
+    page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(test_field: nil), fields: fields })
+    assert Crossbeams::Layout::Diff.new(page_config, :test_field).render.include?('<li class="ins"><ins>fld1')
+  end
+
   def test_arguments_invalid
     fields = { test_field: {
           right_record: { fld1: 123, fld2: 'acb' }

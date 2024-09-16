@@ -70,7 +70,7 @@ module Crossbeams
         if @rules[:unnest_records]
           unnest_rec(rules[:left_record], :left)
         else
-          rec_to_s(rules[:left_record], len + 2)
+          rec_to_s(rules[:left_record], len)
         end
       end
 
@@ -80,16 +80,16 @@ module Crossbeams
         if @rules[:unnest_records]
           unnest_rec(rules[:right_record], :right)
         else
-          rec_to_s(rules[:right_record], len + 2)
+          rec_to_s(rules[:right_record], len)
         end
       end
 
       def len
-        rules[:left_record].keys.map(&:length).max
+        rules[:left_record].keys.map(&:length).max || 30
       end
 
       def rec_to_s(hash, len = 30)
-        hash.map { |k, v| "#{k.to_s.ljust(len)}: #{format(v)}" }.join("\n")
+        hash.map { |k, v| "#{k.to_s.ljust(len + 2)}: #{format(v)}" }.join("\n")
       end
 
       def unnest_rec(hash, side)
@@ -97,7 +97,7 @@ module Crossbeams
 
         @left_len = flattened.keys.map(&:length).max if side == :left
 
-        rec_to_s(flattened, @left_len + 2)
+        rec_to_s(flattened, @left_len)
       end
 
       def symbolize_keys(hash)

@@ -9,6 +9,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+- Diff: When comparing two records and one has no data, an exception would be raised
 - Column: during refactoring of build methods, the ability to add a grid to a column was lost
 
 ## [2.3.0] - 2024-08-17
