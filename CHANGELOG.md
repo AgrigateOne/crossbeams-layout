@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Label has a new option: `:no_html_escape` which can be set to true if a label's value is set using `:with_value`. When set, any HTML in the text will not be escaped. This is useful for fields that store markdown content, but display HTML.
 ### Changed
 ### Fixed
 - Diff: When comparing two records and one has no data, an exception would be raised

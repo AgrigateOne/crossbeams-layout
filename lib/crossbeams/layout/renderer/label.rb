@@ -10,6 +10,7 @@ module Crossbeams
           @field_config = field_config
           @page_config  = page_config
           @caption      = field_config[:caption] || present_field_as_label(field_name)
+          raise ArgumentError, 'Crossbeams::Layout::Label: `:no_html_escape` can only be used when `:with_value` is used.' if @field_config[:no_escape] && !@field_config[:with_value]
         end
 
         def render
@@ -45,7 +46,13 @@ module Crossbeams
               HTML
             end
           else
-            val = value.to_s.strip.empty? ? '&nbsp;' : CGI.escapeHTML(apply_formatting(value).to_s)
+            val = if value.to_s.strip.empty?
+                    '&nbsp;'
+                  elsif @field_config[:no_html_escape]
+                    value
+                  else
+                    CGI.escapeHTML(apply_formatting(value).to_s)
+                  end
             <<-HTML
               <div class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" #{label_field_id}>#{preformat_start}#{val}#{preformat_end}</div>
             HTML
