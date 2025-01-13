@@ -65,7 +65,7 @@ module Crossbeams
 
       def standard_render
         <<~HTML
-          #{dom_start}<table class="thinbordertable#{top_margin}">#{table_caption}
+          #{dom_start}<table class="thinbordertable#{top_margin}#{left_margin}">#{table_caption}
             #{head if options[:has_columns]}
             <tbody>
               #{strings.join("\n")}
@@ -81,6 +81,13 @@ module Crossbeams
         " mt#{options[:top_margin]}"
       end
 
+      def left_margin
+        return '' unless options[:left_margin]
+        raise ArgumentError, 'Left margin must be in the range 0..7' unless (0..7).cover?(options[:left_margin])
+
+        " ml#{options[:left_margin]}"
+      end
+
       def table_caption
         return '' unless options[:caption]
 
@@ -92,7 +99,7 @@ module Crossbeams
 
         elements = pivot_rows
         <<~HTML
-          #{dom_start}<table class="thinbordertable#{top_margin}">#{table_caption}
+          #{dom_start}<table class="thinbordertable#{top_margin}#{left_margin}">#{table_caption}
             <tbody>
               #{pivot_strings(elements).join("\n")}
             </tbody>

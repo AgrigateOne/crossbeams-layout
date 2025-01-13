@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Label has a new option: `:no_html_escape` which can be set to true if a label's value is set using `:with_value`. When set, any HTML in the text will not be escaped. This is useful for fields that store markdown content, but display HTML.
+- Table gets a `:left_margin` option which can be in the range 0 to 7 and works like `:top_margin`, but for the left of the table.
 ### Changed
 ### Fixed
 - Diff: When comparing two records and one has no data, an exception would be raised
