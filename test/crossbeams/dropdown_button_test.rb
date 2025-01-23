@@ -8,7 +8,7 @@ class Crossbeams::DropdownButtonTest < Minitest::Test
   def test_defaults
     renderer = Crossbeams::Layout::DropdownButton.new(text: 'Links', items: basic_item)
     html = renderer.render
-    assert_equal 'crossbeams-dropdown-button bn br2 bg-silver', html_element_attribute_value(html, 'div', 'class')
+    assert_equal 'crossbeams-dropdown-button bn br2', html_element_attribute_value(html, 'div', 'class')
     assert_equal 'button', html_element_attribute_value(html, 'button', 'type')
     assert_equal 'Links', html_dom_text_value(html, 'button')
     assert_equal 'Y', html_elements_attribute_value(html, 'a', 'data-button-dropdown').first
