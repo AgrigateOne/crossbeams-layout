@@ -40,7 +40,7 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-          <div #{render_id}class="crossbeams-dropdown-button bn br2 bg-silver"#{hidden_string}>
+          <div #{render_id}class="crossbeams-dropdown-button bn br2"#{hidden_string}>
             <button type="button"#{attrs}>
               #{render_text}
             </button>
