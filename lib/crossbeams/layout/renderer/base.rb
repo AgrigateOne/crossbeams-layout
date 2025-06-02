@@ -191,6 +191,8 @@ module Crossbeams
           return %(data-observe-keyup=#{build_observe_change(rule[:keyup])}) if rule[:keyup]
           return %(data-observe-input-change=#{build_observe_change(rule[:input_change])}) if rule[:input_change]
           return %(data-observe-lose-focus=#{build_observe_change(rule[:lose_focus])}) if rule[:lose_focus]
+
+          nil
         end
 
         def split_change_affects(change_affects)

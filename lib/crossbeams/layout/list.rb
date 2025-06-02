@@ -89,7 +89,7 @@ module Crossbeams
       end
 
       def item_renders
-        return '' if @items.nil_or_empty?
+        return '' if @items.nil? || @items.empty?
 
         if @remove_item_url.nil?
           plain_item_renders

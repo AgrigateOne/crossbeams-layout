@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-# require 'bigdecimal'
+require 'bigdecimal'
 require 'diffy'
+require 'json'
 require 'ostruct'
 require 'rouge'
 require 'crossbeams/layout/version'
 require 'crossbeams/layout/method_builder'
+require 'crossbeams/layout/examples_generator'
 
 require 'crossbeams/layout/callback_section'
 require 'crossbeams/layout/column'

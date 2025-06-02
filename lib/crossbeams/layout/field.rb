@@ -8,7 +8,7 @@ module Crossbeams
 
       def initialize(page_config, name, options = {})
         @name        = name
-        @caption     = options[:caption] || name
+        @caption     = options[:caption] || name # is this used at all????
         @page_config = page_config
         raise ArgumentError, %(There is no renderer defined for "#{@name}") if field_config.nil?
       end
@@ -22,9 +22,7 @@ module Crossbeams
       end
 
       def render
-        # Needs another pass of config to resolve if we're doing a view/edit etc.
         renderer = Renderer::FieldFactory.new(name, field_config, page_config)
-        # renderer.configure(page_config)
         renderer.render
       end
 

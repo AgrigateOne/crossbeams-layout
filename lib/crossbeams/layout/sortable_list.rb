@@ -14,6 +14,7 @@ module Crossbeams
         @items       = Array(items)
         @item_ids    = []
         @options     = options
+        validate_options
       end
 
       # Is this node invisible?
@@ -88,6 +89,13 @@ module Crossbeams
         else
           ''
         end
+      end
+
+      def validate_options
+        return if @items.empty?
+
+        raise ArgumentError, 'SortableList: items must be an array' unless @items.first.is_a?(Array)
+        raise ArgumentError, 'SortableList: items must be a 2-dimensional array' unless @items.first.length == 2
       end
     end
   end

@@ -65,7 +65,7 @@ class Crossbeams::MethodBuilderTest < Minitest::Test
     c.add_notice 'NOTE'
     c.add_diff :df
     c.add_list [1,2]
-    c.add_sortable_list 'sl', [1,2]
+    c.add_sortable_list 'sl', [['a',1], ['b', 2]]
     c.add_repeating_request '/url', 12, 'ABC'
     c.add_address []
     c.add_contact_method []

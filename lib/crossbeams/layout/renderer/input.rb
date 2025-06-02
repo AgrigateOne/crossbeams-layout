@@ -46,7 +46,7 @@ module Crossbeams
           @field_config[:subtype] || @field_config[:renderer]
         end
 
-        def input_type # rubocop:disable Metrics/CyclomaticComplexity
+        def input_type
           case subtype
           when :integer, :numeric, :number
             'number'
@@ -66,14 +66,15 @@ module Crossbeams
         end
 
         def date_related_input_type(in_type)
-          case in_type
-          when :date     # yyyy-mm-dd
-            'date'
-          when :month    # yyyy-mm
-            'month'
-          when :time     # HH:MM
-            'time'
-          end
+          in_type.to_s
+          # case in_type
+          # when :date     # yyyy-mm-dd
+          #   'date'
+          # when :month    # yyyy-mm
+          #   'month'
+          # when :time     # HH:MM
+          #   'time'
+          # end
         end
 
         DATE_VALUE_GETTERS = {
@@ -191,19 +192,19 @@ module Crossbeams
         end
 
         def attr_placeholder
-          return "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
+          "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
         end
 
         def attr_pattern_title
-          return "title=\"#{@field_config[:pattern_msg]}\"" if @field_config[:pattern_msg] && !@field_config[:title]
+          "title=\"#{@field_config[:pattern_msg]}\"" if @field_config[:pattern_msg] && !@field_config[:title]
         end
 
         def attr_title
-          return "title=\"#{@field_config[:title]}\"" if @field_config[:title]
+          "title=\"#{@field_config[:title]}\"" if @field_config[:title]
         end
 
         def attr_pattern
-          return build_pattern(@field_config[:pattern]) if @field_config[:pattern]
+          build_pattern(@field_config[:pattern]) if @field_config[:pattern]
         end
 
         def attr_minvalue
@@ -235,35 +236,35 @@ module Crossbeams
         end
 
         def attr_readonly
-          return 'readonly="true"' if @field_config[:readonly] && @field_config[:readonly] == true
+          'readonly="true"' if @field_config[:readonly] && @field_config[:readonly] == true
         end
 
         def attr_disabled
-          return 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
+          'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
         end
 
         def attr_required
-          return 'required="true"' if @field_config[:required] && @field_config[:required] == true
+          'required="true"' if @field_config[:required] && @field_config[:required] == true
         end
 
         def attr_step
-          return 'step="any"' if subtype == :numeric
+          'step="any"' if subtype == :numeric
         end
 
         def attr_upper
-          return %{onblur="this.value = this.value.toUpperCase()"} if @field_config[:force_uppercase]
+          %{onblur="this.value = this.value.toUpperCase()"} if @field_config[:force_uppercase]
         end
 
         def attr_lower
-          return %{onblur="this.value = this.value.toLowerCase()"} if @field_config[:force_lowercase]
+          %{onblur="this.value = this.value.toLowerCase()"} if @field_config[:force_lowercase]
         end
 
         def attr_accept
-          return %(accept="#{@field_config[:accept]}") if @field_config[:accept]
+          %(accept="#{@field_config[:accept]}") if @field_config[:accept]
         end
 
         def attr_autofocus
-          return 'autofocus' if @field_config[:autofocus]
+          'autofocus' if @field_config[:autofocus]
         end
 
         def attr_datalist(datalist)

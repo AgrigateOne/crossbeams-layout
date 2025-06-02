@@ -57,7 +57,7 @@ module Crossbeams
         end
 
         def item_renders
-          return '' if @field_config[:items].nil_or_empty?
+          return '' if @field_config[:items].nil? || @field_config[:items].empty?
 
           if @remove_item_url.nil?
             plain_item_renders

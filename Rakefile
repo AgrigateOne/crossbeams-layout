@@ -22,3 +22,10 @@ RuboCop::RakeTask.new(:rubocop) do |t|
 end
 
 task default: :test
+
+desc 'Generate HTML examples'
+task :generate_examples do
+  require './lib/crossbeams/layout'
+  gen = Crossbeams::Layout::ExamplesGenerator.new
+  puts gen.generate_content
+end
