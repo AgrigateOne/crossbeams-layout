@@ -6,10 +6,13 @@ module Crossbeams
   module Layout
     # Generate HTML examples
     class ExamplesGenerator
-      attr_reader :classes
+      attr_reader :classes, :style
 
-      def initialize(classes = :all)
+      SC = StylesConfig.config
+
+      def initialize(classes = :all, style: :tc)
         @classes = classes
+        @style = style
       end
 
       def generate_content # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
@@ -41,45 +44,56 @@ module Crossbeams
 
       private
 
+      def add_class(key)
+        return '' if style == :tc
+
+        %( class="#{SC.send(key)}")
+      end
+
       def build_contents # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-        @out << '<h2>Contents</h2><ol>'
-        @out << '<li><a href="#help_link">Help link</a></li>' if %i[all help_link].include? classes
-        @out << '<li><a href="#link">Link (and as buttons)</a></li>' if %i[all link].include? classes
-        @out << '<li><a href="#dropdown_button">Dropdown Button</a></li>' if %i[all dropdown_button].include? classes
-        @out << '<li><a href="#icons">Icons</a></li>' if %i[all icon].include? classes
-        @out << '<li><a href="#text">Text</a></li>' if %i[all text].include? classes
-        @out << '<li><a href="#form">Form</a></li>' if %i[all form].include? classes
-        @out << '<li><a href="#sections">Sections</a></li>' if %i[all section].include? classes
-        @out << '<li><a href="#tables">Tables</a></li>' if %i[all table].include? classes
-        @out << '<li><a href="#progress_step">Progress Step</a></li>' if %i[all progress_step].include? classes
-        @out << '<li><a href="#list">List</a></li>' if %i[all list].include? classes
-        @out << '<li><a href="#sortable_list">Sortable List</a></li>' if %i[all sortable_list].include? classes
-        @out << '<li><a href="#row">Rows and Cols</a></li>' if %i[all row].include? classes
-        @out << '<li><a href="#notice">Notice</a></li>' if %i[all notice].include? classes
-        @out << '<li><a href="#foldup">Foldup</a></li>' if %i[all foldup].include? classes
-        @out << '<li><a href="#address">Address</a></li>' if %i[all address].include? classes
-        @out << '<li><a href="#contact_method">Contact</a></li>' if %i[all contact_method].include? classes
-        @out << '<li><a href="#grid">Grid</a></li>' if %i[all grid].include? classes
-        @out << '<li><a href="#diff">Diff</a></li>' if %i[all diff].include? classes
-        @out << '<li><a href="#loading_message">Loading Mesage</a></li>' if %i[all loading_message].include? classes
-        @out << '<li><a href="#repeating_request">Repeating Request</a></li>' if %i[all repeating_request].include? classes
-        @out << '<li><a href="#callback_section">Callback Section</a></li>' if %i[all callback_section].include? classes
+        @out << %(<h2#{add_class(:h2)}>Contents</h2><ol#{add_class(:ol)}>)
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#help_link">Help link</a></li>) if %i[all help_link].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#link">Link (and as buttons)</a></li>) if %i[all link].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#dropdown_button">Dropdown Button</a></li>) if %i[all dropdown_button].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#icons">Icons</a></li>) if %i[all icon].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#text">Text</a></li>) if %i[all text].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#form">Form</a></li>) if %i[all form].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#sections">Sections</a></li>) if %i[all section].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#tables">Tables</a></li>) if %i[all table].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#progress_step">Progress Step</a></li>) if %i[all progress_step].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#list">List</a></li>) if %i[all list].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#sortable_list">Sortable List</a></li>) if %i[all sortable_list].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#row">Rows and Cols</a></li>) if %i[all row].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#notice">Notice</a></li>) if %i[all notice].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#foldup">Foldup</a></li>) if %i[all foldup].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#address">Address</a></li>) if %i[all address].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#contact_method">Contact</a></li>) if %i[all contact_method].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#grid">Grid</a></li>) if %i[all grid].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#diff">Diff</a></li>) if %i[all diff].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#loading_message">Loading Mesage</a></li>) if %i[all loading_message].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#repeating_request">Repeating Request</a></li>) if %i[all repeating_request].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#callback_section">Callback Section</a></li>) if %i[all callback_section].include? classes
         @out << '</ol>'
       end
 
       def head(caption, anchor)
-        %(<div class="tc b pv2 bt bl br mt4"><a name="#{anchor}">#{caption}</a></div>)
+        %(<div class="#{style == :tc ? 'tc b pv2 bt bl br mt4' : 'text-center font-bold py-2 border-t border-l border-r mt-8'}"><a name="#{anchor}">#{caption}</a></div>)
       end
 
       def separator
-        '<hr class="mt1 blue">'
+        %(<hr class="#{style == :tc ? 'mt1 blue' : 'mt-4 text-blue-500'}">)
       end
 
       def generate_icons
         ar = [head('Icons', 'icons')]
-        ar << '<table class="table-collapse"><thead><tr><th>Name</th><th class="br">Icon</th><th>Name</th><th class="br">Icon</th><th>Name</th><th class="br">Icon</th><th>Name</th><th>Icon</th></tr></thead><tbody>'
-        # ar += Icon.available_icons.map { |i| %(<tr><td class="pa2">#{i}</td><td class="pa2">#{Icon.render(i)}</td></tr>) }
-        Icon.available_icons.each_slice(4) { |i1, i2, i3, i4| ar << %(<tr><td class="pa2">#{i1}</td><td class="br pa2">#{Icon.render(i1)}</td><td class="pa2">#{i2}</td><td class="br pa2">#{Icon.render(i2)}</td><td class="pa2">#{i3}</td><td class="br pa2">#{Icon.render(i3)}</td><td class="pa2">#{i4}</td><td class="pa2">#{Icon.render(i4)}</td></tr>) }
+        if style == :tc
+          ar << '<table class="table-collapse"><thead><tr><th>Name</th><th class="br">Icon</th><th>Name</th><th class="br">Icon</th><th>Name</th><th class="br">Icon</th><th>Name</th><th>Icon</th></tr></thead><tbody>'
+          # ar += Icon.available_icons.map { |i| %(<tr><td class="pa2">#{i}</td><td class="pa2">#{Icon.render(i)}</td></tr>) }
+          Icon.available_icons.each_slice(4) { |i1, i2, i3, i4| ar << %(<tr><td class="pa2">#{i1}</td><td class="br pa2">#{Icon.render(i1)}</td><td class="pa2">#{i2}</td><td class="br pa2">#{Icon.render(i2)}</td><td class="pa2">#{i3}</td><td class="br pa2">#{Icon.render(i3)}</td><td class="pa2">#{i4}</td><td class="pa2">#{Icon.render(i4)}</td></tr>) }
+        else
+          ar << '<table class="border-collapse"><thead><tr><th>Name</th><th class="border-r">Icon</th><th>Name</th><th class="border-r">Icon</th><th>Name</th><th class="border-r">Icon</th><th>Name</th><th>Icon</th></tr></thead><tbody>'
+          Icon.available_icons.each_slice(4) { |i1, i2, i3, i4| ar << %(<tr><td class="p-2">#{i1}</td><td class="border-r p-2">#{Icon.render(i1)}</td><td class="p-2">#{i2}</td><td class="border-r p-2">#{Icon.render(i2)}</td><td class="p-2">#{i3}</td><td class="border-r p-2">#{Icon.render(i3)}</td><td class="p-2">#{i4}</td><td class="p-2">#{Icon.render(i4)}</td></tr>) }
+        end
         ar << '</tbody></table>'
         ar.join("\n")
       end
@@ -212,30 +226,30 @@ module Crossbeams
         ar = [head('Row + Col', 'row')]
         row = Row.new({}, 1, 1)
         row.column do |col|
-          col.add_text 'col1', css_classes: 'bg-orange'
+          col.add_text 'col1', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-500'
         end
         row.column do |col|
-          col.add_text 'col2', css_classes: 'bg-green'
+          col.add_text 'col2', css_classes: style == :tc ? 'bg-green' : 'bg-green-500'
         end
         ar << row.render
         row = Row.new({}, 1, 1)
         row.column do |col|
-          col.add_text 'one-sided col (with blank)', css_classes: 'bg-orange'
+          col.add_text 'one-sided col (with blank)', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-500'
         end
         row.blank_column
         ar << row.render
         row = Row.new({}, 1, 1)
         row.blank_column
         row.column do |col|
-          col.add_text 'other-sided col (with blank)', css_classes: 'bg-green'
+          col.add_text 'other-sided col (with blank)', css_classes: style == :tc ? 'bg-green' : 'bg-green-500'
         end
         ar << row.render
         row = Row.new({}, 1, 1)
         row.column do |col|
-          col.add_text 'col1 full width', css_classes: 'bg-orange'
+          col.add_text 'col1 full width', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-500'
         end
         row.column do |col|
-          col.add_text 'col2 full width', css_classes: 'bg-green'
+          col.add_text 'col2 full width', css_classes: style == :tc ? 'bg-green' : 'bg-green-500'
         end
         row.fit_width!
         ar << row.render
@@ -403,9 +417,9 @@ module Crossbeams
                                        fields: { inp1: { caption: 'INP One' },
                                                  inp2: { required: true, caption: 'INP Two has a very long caption that wraps' },
                                                  dat1: { renderer: :date },
-                                                 dat2: { renderer: :datetime, required: true, hint: '<h3>A hint</h3>For a datetime' },
+                                                 dat2: { renderer: :datetime, required: true, hint: Utils.classify_dom_elements('<h3>A hint</h3>For a datetime') },
                                                  chk1: { renderer: :checkbox },
-                                                 chk2: { renderer: :checkbox, required: true, hint: '<h3>A hint</h3>For a checkbox' },
+                                                 chk2: { renderer: :checkbox, required: true, hint: Utils.classify_dom_elements('<h3>A hint</h3>For a checkbox') },
                                                  num1: { renderer: :integer, caption: 'Integer' },
                                                  num2: { renderer: :number, caption: 'Decimal', required: true },
                                                  mlt1: { renderer: :multi, options: %w[one two three four], required: true },

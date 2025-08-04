@@ -6,13 +6,15 @@ module Crossbeams
     class Table # rubocop:disable Metrics/ClassLength
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :columns, :rows, :options
 
       BUILT_IN_TRANSFORMERS = {
         integer: ->(a) { a && format('%d', a) },
         decimal: ->(a) { a && format('%.2f', a) },
-        decimal_4: ->(a) { a && format('%.4f', a) }
+        decimal_4: ->(a) { a && format('%.4f', a) } # rubocop:disable Naming/VariableNumber
       }.freeze
 
       def initialize(page_config, rows, columns, options = {})
@@ -137,14 +139,14 @@ module Crossbeams
       end
 
       def pivot_row(elem)
-        this_row = ["<tr class='hover-row'>"]
+        this_row = [%(<tr class="#{SC.css_class(:hover_row)}">)]
         col = nil
         elem.each_with_index do |e, i|
           col = e if i.zero?
           this_row << if i.zero?
-                        "<th align='right'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>"
+                        %(<th class="p-4 border-r border-b border-slate-200 text-slate-500" align='right'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>)
                       else
-                        "<td#{attr_for_col(col)} #{classes_for_col(col, e)} style='min-width:3rem'>#{e || '&nbsp;'}</td>"
+                        %(<td class="px-4 py-2"#{attr_for_col(col)} #{classes_for_col(col, e)} style='min-width:3rem'>#{e || '&nbsp;'}</td>)
                       end
         end
         this_row << '</tr>'
@@ -155,15 +157,15 @@ module Crossbeams
       end
 
       def format_column_headers
-        columns.map { |c| "<th>#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>" }
+        columns.map { |c| %(<th class="p-4 border-r border-b border-slate-200 text-slate-500">#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>) }
       end
 
-      def strings
+      def strings # rubocop:disable Metrics/AbcSize
         rows.map do |row|
           if columns.empty?
-            "<tr class='hover-row'>#{row.map { |r| "<td#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>" }.join}</tr>"
+            %(<tr class="#{SC.css_class(:hover_row)}">#{row.map { |r| %(<td class="px-4 py-2"#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>) }.join}</tr>)
           else
-            "<tr class='hover-row'>#{columns.map { |c| "<td#{attr_for_col(c)}#{classes_for_col(c, row[c])}>#{transform_cell(c, row[c])}</td>" }.join}</tr>"
+            %(<tr class="#{SC.css_class(:hover_row)}">#{columns.map { |c| %(<td class="px-4 py-2"#{attr_for_col(c)}#{classes_for_col(c, row[c])}>#{transform_cell(c, row[c])}</td>) }.join}</tr>)
           end
         end
       end

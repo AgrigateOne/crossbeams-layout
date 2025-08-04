@@ -85,18 +85,22 @@ module Crossbeams
         raise ArgumentError, 'Crossbeams::Layout::Link icon is not applicable for back button or loading window' if @icon && (style == :back_button || @window)
       end
 
-      def class_strings # rubocop:disable Metrics/AbcSize
-        if style == :button
-          col = button_colour
-          %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-#{col}#{user_class}")
-        elsif style == :small_button
+      # %(<a data-button-dropdown="Y" href="#{item[:url]}" class="text-sky-600/80 hover:text-sky-600 flex hover:bg-slate-200 hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
+      def class_strings
+        case style
+        when :button
+          # col = button_colour
+          # %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-#{col}#{user_class}")
+          %(class="#{button_font_size} font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-50 border-french-blue-50 text-french-blue-600 bg-slate-200 text-slate-800 border-slate-200 active:bg-french-blue-50 active:border-french-blue-50 active:text-french-blue-600 hover:bg-french-blue-50 hover:border-french-blue-50 hover:text-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+        when :small_button
           %(class="link dim br1 ph2 dib white bg-silver#{user_class}")
-        elsif style == :back_button
+        when :back_button
           %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
-        elsif style == :action_button
-          %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-green#{user_class}")
+        when :action_button
+          # %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-green#{user_class}")
+          %(class="#{button_font_size} font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 bg-french-blue-600 border-french-blue-600 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-500 text-white border-french-blue-500 active:bg-french-blue-600 active:border-french-blue-600 hover:bg-french-blue-600 hover:border-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
         else
-          css_class.empty? ? '' : %(class="#{css_class}")
+          css_class.empty? ? 'class="text-sky-600/80 hover:text-sky-600 flex hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500"' : %(class="text-sky-600/80 hover:text-sky-600 flex hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500 #{css_class}")
         end
       end
 
@@ -192,9 +196,10 @@ module Crossbeams
       end
 
       def button_font_size
-        return '6' if text_size == '1'
+        %w[text-base text-lg text-xl text-2xl text-3xl text-4xl][text_size.to_i - 1]
+        # return '6' if text_size == '1'
 
-        (7 - text_size.to_i).to_s
+        # (7 - text_size.to_i).to_s
       end
     end
   end

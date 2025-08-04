@@ -5,6 +5,8 @@ module Crossbeams
     module Renderer
       # Render a date time as separate date and time controls.
       class Datetime < Base
+        SC = StylesConfig
+
         def configure(field_name, field_config, page_config)
           @field_name = field_name
           @field_config = field_config
@@ -17,12 +19,20 @@ module Crossbeams
           date_portion = value&.strftime('%Y-%m-%d')
           time_portion = value&.strftime('%H:%M') || default_time_string
 
+          # <<-HTML
+          # <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          #   <input type="date" value="#{CGI.escapeHTML(date_portion.to_s)}" #{name_attribute(:date)}_date #{field_id(:date)}_date data-datetime="date" #{attr_list(:date).join(' ')}>
+          #   <input type="time" value="#{CGI.escapeHTML(time_portion.to_s)}" #{name_attribute(:time)}_time #{field_id(:time)}_time data-datetime="time" #{attr_list(:time).join(' ')}>
+          #   <input type="hidden" value="#{CGI.escapeHTML(value&.strftime('%Y-%m-%dT%H:%M').to_s)}" #{name_attribute} #{field_id}>
+          #   <label for="#{id_base}_date">#{@caption}#{error_state}#{hint_trigger}</label>
+          # </div>
+          # HTML
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-            <input type="date" value="#{CGI.escapeHTML(date_portion.to_s)}" #{name_attribute(:date)}_date #{field_id(:date)}_date data-datetime="date" #{attr_list(:date).join(' ')}>
-            <input type="time" value="#{CGI.escapeHTML(time_portion.to_s)}" #{name_attribute(:time)}_time #{field_id(:time)}_time data-datetime="time" #{attr_list(:time).join(' ')}>
+            <label for="#{id_base}_date" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
+            <input class="rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600" type="date" value="#{CGI.escapeHTML(date_portion.to_s)}" #{name_attribute(:date)}_date #{field_id(:date)}_date data-datetime="date" #{attr_list(:date).join(' ')}>
+            <input class="rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600" type="time" value="#{CGI.escapeHTML(time_portion.to_s)}" #{name_attribute(:time)}_time #{field_id(:time)}_time data-datetime="time" #{attr_list(:time).join(' ')}>
             <input type="hidden" value="#{CGI.escapeHTML(value&.strftime('%Y-%m-%dT%H:%M').to_s)}" #{name_attribute} #{field_id}>
-            <label for="#{id_base}_date">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
           HTML
         end
@@ -59,16 +69,17 @@ module Crossbeams
         end
 
         def attr_class
-          res = ['cbl-input']
-          %(class="#{res.join(' ')}")
+          # res = ['cbl-input']
+          # %(class="#{res.join(' ')}")
+          ''
         end
 
         def attr_placeholder
-          return "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
+          "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
         end
 
         def attr_title
-          return "title=\"#{@field_config[:title]}\"" if @field_config[:title]
+          "title=\"#{@field_config[:title]}\"" if @field_config[:title]
         end
 
         def attr_minvalue(type)
@@ -84,15 +95,15 @@ module Crossbeams
         end
 
         def attr_readonly
-          return 'readonly="true"' if @field_config[:readonly] && @field_config[:readonly] == true
+          'readonly="true"' if @field_config[:readonly] && @field_config[:readonly] == true
         end
 
         def attr_disabled
-          return 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
+          'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
         end
 
         def attr_required
-          return 'required="true"' if @field_config[:required] && @field_config[:required] == true
+          'required="true"' if @field_config[:required] && @field_config[:required] == true
         end
 
         def validate_defaults

@@ -5,6 +5,8 @@ module Crossbeams
     module Renderer
       # Render a Radio Group Field.
       class RadioGroup < Base
+        SC = StylesConfig
+
         def configure(field_name, field_config, page_config)
           @field_name = field_name
           @field_config = field_config
@@ -14,13 +16,22 @@ module Crossbeams
 
         def render
           caption = @field_config[:caption] || present_field_as_label(@field_name)
+          # <<-HTML
+          # <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          #   <div class="cbl-radio cbl-input">
+          #     #{render_buttons}
+          #   </div>
+          #   <label #{tooltip}>#{caption}#{error_state}</label>
+          #   <div class="order-1">#{hint_trigger}</div>
+          # </div>
+          # HTML
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+            <label #{tooltip} class="#{SC.css_class(:label)}">#{caption}#{error_state}</label>
+            <div>#{hint_trigger}</div>
             <div class="cbl-radio cbl-input">
               #{render_buttons}
             </div>
-            <label #{tooltip}>#{caption}#{error_state}</label>
-            <div class="order-1">#{hint_trigger}</div>
           </div>
           HTML
         end
