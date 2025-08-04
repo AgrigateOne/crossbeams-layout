@@ -57,9 +57,16 @@ module Crossbeams
         return '' if invisible?
 
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
+        # <<~HTML
+        #  <details class="pv2"#{open_state}>
+        #    <summary class="pointer b blue shadow-3 pa1 mr2">#{caption_text}</summary>
+        #    #{row_renders}
+        #  </details>
+        # HTML
+        # Chevron up and chevron down on left
         <<~HTML
-          <details class="pv2"#{open_state}>
-            <summary class="pointer b blue shadow-3 pa1 mr2">#{caption_text}</summary>
+          <details class="p-2 rounded border border-gray-300 bg-white"#{open_state}>
+            <summary class="cursor-pointer font-semibold text-slate-800 p-2 my-2">#{caption_text}</summary>
             #{row_renders}
           </details>
         HTML

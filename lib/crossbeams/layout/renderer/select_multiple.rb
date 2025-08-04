@@ -5,6 +5,8 @@ module Crossbeams
     module Renderer
       # Render a select-multiple Field.
       class SelectMultiple < BaseSelect
+        SC = StylesConfig
+
         def configure(field_name, field_config, page_config)
           @field_name = field_name
           @field_config = field_config
@@ -56,11 +58,11 @@ module Crossbeams
         def render_string(attrs)
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{css_style}#{wrapper_visibility}>#{hint_text}
+            <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
             #{backup_empty_select}
             <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple>
             #{make_prompt}#{build_1_or_2_options}
             </select>
-            <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
           </div>
           HTML
         end

@@ -31,7 +31,8 @@ module Crossbeams
         @fit_height         = false
         @full_dialog_height = false
         @half_dialog_height = false
-        @css_classes        = ['pa2']
+        # @css_classes        = ['pa2']
+        @css_classes        = ['p-2']
         @section_id         = "section-#{sequence}"
       end
 
@@ -148,14 +149,19 @@ module Crossbeams
       def render_caption
         return '' if hide_caption
 
-        "<h2 class='ma1'>#{caption}</h2>"
+        # "<h2 class='ma1'>#{caption}</h2>"
+        %(<h2 class="text-2xl leading-tight m-4">#{caption}</h2>)
       end
 
       def add_extra_css_classes
-        @css_classes << 'crossbeams_layout-border' if show_border
-        @css_classes << 'crossbeams_layout-fit-height' if fit_height
-        @css_classes << 'crossbeams_layout-full_dlg-height' if full_dialog_height
-        @css_classes << 'crossbeams_layout-half_dlg-height' if half_dialog_height
+        # @css_classes << 'crossbeams_layout-border' if show_border
+        @css_classes << 'my-4 border rounded' if show_border
+        # @css_classes << 'crossbeams_layout-fit-height' if fit_height
+        @css_classes << 'flex-1 grow' if fit_height
+        # @css_classes << 'crossbeams_layout-full_dlg-height' if full_dialog_height
+        @css_classes << 'min-h-[20rem]' if full_dialog_height
+        # @css_classes << 'crossbeams_layout-half_dlg-height' if half_dialog_height
+        @css_classes << 'min-h-[10rem]' if half_dialog_height
       end
     end
   end

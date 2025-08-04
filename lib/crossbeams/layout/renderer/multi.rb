@@ -5,6 +5,8 @@ module Crossbeams
     module Renderer
       # Render a multiselect Field that will be presented as two lists.
       class Multi < BaseSelect
+        SC = StylesConfig
+
         def configure(field_name, field_config, page_config)
           @field_name   = field_name
           @field_config = field_config
@@ -30,9 +32,17 @@ module Crossbeams
         private
 
         def render_string(attrs)
+          # <<-HTML
+          # <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          #   <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
+          #   <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple="multiple" data-multi="true"#{required_str}#{disabled_str}>
+          #   #{make_prompt}#{build_1_or_2_options}
+          #   </select>
+          # </div>
+          # HTML
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-            <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
+            <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
             <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple="multiple" data-multi="true"#{required_str}#{disabled_str}>
             #{make_prompt}#{build_1_or_2_options}
             </select>

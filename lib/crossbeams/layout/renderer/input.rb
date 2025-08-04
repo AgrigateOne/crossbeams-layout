@@ -5,6 +5,8 @@ module Crossbeams
     module Renderer
       # Render an input field.
       class Input < Base # rubocop:disable Metrics/ClassLength
+        SC = StylesConfig
+
         def configure(field_name, field_config, page_config)
           @field_name   = field_name
           @field_config = field_config
@@ -17,13 +19,22 @@ module Crossbeams
           date_related_value_getter
           setup_pattern_title
 
+          # <<-HTML
+          # <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}#{copy_prefix}
+          #   <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
+          #   <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
+          #   #{datalist}
+          # </div>
+          # HTML
+
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}#{copy_prefix}
-            <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
-            <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
+            <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
+            <input class="rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600#{attr_class}" type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
             #{datalist}
           </div>
           HTML
+          # rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6"
         end
 
         private
@@ -162,7 +173,7 @@ module Crossbeams
 
         def attr_list(datalist) # rubocop:disable Metrics/AbcSize
           [
-            attr_class,
+            # attr_class,
             attr_placeholder,
             attr_pattern_title,
             attr_title,
@@ -185,10 +196,14 @@ module Crossbeams
         end
 
         def attr_class
-          res = ['cbl-input']
-          res << 'cbl-to-upper' if @field_config[:force_uppercase]
-          res << 'cbl-to-lower' if @field_config[:force_lowercase]
-          %(class="#{res.join(' ')}")
+          # res = ['cbl-input']
+          # res << 'cbl-to-upper' if @field_config[:force_uppercase]
+          # res << 'cbl-to-lower' if @field_config[:force_lowercase]
+          # %(class="#{res.join(' ')}")
+          res = []
+          res << ' uppercase' if @field_config[:force_uppercase]
+          res << ' lowercase' if @field_config[:force_lowercase]
+          res.join(' ')
         end
 
         def attr_placeholder

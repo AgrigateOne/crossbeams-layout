@@ -5,6 +5,8 @@ module Crossbeams
     module Renderer
       # Render a textarea field.
       class Textarea < Base
+        SC = StylesConfig
+
         def configure(field_name, field_config, page_config)
           @field_name   = field_name
           @field_config = field_config
@@ -18,8 +20,8 @@ module Crossbeams
 
           <<~HTML
             <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-              <textarea #{name_attribute} #{field_id} #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>
-              <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
+              <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
+              <textarea #{name_attribute} #{field_id} class="rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600" #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>
             </div>
           HTML
         end
@@ -46,31 +48,31 @@ module Crossbeams
         end
 
         def attr_placeholder
-          return "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
+          "placeholder=\"#{@field_config[:placeholder]}\"" if @field_config[:placeholder]
         end
 
         def attr_title
-          return "title=\"#{@field_config[:title]}\"" if @field_config[:title]
+          "title=\"#{@field_config[:title]}\"" if @field_config[:title]
         end
 
         def attr_maxlength
-          return "maxlength=\"#{@field_config[:maxlength]}\"" if @field_config[:maxlength]
+          "maxlength=\"#{@field_config[:maxlength]}\"" if @field_config[:maxlength]
         end
 
         def attr_minlength
-          return "minlength=\"#{@field_config[:minlength]}\"" if @field_config[:minlength]
+          "minlength=\"#{@field_config[:minlength]}\"" if @field_config[:minlength]
         end
 
         def attr_readonly
-          return 'readonly="true"' if @field_config[:readonly] && @field_config[:readonly] == true
+          'readonly="true"' if @field_config[:readonly] && @field_config[:readonly] == true
         end
 
         def attr_disabled
-          return 'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
+          'disabled="true"' if @field_config[:disabled] && @field_config[:disabled] == true
         end
 
         def attr_required
-          return 'required="true"' if @field_config[:required] && @field_config[:required] == true
+          'required="true"' if @field_config[:required] && @field_config[:required] == true
         end
       end
     end

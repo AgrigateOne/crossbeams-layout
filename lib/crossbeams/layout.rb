@@ -5,9 +5,13 @@ require 'diffy'
 require 'json'
 require 'ostruct'
 require 'rouge'
+require 'dry/configurable'
+
 require 'crossbeams/layout/version'
+require 'crossbeams/layout/styles_config'
 require 'crossbeams/layout/method_builder'
 require 'crossbeams/layout/examples_generator'
+require 'crossbeams/layout/utils'
 
 require 'crossbeams/layout/callback_section'
 require 'crossbeams/layout/column'

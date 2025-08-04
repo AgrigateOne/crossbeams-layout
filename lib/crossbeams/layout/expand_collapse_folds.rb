@@ -48,9 +48,9 @@ module Crossbeams
         return '' unless @options[:mini]
 
         if open
-          'title="Expand all"'
+          'title="Expand all" '
         else
-          'title="Collapse all"'
+          'title="Collapse all" '
         end
       end
 

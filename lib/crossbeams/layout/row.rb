@@ -63,6 +63,8 @@ module Crossbeams
           </div>
           HTML
         end
+
+        # Ideally, when 1st row found, set container to grid & go through tree to find max cols per row etc...
       end
 
       def row_class

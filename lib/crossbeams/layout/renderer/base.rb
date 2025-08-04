@@ -40,7 +40,8 @@ module Crossbeams
                       @page_config.form_errors[@field_name]
                     end
           if has_err
-            'crossbeams-field crossbeams-div-error bg-washed-red'
+            # 'crossbeams-field crossbeams-div-error bg-washed-red'
+            'crossbeams-field crossbeams-div-error bg-red-200 text:red-700'
           else
             'crossbeams-field'
           end
@@ -136,7 +137,8 @@ module Crossbeams
                    @page_config.form_errors[@field_name]
                  end
 
-          "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>" if errs
+          # "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>" if errs
+          %(<span class="font-normal text-red-800">#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>) if errs
         end
 
         # Render hint text associated with the field.
@@ -155,7 +157,8 @@ module Crossbeams
           return '' unless @field_config[:hint]
 
           Icon.render(:question,
-                      css_class: 'ml1 blue pointer',
+                      # css_class: 'ml1 blue pointer',
+                      css_class: 'mx-1 text-blue-500 cursor-pointer',
                       attrs: [
                         'title="Click for hint"',
                         "data-cb-hint-for='#{@page_config.name}_#{@field_name}'"

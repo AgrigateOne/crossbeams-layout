@@ -6,6 +6,8 @@ module Crossbeams
     class Text # rubocop:disable Metrics/ClassLength
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :text, :page_config, :preformatted, :syntax, :wrapper,
                   :toggle_button, :toggle_caption, :toggle_element_id,
@@ -32,6 +34,17 @@ module Crossbeams
         em: '</em>',
         b: '</strong>',
         strong: '</strong>'
+      }.freeze
+      WRAP_CLASS = {
+        # p: '</p>',
+        h1: SC.css_class(:h1),
+        h2: SC.css_class(:h2),
+        h3: SC.css_class(:h3),
+        h4: SC.css_class(:h4),
+        i: SC.css_class(:em),
+        em: SC.css_class(:em),
+        b: SC.css_class(:strong),
+        strong: SC.css_class(:strong)
       }.freeze
 
       def initialize(page_config, text, opts = {})
@@ -100,10 +113,20 @@ module Crossbeams
       def render_toggle_button
         return '' unless toggle_button
 
+        # Tachy: <a href="#" class="f6 link dim br2 ph3 pv2 dib white bg-silver"
+        # <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-french-blue-600 hover:bg-steel-blue-100"
+        # <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-blue-600 hover:bg-blue-100"
+        # <<~HTML
+        #  <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-french-blue-600 hover:bg-steel-blue-100"
+        #    onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">
+        #  #{info_icon} #{toggle_caption}</a>
+        # HTML
+        # <button class="flex items-center justify-center gap-3 flex-row rounded border-2 h-11 p-3 font-medium text-slate-800 bg-slate-300 hover:text-french-blue-600 hover:bg-steel-blue-100"
         <<~HTML
-          <a href="#" class="f6 link dim br2 ph3 pv2 dib white bg-silver"
+          <button class="#{SC.css_class(:button_secondary)}"
             onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">
-          #{info_icon} #{toggle_caption}</a>
+            #{info_icon} #{toggle_caption}
+          </button>
         HTML
       end
 
@@ -142,16 +165,17 @@ module Crossbeams
 
       def wrap_text
         if wrapper && wrapper != [:none]
-          "#{wrapper.map { |w| format(WRAP_START[w], wrap_class) }.join}#{text}#{wrapper.reverse.map { |w| WRAP_END[w] }.join}"
+          "#{wrapper.map { |w| format(WRAP_START[w], wrap_class(w)) }.join}#{text}#{wrapper.reverse.map { |w| WRAP_END[w] }.join}"
         else
           text
         end
       end
 
-      def wrap_class
-        return '' if wrapper_classes.nil?
+      def wrap_class(wrap)
+        cls = [WRAP_CLASS[wrap], wrapper_classes].compact.join(' ')
+        return '' if cls.empty?
 
-        %( class="#{wrapper_classes}")
+        %( class="#{cls}")
       end
 
       def render_with_highlighter
