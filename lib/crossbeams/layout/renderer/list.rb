@@ -18,7 +18,7 @@ module Crossbeams
         def render # rubocop:disable Metrics/AbcSize
           attrs = [] # For class, prompt etc...
           # attrs << "class=\"cbl-input mt0 mr0 mb0 ml3 #{@field_config[:class]}#{scroll_class}#{bg_class}\""
-          attrs << "class=\"#{SC.css_class(:ol)} mt0 mr0 mb0 ml3 #{@field_config[:class]}#{scroll_class}#{bg_class}\""
+          attrs << %(class="#{SC.css_class(:ol)} ml-3 #{@field_config[:class]}#{scroll_class}#{bg_class}")
           attrs << %(data-remove-item-url="#{@remove_item_url}") unless @remove_item_url.nil?
           # <<-HTML
           # <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
@@ -28,9 +28,10 @@ module Crossbeams
           #   <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
           # </div>
           # HTML
+          # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-            <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
+            #{label_render(id_base, @caption)}
             <ol #{attrs.join(' ')} #{field_id}>
             #{item_renders}
             </ol>

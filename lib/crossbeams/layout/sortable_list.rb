@@ -6,6 +6,8 @@ module Crossbeams
     class SortableList
       attr_reader :prefix, :items
 
+      SC = StylesConfig
+
       def initialize(page_config, prefix, items, options = {})
         raise ArgumentError, 'Prefix must be alphanumeric without spaces' unless valid_prefix?(prefix)
 
@@ -40,7 +42,7 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        #{caption}<ol id="#{prefix}-sortable-items" class="cbl-sortable-items">
+        #{caption}<ol class="#{SC.css_class(:ol)}" id="#{prefix}-sortable-items" class="cbl-sortable-items">
         #{item_renders}
         </ol>
         <input type="hidden" name="#{input_name}" id="#{prefix}-sorted_ids" value="#{item_ids}" size="50" data-sortable-prefix="#{prefix}"#{grouping}/>
@@ -53,7 +55,7 @@ module Crossbeams
         return '' if @options[:caption].nil?
 
         <<~HTML
-          <label for="#{prefix}-sortable-items">#{@options[:caption]}</label>
+          <label class="#{SC.css_class(:label)}" for="#{prefix}-sortable-items">#{@options[:caption]}</label>
         HTML
       end
 
@@ -75,7 +77,7 @@ module Crossbeams
         @item_ids = []
         @items.map do |text, id|
           @item_ids << id
-          %(<li id="si_#{id}" class="crossbeams-draggable"><span class="crossbeams-drag-handle">&nbsp;&nbsp;&nbsp;&nbsp;</span>#{text}</li>)
+          %(<li id="si_#{id}" class="#{SC.css_class(:li)} crossbeams-draggable"><span class="crossbeams-drag-handle">&nbsp;&nbsp;&nbsp;&nbsp;</span>#{text}</li>)
         end.join("\n")
       end
 

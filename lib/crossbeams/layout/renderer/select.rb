@@ -61,16 +61,17 @@ module Crossbeams
         end
 
         def apply_classes
-          cls = []
+          cls = ['w-full']
           cls << 'searchable-select' unless @native
           cls << 'cbl-input' if @native
           cls
         end
 
         def render_string(attrs)
+          # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{css_style}#{wrapper_visibility}>#{hint_text}
-            <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
+            #{label_render(id_base, @caption)}
             #{backup_empty_select}
             <select #{attrs.join(' ')} #{name_attribute} #{field_id}>
             #{make_prompt}#{build_1_or_2_options}

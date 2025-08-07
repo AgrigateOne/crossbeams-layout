@@ -7,6 +7,7 @@ module Crossbeams
       class Lookup < Base
         attr_reader :lookup_name, :lookup_key, :hidden_fields, :show_field,
                     :param_keys, :param_values
+
         def configure(field_name, field_config, page_config)
           @field_name    = field_name
           @field_config  = field_config

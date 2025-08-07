@@ -22,9 +22,10 @@ module Crossbeams
             value = form_object_value
             value = value.to_s('F') if value.is_a?(BigDecimal)
           end
+          # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{hint_trigger}</label> #{render_hidden(value)}
           <<-HTML
-          <div #{wrapper_id} class="crossbeams-field"#{wrapper_visibility}>#{hint_text}
-            <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{hint_trigger}</label> #{render_hidden(value)}
+          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+            #{label_render("#{id_base}_date", @caption)} #{render_hidden(value)}
             #{render_field(value)}
           </div>
           HTML
@@ -59,7 +60,7 @@ module Crossbeams
             #   <div class="cbl-input label-field bg-gray-200 #{@field_config[:css_class]}" #{label_field_id}>#{preformat_start}#{val}#{preformat_end}</div>
             # HTML
             <<-HTML
-              <div class="border rounded leading-4 p-3 bg-gray-200 #{@field_config[:css_class]}" #{label_field_id}>#{preformat_start}#{val}#{preformat_end}</div>
+              <div class="w-full border rounded leading-4 p-3 bg-gray-200 #{@field_config[:css_class]}" #{label_field_id}>#{preformat_start}#{val}#{preformat_end}</div>
             HTML
           end
         end

@@ -25,10 +25,11 @@ module Crossbeams
           #   <div class="order-1">#{hint_trigger}</div>
           # </div>
           # HTML
+          # <label #{tooltip} class="#{SC.css_class(:label)}">#{caption}#{error_state}</label>
+          # <div>#{hint_trigger}</div>
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-            <label #{tooltip} class="#{SC.css_class(:label)}">#{caption}#{error_state}</label>
-            <div>#{hint_trigger}</div>
+            #{label_render(id_base, caption, tooltip: tooltip)}
             <div class="cbl-radio cbl-input">
               #{render_buttons}
             </div>
@@ -53,10 +54,14 @@ module Crossbeams
         def render_buttons
           attrs = []
           attrs << behaviours
+          second = false
           @options.map do |text, val|
+            xtra_class = second ? 'ml-2 ' : ''
+            second = true
+            # <label for="#{id_base}_#{val.gsub(' ', '_')}">#{text}</label>
             <<~HTML
-              <input type="radio" #{field_id(val.gsub(' ', '_'))} #{name_attribute} value="#{val}"#{checked(val)}#{disabled(val)} #{attrs.join(' ')}>
-              <label for="#{id_base}_#{val.gsub(' ', '_')}">#{text}</label>
+              <input type="radio" #{field_id(val.gsub(' ', '_'))} #{name_attribute} value="#{val}"#{checked(val)}#{disabled(val)} class="#{xtra_class}#{SC.css_class(:checkbox)}" #{attrs.join(' ')}>
+              #{label_render("#{id_base}_#{val.gsub(' ', '_')}", text, inline: true, check_required: false, pointer: true)}
             HTML
           end.join(' ')
         end
@@ -80,7 +85,7 @@ module Crossbeams
         def tooltip
           return '' unless @field_config[:tooltip]
 
-          %( title="#{@field_config[:tooltip]}")
+          %(title="#{@field_config[:tooltip]}")
         end
       end
     end

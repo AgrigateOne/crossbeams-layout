@@ -6,6 +6,8 @@ module Crossbeams
     class DropdownButton # rubocop:disable Metrics/ClassLength
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :text, :style, :css_class, :id, :visible, :items
 
@@ -16,6 +18,7 @@ module Crossbeams
         @css_class = options[:css_class] || ''
         @id        = options[:id]
         @visible   = options.fetch(:visible, true)
+        @inline    = options.fetch(:inline, false)
         @items     = options[:items] || []
         @nodes     = []
         assert_options_ok!
@@ -40,7 +43,7 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-          <div #{render_id}class="crossbeams-dropdown-button w-fit relative"#{hidden_string}>
+          <div #{render_id}class="crossbeams-dropdown-button w-fit relative#{inline_class}"#{hidden_string}>
             <button type="button"#{attrs}>
               #{render_text}
             </button>
@@ -90,6 +93,12 @@ module Crossbeams
 
       private
 
+      def inline_class
+        return '' unless @inline
+
+        ' inline-block'
+      end
+
       def dropdown_items
         items.map do |item|
           # Include icons for direct, popup, replace, loading at the start of the text...
@@ -100,7 +109,8 @@ module Crossbeams
                  else
                    Icon.new(:link).render
                  end
-          %(<a data-button-dropdown="Y" href="#{item[:url]}" class="text-sky-600/80 hover:text-sky-600 flex hover:bg-slate-200 hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
+          # %(<a data-button-dropdown="Y" href="#{item[:url]}" class="text-sky-600/80 hover:text-sky-600 flex hover:bg-slate-200 hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
+          %(<a data-button-dropdown="Y" href="#{item[:url]}" class="flex  items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none #{SC.css_class(:link)}"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
         end.join("\n")
       end
       # def dropdown_items
@@ -181,16 +191,19 @@ module Crossbeams
       def class_strings
         case style
         when :button
-          %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-50 border-french-blue-50 text-french-blue-600 bg-slate-200 text-slate-800 border-slate-200 active:bg-french-blue-50 active:border-french-blue-50 active:text-french-blue-600 hover:bg-french-blue-50 hover:border-french-blue-50 hover:text-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          # %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-50 border-french-blue-50 text-french-blue-600 bg-slate-200 text-slate-800 border-slate-200 active:bg-french-blue-50 active:border-french-blue-50 active:text-french-blue-600 hover:bg-french-blue-50 hover:border-french-blue-50 hover:text-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          %(class="inline-block #{SC.css_class(:button_secondary)}#{user_class}")
         when :small_button
           # %(class="pointer bn dim br1 ph2 dib white bg-silver#{user_class}")
           %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-1.5 h-[2.25rem] min-w-[2.25rem] bg-french-blue-500 text-white border-french-blue-500 active:bg-french-blue-600 active:border-french-blue-600 hover:bg-french-blue-600 hover:border-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500)
         when :back_button
           # %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
-          %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-500 border-french-blue-500 text-white active:bg-french-blue-600 active:border-french-blue-600 active:text-french-blue-600 hover:bg-french-blue-600 hover:border-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          # %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-500 border-french-blue-500 text-white active:bg-french-blue-600 active:border-french-blue-600 active:text-french-blue-600 hover:bg-french-blue-600 hover:border-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          %(class="inline-block #{SC.css_class(:button_primary)}#{user_class}")
         when :action_button
           # %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-green#{user_class}")
-          %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-50 border-french-blue-50 text-french-blue-600 bg-slate-200 text-slate-800 border-slate-200 active:bg-french-blue-50 active:border-french-blue-50 active:text-french-blue-600 hover:bg-french-blue-50 hover:border-french-blue-50 hover:text-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          # %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-50 border-french-blue-50 text-french-blue-600 bg-slate-200 text-slate-800 border-slate-200 active:bg-french-blue-50 active:border-french-blue-50 active:text-french-blue-600 hover:bg-french-blue-50 hover:border-french-blue-50 hover:text-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          %(class="inline-block #{SC.css_class(:button_primary)}#{user_class}")
         else
           raise ArgumentError, "Crossbeams::Layout::DropdownButton - invalid style option: #{style}"
         end
@@ -230,13 +243,13 @@ module Crossbeams
 
       def render_text # rubocop:disable Metrics/AbcSize
         if style == :back_button
-          "#{Icon.new(:back).render} #{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
+          "#{Icon.new(:back, css_class: 'align-middle mr-4').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2']).render}"
         elsif @icon
-          "#{Icon.new(@icon).render} #{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
+          "#{Icon.new(@icon, css_class: 'align-middle mr-4').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2']).render}"
         elsif @window
-          "#{Icon.new(:newwindow).render} #{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
+          "#{Icon.new(:newwindow, css_class: 'align-middle mr-4').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2']).render}"
         else
-          "#{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
+          "#{text} #{Icon.new(:dropdown, css_class: ['ml-2']).render}"
         end
       end
 
