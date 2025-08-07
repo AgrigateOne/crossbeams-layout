@@ -254,7 +254,7 @@ module Crossbeams
                           #   </div>
                           # HTML
                           <<~HTML
-                            <div class="flex flex-row gap-2 justify-end">
+                            <div class="flex flex-row gap-2 justify-end mt-4">
                               #{submit_button}
                             </div>
                           HTML
@@ -302,14 +302,15 @@ module Crossbeams
       def render_caption
         return '' if remote_form || form_caption.nil?
 
-        "<h#{caption_level}>#{form_caption}</h#{caption_level}>\n"
+        heading = "h#{caption_level}".to_sym
+        %(<#{heading} class="#{SC.css_class(heading)}">#{form_caption}</h#{caption_level}>\n)
       end
 
       def render_id
         @dom_id.nil? ? '' : "id='#{@dom_id}' "
       end
 
-      def error_head
+      def error_head # rubocop:disable Metrics/AbcSize
         return hidden_form_errors unless page_config.form_errors && (page_config.form_errors[nil] || page_config.form_errors[:base] || page_config.form_errors[:base_with_highlights])
 
         # <<~HTML
@@ -318,11 +319,17 @@ module Crossbeams
         #   </div>
         #   #{hidden_form_errors}
         # HTML
+        # <div class="w-[376px] h-[63px] flex flex-row justify-start items-center gap-2 px-3 py-4 rounded bg-red-100">
+        #   <!-- content here -->
+        # </div>
+        # <div class="p-4 mb-4 bg-red-200 text-red-800">
 
+        # <div class="flex flex-row justify-start items-center gap-2 px-3 py-4 mb-4 rounded bg-red-100 text-red-700">
+        #   #{Icon.new(:info).render}
+        #   <ul><li>#{base_messages.join('</li><li>')}</li></ul>
+        # </div>
         <<~HTML
-          <div class="p-4 mb-4 bg-red-200 text-red-800">
-            <ul><li>#{base_messages.join('</li><li>')}</li></ul>
-          </div>
+          #{Notice.new(page_config, "<ul><li>#{base_messages.join('</li><li>')}</li></ul>", show_caption: false, within_field: false, notice_type: :error).render}
           #{hidden_form_errors}
         HTML
       end
@@ -378,7 +385,7 @@ module Crossbeams
         extra_buttons = @buttons.map { |b| b.render(@remote_form) }.join("\n")
         if @view_only
           # %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-blue br2 dim pa3 ba b--near-white"#{hidden_str}>#{extra_buttons})
-          %(<input type="submit"#{id_str} name="commit" value="Close" class="#{SC.css_class(:button_primary)}"#{hidden_str}>#{extra_buttons})
+          %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog #{SC.css_class(:button_primary)}"#{hidden_str}>#{extra_buttons})
         else
           # %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{loading}#{extra_buttons})
           %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="#{SC.css_class(:button_primary)}"#{hidden_str}>#{loading}#{extra_buttons})
@@ -427,7 +434,7 @@ module Crossbeams
           hidden_str = @hidden_submit ? ' hidden' : ''
           if @view_only
             # %(<input type="submit" name="commit"#{id_str} value="Close" class="close-dialog white bg-blue br2 dim pa3 ba b--near-white"#{hidden_str}>)
-            %(<input type="submit" name="commit"#{id_str} value="Close" class="#{SC.css_class(:button_primary)}"#{hidden_str}>)
+            %(<input type="submit" name="commit"#{id_str} value="Close" class="close-dialog #{SC.css_class(:button_primary)}"#{hidden_str}>)
           else
             # %(<input type="submit" name="commit"#{id_str} value="#{@submit_caption}" data#{remote_inject}-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
             %(<input type="submit" name="commit"#{id_str} value="#{@submit_caption}" data#{remote_inject}-disable-with="#{@disable_caption}" class="#{SC.css_class(:button_primary)}"#{hidden_str}>)

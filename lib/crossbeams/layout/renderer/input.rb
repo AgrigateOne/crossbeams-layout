@@ -5,7 +5,7 @@ module Crossbeams
     module Renderer
       # Render an input field.
       class Input < Base # rubocop:disable Metrics/ClassLength
-        SC = StylesConfig
+        # SC = StylesConfig
 
         def configure(field_name, field_config, page_config)
           @field_name   = field_name
@@ -27,30 +27,62 @@ module Crossbeams
           # </div>
           # HTML
 
+          inpclass = if field_has_errors?
+                       SC.css_class(:input_in_err)
+                     else
+                       SC.css_class(:input)
+                     end
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}#{copy_prefix}
-            <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
-            <input class="rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600#{attr_class}" type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
-            #{datalist}
+            #{label_render(id_base, @caption)}
+            <input class="#{inpclass}#{attr_class}" type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
+            #{error_state}#{datalist}
           </div>
           HTML
           # rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6"
         end
+        # <svg xmlns="http://www.w3.org/2000/svg" class="pointer-events-none w-8 h-8 absolute top-1/2 transform -translate-y-1/2 right-3" viewBox="0 0 20 20" fill="currentColor">
+        #   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+        #   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+        # </svg>
+
+        # <input type="email" name="email" id="email" placeholder="email@kemuscorp.com" class="form-input border border-gray-900 py-3 px-4 bg-white placeholder-gray-400 text-gray-500 appearance-none w-full block pr-14 focus:outline-none">
 
         private
+
+        # <ag1-financial-input id="price" placeholder="Add Price" class="ng-untouched ng-pristine ng-valid">
+        #   <div class="flex items-center relative">
+        #     <div class="absolute left-1 top-1/2 -translate-y-1/2 text-french-blue-600 font-medium">
+        #       <div class="h-6 w-6 grid place-items-center"> € </div>
+        #     </div><!----><!----><!---->
+        #     <input type="text" inputmode="decimal" placeholder="Add Price" pattern="^-?\d{1,9}(\.\d{1,10})?$" class="!pl-8 ng-untouched ng-pristine ng-valid">
+        #   </div><!---->
+        # </ag1-financial-input>
 
         def copy_prefix
           return '' unless @field_config[:copy_to_clipboard]
 
-          '<div class="cbl-copy-wrapper">'
+          %(<div class="relative">
+          <button type="button" id="#{id_base}_clip" class="absolute mt-1 top-1/2 transform -translate-y-1/3 right-3 text-slate-500 hover:text-french-blue-600" viewBox="0 0 20 20" data-clipboard="copy" title="Copy to clipboard">
+            #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
+          </button>)
+          # %(<div class="flex items-center relative">
+          #  <div class="absolute left-1 top-1/2 -translate-y-1/2 text-french-blue-600 font-medium">
+          #    <div class="h-6 w-6 grid place-items-center">
+          #      #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
+          #    </div>
+          #  </div>)
         end
 
         def copy_suffix
           return '' unless @field_config[:copy_to_clipboard]
 
-          %(<button type="button" id="#{id_base}_clip" class="cbl-clipcopy" data-clipboard="copy" title="Copy to clipboard">
-          #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
-            </button></div>)
+          # %(<button type="button" id="#{id_base}_clip" class="cbl-clipcopy" data-clipboard="copy" title="Copy to clipboard">
+          # %(<button type="button" id="#{id_base}_clip" class="absolute top-1/2 transform -translate-y-1/2 right-3" viewBox="0 0 20 20" data-clipboard="copy" title="Copy to clipboard">
+          # #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
+          #  </button></div>)
+
+          '</div>'
         end
 
         def subtype
@@ -173,7 +205,7 @@ module Crossbeams
 
         def attr_list(datalist) # rubocop:disable Metrics/AbcSize
           [
-            # attr_class,
+            attr_class,
             attr_placeholder,
             attr_pattern_title,
             attr_title,
@@ -203,6 +235,7 @@ module Crossbeams
           res = []
           res << ' uppercase' if @field_config[:force_uppercase]
           res << ' lowercase' if @field_config[:force_lowercase]
+          res << ' pr-10' if @field_config[:copy_to_clipboard]
           res.join(' ')
         end
 

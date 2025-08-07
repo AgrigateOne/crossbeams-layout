@@ -27,13 +27,15 @@ module Crossbeams
           #   <div class="order-1">#{hint_trigger}</div>
           # </div>
           # HTML
+          # <label for="#{id_base}" class="#{SC.css_class(:label_inline)}"#{tooltip}>#{@caption}#{error_state}</label>
+          # <div class="inline">#{hint_trigger}</div>
+          # <input type="checkbox" value="t" class="#{SC.css_class(:checkbox)}" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-            <div class="hover:text-slate-50">(...spacer?...)</div>
+            <div>&nbsp;</div>
             <input #{name_attribute} type="hidden" value="f">
-            <input type="checkbox" value="t" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>
-            <label for="#{id_base}" class="#{SC.css_class(:label_inline)}"#{tooltip}>#{@caption}#{error_state}</label>
-            <div class="inline">#{hint_trigger}</div>
+            <input type="checkbox" value="t" class="#{SC.css_class(:checkbox)}" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>
+            #{label_render(id_base, @caption, inline: true, tooltip: tooltip, pointer: true)}
           </div>
           HTML
         end
@@ -49,9 +51,9 @@ module Crossbeams
         end
 
         def tooltip
-          return '' unless @tooltip
+          return nil unless @tooltip
 
-          %( title="#{@tooltip}")
+          %(title="#{@tooltip}")
         end
       end
     end

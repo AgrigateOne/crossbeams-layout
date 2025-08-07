@@ -415,18 +415,21 @@ module Crossbeams
 
         page_config = PageConfig.new({ form_object: OpenStruct.new(inp1: 'value', sel2: 'four', lbl1: 'Label 1', msl1: %w[one three]),
                                        fields: { inp1: { caption: 'INP One' },
-                                                 inp2: { required: true, caption: 'INP Two has a very long caption that wraps' },
+                                                 inp2: { required: true, caption: 'INP Two has a longer caption than normal' },
+                                                 inp3: { copy_to_clipboard: true, caption: 'INP Three (copy to clipboard)' },
+                                                 inp4: { force_uppercase: true, caption: 'INP Four (force uppercase)' },
                                                  dat1: { renderer: :date },
                                                  dat2: { renderer: :datetime, required: true, hint: Utils.classify_dom_elements('<h3>A hint</h3>For a datetime') },
                                                  chk1: { renderer: :checkbox },
-                                                 chk2: { renderer: :checkbox, required: true, hint: Utils.classify_dom_elements('<h3>A hint</h3>For a checkbox') },
+                                                 # chk2: { renderer: :checkbox, required: true, hint: Utils.classify_dom_elements('<h3>A hint</h3>For a checkbox') },
+                                                 chk2: { renderer: :checkbox, required: true, hint: '<h3>A hint</h3>For a checkbox', tooltip: 'A tooltip here...' },
                                                  num1: { renderer: :integer, caption: 'Integer' },
                                                  num2: { renderer: :number, caption: 'Decimal', required: true },
                                                  mlt1: { renderer: :multi, options: %w[one two three four], required: true },
                                                  msl1: { renderer: :select_multiple, options: %w[one two three four], required: true, sort_items: false },
                                                  msl2: { renderer: :select_multiple, options: { 'Group1' => [['one', 1], ['two', 2]],
                                                                                                 'Group2' => [['three', 3], ['four', 4]] }, sort_items: false },
-                                                 rdo1: { renderer: :radio_group, options: [['Opt one', 'opt_one'], ['Opt two', 'opt_two']] },
+                                                 rdo1: { renderer: :radio_group, required: true, options: [['Opt one', 'opt_one'], ['Opt two', 'opt_two']] },
                                                  txt1: { renderer: :textarea, required: true },
                                                  lst1: { renderer: :list, items: %w[one two three], required: true },
                                                  lst2: { renderer: :list, items: [['One', 1], ['Two', 2], ['Three', 3]], filled_background: true, remove_item_url: '/a/path/$:id$/remove' },
@@ -441,7 +444,7 @@ module Crossbeams
                                                          required: true },
                                                  lbl1: { renderer: :label },
                                                  lbl2: { renderer: :label, with_value: 'A label' },
-                                                 sel1: { renderer: :select, options: %w[one two three], disabled_options: %w[four], prompt: 'Select something', min_charwidth: 20 },
+                                                 sel1: { renderer: :select, options: %w[one two three four five six seven eight nine ten eleven], disabled_options: %w[four], prompt: 'Select something', min_charwidth: 20 },
                                                  sel2: { renderer: :select, options: %w[one two three], disabled_options: %w[four], prompt: 'Select something', required: true } } })
         frm = Form.new(page_config, 1, 1)
         frm.form_id 'frm2'
@@ -471,6 +474,8 @@ module Crossbeams
         end
         frm.row do |row|
           row.column do |col|
+            col.add_field :inp3
+            col.add_field :inp4
             col.add_field :mlt1
             col.add_field :rdo1
             col.add_field :txt1
@@ -479,7 +484,7 @@ module Crossbeams
 
         ar << frm.render
 
-        page_config = PageConfig.new({ form_object: OpenStruct.new(inp1: nil), fields: { inp1: { caption: 'INP Inline', placeholder: 'like for search' } } })
+        page_config = PageConfig.new({ form_object: OpenStruct.new(inp1: nil), fields: { inp1: { caption: 'INP Inline', placeholder: 'Like for search' } } })
         frm = Form.new(page_config, 1, 1)
         frm.form_id 'frm3'
         frm.inline!
@@ -496,7 +501,7 @@ module Crossbeams
 
         page_config = PageConfig.new({ form_object: OpenStruct.new(inp1: 'value'),
                                        fields: { inp1: {}, inp2: { required: true } },
-                                       form_errors: { base: ['A base validation error'], inp2: ['value required'] } })
+                                       form_errors: { base: ['A base validation error'], inp2: ['value is incorrect'] } })
         frm = Form.new(page_config, 1, 1)
         frm.form_id 'frm-err'
         frm.caption ' Form With Errors'

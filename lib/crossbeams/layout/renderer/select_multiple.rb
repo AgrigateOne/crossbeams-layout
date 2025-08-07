@@ -50,15 +50,16 @@ module Crossbeams
         end
 
         def apply_classes
-          cls = []
+          cls = ['w-full']
           cls << 'searchable-multi-select'
           cls
         end
 
         def render_string(attrs)
+          # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{css_style}#{wrapper_visibility}>#{hint_text}
-            <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
+            #{label_render(id_base, @caption)}
             #{backup_empty_select}
             <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple>
             #{make_prompt}#{build_1_or_2_options}

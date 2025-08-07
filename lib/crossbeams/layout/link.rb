@@ -6,6 +6,8 @@ module Crossbeams
     class Link
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :text, :url, :style, :behaviour, :css_class, :id, :visible, :text_size
 
@@ -21,6 +23,7 @@ module Crossbeams
         @prompt    = options[:prompt]
         @id        = options[:id]
         @visible   = options.fetch(:visible, true)
+        @inline    = options.fetch(:inline, false)
         @window    = options[:loading_window]
         @title     = options[:title]
         @text_size = options[:text_size] || '1'
@@ -67,6 +70,12 @@ module Crossbeams
         ].join(' ').squeeze(' ').rstrip
       end
 
+      def inline_class
+        return '' unless @inline
+
+        ' inline-block'
+      end
+
       def render_id
         return '' unless id
 
@@ -89,40 +98,47 @@ module Crossbeams
       def class_strings
         case style
         when :button
-          # col = button_colour
+          to_colour = "bg-#{button_colour}-500"
+          from_colour = "bg-#{SC.css_class(:secondary_bg)}"
+          to_colour = "bg-#{SC.css_class(:secondary_bg)}" if button_colour.nil?
           # %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-#{col}#{user_class}")
-          %(class="#{button_font_size} font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-50 border-french-blue-50 text-french-blue-600 bg-slate-200 text-slate-800 border-slate-200 active:bg-french-blue-50 active:border-french-blue-50 active:text-french-blue-600 hover:bg-french-blue-50 hover:border-french-blue-50 hover:text-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          # %(class="block #{button_font_size} font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-50 border-french-blue-50 text-french-blue-600 bg-slate-200 text-slate-800 border-slate-200 active:bg-french-blue-50 active:border-french-blue-50 active:text-french-blue-600 hover:bg-french-blue-50 hover:border-french-blue-50 hover:text-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          %(class="inline-block #{button_font_size} #{SC.css_class(:button_secondary).gsub(from_colour, to_colour)} max-w-fit#{user_class}")
         when :small_button
+          warn 'Crossbeams::Layout::Link - style `small_button` has been deprecated. Use an icon button instead.'
           %(class="link dim br1 ph2 dib white bg-silver#{user_class}")
         when :back_button
-          %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
+          # %(class="block f#{button_font_size} link dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
+          %(class="inline-block #{button_font_size} #{SC.css_class(:button_primary)} max-w-fit#{user_class}")
         when :action_button
           # %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-green#{user_class}")
-          %(class="#{button_font_size} font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 bg-french-blue-600 border-french-blue-600 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-500 text-white border-french-blue-500 active:bg-french-blue-600 active:border-french-blue-600 hover:bg-french-blue-600 hover:border-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          # %(class="block #{button_font_size} font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 bg-french-blue-600 border-french-blue-600 p-3 h-[2.75rem] min-w-[2.75rem] bg-french-blue-500 text-white border-french-blue-500 active:bg-french-blue-600 active:border-french-blue-600 hover:bg-french-blue-600 hover:border-french-blue-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500#{user_class}")
+          %(class="inline-block #{button_font_size} #{SC.css_class(:button_primary)} max-w-fit #{user_class}")
         else
-          css_class.empty? ? 'class="text-sky-600/80 hover:text-sky-600 flex hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500"' : %(class="text-sky-600/80 hover:text-sky-600 flex hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500 #{css_class}")
+          # css_class.empty? ? %(class="text-sky-600/80 hover:text-sky-600 flex hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500#{inline_class}") : %(class="text-sky-600/80 hover:text-sky-600 flex hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500 #{css_class}#{inline_class}")
+          css_class.empty? ? %(class="#{SC.css_class(:link)}#{inline_class}") : %(class="#{SC.css_class(:link)}#{css_class}#{inline_class}")
         end
       end
 
       def button_colour
         case @colour
         when nil, :standard
-          'silver'
+          nil # 'silver'
         when :green
-          'dark-green'
+          'green' # 'dark-green'
         when :amber
-          'gold'
+          'yellow' # 'gold'
         when :red
-          'dark-red'
+          'red' # 'dark-red'
         when :blue
-          'dark-blue'
+          'blue' # 'dark-blue'
         else
           raise ArgumentError, "Invalid button colour - #{@colour}"
         end
       end
 
       def user_class
-        css_class.empty? ? '' : " #{css_class}"
+        css_class.empty? ? inline_class : " #{css_class}#{inline_class}"
       end
 
       def hidden_string
@@ -133,13 +149,13 @@ module Crossbeams
 
       def render_text
         if style == :back_button
-          "#{Icon.new(:back).render} #{text}"
+          "#{Icon.new(:back, css_class: 'align-middle mr-4').render} #{text}"
         elsif @icon
-          "#{Icon.new(@icon).render} #{text}"
+          "#{Icon.new(@icon, css_class: 'align-middle mr-4').render} #{text}"
         elsif @window
-          "#{Icon.new(:newwindow).render} #{text}"
+          "#{Icon.new(:newwindow, css_class: 'align-middle mr-4').render} #{text}"
         elsif @behaviour == :newtab
-          "#{Icon.new(:newtab).render} #{text}"
+          "#{Icon.new(:newtab, css_class: 'align-middle mr-4').render} #{text}"
         else
           text
         end

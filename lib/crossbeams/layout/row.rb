@@ -56,6 +56,8 @@ module Crossbeams
         if invisible?
           ''
         else
+          # NOTE: should the row be in charge of the column widths? i.e. if 1 col, full width, 2 cols, 1/2 width etc?
+          # (Pass 1,2,3,4 in to the render method)
           col_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Col -->\n")
           <<-HTML
           <div class="#{row_class}">

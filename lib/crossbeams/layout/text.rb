@@ -16,35 +16,50 @@ module Crossbeams
       WRAP_START = {
         p: '<p%s>',
         h1: '<h1%s>',
+        title_large: '<h1%s>',
         h2: '<h2%s>',
+        title_medium: '<h2%s>',
         h3: '<h3%s>',
+        title_small: '<h3%s>',
         h4: '<h4%s>',
+        title_x_small: '<h4%s>',
         i: '<em%s>',
         em: '<em%s>',
         b: '<strong%s>',
-        strong: '<strong%s>'
+        strong: '<strong%s>',
+        small: '<p>'
       }.freeze
       WRAP_END = {
         p: '</p>',
         h1: '</h1>',
+        title_large: '</h1>',
         h2: '</h2>',
+        title_medium: '</h2>',
         h3: '</h3>',
+        title_small: '</h3>',
         h4: '</h4>',
+        title_x_small: '</h4>',
         i: '</em>',
         em: '</em>',
         b: '</strong>',
-        strong: '</strong>'
+        strong: '</strong>',
+        small: '</p>'
       }.freeze
       WRAP_CLASS = {
         # p: '</p>',
         h1: SC.css_class(:h1),
+        title_large: SC.css_class(:h1),
         h2: SC.css_class(:h2),
+        title_medium: SC.css_class(:h2),
         h3: SC.css_class(:h3),
+        title_small: SC.css_class(:h3),
         h4: SC.css_class(:h4),
+        title_x_small: SC.css_class(:h4),
         i: SC.css_class(:em),
         em: SC.css_class(:em),
         b: SC.css_class(:strong),
-        strong: SC.css_class(:strong)
+        strong: SC.css_class(:strong),
+        small: SC.css_class(:bodycopy_small)
       }.freeze
 
       def initialize(page_config, text, opts = {})
@@ -123,7 +138,7 @@ module Crossbeams
         # HTML
         # <button class="flex items-center justify-center gap-3 flex-row rounded border-2 h-11 p-3 font-medium text-slate-800 bg-slate-300 hover:text-french-blue-600 hover:bg-steel-blue-100"
         <<~HTML
-          <button class="#{SC.css_class(:button_secondary)}"
+          <button class="inline-block #{SC.css_class(:button_secondary)}"
             onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">
             #{info_icon} #{toggle_caption}
           </button>

@@ -19,6 +19,10 @@ module Crossbeams
       def self.classify_dom_elements(html)
         html.gsub(REGEX_KEY, ELEM_CLASSES)
       end
+
+      def self.crossbeams_field_classes
+        'min-w-22 max-w-96'
+      end
     end
   end
 end
