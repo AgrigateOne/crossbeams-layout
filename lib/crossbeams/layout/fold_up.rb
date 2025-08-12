@@ -6,6 +6,8 @@ module Crossbeams
     class FoldUp
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :address,
                         :contact_method,
                         :csrf,
@@ -65,8 +67,8 @@ module Crossbeams
         # HTML
         # Chevron up and chevron down on left
         <<~HTML
-          <details class="p-2 rounded border border-gray-300 bg-white"#{open_state}>
-            <summary class="cursor-pointer font-semibold text-slate-800 p-2 my-2">#{caption_text}</summary>
+          <details class="p-4 rounded-lg mt-4 border border-slate-300 bg-white"#{open_state}>
+            <summary class="cursor-pointer #{SC.css_class(:h1)} p-2 my-3">#{caption_text}</summary>
             #{row_renders}
           </details>
         HTML

@@ -6,10 +6,10 @@ module Crossbeams
     class StylesConfig
       extend Dry::Configurable
 
-      setting :h1, default: 'text-lg tracking-normal leading-5 font-medium leading-none' # title-large
-      setting :h2, default: 'text-base tracking-normal leading-5 font-medium leading-tight' # title-medium
+      setting :h1, default: 'text-lg tracking-normal font-medium leading-none' # title-large
+      setting :h2, default: 'text-base tracking-normal font-medium leading-tight' # title-medium
       setting :h3, default: 'text-sm tracking-normal leading-4 font-semibold' # title-small
-      setting :h4, default: 'text-xs tracking-normal leading-4 font-semibold leading-6' # title-x-small
+      setting :h4, default: 'text-xs tracking-normal font-semibold leading-6' # title-x-small
       setting :em, default: 'italic'
       setting :strong, default: 'font-semibold'
       setting :p, default: 'text-base tracking-normal leading-6 font-normal'
@@ -37,6 +37,7 @@ module Crossbeams
       setting :button_secondary, default: 'flex items-center justify-center gap-3 flex-row rounded border-2 h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-$:secondary_colour$ bg-$:secondary_bg$ active:bg-french-blue-600 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
 
       setting :button_primary, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-2 h-[2.75rem] min-w-[2.75rem] bg-french-blue-600 text-white border-french-blue-600 active:bg-french-blue-600 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500'
+      setting :button_tertiary, default: 'mt-2 rounded h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-slate-800 active:bg-zinc-200 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
 
       setting :primary_colour, default: 'slate-800'
       setting :primary_bg, default: 'slate-300'
@@ -56,12 +57,25 @@ module Crossbeams
       setting :note_warning, default: '$:bg_warning$ $:text_warning$'
       setting :note_error, default: 'bg-red-100 text-red-700'
 
+      setting :table_info_th, default: 'p-4 border-r border-b border-slate-200 text-slate-500'
+      setting :table_info_td, default: 'px-4 py-2'
+      setting :table_th, default: 'p-1 border-r border-b border-slate-200 text-slate-500'
+      setting :table_td, default: 'px-1 py-1'
+
       def self.css_class(setting_name)
         str = config[setting_name]
         return str unless str.include?('$:')
 
         tokens = str.split('$').select { |s| s.start_with?(':') }.map { |s| ["$#{s}$", config[s.delete_prefix(':').to_sym]] }
         str.gsub(/#{tokens.map(&:first).join('|').gsub('$', '\$')}/, Hash[tokens])
+      end
+
+      def self.important_css_class(setting_name) # rubocop:disable Metrics/AbcSize
+        str = config[setting_name]
+        return "!#{str.gsub(' ', ' !')}" unless str.include?('$:')
+
+        tokens = str.split('$').select { |s| s.start_with?(':') }.map { |s| ["$#{s}$", config[s.delete_prefix(':').to_sym]] }
+        "!#{str.gsub(/#{tokens.map(&:first).join('|').gsub('$', '\$')}/, Hash[tokens]).gsub(' ', ' !')}"
       end
     end
   end

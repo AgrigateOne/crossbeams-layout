@@ -96,6 +96,7 @@ module Crossbeams
 
       # %(<a data-button-dropdown="Y" href="#{item[:url]}" class="text-sky-600/80 hover:text-sky-600 flex hover:bg-slate-200 hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
       def class_strings
+          puts 'STYLING FROM CORRECT LAYOUT'
         case style
         when :button
           to_colour = "bg-#{button_colour}-500"
@@ -106,7 +107,8 @@ module Crossbeams
           %(class="inline-block #{button_font_size} #{SC.css_class(:button_secondary).gsub(from_colour, to_colour)} max-w-fit#{user_class}")
         when :small_button
           warn 'Crossbeams::Layout::Link - style `small_button` has been deprecated. Use an icon button instead.'
-          %(class="link dim br1 ph2 dib white bg-silver#{user_class}")
+          # %(class="link dim br1 ph2 dib white bg-silver#{user_class}")
+          %(class="#{SC.css_class(:link)}#{inline_class}")
         when :back_button
           # %(class="block f#{button_font_size} link dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
           %(class="inline-block #{button_font_size} #{SC.css_class(:button_primary)} max-w-fit#{user_class}")
