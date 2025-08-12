@@ -6,6 +6,8 @@ module Crossbeams
     class ExpandCollapseFolds
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :sequence, :nodes, :page_config, :parent_dom_id
 
@@ -28,9 +30,13 @@ module Crossbeams
       def render
         return '' if invisible?
 
+        # <<~HTML
+        #   <a href="/" class="#{css_class.join(' ')}" #{title(true)}data-expand-collapse="open" data-expand-collapse-dom="#{parent_dom_id}">#{expand_text}</a>
+        #   <a href="/" class="ml2 #{css_class.join(' ')}" #{title(false)}data-expand-collapse="close" data-expand-collapse-dom="#{parent_dom_id}">#{collapse_text}</a>
+        # HTML
         <<~HTML
-          <a href="/" class="#{css_class.join(' ')}" #{title(true)}data-expand-collapse="open" data-expand-collapse-dom="#{parent_dom_id}">#{expand_text}</a>
-          <a href="/" class="ml2 #{css_class.join(' ')}" #{title(false)}data-expand-collapse="close" data-expand-collapse-dom="#{parent_dom_id}">#{collapse_text}</a>
+          <a href="/" class="#{css_class}" #{title(true)}data-expand-collapse="open" data-expand-collapse-dom="#{parent_dom_id}">#{expand_text}</a>
+          <a href="/" class="ml2 #{css_class}" #{title(false)}data-expand-collapse="close" data-expand-collapse-dom="#{parent_dom_id}">#{collapse_text}</a>
         HTML
       end
 
@@ -55,13 +61,15 @@ module Crossbeams
       end
 
       def css_class
-        if @options[:button] && @options[:mini]
-          %w[link br1 ph1 pv1 dib white bg-silver]
-        elsif @options[:button]
-          %w[link br1 ph2 pv2 dib white bg-silver]
-        else
-          %w[link]
-        end
+        # text-slate-800 hover:text-sky-600 hover:bg-zinc-200
+        # if @options[:button] && @options[:mini]
+        #   %w[link br1 ph1 pv1 dib white bg-silver]
+        # elsif @options[:button]
+        #   %w[link br1 ph2 pv2 dib white bg-silver]
+        # else
+        #   %w[link]
+        # end
+        SC.css_class(:button_tertiary)
       end
     end
   end

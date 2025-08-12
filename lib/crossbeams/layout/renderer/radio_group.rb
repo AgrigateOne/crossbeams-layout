@@ -29,9 +29,10 @@ module Crossbeams
           # <div>#{hint_trigger}</div>
           <<-HTML
           <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-            #{label_render(id_base, caption, tooltip: tooltip)}
+            #{label_render(id_base, caption, tooltip: tooltip) unless caption.empty?}
             <div class="cbl-radio cbl-input">
               #{render_buttons}
+              #{hint_trigger if caption.empty?}
             </div>
           </div>
           HTML
@@ -61,7 +62,7 @@ module Crossbeams
             # <label for="#{id_base}_#{val.gsub(' ', '_')}">#{text}</label>
             <<~HTML
               <input type="radio" #{field_id(val.gsub(' ', '_'))} #{name_attribute} value="#{val}"#{checked(val)}#{disabled(val)} class="#{xtra_class}#{SC.css_class(:checkbox)}" #{attrs.join(' ')}>
-              #{label_render("#{id_base}_#{val.gsub(' ', '_')}", text, inline: true, check_required: false, pointer: true)}
+              #{label_render("#{id_base}_#{val.gsub(' ', '_')}", text, inline: true, check_required: false, pointer: true, ignore_hint: true)}
             HTML
           end.join(' ')
         end

@@ -6,6 +6,8 @@ module Crossbeams
     class ContactMethod
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :contact_methods, :lookup_icon
 
@@ -48,10 +50,17 @@ module Crossbeams
       private
 
       def render_contact_method(contact_method)
+        # <<~HTML
+        #   <div class="center mw5 mw6-ns hidden ba mv3">
+        #     <h1 class="f4 bg-light-purple white mv0 pv2 ph3" style="text-transform:lowercase">#{icon(contact_method)}#{contact_method.contact_method_type}</h1>
+        #     <div class="f6 f5-ns lh-copy measure mv0 pa2">#{contact_method.contact_method_code}
+        #     </div>
+        #   </div>
+        # HTML
         <<~HTML
-          <div class="center mw5 mw6-ns hidden ba mv3">
-            <h1 class="f4 bg-light-purple white mv0 pv2 ph3" style="text-transform:lowercase">#{icon(contact_method)}#{contact_method.contact_method_type}</h1>
-            <div class="f6 f5-ns lh-copy measure mv0 pa2">#{contact_method.contact_method_code}
+          <div class="mx-auto max-w-xs md:max-w-sm border my-4">
+            <h1 class="#{SC.css_class(:h1)} bg-purple-900 text-white m-0 py-2 px-3 lowercase">#{icon(contact_method)}#{contact_method.contact_method_type}</h1>
+            <div class="text-sm md:text-base leading-snug max-w-prose m-0 p-2">#{contact_method.contact_method_code}
             </div>
           </div>
         HTML

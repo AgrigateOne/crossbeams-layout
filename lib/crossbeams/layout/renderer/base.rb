@@ -42,7 +42,7 @@ module Crossbeams
           !has_err.nil?
         end
 
-        def label_render(for_id, caption, inline: false, tooltip: nil, check_required: true, pointer: false)
+        def label_render(for_id, caption, inline: false, tooltip: nil, check_required: true, pointer: false, ignore_hint: false, prefix: '') # rubocop:disable Metrics/ParameterLists
           css_class = field_has_errors? ? SC.css_class(:label_in_err) : SC.css_class(:label)
           # css_class = if inline
           #               field_has_errors? ? SC.css_class(:label_inline_in_err) : SC.css_class(:label_inline)
@@ -52,7 +52,7 @@ module Crossbeams
           toolt = tooltip.nil? ? '' : " #{tooltip}"
           req = check_required && @field_config[:required] == true ? ' requiredlabel' : ''
           point = pointer ? ' cursor-pointer' : ''
-          %(<div class="#{inline ? 'inline' : 'block'}"><label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger}</div>)
+          %(<div class="#{inline ? 'inline' : 'block'}">#{prefix}<label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
         end
 
         # The class for the field wrapper.
@@ -157,6 +157,8 @@ module Crossbeams
 
         # Styling for a field in error. Returns nil if the field is not in error.
         def error_state(newline: true)
+          puts '<<<< errstate'
+          puts @field_name
           return unless @page_config.form_errors
 
           errs = if @field_config[:parent_field]
@@ -164,6 +166,8 @@ module Crossbeams
                  else
                    @page_config.form_errors[@field_name]
                  end
+          puts 'errs:'
+          p errs
 
           # "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>" if errs
           %(<span class="font-normal text-red-700">#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>) if errs

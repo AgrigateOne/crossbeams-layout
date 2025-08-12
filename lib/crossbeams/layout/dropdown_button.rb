@@ -47,7 +47,7 @@ module Crossbeams
             <button type="button"#{attrs}>
               #{render_text}
             </button>
-            <div class="crossbeams-dropdown-content hidden absolute left-0 top-11 z-10 bg-white">
+            <div class="crossbeams-dropdown-content flex hidden absolute left-0 top-11 z-10 bg-white">
               #{dropdown_items}
             </div>
           </div>
@@ -110,7 +110,7 @@ module Crossbeams
                    Icon.new(:link).render
                  end
           # %(<a data-button-dropdown="Y" href="#{item[:url]}" class="text-sky-600/80 hover:text-sky-600 flex hover:bg-slate-200 hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
-          %(<a data-button-dropdown="Y" href="#{item[:url]}" class="flex  items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none #{SC.css_class(:link)}"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
+          %(<a data-button-dropdown="Y" href="#{item[:url]}" class="flex items-center gap-3 block w-min-fit w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none #{SC.css_class(:link)} hover:bg-slate-200"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
         end.join("\n")
       end
       # def dropdown_items

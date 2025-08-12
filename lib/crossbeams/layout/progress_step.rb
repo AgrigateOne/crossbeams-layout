@@ -35,13 +35,25 @@ module Crossbeams
 
       # Render the control
       def render
+        # <<-HTML
+        #   <div class="cbl-progress-bar-wrapper"#{max_size}>
+        #     <div class="cbl-progress-status-bar" style="width: #{status_bar_width}%;">
+        #       <div class="cbl-current-status" style="width: #{current_position}%; transition: width 4500ms linear;">
+        #       </div>
+        #     </div>
+        #     <ul class="cbl-progress-bar">
+        #       #{render_steps}
+        #     </ul>
+        #   </div>
+        #   #{render_state}
+        # HTML
         <<-HTML
-          <div class="cbl-progress-bar-wrapper"#{max_size}>
-            <div class="cbl-progress-status-bar" style="width: #{status_bar_width}%;">
-              <div class="cbl-current-status" style="width: #{current_position}%; transition: width 4500ms linear;">
+          <div class="w-full"#{max_size}>
+            <div class="h-0.5 relative top-5 my-0 mx-auto bg-slate-400" style="width: #{status_bar_width}%;">
+              <div class="bg-french-blue-500" style="width: #{current_position}%; transition: width 4500ms linear;">
               </div>
             </div>
-            <ul class="cbl-progress-bar">
+            <ul class="w-full m-0 p-0" style="font-size: 0">
               #{render_steps}
             </ul>
           </div>

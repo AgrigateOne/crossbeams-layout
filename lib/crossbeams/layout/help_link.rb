@@ -6,6 +6,8 @@ module Crossbeams
     class HelpLink
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :text, :help_type, :path, :dialog
 
@@ -36,9 +38,14 @@ module Crossbeams
       #
       # @return [string] - HTML representation of this node.
       def render
+        # <<-HTML
+        #   <div class="relative">
+        #     <a href="#{url}" class="#{position_classes}f6 link dim br2 ph3 pv2 dib white bg-blue" data-help-link="Y" target="cbf-help">#{Icon.new(:question).render} #{text}</a>
+        #   </div>
+        # HTML
         <<-HTML
           <div class="relative">
-            <a href="#{url}" class="#{position_classes}f6 link dim br2 ph3 pv2 dib white bg-blue" data-help-link="Y" target="cbf-help">#{Icon.new(:question).render} #{text}</a>
+            <a href="#{url}" class="#{position_classes}#{SC.css_class(:button_primary)}" data-help-link="Y" target="cbf-help">#{Icon.new(:question).render} #{text}</a>
           </div>
         HTML
       end

@@ -109,9 +109,10 @@ module Crossbeams
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
         add_extra_css_classes
 
+        css_for_button_row = 'flex flex-row flex-wrap gap-3' # Might not work for all sections...
         <<~HTML
           #{render_fit_height_caption}
-          <section id="#{@section_id}" class="#{@css_classes.join(' ')}">
+          <section id="#{@section_id}" class="#{css_for_button_row} #{@css_classes.join(' ')}">
           #{render_normal_caption}
             #{row_renders}
           </section>

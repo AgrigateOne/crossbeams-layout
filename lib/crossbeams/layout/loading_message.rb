@@ -30,7 +30,7 @@ module Crossbeams
       def render_caption
         return caption unless options[:wrap_for_centre]
 
-        %(<p class="pa3">#{caption}</p>)
+        %(<p class="p-3">#{caption}</p>)
       end
     end
   end
