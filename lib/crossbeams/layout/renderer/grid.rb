@@ -212,15 +212,18 @@ module Crossbeams
                        end
 
           <<-HTML
-          <div class="flex flex-row p-3">
+          <div class="flex flex-row pt-3 pb-3">
             <span id="#{grid_id}_toolbtns">
-            <label">
-               <button type="button" class="#{SC.css_class(:button_tertiary)} crossbeams-to-fullscreen" onclick="crossbeamsGridEvents.toFullScreen('#{grid_id}-frame')" title="show in fullscreen mode"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.8 15.8L0 13v7h7l-2.8-2.8 4.34-4.32-1.42-1.42L2.8 15.8zM17.2 4.2L20 7V0h-7l2.8 2.8-4.34 4.32 1.42 1.42L17.2 4.2zm-1.4 13L13 20h7v-7l-2.8 2.8-4.32-4.34-1.42 1.42 4.33 4.33zM4.2 2.8L7 0H0v7l2.8-2.8 4.32 4.34 1.42-1.42L4.2 2.8z"/></svg>
-              </button>
-            </label>
-            <label">
-                <button type="button" class="#{SC.css_class(:button_tertiary)} crossbeams-view-row" onclick="crossbeamsGridEvents.viewSelectedRow('#{grid_id}')" title="view selected row"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M.2 10a11 11 0 0 1 19.6 0A11 11 0 0 1 .2 10zm9.8 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg></button>
-            </label>#{save_multiselect_button(grid_id, options)}
+            #{search_box}
+            <span class="grid-caption">
+              #{caption}
+            </span>
+             <button type="button" class="#{SC.css_class(:button_tertiary)} crossbeams-to-fullscreen" onclick="crossbeamsGridEvents.toFullScreen('#{grid_id}-frame')" title="show in fullscreen mode"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.8 15.8L0 13v7h7l-2.8-2.8 4.34-4.32-1.42-1.42L2.8 15.8zM17.2 4.2L20 7V0h-7l2.8 2.8-4.34 4.32 1.42 1.42L17.2 4.2zm-1.4 13L13 20h7v-7l-2.8 2.8-4.32-4.34-1.42 1.42 4.33 4.33zM4.2 2.8L7 0H0v7l2.8-2.8 4.32 4.34 1.42-1.42L4.2 2.8z"/></svg>
+             Full screen
+            </button>
+
+                <button type="button" class="#{SC.css_class(:button_tertiary)} crossbeams-view-row" onclick="crossbeamsGridEvents.viewSelectedRow('#{grid_id}')" title="view selected row"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M.2 10a11 11 0 0 1 19.6 0A11 11 0 0 1 .2 10zm9.8 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg> View</button>
+            #{save_multiselect_button(grid_id, options)}
             <label style="margin-left: 10px;">
                 <button type="button" class="#{SC.css_class(:button_tertiary)} pure-button" onclick="crossbeamsGridEvents.csvExport('#{grid_id}', '#{Grid.file_name_from_caption(caption)}')" title="Export to CSV"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 18h12V6h-4V2H4v16zm-2 1V0h12l4 4v16H2v-1z"/></svg>
               </button>
@@ -254,14 +257,10 @@ module Crossbeams
                   <svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100"><path d="M15.194 59.995l69.732-.074v-.014a2.493 2.493 0 0 0 2.361-2.489a2.487 2.487 0 0 0-.802-1.823L51.834 21.02l-.004.004a2.484 2.484 0 0 0-1.902-.892a2.494 2.494 0 0 0-2.02 1.041l-34.46 34.535a2.498 2.498 0 0 0 1.746 4.287z" fill="#626262"/><path d="M87.308 77.253l-.01-9.803v-.05h-.005a2.534 2.534 0 0 0-2.534-2.485v-.006l-69.751.074v.042a2.53 2.53 0 0 0-2.293 2.516c0 .033.008.063.01.096l.01 9.477c-.006.074-.022.145-.022.22a2.528 2.528 0 0 0 2.311 2.511v.023l69.751-.074a2.536 2.536 0 0 0 2.534-2.539l-.001-.002z" fill="#626262"/></svg>
               </button>
             </label>
-            #{search_box}
             </span>
-            <span class="grid-caption">
-              #{caption}
-            </span>
-            <span id="#{grid_id}_rowcount" class="crossbeams-rowcount"></span>
           </div>
           HTML
+          # <span id="#{grid_id}_rowcount" class="crossbeams-rowcount"></span>
         end
 
         def render
