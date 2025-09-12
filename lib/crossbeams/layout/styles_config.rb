@@ -32,12 +32,14 @@ module Crossbeams
       setting :checkbox_in_err, default: 'border-red-600 ring-red-600 cursor-pointer rounded mr-2 w-5 h-5 outline-none checked:text-french-blue-500 hover:text-french-blue-600 focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-steel-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-slate-400 accent-french-blue-600'
 
       setting :icon, default: 'inline-block w-5 h-5 fill-current relative top-0.5'
+      setting :icon_s, default: 'inline w-5 h-5 stroke-current relative top-0.5'
       setting :hover_row, default: 'hover:bg-slate-100'
 
       setting :button_secondary, default: 'flex items-center justify-center gap-3 flex-row rounded border-2 h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-$:secondary_colour$ bg-$:secondary_bg$ active:bg-french-blue-600 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
 
       setting :button_primary, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-2 h-[2.75rem] min-w-[2.75rem] bg-french-blue-600 text-white border-french-blue-600 active:bg-french-blue-600 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500'
       setting :button_tertiary, default: 'mt-2 rounded h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-slate-800 active:bg-zinc-200 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
+      setting :button_tertiary_actions, default: 'rounded min-w-[2.75rem] px-4 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-slate-800 active:bg-zinc-200 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
 
       setting :primary_colour, default: 'slate-800'
       setting :primary_bg, default: 'slate-300'
@@ -61,6 +63,26 @@ module Crossbeams
       setting :table_info_td, default: 'px-4 py-2'
       setting :table_th, default: 'p-1 border-r border-b border-slate-200 text-slate-500'
       setting :table_td, default: 'px-1 py-1'
+
+      # Translate values of "colour_rule" grid columns to css classes:
+      setting :grid_row_colours, default: { 'black' => 'text-blue-600',
+                                            'blue' => 'text-blue-600',
+                                            'brown' => 'text-yellow-800',
+                                            'dark-pink' => 'text-fuscia-600',
+                                            'error' => 'text-red-600',
+                                            'gray' => 'text-stone-400',
+                                            'grey' => 'text-stone-400',
+                                            'green' => 'text-green-600',
+                                            'inactive' => 'text-stone-400 italic',
+                                            'inprogress' => 'text-purple-900',
+                                            'ok' => 'text-blue-600',
+                                            'orange' => 'text-orange-500',
+                                            'pink' => 'text-fuscia-400',
+                                            'purple' => 'text-purple-900',
+                                            'ready' => 'text-green-600',
+                                            'red' => 'text-red-600',
+                                            'warning' => 'text-orange-500',
+                                            'yellow' => 'text-yellow-400' }
 
       def self.css_class(setting_name)
         str = config[setting_name]
