@@ -94,6 +94,13 @@ module Crossbeams
         @nodes << ProgressStep.new(page_config, steps, options)
       end
 
+      # Add a group that will render its children in a horizontal row
+      def horizontal_group
+        group = HorizontalGroup.new(page_config, sequence) # , nodes.length + 1)
+        yield group
+        @nodes << group
+      end
+
       # Add a control (button, link) to the page.
       #
       # @return [void]
@@ -109,7 +116,8 @@ module Crossbeams
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
         add_extra_css_classes
 
-        css_for_button_row = 'flex flex-row flex-wrap gap-3' # Might not work for all sections... (e.g. grid in dialog needs flex-col, not -row)
+        # css_for_button_row = 'flex flex-col flex-wrap gap-3' # Might not work for all sections... (e.g. grid in dialog needs flex-col, not -row)
+        css_for_button_row = ''
         <<~HTML
           #{render_fit_height_caption}
           <section id="#{@section_id}" class="#{css_for_button_row} #{@css_classes.join(' ')}">
