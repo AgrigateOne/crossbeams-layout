@@ -39,7 +39,6 @@ module Crossbeams
 
       setting :button_primary, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-2 h-[2.75rem] min-w-[2.75rem] bg-french-blue-600 text-white border-french-blue-600 active:bg-french-blue-600 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500'
       setting :button_tertiary, default: 'mt-2 rounded h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-slate-800 active:bg-zinc-200 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
-      setting :button_tertiary_actions, default: 'rounded min-w-[2.75rem] px-4 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-slate-800 active:bg-zinc-200 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
 
       setting :primary_colour, default: 'slate-800'
       setting :primary_bg, default: 'slate-300'
