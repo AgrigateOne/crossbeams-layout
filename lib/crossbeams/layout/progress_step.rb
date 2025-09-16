@@ -2,7 +2,7 @@
 
 module Crossbeams
   module Layout
-    # A progress steps renderer - for displaying positioin in amulti-step process.
+    # A progress steps renderer - for displaying position in a multi-step process.
     class ProgressStep
       extend MethodBuilder
 
@@ -34,7 +34,7 @@ module Crossbeams
       end
 
       # Render the control
-      def render
+      def render_old
         # <<-HTML
         #   <div class="cbl-progress-bar-wrapper"#{max_size}>
         #     <div class="cbl-progress-status-bar" style="width: #{status_bar_width}%;">
@@ -58,6 +58,16 @@ module Crossbeams
             </ul>
           </div>
           #{render_state}
+        HTML
+      end
+
+      def render
+        <<~HTML
+          <div class="w-2/3 my-3 mx-auto overflow-x-auto scrollbar-hidden"#{max_size}>
+            <div class="flex pb-5 px-10 m-auto" style="min-width: 19.5rem; width: #{status_bar_width}%;">
+              #{render_steps}
+            </div>
+          </div>
         HTML
       end
 
@@ -85,6 +95,74 @@ module Crossbeams
       end
 
       def render_steps
+        # width = step_width
+        fullness = ''
+        steps.map.with_index do |step, index|
+          # css_class = ['cbl-step']
+          # css_class += position_classes(index, position)
+          # id = position_id(index, position)
+          # %(<li class="#{css_class.join(' ')}"#{id} style="width: #{width}%;">#{step}</li>)
+          colour = position >= index ? 'french-blue' : 'slate'
+          line = <<~HTML
+            <div class="h-px w-full grow bg-slate-200 ">
+            </div>
+          HTML
+          # For now, drop the description.. (probably impossible to render properly below the step with this design)
+          # description = state_description[index]
+          # desc = description.nil? ? '' : %(<div class="mt-6 text-slate-600">#{description}</div>)
+          str = <<~HTML
+            <div class="flex items-center#{fullness}">
+              #{index.positive? ? line : ''}
+              <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-#{colour}-500">
+                <span class="text-xs select-none text-white">
+                  #{index + 1}
+                </span>
+                <span class="text-sm font-semibold select-none text-center whitespace-nowrap w-fit absolute left-1/2 -translate-x-1/2 -bottom-5 text-#{colour}-500">
+                  #{step}
+                </span>
+              </div>
+            </div>
+          HTML
+          fullness = ' w-full'
+          str
+        end.join("\n")
+        # <<~HTML
+        #   <div class="flex items-center">
+        #     <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-french-blue-500">
+        #       <span class="text-xs select-none text-white">
+        #         1
+        #       </span>
+        #       <span class="text-sm font-semibold select-none text-center whitespace-nowrap w-fit absolute left-1/2 -translate-x-1/2 -bottom-5 text-french-blue-500">
+        #         Template details
+        #       </span>
+        #     </div>
+        #   </div>
+        #   <div class="flex items-center w-full ">
+        #     <div class="h-px w-full grow bg-slate-200 ">
+        #     </div>
+        #     <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-slate-200">
+        #       <span class="text-xs select-none text-slate-500">
+        #         2
+        #       </span>
+        #       <span class="text-sm font-semibold select-none text-center truncate w-24 absolute left-1/2 -translate-x-1/2 -bottom-5 text-slate-500">
+        #         Select fields </span>
+        #     </div>
+        #   </div>
+        #   <div class="mr-7 flex items-center w-full ">
+        #     <div class="h-px w-full grow bg-slate-200 ">
+        #     </div>
+        #     <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-slate-200">
+        #       <span class="text-xs select-none text-slate-500">
+        #         3
+        #       </span>
+        #       <span class="text-sm font-semibold select-none text-center whitespace-nowrap absolute left-1/2 -translate-x-1/2 -bottom-5 text-slate-500">
+        #         Populate default values </span>
+        #     </div>
+        #   </div>
+        # HTML
+      end
+
+      def render_steps_old
         width = step_width
         steps.map.with_index do |step, index|
           css_class = ['cbl-step']
