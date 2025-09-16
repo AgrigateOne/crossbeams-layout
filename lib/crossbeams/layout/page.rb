@@ -76,6 +76,13 @@ module Crossbeams
         @nodes << section
       end
 
+      # Add a group that will render its children in a horizontal row
+      def horizontal_group
+        group = HorizontalGroup.new(page_config, sequence) # , nodes.length + 1)
+        yield group
+        @nodes << group
+      end
+
       # Define a form in the page.
       def form
         form = Form.new(page_config, sequence, nodes.length + 1)

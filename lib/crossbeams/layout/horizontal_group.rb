@@ -23,8 +23,10 @@ module Crossbeams
         @align = :right
       end
 
-      # def left! and right! to influence alignment
-      def left_align!
+      # Change the alignment of the group's content to align to the left
+      #
+      # @return [void]
+      def align_left!
         @align = :left
       end
 
@@ -37,6 +39,10 @@ module Crossbeams
         @nodes << Link.new(page_control_definition.merge(inline: true)) if page_control_definition[:control_type] == :link
         @nodes << DropdownButton.new(page_control_definition.merge(inline: true)) if page_control_definition[:control_type] == :dropdown_button
         @nodes << HelpLink.new(page_control_definition) if page_control_definition[:control_type] == :help_link
+      end
+
+      def add_help_link(options)
+        @nodes << HelpLink.new(options)
       end
 
       def invisible?
@@ -53,7 +59,7 @@ module Crossbeams
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
         just = @align == :right ? 'justify-end' : 'justify-start'
         <<~HTML
-          <div class="flex flex-row gap-4 #{just}">
+          <div class="flex flex-row gap-4 #{just} flex-wrap">
             #{row_renders}
           </div>
         HTML
