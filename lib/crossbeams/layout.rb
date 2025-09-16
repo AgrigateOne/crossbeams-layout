@@ -63,5 +63,14 @@ module Crossbeams
   # Layout an HTML page using DSL.
   module Layout
     class Error < StandardError; end
+
+    # Serve local developer documentation (ASCIIDoc)
+    class DeveloperDocumentation
+      DOCUMENTATION_FILES = %w[page_layout.adoc non_field_renderers.adoc field_renderers.adoc].freeze
+
+      def self.content(file)
+        File.read(File.join(File.dirname(__FILE__), '../../developer_documentation', "#{file.chomp('.adoc')}.adoc"))
+      end
+    end
   end
 end

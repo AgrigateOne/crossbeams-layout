@@ -310,11 +310,16 @@ a|* :p
 |`Show/Hide Text`
 
 |options - :toggle_element_id
-|Optional: Toggle text based on the `toggle_element_id` (which *must* appear as an `id` within the text)
+|Optional: Toggle text based on the `toggle_element_id` (which *must* appear as an `id` within the text if `:external_toggle_element` is not true)
 
 This is instead of the default -- which is to use the `id` of the text wrapper's div.
 |`String`.
 |None
+
+|options - :external_toggle_element
+|Optional: Toggle text based on the `toggle_element_id` (where the text to toggle is not the passed-in `:text` value)
+|`Boolean`.
+|false
 
 |===
 

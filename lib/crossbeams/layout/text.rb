@@ -11,7 +11,7 @@ module Crossbeams
       build_methods_for :csrf
       attr_reader :text, :page_config, :preformatted, :syntax, :wrapper,
                   :toggle_button, :toggle_caption, :toggle_element_id,
-                  :options, :wrapper_classes
+                  :options, :wrapper_classes, :external_toggle_element
 
       WRAP_START = {
         p: '<p%s>',
@@ -63,22 +63,24 @@ module Crossbeams
       }.freeze
 
       def initialize(page_config, text, opts = {})
-        @text           = text
-        @page_config    = page_config
-        @nodes          = []
-        @wrapper        = Array(opts[:wrapper] || :none)
+        @text = text
+        @page_config = page_config
+        @nodes = []
+        @wrapper = Array(opts[:wrapper] || :none)
         @wrapper_classes = opts[:wrapper_classes]
-        @preformatted   = opts[:preformatted] || false
-        @syntax         = opts[:syntax]
-        @toggle_button  = opts[:toggle_button] || false
+        @preformatted = opts[:preformatted] || false
+        @syntax = opts[:syntax]
+        @toggle_button = opts[:toggle_button] || false
         @toggle_caption = opts[:toggle_caption] || 'Show/Hide Text'
         @toggle_element_id = opts[:toggle_element_id]
+        @external_toggle_element = opts[:external_toggle_element]
         @options = opts
         assert_element_id_in_text!
       end
 
       def assert_element_id_in_text!
         return nil if @toggle_element_id.nil?
+        return nil if external_toggle_element
         raise ArgumentError, 'toggle element id is not present in text' unless @text.match?(/id=['"]#{@toggle_element_id}['"]/)
       end
 
@@ -151,7 +153,7 @@ module Crossbeams
 
       def render_toggle_id
         return '' unless toggle_button
-        return '' if  toggle_element_id
+        return '' if toggle_element_id
 
         " id='#{toggle_id}' hidden"
       end
