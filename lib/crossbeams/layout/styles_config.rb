@@ -31,8 +31,10 @@ module Crossbeams
       setting :checkbox, default: 'cursor-pointer rounded mr-2 w-5 h-5 outline-none checked:text-french-blue-500 hover:text-french-blue-600 focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-steel-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-slate-400 accent-french-blue-600'
       setting :checkbox_in_err, default: 'border-red-600 ring-red-600 cursor-pointer rounded mr-2 w-5 h-5 outline-none checked:text-french-blue-500 hover:text-french-blue-600 focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-steel-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-slate-400 accent-french-blue-600'
 
-      setting :icon, default: 'inline-block w-5 h-5 fill-current relative top-0.5'
-      setting :icon_s, default: 'inline w-5 h-5 stroke-current relative top-0.5'
+      # setting :icon, default: 'inline-block w-5 h-5 fill-current relative top-0.5'
+      setting :icon, default: 'w-5 h-5 fill-current'
+      # setting :icon_s, default: 'inline w-5 h-5 stroke-current relative top-0.5'
+      setting :icon_s, default: 'w-5 h-5 stroke-current'
       setting :hover_row, default: 'hover:bg-slate-100'
 
       setting :button_secondary, default: 'flex items-center justify-center gap-3 flex-row rounded border-2 h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-$:secondary_colour$ bg-$:secondary_bg$ active:bg-french-blue-600 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
