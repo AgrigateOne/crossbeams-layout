@@ -303,7 +303,7 @@ module Crossbeams
         return '' if remote_form || form_caption.nil?
 
         heading = "h#{caption_level}".to_sym
-        %(<#{heading} class="#{SC.css_class(heading)}">#{form_caption}</h#{caption_level}>\n)
+        %(<#{heading} class="#{SC.css_class(heading)} my-2">#{form_caption}</h#{caption_level}>\n)
       end
 
       def render_id

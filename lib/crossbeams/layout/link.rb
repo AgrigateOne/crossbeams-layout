@@ -96,7 +96,6 @@ module Crossbeams
 
       # %(<a data-button-dropdown="Y" href="#{item[:url]}" class="text-sky-600/80 hover:text-sky-600 flex hover:bg-slate-200 hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-steel-blue-500"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
       def class_strings
-          puts 'STYLING FROM CORRECT LAYOUT'
         case style
         when :button
           to_colour = "bg-#{button_colour}-500"

@@ -125,6 +125,18 @@ module Crossbeams
         <<~SVG,
           <svg %s %s xmlns="http://www.w3.org/2000/svg" width="1em" viewBox="0 0 20 20"><path d="M4 16H0V6h20v10h-4v4H4v-4zm2-4v6h8v-6H6zM4 0h12v5H4V0zM2 8v2h2V8H2zm4 0v2h2V8H6z"/></svg>
         SVG
+        chevron_right:
+        <<~SVG,
+          <svg %s %s xmlns="http://www.w3.org/2000/svg" width="1em" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+          </svg>
+        SVG
+        lock_closed:
+        <<~SVG,
+          <svg %s %s xmlns="http://www.w3.org/2000/svg" width="1em" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clip-rule="evenodd" />
+          </svg>
+        SVG
         warning:
         <<~SVG
           <svg %s %s xmlns="http://www.w3.org/2000/svg" width="1em" viewBox="0 0 24 24" fill="currentColor" class="size-6">
