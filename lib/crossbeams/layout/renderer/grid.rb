@@ -177,7 +177,7 @@ module Crossbeams
           actions_button = <<~HTML
             <div class="crossbeams-dropdown-button w-fit relative inline-block">
               <button type="button" class="#{SC.css_class(:button_tertiary)}">
-                <svg class="#{SC.css_class(:icon_s)} xcbl-icon " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" /> </svg> Actions
+                <svg class="#{SC.css_class(:icon_s)} inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" /> </svg> Actions
               </button>
               <div class="crossbeams-dropdown-content flex hidden absolute right-0 top-11 z-10 bg-white">
                 <button type="button" class="#{SC.css_class(:button_tertiary)} w-full flex gap-2 crossbeams-view-row" onclick="crossbeamsGridEvents.viewSelectedRow('#{grid_id}')"><svg class="#{SC.css_class(:icon_s)}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M.2 10a11 11 0 0 1 19.6 0A11 11 0 0 1 .2 10zm9.8 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg> View selected row</button>
@@ -283,8 +283,8 @@ module Crossbeams
             #{actions_button}
             <label style="margin-left: 10px;">
                 <button type="button" class="#{SC.css_class(:button_tertiary)}" onclick="crossbeamsGridEvents.gridStateSave('#{grid_id}')" title="Save grid column state">
-                  <svg class="#{SC.css_class(:icon_s)}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><path d="M10 3a7 7 0 1 0 .001 13.999A7 7 0 0 0 10 3z" fill="#626262"/></svg> Save columns
-              <svg class="#{SC.css_class(:icon_s)}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <svg class="#{SC.css_class(:icon_s)} inline" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><path d="M10 3a7 7 0 1 0 .001 13.999A7 7 0 0 0 10 3z" fill="#626262"/></svg> Save columns
+              <svg class="#{SC.css_class(:icon_s)} inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
               </svg>
               </button>
