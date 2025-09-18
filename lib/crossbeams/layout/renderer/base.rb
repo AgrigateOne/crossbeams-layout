@@ -157,8 +157,6 @@ module Crossbeams
 
         # Styling for a field in error. Returns nil if the field is not in error.
         def error_state(newline: true)
-          puts '<<<< errstate'
-          puts @field_name
           return unless @page_config.form_errors
 
           errs = if @field_config[:parent_field]
@@ -166,8 +164,6 @@ module Crossbeams
                  else
                    @page_config.form_errors[@field_name]
                  end
-          puts 'errs:'
-          p errs
 
           # "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>" if errs
           %(<span class="font-normal text-red-700">#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>) if errs

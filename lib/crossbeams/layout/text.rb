@@ -29,6 +29,7 @@ module Crossbeams
         strong: '<strong%s>',
         small: '<p>'
       }.freeze
+      MARGIN_KEYS = %i[p h1 title_large h2 title_medium h3 title_small h4 title_x_small].freeze
       WRAP_END = {
         p: '</p>',
         h1: '</h1>',
@@ -192,7 +193,13 @@ module Crossbeams
         cls = [WRAP_CLASS[wrap], wrapper_classes].compact.join(' ')
         return '' if cls.empty?
 
-        %( class="#{cls}")
+        %( class="#{cls}#{margin(wrap)}")
+      end
+
+      def margin(wrap)
+        return '' unless MARGIN_KEYS.include?(wrap)
+
+        ' my-2'
       end
 
       def render_with_highlighter
