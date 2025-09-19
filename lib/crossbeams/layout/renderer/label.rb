@@ -24,7 +24,7 @@ module Crossbeams
           end
           # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{hint_trigger}</label> #{render_hidden(value)}
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
             #{'<div>&nbsp;&nbsp;</div>' if @field_config[:as_boolean]}
             #{label_render("#{id_base}_date", @caption, prefix: show_bool(value))} #{render_hidden(value)}
             #{render_field(value)}

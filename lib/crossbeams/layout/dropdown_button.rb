@@ -243,13 +243,13 @@ module Crossbeams
 
       def render_text # rubocop:disable Metrics/AbcSize
         if style == :back_button
-          "#{Icon.new(:back, css_class: 'align-middle mr-4').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2']).render}"
+          "#{Icon.new(:back, css_class: 'align-middle mr-4 inline-block').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2 inline-block']).render}"
         elsif @icon
-          "#{Icon.new(@icon, css_class: 'align-middle mr-4').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2']).render}"
+          "#{Icon.new(@icon, css_class: 'align-middle mr-4 inline-block').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2 inline-block']).render}"
         elsif @window
-          "#{Icon.new(:newwindow, css_class: 'align-middle mr-4').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2']).render}"
+          "#{Icon.new(:newwindow, css_class: 'align-middle mr-4 inline-block').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2 inline-block']).render}"
         else
-          "#{text} #{Icon.new(:dropdown, css_class: ['ml-2']).render}"
+          "#{text} #{Icon.new(:dropdown, css_class: ['ml-2 inline-block']).render}"
         end
       end
 

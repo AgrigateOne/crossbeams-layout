@@ -26,7 +26,7 @@ module Crossbeams
         def render
           @current_field = @field_name
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
           <div class="flex flex-row gap-2">
             <button type="button" class="#{SC.css_class(:button_secondary)} px-2" data-lookup-name="#{lookup_name}" data-lookup-key="#{lookup_key}" #{render_param_keys} #{render_param_values}>#{@caption}</button>#{render_show_field}#{render_hidden_fields}
             </div>

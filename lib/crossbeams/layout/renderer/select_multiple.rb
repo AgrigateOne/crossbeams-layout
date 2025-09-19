@@ -58,7 +58,7 @@ module Crossbeams
         def render_string(attrs)
           # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{css_style}#{wrapper_visibility}>#{hint_text}
+          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}"#{css_style}>#{hint_text}
             #{label_render(id_base, @caption)}
             #{backup_empty_select}
             <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple>

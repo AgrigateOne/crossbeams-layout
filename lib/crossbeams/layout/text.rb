@@ -100,7 +100,7 @@ module Crossbeams
       def render
         <<-HTML
         #{render_toggle_button}
-        <div class="crossbeams-field no-flex#{css_classes}"#{render_toggle_id}#{wrapper_id}#{wrapper_visibility}>
+        <div class="crossbeams-field no-flex#{css_classes}#{wrapper_visibility}"#{render_toggle_id}#{wrapper_id}>
         #{preformatted || !syntax.nil? ? preformatted_text : render_text}
         </div>
         HTML
