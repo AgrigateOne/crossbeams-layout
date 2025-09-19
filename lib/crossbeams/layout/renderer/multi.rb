@@ -42,7 +42,7 @@ module Crossbeams
           # HTML
           # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
             #{label_render(id_base, @caption)}
             <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple="multiple" data-multi="true"#{required_str}#{disabled_str}>
             #{make_prompt}#{build_1_or_2_options}

@@ -31,7 +31,7 @@ module Crossbeams
           # <div class="inline">#{hint_trigger}</div>
           # <input type="checkbox" value="t" class="#{SC.css_class(:checkbox)}" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
             <div>&nbsp;</div>
             <input #{name_attribute} type="hidden" value="f">
             <input type="checkbox" value="t" class="#{SC.css_class(:checkbox)}" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>

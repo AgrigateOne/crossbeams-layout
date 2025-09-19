@@ -30,7 +30,7 @@ module Crossbeams
           # HTML
           # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
             #{label_render(id_base, @caption)}
             <ol #{attrs.join(' ')} #{field_id}>
             #{item_renders}

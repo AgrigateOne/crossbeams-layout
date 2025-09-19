@@ -28,7 +28,7 @@ module Crossbeams
           # <label #{tooltip} class="#{SC.css_class(:label)}">#{caption}#{error_state}</label>
           # <div>#{hint_trigger}</div>
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
             #{label_render(id_base, caption, tooltip: tooltip) unless caption.empty?}
             <div class="cbl-radio cbl-input">
               #{render_buttons}

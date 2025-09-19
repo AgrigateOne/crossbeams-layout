@@ -46,12 +46,12 @@ module Crossbeams
         if dialog
           <<-HTML
             <div class="relative">
-              <a href="#{url}" class="#{position_classes}#{SC.css_class(:button_primary)}" data-help-link="Y" target="cbf-help">#{Icon.new(:question).render} #{text}</a>
+              <a href="#{url}" class="#{position_classes}#{SC.css_class(:button_primary)}" data-help-link="Y" target="cbf-help">#{Icon.new(:question, css_class: 'inline').render} #{text}</a>
             </div>
           HTML
         else
           <<-HTML
-            <a href="#{url}" class="#{position_classes}#{SC.css_class(:button_primary)}" data-help-link="Y" target="cbf-help">#{Icon.new(:question).render} #{text}</a>
+            <a href="#{url}" class="#{position_classes}#{SC.css_class(:button_primary)}" data-help-link="Y" target="cbf-help">#{Icon.new(:question, css_class: 'inline').render} #{text}</a>
           HTML
         end
       end
