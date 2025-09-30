@@ -19,7 +19,7 @@ module Crossbeams
         @id        = options[:id]
         @visible   = options.fetch(:visible, true)
         @inline    = options.fetch(:inline, false)
-        @items     = options[:items] || []
+        @items     = (Array(options[:items]) || []).compact
         @nodes     = []
         assert_options_ok!
       end
@@ -47,7 +47,7 @@ module Crossbeams
             <button type="button"#{attrs}>
               #{render_text}
             </button>
-            <div class="crossbeams-dropdown-content flex hidden absolute left-0 top-11 z-10 bg-white">
+            <div class="crossbeams-dropdown-content min-w-full flex hidden absolute left-0 top-11 z-10 bg-white">
               #{dropdown_items}
             </div>
           </div>
@@ -99,8 +99,8 @@ module Crossbeams
         ' inline-block'
       end
 
-      def dropdown_items
-        items.map do |item|
+      def dropdown_items # rubocop:disable Metrics/AbcSize
+        Array(items).map do |item|
           # Include icons for direct, popup, replace, loading at the start of the text...
           icon = if item[:loading_window]
                    Icon.new(:newwindow).render
@@ -229,7 +229,7 @@ module Crossbeams
       end
 
       def hidden_string
-        return '' if visible
+        return '' if visible && !Array(items).empty?
 
         ' hidden'
       end

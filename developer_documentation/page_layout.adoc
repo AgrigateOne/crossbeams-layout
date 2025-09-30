@@ -30,6 +30,45 @@ end
 <6> Optional. Call this to make the form call the action remotely - via javascript `fetch` call.
 <7> A field to be rendered. The form object should return a value when sent this method, and the UI rules should include a renderer spec for it.
 
+== Overview example
+
+[source,ruby]
+----
+layout = Crossbeams::Layout::Page.build(rules) do |page|
+  page.form_values form_values
+  page.form_errors form_errors
+  page.section do |section|
+    section.horizontal_group do |grp|
+      grp.add_caption 'A test'
+      grp.add_control(..)
+    end
+    section.row do |row|
+      row.column do |col|
+        col.add_text 'a'
+      end
+      row.column do |col|
+        col.add_text 'b'
+      end
+    end
+    section.row do |row|
+      row.column do |col|
+        col.add_text 'a'
+      end
+      row.blank_column
+    end
+  end
+  page.section do |section|
+    section.fold_up do |fold|
+      fold.form do |form|
+        form.action '/path/to/save_form'
+        form.remote!
+        form.add_field :a_field
+      end
+    end
+  end
+end
+----
+
 == Sections
 
 Sections are divisions in a page. They can optionally display a caption (the default is no caption).
@@ -40,6 +79,11 @@ They can be replaceable via AJAX calls - without affecting the rest of the page.
 A callback section is a special type of section that has no content initially.
 Its only attributes are the (optional) caption and the url to call once the page has loaded.
 The called url is responsible for providing the content. This is a useful way of loading the same page in different ways and in different pages. It can also be useful if the page will take some time to load, as the page will display a loading indicator while the section is being fetched.
+
+
+=== Horizontal groups
+
+Horizontal groups allow you to lay out controls horizontally inside a section instead of vertically.
 
 == Rows and columns
 
@@ -81,6 +125,10 @@ These are the methods used in building a page layout.
 |callback_section (link:/developer_documentation/page_layout.adoc#_callbacksection[CallbackSection])
 |block
 |builds a CalllbackSection using the block.
+
+|horizontal_group (link:/developer_documentation/page_layout.adoc#_horizontalgroup[HorizontalGroup])
+|block
+|builds an HorizontalGroup using the block.
 
 |row (link:/developer_documentation/page_layout.adoc#_row[Row])
 |block
@@ -126,6 +174,10 @@ These are the methods used in building a page layout.
 |url (String), interval (Integer), content (String)
 |Adds a section to the page that will poll the server with url every interval seconds.
 
+|add_help_link (link:/developer_documentation/non_field_renderers.adoc#_helplink[HelpLink])
+|options(Hash)
+|Add a button to launch a help page
+
 |render
 |
 |Renders all nodes in the page.
@@ -136,6 +188,10 @@ These are the methods used in building a page layout.
 
 |===
 |method |args |description
+
+|horizontal_group (link:/developer_documentation/page_layout.adoc#_horizontalgroup[HorizontalGroup])
+|block
+|builds an HorizontalGroup using the block.
 
 |row (link:/developer_documentation/page_layout.adoc#_row[Row])
 |block
@@ -223,6 +279,52 @@ These are the methods used in building a page layout.
 
 |===
 
+=== HorizontalGroup
+
+A `HorizontalGroup` will align its nodes on the right by default, but you can use `align_left!` to alter that.
+The caption when present is always rendered on the left.
+
+|===
+|method |args |description
+
+|align_left!
+|None
+|Aligns elements to the left (default is right). Note that the caption will always align left.
+
+|add_caption
+|text (String)
+|Add a caption (rendered as header1) to the left of the group.
+
+|add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
+|text (String), options (Hash)
+|Add a block of Text to the section.
+
+|add_control (link:/developer_documentation/non_field_renderers.adoc#_link[Link], link:/developer_documentation/non_field_renderers.adoc#_dropdownbutton[DropdownButton])
+|page_control_definition (Hash)
+|Add a control (link / button / dropdown button) to the section.
+
+|add_table (link:/developer_documentation/non_field_renderers.adoc#_table[Table])
+|rows (Array), columns (Array), options (Hash)
+|Add a table to the page.
+
+|add_address (link:/developer_documentation/non_field_renderers.adoc#_address[Address])
+|addresses (Array), opts (Hash)
+|Display a number of addresses.
+
+|add_contact_method (link:/developer_documentation/non_field_renderers.adoc#_contactmethod[ContactMethod])
+|contact_methods (Array), opts (Hash)
+|Display a number of contact_methods.
+
+|add_help_link (link:/developer_documentation/non_field_renderers.adoc#_helplink[HelpLink])
+|options(Hash)
+|Add a button to launch a help page
+
+|render
+|
+|Renders the group and all nodes within it.
+
+|===
+
 === CallbackSection
 
 You can use `caption = 'xxx'` and `url = `xxx'` to set the caption and callback URL.
@@ -276,9 +378,9 @@ You can use `caption = 'xxx'` and `url = `xxx'` to set the caption and callback 
 |===
 |method |args |description
 
-|column (link:/developer_documentation/page_layout.adoc#_column[Column])
-|column_size (Symbol) - optional -- :full/:half. Currently ignored.
-|Add a column within the row.
+|form (link:/developer_documentation/page_layout.adoc#_form[Form])
+|block
+|builds a form in the block.
 
 |fold_up (link:/developer_documentation/page_layout.adoc#_foldup[FoldUp])
 |block
@@ -493,6 +595,10 @@ You can use `caption = 'xxx'` and `url = `xxx'` to set the caption and callback 
 |section (link:/developer_documentation/page_layout.adoc#_section[Section])
 |block
 |builds a Section using the block.
+
+|horizontal_group (link:/developer_documentation/page_layout.adoc#_horizontalgroup[HorizontalGroup])
+|block
+|builds an HorizontalGroup using the block.
 
 |row (link:/developer_documentation/page_layout.adoc#_row[Row])
 |block

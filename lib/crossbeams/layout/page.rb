@@ -14,6 +14,7 @@ module Crossbeams
                         :repeating_request,
                         :row,
                         :section,
+                        :horizontal_group,
                         :table,
                         :text
 
@@ -74,13 +75,6 @@ module Crossbeams
         section = CallbackSection.new(page_config, nodes.length + 1)
         yield section
         @nodes << section
-      end
-
-      # Add a group that will render its children in a horizontal row
-      def horizontal_group
-        group = HorizontalGroup.new(page_config, sequence) # , nodes.length + 1)
-        yield group
-        @nodes << group
       end
 
       # Define a form in the page.

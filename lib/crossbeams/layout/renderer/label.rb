@@ -25,8 +25,8 @@ module Crossbeams
           # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{hint_trigger}</label> #{render_hidden(value)}
           <<-HTML
           <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
-            #{'<div>&nbsp;&nbsp;</div>' if @field_config[:as_boolean]}
-            #{label_render("#{id_base}_date", @caption, prefix: show_bool(value))} #{render_hidden(value)}
+            #{'<div class="h-3">&nbsp;&nbsp;</div>' if @field_config[:as_boolean]}
+            #{label_render("#{id_base}_date", @caption, prefix: show_bool(value), bool: @field_config[:as_boolean])} #{render_hidden(value)}
             #{render_field(value)}
           </div>
           HTML
@@ -40,13 +40,13 @@ module Crossbeams
           if value
             <<~HTML
               <span class="text-green-500">
-                #{Icon.render(:checkon, css_class: 'mr-1')}
+                #{Icon.render(:checkon, css_class: 'mr-2 inline')}
               </span>
             HTML
           else
             <<~HTML
-              <span class="text-red-500">
-                #{Icon.render(:checkoff, css_class: 'mr-1')}
+              <span class="text-red-400">
+                #{Icon.render(:checkoff, css_class: 'mr-2 inline')}
               </span>
             HTML
           end

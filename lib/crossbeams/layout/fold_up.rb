@@ -16,6 +16,7 @@ module Crossbeams
                         :notice,
                         :row,
                         :section,
+                        :horizontal_group,
                         :table,
                         :text
 
@@ -59,16 +60,10 @@ module Crossbeams
         return '' if invisible?
 
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
-        # <<~HTML
-        #  <details class="pv2"#{open_state}>
-        #    <summary class="pointer b blue shadow-3 pa1 mr2">#{caption_text}</summary>
-        #    #{row_renders}
-        #  </details>
-        # HTML
         # Chevron up and chevron down on left
         <<~HTML
-          <details class="p-4 rounded-lg mt-4 border border-slate-300 bg-white"#{open_state}>
-            <summary class="cursor-pointer #{SC.css_class(:h1)} p-2 my-3">#{caption_text}</summary>
+          <details class="rounded-lg mt-4 border border-slate-300 bg-white px-2"#{open_state}>
+            <summary class="cursor-pointer #{SC.css_class(:h1)} px-2 py-4">#{caption_text}</summary>
             #{row_renders}
           </details>
         HTML

@@ -50,6 +50,12 @@ module Crossbeams
         @nodes << Field.new(page_config, name, options)
       end
 
+      def form
+        form = Form.new(page_config, 1, nodes.length + 1)
+        yield form
+        @nodes << form
+      end
+
       # Add a control (button, link) to the column.
       #
       # @return [void]
