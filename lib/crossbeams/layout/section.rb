@@ -10,6 +10,7 @@ module Crossbeams
                         :contact_method,
                         :csrf,
                         :diff,
+                        :horizontal_group,
                         :fold_up,
                         :grid,
                         :notice,
@@ -20,6 +21,8 @@ module Crossbeams
 
       attr_accessor :caption, :hide_caption, :show_border
       attr_reader :sequence, :nodes, :page_config, :fit_height, :full_dialog_height, :half_dialog_height
+
+      SC = StylesConfig
 
       def initialize(page_config, sequence)
         @caption            = 'Section'
@@ -94,13 +97,6 @@ module Crossbeams
         @nodes << ProgressStep.new(page_config, steps, options)
       end
 
-      # Add a group that will render its children in a horizontal row
-      def horizontal_group
-        group = HorizontalGroup.new(page_config, sequence) # , nodes.length + 1)
-        yield group
-        @nodes << group
-      end
-
       # Add a control (button, link) to the page.
       #
       # @return [void]
@@ -159,7 +155,7 @@ module Crossbeams
         return '' if hide_caption
 
         # "<h2 class='ma1'>#{caption}</h2>"
-        %(<h2 class="text-2xl leading-tight m-4">#{caption}</h2>)
+        %(<h1 class="#{SC.css_class(:h1)} my-2">#{caption}</h2>)
       end
 
       def add_extra_css_classes

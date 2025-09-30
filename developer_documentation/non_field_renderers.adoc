@@ -49,7 +49,7 @@ section.add_control(control_type: :link, text: 'Do something', url: '/path/to/so
 |None. must be provided.
 
 |options - :style
-|How the link is styled - as a normal link, or to look like a button. A back button renders in blue with a left-pointing arrow glyph. An action button renders in green.
+|How the link is styled - as a normal link, or to look like a button. A back button renders in blue with a left-pointing arrow glyph. An action button renders in blue.
 |`:link`, `:button`, `:small_button`, `:action_button` or `:back_button`.
 |`:link`
 
@@ -134,7 +134,7 @@ section.add_control(control_type: :dropdown_button, text: 'Do something', style:
 |None. must be provided.
 
 |options - :style
-|How the button is styled - as a normal button or a back button (renders in blue with a left-pointing arrow glyph) or an action button (renders in green).
+|How the button is styled - as a normal button or a back button (renders in blue with a left-pointing arrow glyph) or an action button (renders in blue).
 |`:button`, `:small_button`, `:action_button` or `:back_button`.
 |`:button`
 
@@ -840,6 +840,11 @@ section.add_progress_step steps, position: 2, state_description: descs
 |An optional id to assign to the DOM element for the current step.
 |`String`.
 |`'cbl-current-step'`.
+
+|options - :bottom_margin
+|Optionally place a margin below the progress step
+|`Integer` with value between 1 and 7.
+|None.
 
 |===
 

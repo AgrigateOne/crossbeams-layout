@@ -67,7 +67,7 @@ module Crossbeams
 
       def standard_render
         <<~HTML
-          #{dom_start}<table class="thinbordertable#{top_margin}#{left_margin}">#{table_caption}
+          #{dom_start}#{table_caption}<table class="#{SC.css_class(:table)}">
             #{head if options[:has_columns]}
             <tbody>
               #{strings.join("\n")}
@@ -80,20 +80,20 @@ module Crossbeams
         return '' unless options[:top_margin]
         raise ArgumentError, 'Top margin must be in the range 0..7' unless (0..7).cover?(options[:top_margin])
 
-        " mt#{options[:top_margin]}"
+        " mt-#{options[:top_margin]}"
       end
 
       def left_margin
         return '' unless options[:left_margin]
         raise ArgumentError, 'Left margin must be in the range 0..7' unless (0..7).cover?(options[:left_margin])
 
-        " ml#{options[:left_margin]}"
+        " ml-#{options[:left_margin]}"
       end
 
       def table_caption
         return '' unless options[:caption]
 
-        "\n<caption>#{options[:caption]}</caption>"
+        %(<div class="#{SC.css_class(:table_caption)}">#{options[:caption]}</div>)
       end
 
       def pivot_render
@@ -101,7 +101,7 @@ module Crossbeams
 
         elements = pivot_rows
         <<~HTML
-          #{dom_start}<table class="thinbordertable#{top_margin}#{left_margin}">#{table_caption}
+          #{dom_start}#{table_caption}<table class="#{SC.css_class(:table)}">
             <tbody>
               #{pivot_strings(elements).join("\n")}
             </tbody>
@@ -119,32 +119,30 @@ module Crossbeams
       end
 
       def dom_start
-        return '' unless options[:dom_id]
+        dom_id = %( id="#{options[:dom_id]}") unless options[:dom_id]
 
-        %(<div id="#{options[:dom_id]}">)
+        %(<div#{dom_id} class="#{SC.css_class(:table_div)}#{top_margin}#{left_margin}">)
       end
 
       def dom_end
-        return '' unless options[:dom_id]
-
         '</div>'
       end
 
       def pivot_strings(elements)
         out = []
-        elements.each do |elem|
-          out << pivot_row(elem).join
+        elements.each_with_index do |elem, i|
+          out << pivot_row(elem, i).join
         end
         out
       end
 
-      def pivot_row(elem)
-        this_row = [%(<tr class="#{SC.css_class(:hover_row)}">)]
+      def pivot_row(elem, index) # rubocop:disable Metrics/AbcSize
+        this_row = [%(<tr class="#{SC.css_class(index.odd? ? :table_row_even : :table_row_odd)}">)]
         col = nil
         elem.each_with_index do |e, i|
           col = e if i.zero?
           this_row << if i.zero?
-                        %(<th class="#{SC.css_class(:table_th)}" align='right'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>)
+                        %(<th class="#{SC.css_class(:table_th)}" align='left'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>)
                       else
                         %(<td class="#{SC.css_class(:table_td)}"#{attr_for_col(col)} #{classes_for_col(col, e)} style='min-width:3rem'>#{e || '&nbsp;'}</td>)
                       end
@@ -161,11 +159,14 @@ module Crossbeams
       end
 
       def strings # rubocop:disable Metrics/AbcSize
+        odd = true
         rows.map do |row|
+          tr_css = odd ? SC.css_class(:table_row_odd) : SC.css_class(:table_row_even)
+          odd = !odd
           if columns.empty?
-            %(<tr class="#{SC.css_class(:hover_row)}">#{row.map { |r| %(<td class="#{SC.css_class(:table_td)}"#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>) }.join}</tr>)
+            %(<tr class="#{tr_css}">#{row.map { |r| %(<td class="#{SC.css_class(:table_td)}"#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>) }.join}</tr>)
           else
-            %(<tr class="#{SC.css_class(:hover_row)}">#{columns.map { |c| %(<td class="#{SC.css_class(:table_td)}"#{attr_for_col(c)}#{classes_for_col(c, row[c])}>#{transform_cell(c, row[c])}</td>) }.join}</tr>)
+            %(<tr class="#{tr_css}">#{columns.map { |c| %(<td class="#{SC.css_class(:table_td)}"#{attr_for_col(c)}#{classes_for_col(c, row[c])}>#{transform_cell(c, row[c])}</td>) }.join}</tr>)
           end
         end
       end

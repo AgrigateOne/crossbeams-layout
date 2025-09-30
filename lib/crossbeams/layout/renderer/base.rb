@@ -42,7 +42,7 @@ module Crossbeams
           !has_err.nil?
         end
 
-        def label_render(for_id, caption, inline: false, tooltip: nil, check_required: true, pointer: false, ignore_hint: false, prefix: '') # rubocop:disable Metrics/ParameterLists
+        def label_render(for_id, caption, inline: false, tooltip: nil, check_required: true, pointer: false, ignore_hint: false, prefix: '', bool: false) # rubocop:disable Metrics/ParameterLists, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
           css_class = field_has_errors? ? SC.css_class(:label_in_err) : SC.css_class(:label)
           # css_class = if inline
           #               field_has_errors? ? SC.css_class(:label_inline_in_err) : SC.css_class(:label_inline)
@@ -51,8 +51,9 @@ module Crossbeams
           #             end
           toolt = tooltip.nil? ? '' : " #{tooltip}"
           req = check_required && @field_config[:required] == true ? ' requiredlabel' : ''
+          xtra_css = ' py-4' if bool
           point = pointer ? ' cursor-pointer' : ''
-          %(<div class="#{inline ? 'inline' : 'block'}">#{prefix}<label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
+          %(<div class="#{inline ? 'inline' : 'block'}#{xtra_css}">#{prefix}<label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
         end
 
         # The class for the field wrapper.
@@ -186,7 +187,7 @@ module Crossbeams
 
           Icon.render(:question,
                       # css_class: 'ml1 blue pointer',
-                      css_class: 'mx-1 text-blue-500 cursor-pointer',
+                      css_class: 'mx-1 text-blue-500 cursor-pointer inline',
                       attrs: [
                         'title="Click for hint"',
                         "data-cb-hint-for='#{@page_config.name}_#{@field_name}'"

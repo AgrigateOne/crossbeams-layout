@@ -20,6 +20,7 @@ module Crossbeams
         @sequence = sequence
         @nodes = []
         @page_config = page_config
+        @caption = nil
         @align = :right
       end
 
@@ -41,6 +42,10 @@ module Crossbeams
         @nodes << HelpLink.new(page_control_definition) if page_control_definition[:control_type] == :help_link
       end
 
+      def add_caption(caption)
+        @caption = caption
+      end
+
       def add_help_link(options)
         @nodes << HelpLink.new(options)
       end
@@ -58,11 +63,20 @@ module Crossbeams
 
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
         just = @align == :right ? 'justify-end' : 'justify-start'
-        <<~HTML
-          <div class="flex flex-row gap-4 #{just} flex-wrap">
-            #{row_renders}
-          </div>
-        HTML
+        if @caption
+          <<~HTML
+            <div class="flex flex-row gap-4 #{just} flex-wrap">
+              <h1 class="#{SC.css_class(:h1)} pt-2 mr-auto">#{@caption}</h1>
+              #{row_renders}
+            </div>
+          HTML
+        else
+          <<~HTML
+            <div class="flex flex-row gap-4 #{just} flex-wrap">
+              #{row_renders}
+            </div>
+          HTML
+        end
       end
 
       # Are there any Javascript snippets to be included in the page's DOMContentLoaded event?
@@ -85,4 +99,3 @@ module Crossbeams
     end
   end
 end
-

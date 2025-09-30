@@ -8,7 +8,7 @@ module Crossbeams
 
       build_methods_for :csrf
       attr_reader :steps, :page_config, :position, :state_description,
-                  :show_finished, :current_step_id, :size
+                  :show_finished, :current_step_id, :size, :bottom_margin
 
       SIZES = %i[small medium default].freeze
 
@@ -63,7 +63,7 @@ module Crossbeams
 
       def render
         <<~HTML
-          <div class="w-2/3 my-3 mx-auto overflow-x-auto scrollbar-hidden"#{max_size}>
+          <div class="w-2/3 my-3 mx-auto overflow-x-auto scrollbar-hidden#{xtra_class}"#{max_size}>
             <div class="flex pb-5 px-10 m-auto" style="min-width: 19.5rem; width: #{status_bar_width}%;">
               #{render_steps}
             </div>
@@ -72,6 +72,12 @@ module Crossbeams
       end
 
       private
+
+      def xtra_class
+        return '' unless bottom_margin
+
+        " mb-#{bottom_margin}"
+      end
 
       def max_size
         case size
@@ -216,7 +222,12 @@ module Crossbeams
 
       def check_size(opts)
         @size = opts[:size] || :default
-        raise ArgumentError, "Size must be one of #{SIZES.join(', ')}" unless SIZES.include?(@size)
+        raise ArgumentError, "Crossbeams::Layout::ProgressStep: Size must be one of #{SIZES.join(', ')}" unless SIZES.include?(@size)
+
+        @bottom_margin = opts[:bottom_margin].to_i
+        @bottom_margin = nil if bottom_margin.zero?
+        return if bottom_margin.nil?
+        raise ArgumentError, 'Crossbeams::Layout::ProgressStep: Bottom margin must be between 1 and 7' unless (1..7).include?(bottom_margin)
       end
     end
   end

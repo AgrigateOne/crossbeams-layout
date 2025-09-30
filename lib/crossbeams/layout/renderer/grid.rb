@@ -289,7 +289,7 @@ module Crossbeams
           <div id="#{grid_id}_toolbtns" class="flex justify-between flex-row pt-3 pb-3">
             <div class="flex items-center gap-4 pt-2">
               #{search_box}
-              <span>
+              <span class="#{SC.css_class(:h1)}">
                 #{caption}
               </span>
             </div>

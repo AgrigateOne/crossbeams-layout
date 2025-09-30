@@ -73,6 +73,13 @@ module Crossbeams
               blk.call(section)
               @nodes << section
             end
+          # Add a group that will render its children in a horizontal row
+          when :horizontal_group
+            define_method(:horizontal_group) do |&blk|
+              group = HorizontalGroup.new(page_config, nodes.length + 1)
+              blk.call(group)
+              @nodes << group
+            end
           else
             raise ArgumentError, "#{node_name} is not a valid option for `build_methods_for`"
           end
