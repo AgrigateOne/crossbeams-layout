@@ -6,10 +6,10 @@ module Crossbeams
     class StylesConfig
       extend Dry::Configurable
 
-      setting :h1, default: 'text-xl tracking-normal font-medium leading-none' # title-large
+      setting :h1, default: 'text-xl tracking-normal font-medium leading-none'  # title-large
       setting :h2, default: 'text-lg tracking-normal font-medium leading-tight' # title-medium
       setting :h3, default: 'text-base tracking-normal leading-4 font-semibold' # title-small
-      setting :h4, default: 'text-sm tracking-normal font-semibold leading-6' # title-x-small
+      setting :h4, default: 'text-sm tracking-normal font-semibold leading-6'   # title-x-small
       setting :em, default: 'italic'
       setting :strong, default: 'font-semibold'
       setting :p, default: 'text-base tracking-normal leading-6 font-normal'
@@ -25,14 +25,18 @@ module Crossbeams
       # setting :label_inline, default: 'text-base font-normal tracking-normal leading-6 mb-1'
       # setting :label_inline_in_err, default: 'text-base font-normal tracking-normal leading-6 mb-1 text-red-700'
 
-      setting :input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
-      setting :input_in_err, default: 'w-full rounded border border-red-700 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-red-600 focus:ring-offset-0 focus:border-red-600 focus-visible:border-red-600 text-red-700'
+      # setting :input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
+      setting :input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-steel-blue-500 focus:border-steel-blue-500 text-slate-800'
+      # setting :input_in_err, default: 'w-full rounded border border-red-700 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-red-600 focus:ring-offset-0 focus:border-red-600 focus-visible:border-red-600 text-red-700'
+      setting :input_in_err, default: 'w-full rounded border border-red-200 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-red-500 focus:border-red-500 text-red-700'
 
       setting :checkbox, default: 'cursor-pointer rounded mr-2 w-5 h-5 outline-none checked:text-french-blue-500 hover:text-french-blue-600 focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-steel-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-slate-400 accent-french-blue-600'
       setting :checkbox_in_err, default: 'border-red-600 ring-red-600 cursor-pointer rounded mr-2 w-5 h-5 outline-none checked:text-french-blue-500 hover:text-french-blue-600 focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-steel-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-slate-400 accent-french-blue-600'
 
-      setting :rmd_input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
-      setting :rmd_input_in_err, default: 'w-full rounded border border-red-700 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-red-600 focus:ring-offset-0 focus:border-red-600 focus-visible:border-red-600 text-red-700'
+      # setting :rmd_input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
+      setting :rmd_input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-steel-blue-500 focus:border-steel-blue-500 text-slate-800'
+      # setting :rmd_input_in_err, default: 'w-full rounded border border-red-700 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-red-600 focus:ring-offset-0 focus:border-red-600 focus-visible:border-red-600 text-red-700'
+      setting :rmd_input_in_err, default: 'w-full rounded border border-red-200 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-red-500 focus:border-red-500 text-red-700'
 
       # setting :icon, default: 'inline-block w-5 h-5 fill-current relative top-0.5'
       setting :icon, default: 'w-5 h-5 fill-current'
