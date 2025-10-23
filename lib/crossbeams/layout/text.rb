@@ -100,7 +100,7 @@ module Crossbeams
       def render
         <<-HTML
         #{render_toggle_button}
-        <div class="crossbeams-field no-flex#{css_classes}#{wrapper_visibility}"#{render_toggle_id}#{wrapper_id}>
+        <div class="crossbeams-field no-flex#{css_classes}"#{render_toggle_id}#{wrapper_id}>
         #{preformatted || !syntax.nil? ? preformatted_text : render_text}
         </div>
         HTML
@@ -108,13 +108,13 @@ module Crossbeams
 
       private
 
-      # Initially hide the wrapper.
-      def wrapper_visibility
-        @options[:hide_on_load] = !@options[:initially_visible] if @options&.key?(:initially_visible)
-        return '' unless @options[:hide_on_load]
+      # # Initially hide the wrapper.
+      # def wrapper_visibility
+      #   @options[:hide_on_load] = !@options[:initially_visible] if @options&.key?(:initially_visible)
+      #   return '' unless @options[:hide_on_load]
 
-        ' hidden'
-      end
+      #   ' hidden'
+      # end
 
       def wrapper_id
         return '' unless @options[:dom_id]
@@ -123,9 +123,11 @@ module Crossbeams
       end
 
       def css_classes
-        return '' unless @options[:css_classes]
+        @options[:hide_on_load] = !@options[:initially_visible] if @options&.key?(:initially_visible)
+        return '' unless @options[:css_classes] || @options[:hide_on_load]
 
-        " #{@options[:css_classes]}"
+        hide = @options[:hide_on_load] ? ' hidden' : ''
+        " #{@options[:css_classes]}#{hide}"
       end
 
       def render_toggle_button
@@ -156,7 +158,7 @@ module Crossbeams
         return '' unless toggle_button
         return '' if toggle_element_id
 
-        " id='#{toggle_id}' hidden"
+        " id='#{toggle_id}'"
       end
 
       def toggle_id

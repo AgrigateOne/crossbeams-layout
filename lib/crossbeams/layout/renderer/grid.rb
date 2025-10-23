@@ -347,7 +347,8 @@ module Crossbeams
         end
 
         def self.file_name_from_caption(caption)
-          "#{(caption || 'grid_contents').gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-')}.csv"
+          fn = caption.nil? || caption.empty? ? 'grid_contents' : caption
+          "#{fn.gsub('&nbsp;', 'grid_contents').gsub(%r{[/:*?"\\<>\|\r\n]}i, '-')}.csv"
         end
 
         def self.save_multiselect_button(grid_id, options)
