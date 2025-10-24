@@ -63,7 +63,8 @@ module Crossbeams
         def apply_classes
           cls = ['w-full']
           cls << 'searchable-select' unless @native
-          cls << 'cbl-input' if @native
+          # cls << 'cbl-input' if @native
+          cls << SC.css_class(:select) if @native
           cls
         end
 

@@ -22,7 +22,7 @@ module Crossbeams
           <<~HTML
             <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
               #{label_render(id_base, @caption)}
-              <textarea #{name_attribute} #{field_id} class="w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600" #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>
+              <textarea #{name_attribute} #{field_id} class="#{SC.css_class(:textarea)}" #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>
             </div>
           HTML
         end
