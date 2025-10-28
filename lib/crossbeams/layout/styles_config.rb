@@ -60,6 +60,10 @@ module Crossbeams
       setting :secondary_h_bg, default: 'french-blue-50'
       setting :show_check_on, default: 'text-green-700'
       setting :show_check_off, default: 'text-red-700'
+      setting :bg_green, default: 'bg-green-500'
+      setting :bg_amber, default: 'bg-yellow-500'
+      setting :bg_red, default: 'bg-red-500'
+      setting :bg_blue, default: 'bg-blue-500'
 
       setting :secondary_colour, default: 'slate-800'
       setting :secondary_bg, default: 'slate-200'

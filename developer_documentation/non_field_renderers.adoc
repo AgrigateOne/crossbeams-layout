@@ -284,6 +284,11 @@ a|* :p
 |String
 |None
 
+|options - :no_container
+|If true, the text will render without a containing div. Use this to render HTML that should not be affected by a containing div.
+|`true` or `false`
+|`false`
+
 |options - :hide_on_load
 |HTML `hidden` attribute for the field wrapper. If `true`, the field and label will be hidden, but can be shown again e.g. by a `:show_element` behaviour. Opposite behaviour of `initially_visible`.
 |`true` or `false`

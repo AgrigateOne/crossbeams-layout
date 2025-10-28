@@ -58,6 +58,10 @@ module Crossbeams
         @nodes.all?(&:hidden?)
       end
 
+      def dom_id(val)
+        @dom_id = val
+      end
+
       def render
         return '' if invisible?
 
@@ -65,18 +69,24 @@ module Crossbeams
         just = @align == :right ? 'justify-end' : 'justify-start'
         if @caption
           <<~HTML
-            <div class="flex flex-row gap-4 #{just} flex-wrap">
+            <div #{dom_id_render}class="flex flex-row gap-4 #{just} flex-wrap">
               <h1 class="#{SC.css_class(:h1)} pt-2 mr-auto">#{@caption}</h1>
               #{row_renders}
             </div>
           HTML
         else
           <<~HTML
-            <div class="flex flex-row gap-4 #{just} flex-wrap">
+            <div #{dom_id_render}class="flex flex-row gap-4 #{just} flex-wrap">
               #{row_renders}
             </div>
           HTML
         end
+      end
+
+      def dom_id_render
+        return '' unless @dom_id
+
+        %(id="#{@dom_id}" )
       end
 
       # Are there any Javascript snippets to be included in the page's DOMContentLoaded event?

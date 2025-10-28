@@ -8,7 +8,8 @@ module Crossbeams
     class ExamplesGenerator
       attr_reader :classes, :style
 
-      SC = StylesConfig.config
+      SCC = StylesConfig.config
+      SC = StylesConfig
 
       def initialize(classes = :all, style: :tc)
         @classes = classes
@@ -36,6 +37,7 @@ module Crossbeams
         @out << generate_contact_method if %i[all contact_method].include? classes
         @out << generate_grid if %i[all grid].include? classes
         @out << generate_diff if %i[all diff].include? classes
+        @out << generate_miscellaneous if %i[all generate_miscellaneous].include? classes
         @out << generate_loading_message if %i[all loading_message].include? classes
         @out << generate_repeating_request if %i[all repeating_request].include? classes
         @out << generate_callback_section if %i[all callback_section].include? classes
@@ -47,7 +49,7 @@ module Crossbeams
       def add_class(key)
         return '' if style == :tc
 
-        %( class="#{SC.send(key)}")
+        %( class="#{SCC.send(key)}")
       end
 
       def build_contents # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
@@ -70,6 +72,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#contact_method">Contact</a></li>) if %i[all contact_method].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#grid">Grid</a></li>) if %i[all grid].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#diff">Diff</a></li>) if %i[all diff].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#miscellaneous">Miscellaneous styling</a></li>) if %i[all miscellaneous].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#loading_message">Loading Mesage</a></li>) if %i[all loading_message].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#repeating_request">Repeating Request</a></li>) if %i[all repeating_request].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#callback_section">Callback Section</a></li>) if %i[all callback_section].include? classes
@@ -123,6 +126,14 @@ module Crossbeams
         section = Section.new({}, 6)
         section.half_dialog_height!
         section.add_text 'Half Dialog height section'
+        ar << section.render
+
+        section = Section.new({}, 6)
+        section.add_text 'Section with horizontal group showing button'
+        section.horizontal_group do |grp|
+          grp.add_text 'Group'
+          grp.add_control control_type: :link, text: 'A Button', url: '/', style: :button
+        end
         ar << section.render
         ar.join(separator)
       end
@@ -401,6 +412,16 @@ module Crossbeams
         sec.callback_url '/nonexistent/path/for/callback'
         ar << sec.render
         ar.join(separator)
+      end
+
+      def generate_miscellaneous
+        ar = [head('Miscellaneous', 'miscellaneous')]
+        [[:bg_green, 'GREEN'], [:bg_amber, 'AMBER'], [:bg_red, 'RED'], [:bg_blue, 'BLUE']].each do |key, name|
+          ar << %(<p>Background colour :#{key} <span class="px-2 py-2 #{SC.css_class(key)}">#{name}</span></p>)
+        end
+        ar << %(<p>Boolean display :show_check_on <span class="px-2 py-2 #{SC.css_class(:show_check_on)}">#{Icon.render(:checkon)}</span></p>)
+        ar << %(<p>Boolean display :show_check_off <span class="px-2 py-2 #{SC.css_class(:show_check_off)}">#{Icon.render(:checkoff)}</span></p>)
+        ar.join('<br>')
       end
 
       # multipart

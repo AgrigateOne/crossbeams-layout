@@ -98,12 +98,18 @@ module Crossbeams
       end
 
       def render
-        <<-HTML
-        #{render_toggle_button}
-        <div class="crossbeams-field no-flex#{css_classes}"#{render_toggle_id}#{wrapper_id}>
-        #{preformatted || !syntax.nil? ? preformatted_text : render_text}
-        </div>
-        HTML
+        if @options[:no_container]
+          <<~HTML
+            #{preformatted || !syntax.nil? ? preformatted_text : render_text}
+          HTML
+        else
+          <<~HTML
+            #{render_toggle_button}
+            <div class="crossbeams-field no-flex#{css_classes}"#{render_toggle_id}#{wrapper_id}>
+              #{preformatted || !syntax.nil? ? preformatted_text : render_text}
+            </div>
+          HTML
+        end
       end
 
       private
@@ -118,6 +124,7 @@ module Crossbeams
 
       def wrapper_id
         return '' unless @options[:dom_id]
+        raise ArgumentError, 'Crossbeams::Layout::Text cannot support both ":no_container" and a ":dom_id"' if @options[:no_container]
 
         %( id="#{@options[:dom_id]}")
       end
