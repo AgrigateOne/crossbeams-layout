@@ -16,6 +16,7 @@ module Crossbeams
       setting :bodycopy, default: 'text-base tracking-normal leading-6 font-normal'
       setting :bodycopy_small, default: 'text-sm tracking-normal leading-6 font-normal'
 
+      setting :row_maxwidth, default: 'max-width: 1200px;'
       setting :ul, default: 'list-disc list-inside'
       setting :ol, default: 'list-decimal list-inside'
       setting :li, default: 'list-item'
@@ -74,6 +75,7 @@ module Crossbeams
       setting :notice, default: 'm-2 flex flex-row justify-start items-center gap-2 px-3 py-4 mb-4 rounded'
       setting :note_info, default: 'bg-blue-100 text-sky-800'
       setting :note_success, default: 'bg-green-100 text-green-600'
+      setting :note_success_contrast, default: 'bg-lime-100 text-green-600'
       setting :note_warning, default: '$:bg_warning$ $:text_warning$'
       setting :note_error, default: 'bg-red-100 text-red-700'
 

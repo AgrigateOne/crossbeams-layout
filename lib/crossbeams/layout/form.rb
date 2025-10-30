@@ -260,7 +260,7 @@ module Crossbeams
                           HTML
                         end
         <<~HTML
-          #{render_caption}<form #{render_id}class="crossbeams-form" #{data_grid_id}#{gridfilter}#{as_loading}action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
+          #{render_caption}<form #{render_id}class="crossbeams-form"#{maxwidth_style} #{data_grid_id}#{gridfilter}#{as_loading}action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
             #{error_head}
             #{csrf_tag}
             #{form_method_str}
@@ -271,6 +271,12 @@ module Crossbeams
       end
 
       private
+
+      def maxwidth_style
+        # return '' unless @nodes.first.is_a?(Row)
+
+        %( style="#{SC.css_class(:row_maxwidth)}")
+      end
 
       def as_loading
         return '' unless @submit_in_loading_page

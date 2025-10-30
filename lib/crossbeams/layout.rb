@@ -59,6 +59,10 @@ require 'crossbeams/layout/renderer/textarea'
 require 'crossbeams/layout/renderer/field_factory'
 require 'crossbeams/layout/renderer/field_types'
 
+# Load the Dashboard components
+base = File.expand_path('layout/dashboard', __dir__)
+Dir[File.join(base, '*.rb')].sort.each { |f| require f }
+
 module Crossbeams
   # Layout an HTML page using DSL.
   module Layout
