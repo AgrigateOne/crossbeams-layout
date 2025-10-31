@@ -11,7 +11,12 @@ module Crossbeams
       def initialize
         @head_label = nil
         @head_val = nil
+        @stretch = true
         @nodes = []
+      end
+
+      def no_stretch!
+        @stretch = false
       end
 
       def header(val)
@@ -46,19 +51,31 @@ module Crossbeams
         @nodes << DashboardNetworkState.new(options)
       end
 
-      def add_hover_button(label, hover_text:)
+      def add_popup_button(label, popup_text: nil, popup_table: {})
         id = Random.rand
+        html = popup_text || make_table(popup_table)
         @nodes << <<~HTML
           <div class="border-t py-1 mt-2 border-slate-300">
-            <div style="display:none" data-cb-hint="dash-hb-#{id}">#{hover_text}</div>
+            <div style="display:none" data-cb-hint="dash-hb-#{id}">#{html}</div>
             <button type="button" data-cb-hint-for="dash-hb-#{id}" class="#{SC.css_class(:button_primary)}">#{label}</button>
+          </div>
+        HTML
+      end
+
+      def add_table(rows, cols, caption = nil, opts = {})
+        caption_html = %(<div class="font-medium">#{caption}</div>) unless caption.nil?
+        html = make_table({ rows: rows, cols: cols }.merge(opts))
+        @nodes << <<~HTML
+          <div class="border-t py-1 mt-2 border-slate-300">
+            #{caption_html}
+            #{html}
           </div>
         HTML
       end
 
       def render
         <<-HTML
-          <div class="grid grid-rows-[auto_1fr] bg-white border rounded-md border-slate-300 p-2">
+          <div class="#{stretch_class}grid grid-rows-[auto_1fr] bg-white border rounded-md border-slate-300 p-2 max-w-md">
             #{head}
             #{nodes.map { |n| n.is_a?(String) ? n : n.render }.join("\n")}
           </div>
@@ -66,6 +83,10 @@ module Crossbeams
       end
 
       private
+
+      def stretch_class
+        @stretch ? '' : 'self-baseline '
+      end
 
       def head
         return split_header_render if @split_header
@@ -93,6 +114,11 @@ module Crossbeams
             end.join("\n")}
           </div>
         HTML
+      end
+
+      def make_table(opts)
+        tbl = Table.new({}, opts.delete(:rows), opts.delete(:cols), opts)
+        tbl.render
       end
     end
   end

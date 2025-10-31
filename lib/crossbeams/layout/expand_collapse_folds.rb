@@ -43,11 +43,11 @@ module Crossbeams
       private
 
       def expand_text
-        @options[:mini] ? Icon.new(:plus).render : "#{Icon.new(:plus).render} Expand all"
+        @options[:mini] ? Icon.new(:plus).render : "#{Icon.new(:plus, css_class: 'inline').render} Expand all"
       end
 
       def collapse_text
-        @options[:mini] ? Icon.new(:minus).render : "#{Icon.new(:minus).render} Collapse all"
+        @options[:mini] ? Icon.new(:minus).render : "#{Icon.new(:minus, css_class: 'inline').render} Collapse all"
       end
 
       def title(open)

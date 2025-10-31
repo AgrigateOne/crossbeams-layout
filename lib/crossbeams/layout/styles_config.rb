@@ -71,6 +71,7 @@ module Crossbeams
 
       setting :text_warning, default: 'text-orange-600'
       setting :bg_warning, default: 'bg-orange-100'
+      setting :text_error, default: 'text-red-700'
       # setting :notice, default: 'm-2 p-1.5 border border-steel-blue-500'
       setting :notice, default: 'm-2 flex flex-row justify-start items-center gap-2 px-3 py-4 mb-4 rounded'
       setting :note_info, default: 'bg-blue-100 text-sky-800'
