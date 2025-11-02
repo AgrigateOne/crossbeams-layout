@@ -81,13 +81,16 @@ module Crossbeams
       setting :note_error, default: 'bg-red-100 text-red-700'
 
       setting :table_div, default: 'border border-slate-300 rounded-lg overflow-hidden'
+      setting :table_div_no_b, default: 'overflow-hidden'
       setting :table, default: 'w-full h-full border-collapse overflow-auto'
       setting :table_row_odd, default: '$:hover_row$'
       setting :table_row_even, default: '$:hover_row$ bg-slate-50'
       # setting :table_info_th, default: 'p-4 border-r border-b border-slate-200 text-slate-500'
       # setting :table_info_td, default: 'px-4 py-2'
       setting :table_th, default: 'p-5 py-2 border-t border-slate-300 text-slate-800 font-semibold'
+      setting :table_th_no_b, default: 'p-5 py-2 text-slate-800 font-semibold'
       setting :table_td, default: 'px-5 py-2 border-t border-slate-300'
+      setting :table_td_no_b, default: 'px-5 py-2'
       setting :table_caption, default: 'p-5 py-2 border-b border-slate-300 text-slate-800 font-semibold'
 
       setting :rmd_table_div, default: 'w-full mt-1 border border-slate-300 rounded-lg overflow-hidden'

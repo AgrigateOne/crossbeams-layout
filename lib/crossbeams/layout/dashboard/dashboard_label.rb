@@ -16,7 +16,7 @@ module Crossbeams
         centre = @opts[:center] && !@opts[:banner] ? ' text-center' : ''
         <<-HTML
           <div class="flex flex-col">
-            <span class="#{font_weight}#{centre}#{banner}">#{@label}</span>
+            <span class="#{font_weight}#{centre}#{size}#{colour}#{banner}">#{@label}</span>
           </div>
         HTML
       end
@@ -31,6 +31,26 @@ module Crossbeams
                 'bg-purple-200 text-purple-600'
               end
         " p-2 text-center #{col}"
+      end
+
+      def size
+        case @opts[:size]
+        when :large
+          ' text-5xl'
+        when :big
+          ' text-3xl'
+        else
+          ''
+        end
+      end
+
+      def colour
+        case @opts[:colour]
+        when :orange
+          ' text-orange-600'
+        else
+          ''
+        end
       end
 
       def font_weight

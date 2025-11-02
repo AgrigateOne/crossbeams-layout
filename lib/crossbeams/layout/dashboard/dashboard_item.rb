@@ -47,6 +47,10 @@ module Crossbeams
         @nodes << DashboardNumber.new(val, options)
       end
 
+      def add_percentage(val, options = {})
+        @nodes << DashboardPercentage.new(val, options)
+      end
+
       def add_network_state(options = {})
         @nodes << DashboardNetworkState.new(options)
       end
@@ -55,7 +59,7 @@ module Crossbeams
         id = Random.rand
         html = popup_text || make_table(popup_table)
         @nodes << <<~HTML
-          <div class="border-t py-1 mt-2 border-slate-300">
+          <div class="border-t py-1 mt-2 border-slate-300 text-center">
             <div style="display:none" data-cb-hint="dash-hb-#{id}">#{html}</div>
             <button type="button" data-cb-hint-for="dash-hb-#{id}" class="#{SC.css_class(:button_primary)}">#{label}</button>
           </div>
@@ -65,8 +69,9 @@ module Crossbeams
       def add_table(rows, cols, caption = nil, opts = {})
         caption_html = %(<div class="font-medium">#{caption}</div>) unless caption.nil?
         html = make_table({ rows: rows, cols: cols }.merge(opts))
+        # <div class="border-t py-1 mt-2 border-slate-300">
         @nodes << <<~HTML
-          <div class="border-t py-1 mt-2 border-slate-300">
+          <div class="py-1 mt-2">
             #{caption_html}
             #{html}
           </div>

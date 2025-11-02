@@ -23,7 +23,14 @@ module Crossbeams
         @rows        = Array(rows)
         @columns     = columns_from_rows if @columns.empty?
         @options     = { has_columns: !@columns.empty? }.merge(options)
+        table_classes(options[:no_border])
         @nodes       = []
+      end
+
+      def table_classes(no_border)
+        @tc_div = no_border ? :table_div_no_b : :table_div
+        @tc_th = no_border ? :table_th_no_b : :table_th
+        @tc_td = no_border ? :table_td_no_b : :table_td
       end
 
       # Is this node invisible?
@@ -121,7 +128,7 @@ module Crossbeams
       def dom_start
         dom_id = %( id="#{options[:dom_id]}") unless options[:dom_id]
 
-        %(<div#{dom_id} class="#{SC.css_class(:table_div)}#{top_margin}#{left_margin}">)
+        %(<div#{dom_id} class="#{SC.css_class(@tc_div)}#{top_margin}#{left_margin}">)
       end
 
       def dom_end
@@ -142,9 +149,9 @@ module Crossbeams
         elem.each_with_index do |e, i|
           col = e if i.zero?
           this_row << if i.zero?
-                        %(<th class="#{SC.css_class(:table_th)}" align='left'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>)
+                        %(<th class="#{SC.css_class(@tc_th)}" align='left'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>)
                       else
-                        %(<td class="#{SC.css_class(:table_td)}"#{attr_for_col(col)} #{classes_for_col(col, e)} style='min-width:3rem'>#{e || '&nbsp;'}</td>)
+                        %(<td class="#{SC.css_class(@tc_td)}"#{attr_for_col(col)} #{classes_for_col(col, e)} style='min-width:3rem'>#{e || '&nbsp;'}</td>)
                       end
         end
         this_row << '</tr>'
@@ -155,7 +162,7 @@ module Crossbeams
       end
 
       def format_column_headers
-        columns.map { |c| %(<th class="#{SC.css_class(:table_th)}">#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>) }
+        columns.map { |c| %(<th class="#{SC.css_class(@tc_th)}">#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>) }
       end
 
       def strings # rubocop:disable Metrics/AbcSize
@@ -164,9 +171,9 @@ module Crossbeams
           tr_css = odd ? SC.css_class(:table_row_odd) : SC.css_class(:table_row_even)
           odd = !odd
           if columns.empty?
-            %(<tr class="#{tr_css}">#{row.map { |r| %(<td class="#{SC.css_class(:table_td)}"#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>) }.join}</tr>)
+            %(<tr class="#{tr_css}">#{row.map { |r| %(<td class="#{SC.css_class(@tc_td)}"#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>) }.join}</tr>)
           else
-            %(<tr class="#{tr_css}">#{columns.map { |c| %(<td class="#{SC.css_class(:table_td)}"#{attr_for_col(c)}#{classes_for_col(c, row[c])}>#{transform_cell(c, row[c])}</td>) }.join}</tr>)
+            %(<tr class="#{tr_css}">#{columns.map { |c| %(<td class="#{SC.css_class(@tc_td)}"#{attr_for_col(c)}#{classes_for_col(c, row[c])}>#{transform_cell(c, row[c])}</td>) }.join}</tr>)
           end
         end
       end
