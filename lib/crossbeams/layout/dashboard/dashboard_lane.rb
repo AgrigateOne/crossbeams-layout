@@ -58,7 +58,7 @@ module Crossbeams
       def show_no_data
         return nil if @no_data.nil?
 
-        %(<div class="p-2 bg-blue-200 text-blue-900">#{@no_data}</div>)
+        %(<div class="p-7 bg-blue-200 text-blue-900">#{@no_data}</div>)
       end
     end
   end
