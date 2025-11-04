@@ -41,6 +41,7 @@ module Crossbeams
         @out << generate_loading_message if %i[all loading_message].include? classes
         @out << generate_repeating_request if %i[all repeating_request].include? classes
         @out << generate_callback_section if %i[all callback_section].include? classes
+        @out << generate_dashboard if %i[all dashboard].include? classes
         @out
       end
 
@@ -76,6 +77,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#loading_message">Loading Mesage</a></li>) if %i[all loading_message].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#repeating_request">Repeating Request</a></li>) if %i[all repeating_request].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#callback_section">Callback Section</a></li>) if %i[all callback_section].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#dashboard">Dashboard</a></li>) if %i[all dashboard].include? classes
         @out << '</ol>'
       end
 
@@ -534,6 +536,48 @@ module Crossbeams
       end
 
       # FORM + FORM-BUTTON + FIELDS
+
+      def generate_dashboard
+        ar = [head('Dashboard', 'dashboard')]
+        dash = Dashboard.new(caption: 'Example Dashboard')
+        dash.add_sub_caption 'A sub-caption...'
+
+        dash.lane do |lane|
+          lane.caption 'Lane caption'
+          lane.item_set do |items|
+            items.item do |item|
+              item.header 'Plain head'
+              item.add_percentage 60
+              item.add_label_val_array [['Array', 1], ['of', 2], ['elements', 3]]
+            end
+            items.item do |item|
+              item.split_header %w[Split Header]
+              item.add_percentage 85, large: true
+              item.add_table [%w[A table no col]], nil, 'Basic table, no cols'
+            end
+            items.item do |item|
+              item.split_header [%w[Split Header], %w[with val]]
+              item.add_label 'Lbl centre', center: true, large: true
+              item.add_table [{ a: 'but', table: 'no', with: 'border', col: 'though' }], %i[a table with col], nil, no_border: true
+            end
+            items.item do |item|
+              item.header 'Head with value'
+              item.header_value 'abc'
+              item.add_percentage 0, sub_text: 'Large - and subtext', large: true
+              item.add_label 'Label'
+              item.add_label 'Label - centre w/colour', center: true, colour: :orange
+              item.add_label_val 'Label w/val', 'val'
+            end
+          end
+        end
+
+        dash.lane do |lane|
+          lane.caption 'Lane caption'
+          lane.no_data 'This is a lane showing that there is no data to display'
+        end
+        ar << dash.render
+        ar.join(separator)
+      end
     end
   end
 end

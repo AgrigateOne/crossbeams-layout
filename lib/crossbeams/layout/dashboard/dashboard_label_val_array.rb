@@ -15,10 +15,6 @@ module Crossbeams
       end
 
       def render
-        # <table class="w-full#{bg}"><tbody>
-        #   <tr class="font-semibold"><td class="px-2">#{ary.map(&:first).join('</td><td class="px-2">')}</td></tr>
-        #   <tr class="text-blue-600"><td class="px-2">#{ary.map(&:last).join('</td><td class="px-2">')}</td></tr>
-        # </tbody></table>
         <<-HTML
           <div class="mt-3 grid grid-cols-#{ary.length} grid-rows-2 gap-x-2#{bg}">
             <div>#{ary.map(&:first).join('</div><div>')}</div>
