@@ -10,6 +10,11 @@ module Crossbeams
 
       def initialize
         @nodes = []
+        @maxw = 300
+      end
+
+      def max_width(val)
+        @maxw = val
       end
 
       def item
@@ -20,7 +25,7 @@ module Crossbeams
 
       def render
         <<-HTML
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] flex-wrap gap-6">
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(#{@maxw}px,1fr))] flex-wrap gap-6">
             #{nodes.map(&:render).join("\n")}
           </div>
         HTML

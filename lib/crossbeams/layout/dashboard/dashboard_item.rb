@@ -43,6 +43,10 @@ module Crossbeams
         @nodes << DashboardLabelValArray.new(ary, options)
       end
 
+      def add_rich_table(ary)
+        @nodes << DashboardRichTable.new(ary)
+      end
+
       def add_number(val, options = {})
         @nodes << DashboardNumber.new(val, options)
       end
@@ -95,6 +99,7 @@ module Crossbeams
 
       def head
         return split_header_render if @split_header
+        return '' unless head_label
 
         if head_val
           %(<div class="border-b border-slate-300 pb-1 mb-1"><span class="font-medium">#{head_label}</span><span class="ml-3 text-blue-600">#{head_val}</span></div>)
