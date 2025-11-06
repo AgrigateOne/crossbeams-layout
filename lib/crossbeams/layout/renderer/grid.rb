@@ -212,7 +212,7 @@ module Crossbeams
                             <svg class="inline stroke-current pointer-events-none w-5 h-5 absolute top-1/2 transform -translate-y-1/2 left-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                               <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                             </svg>
-                           <input class="rounded border border-slate-300 bg-white outline-2 outline-transparent outline-offset-2 h-10 pl-10 pr-2 appearance-none text-base leading-6 focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600 " onkeyup="crossbeamsGridEvents.quickSearch(event)" placeholder='Search...' data-grid-search="true" data-grid-id="#{grid_id}"/>
+                           <input class="rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 h-10 pl-10 pr-2 appearance-none text-base leading-6 focus-outline focus:outline-2 focus:ring-ocean-700 focus:border-ocean-700" onkeyup="crossbeamsGridEvents.quickSearch(event)" placeholder='Search...' data-grid-search="true" data-grid-id="#{grid_id}"/>
                            </div>
                          HTML
                        end
@@ -286,7 +286,7 @@ module Crossbeams
           HTML
 
           <<-HTML
-          <div id="#{grid_id}_toolbtns" class="flex justify-between flex-row pt-3 pb-3">
+          <div id="#{grid_id}_toolbtns" class="flex justify-between flex-row pb-3">
             <div class="flex items-center gap-4 pt-2">
               #{search_box}
               <span class="#{SC.css_class(:h1)}">

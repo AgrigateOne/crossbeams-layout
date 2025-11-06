@@ -25,7 +25,7 @@ module Crossbeams
 
       STATE_COLOURS = {
         undef: 'bg-white text-slate-500',
-        ok: SC.css_class(:note_success_contrast),
+        ok: SC.css_class(:note_success),
         notok: SC.css_class(:note_error)
       }.freeze
 

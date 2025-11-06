@@ -52,7 +52,7 @@ module Crossbeams
 
         # <ag1-financial-input id="price" placeholder="Add Price" class="ng-untouched ng-pristine ng-valid">
         #   <div class="flex items-center relative">
-        #     <div class="absolute left-1 top-1/2 -translate-y-1/2 text-french-blue-600 font-medium">
+        #     <div class="absolute left-1 top-1/2 -translate-y-1/2 text-ocean-700 font-medium">
         #       <div class="h-6 w-6 grid place-items-center"> € </div>
         #     </div><!----><!----><!---->
         #     <input type="text" inputmode="decimal" placeholder="Add Price" pattern="^-?\d{1,9}(\.\d{1,10})?$" class="!pl-8 ng-untouched ng-pristine ng-valid">
@@ -63,11 +63,11 @@ module Crossbeams
           return '' unless @field_config[:copy_to_clipboard]
 
           %(<div class="relative">
-          <button type="button" id="#{id_base}_clip" class="absolute mt-1 top-1/2 transform -translate-y-1/3 right-3 text-slate-500 hover:text-french-blue-600" viewBox="0 0 20 20" data-clipboard="copy" title="Copy to clipboard">
+          <button type="button" id="#{id_base}_clip" class="absolute mt-1 top-1/2 transform -translate-y-1/3 right-3 text-slate-500 hover:text-ocean-700" viewBox="0 0 20 20" data-clipboard="copy" title="Copy to clipboard">
             #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
           </button>)
           # %(<div class="flex items-center relative">
-          #  <div class="absolute left-1 top-1/2 -translate-y-1/2 text-french-blue-600 font-medium">
+          #  <div class="absolute left-1 top-1/2 -translate-y-1/2 text-ocean-700 font-medium">
           #    <div class="h-6 w-6 grid place-items-center">
           #      #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
           #    </div>

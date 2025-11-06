@@ -260,7 +260,7 @@ module Crossbeams
                           HTML
                         end
         <<~HTML
-          #{render_caption}<form #{render_id}class="crossbeams-form"#{maxwidth_style} #{data_grid_id}#{gridfilter}#{as_loading}action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
+          #{render_caption}<form #{render_id}class="crossbeams-form ml-3"#{maxwidth_style} #{data_grid_id}#{gridfilter}#{as_loading}action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
             #{error_head}
             #{csrf_tag}
             #{form_method_str}

@@ -141,14 +141,14 @@ module Crossbeams
         return '' unless toggle_button
 
         # Tachy: <a href="#" class="f6 link dim br2 ph3 pv2 dib white bg-silver"
-        # <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-french-blue-600 hover:bg-steel-blue-100"
+        # <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-ocean-700 hover:bg-ocean-100"
         # <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-blue-600 hover:bg-blue-100"
         # <<~HTML
-        #  <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-french-blue-600 hover:bg-steel-blue-100"
+        #  <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-ocean-700 hover:bg-ocean-100"
         #    onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">
         #  #{info_icon} #{toggle_caption}</a>
         # HTML
-        # <button class="flex items-center justify-center gap-3 flex-row rounded border-2 h-11 p-3 font-medium text-slate-800 bg-slate-300 hover:text-french-blue-600 hover:bg-steel-blue-100"
+        # <button class="flex items-center justify-center gap-3 flex-row rounded border-2 h-11 p-3 font-medium text-slate-800 bg-slate-300 hover:text-ocean-700 hover:bg-ocean-100"
         <<~HTML
           <button class="inline-block #{SC.css_class(:button_secondary)}"
             onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">

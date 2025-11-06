@@ -20,28 +20,28 @@ module Crossbeams
       setting :ul, default: 'list-disc list-inside'
       setting :ol, default: 'list-decimal list-inside'
       setting :li, default: 'list-item'
-      setting :link, default: 'text-french-blue-500 text-base tracking-normal leading-6 font-normal underline hover:text-slate-800'
+      setting :link, default: 'text-ocean-500 text-base tracking-normal leading-6 font-normal underline hover:text-slate-800'
       setting :label, default: 'text-base font-normal tracking-normal leading-6 mb-1'
-      setting :label_in_err, default: 'text-base font-normal tracking-normal leading-6 mb-1 text-red-700 disabled:slate-400'
+      setting :label_in_err, default: 'text-base font-normal tracking-normal leading-6 mb-1 text-red-600 disabled:slate-400'
       # setting :label_inline, default: 'text-base font-normal tracking-normal leading-6 mb-1'
-      # setting :label_inline_in_err, default: 'text-base font-normal tracking-normal leading-6 mb-1 text-red-700'
+      # setting :label_inline_in_err, default: 'text-base font-normal tracking-normal leading-6 mb-1 text-red-600'
 
       # setting :input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
-      setting :input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-steel-blue-500 focus:border-steel-blue-500 text-slate-800'
-      # setting :input_in_err, default: 'w-full rounded border border-red-700 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-red-600 focus:ring-offset-0 focus:border-red-600 focus-visible:border-red-600 text-red-700'
-      setting :input_in_err, default: 'w-full rounded border border-red-200 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-red-500 focus:border-red-500 text-red-700'
+      setting :input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-ocean-700 focus:border-ocean-700 text-slate-800'
+      # setting :input_in_err, default: 'w-full rounded border border-red-600 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-red-600 focus:ring-offset-0 focus:border-red-600 focus-visible:border-red-600 text-red-600'
+      setting :input_in_err, default: 'w-full rounded border border-red-200 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-red-500 focus:border-red-500 text-red-600'
 
-      setting :checkbox, default: 'cursor-pointer rounded mr-2 w-5 h-5 outline-none checked:text-french-blue-500 hover:text-french-blue-600 focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-steel-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-slate-400 accent-french-blue-600'
-      setting :checkbox_in_err, default: 'border-red-600 ring-red-600 cursor-pointer rounded mr-2 w-5 h-5 outline-none checked:text-french-blue-500 hover:text-french-blue-600 focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-steel-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-slate-400 accent-french-blue-600'
+      setting :checkbox, default: 'cursor-pointer rounded mr-2 w-5 h-5 outline-none checked:text-ocean-500 hover:text-ocean-700 focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-ocean-700 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-slate-400 accent-ocean-700'
+      setting :checkbox_in_err, default: 'border-red-600 ring-red-600 cursor-pointer rounded mr-2 w-5 h-5 outline-none checked:text-ocean-500 hover:text-ocean-700 focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-ocean-700 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-slate-400 accent-ocean-700'
 
-      setting :select, default: 'bg-white border border-slate-300 outline-none px-3 py-2 text-slate-900 rounded selection:bg-steel-blue-500 selection:text-white focus-visible:ring-steel-blue-500 focus-visible:border-steel-blue-500 disabled:text-slate-400 disabled:placeholder:text-slate-400 disabled:cursor-not-allowed placeholder:!text-slate-500'
+      setting :select, default: 'bg-white border border-slate-300 outline-none px-3 py-2 text-slate-900 rounded selection:bg-ocean-700 selection:text-white focus-visible:ring-ocean-700 focus-visible:border-ocean-700 disabled:text-slate-400 disabled:placeholder:text-slate-400 disabled:cursor-not-allowed placeholder:!text-slate-500'
 
       setting :textarea, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
 
       # setting :rmd_input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
-      setting :rmd_input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-steel-blue-500 focus:border-steel-blue-500 text-slate-800'
-      # setting :rmd_input_in_err, default: 'w-full rounded border border-red-700 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-red-600 focus:ring-offset-0 focus:border-red-600 focus-visible:border-red-600 text-red-700'
-      setting :rmd_input_in_err, default: 'w-full rounded border border-red-200 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-red-500 focus:border-red-500 text-red-700'
+      setting :rmd_input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-ocean-700 focus:border-ocean-700 text-slate-800'
+      # setting :rmd_input_in_err, default: 'w-full rounded border border-red-600 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-red-600 focus:ring-offset-0 focus:border-red-600 focus-visible:border-red-600 text-red-600'
+      setting :rmd_input_in_err, default: 'w-full rounded border border-red-200 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-red-500 focus:border-red-500 text-red-600'
 
       # setting :icon, default: 'inline-block w-5 h-5 fill-current relative top-0.5'
       setting :icon, default: 'w-5 h-5 fill-current'
@@ -49,18 +49,18 @@ module Crossbeams
       setting :icon_s, default: 'w-5 h-5 stroke-current'
       setting :hover_row, default: 'hover:bg-slate-100'
 
-      setting :button_secondary, default: 'flex items-center justify-center gap-3 flex-row rounded border-2 h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-$:secondary_colour$ bg-$:secondary_bg$ active:bg-french-blue-600 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
+      setting :button_secondary, default: 'flex items-center justify-center gap-3 flex-row rounded border-2 h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-$:secondary_colour$ bg-$:secondary_bg$ active:bg-ocean-700 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
 
-      setting :button_primary, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-2 h-[2.75rem] min-w-[2.75rem] bg-french-blue-600 text-white border-french-blue-600 active:bg-french-blue-600 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500'
-      setting :button_tertiary, default: 'mt-2 rounded h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-slate-800 active:bg-zinc-200 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-french-blue-500'
+      setting :button_primary, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-2 h-[2.75rem] min-w-[2.75rem] bg-ocean-700 text-white border-ocean-700 active:bg-ocean-700 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500'
+      setting :button_tertiary, default: 'mt-2 rounded h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-slate-800 active:bg-zinc-200 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
 
       setting :primary_colour, default: 'slate-800'
       setting :primary_bg, default: 'slate-300'
-      setting :primary_h_colour, default: 'french-blue-600'
-      setting :primary_h_bg, default: 'steel-blue-100'
-      setting :secondary_h_bg, default: 'french-blue-50'
+      setting :primary_h_colour, default: 'ocean-700'
+      setting :primary_h_bg, default: 'ocean-100'
+      setting :secondary_h_bg, default: 'ocean-50'
       setting :show_check_on, default: 'text-green-700'
-      setting :show_check_off, default: 'text-red-700'
+      setting :show_check_off, default: 'text-red-600'
       setting :bg_green, default: 'bg-green-500'
       setting :bg_amber, default: 'bg-yellow-500'
       setting :bg_red, default: 'bg-red-500'
@@ -71,14 +71,13 @@ module Crossbeams
 
       setting :text_warning, default: 'text-orange-600'
       setting :bg_warning, default: 'bg-orange-100'
-      setting :text_error, default: 'text-red-700'
-      # setting :notice, default: 'm-2 p-1.5 border border-steel-blue-500'
+      setting :text_error, default: 'text-red-600'
+      # setting :notice, default: 'm-2 p-1.5 border border-ocean-700'
       setting :notice, default: 'm-2 flex flex-row justify-start items-center gap-2 px-3 py-4 mb-4 rounded'
-      setting :note_info, default: 'bg-blue-100 text-sky-800'
+      setting :note_info, default: 'bg-sky-100 text-sky-800'
       setting :note_success, default: 'bg-green-100 text-green-600'
-      setting :note_success_contrast, default: 'bg-lime-100 text-green-600'
       setting :note_warning, default: '$:bg_warning$ $:text_warning$'
-      setting :note_error, default: 'bg-red-100 text-red-700'
+      setting :note_error, default: 'bg-red-100 text-red-600'
 
       setting :table_div, default: 'border border-slate-300 rounded-lg overflow-hidden'
       setting :table_div_no_b, default: 'overflow-hidden'
@@ -99,9 +98,9 @@ module Crossbeams
       setting :rmd_table_row_even, default: '$:hover_row$ bg-slate-50'
       setting :rmd_table_td_label, default: 'px-5 py-2 w-1/2 border-t border-slate-300 text-slate-800 font-semibold'
       setting :rmd_table_td_value, default: 'px-5 py-2 w-1/2 border-t border-slate-300'
-      setting :rmd_select, default: 'bg-white border border-slate-300 outline-none px-3 py-2 text-slate-900 rounded selection:bg-steel-blue-500 selection:text-white focus-visible:ring-steel-blue-500 focus-visible:border-steel-blue-500 disabled:text-slate-400 disabled:placeholder:text-slate-400 disabled:cursor-not-allowed placeholder:!text-slate-500'
+      setting :rmd_select, default: 'bg-white border border-slate-300 outline-none px-3 py-2 text-slate-900 rounded selection:bg-ocean-700 selection:text-white focus-visible:ring-ocean-700 focus-visible:border-ocean-700 disabled:text-slate-400 disabled:placeholder:text-slate-400 disabled:cursor-not-allowed placeholder:!text-slate-500'
 
-      setting :rmd_button_primary, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-7 min-w-[2.75rem] bg-french-blue-600 text-white border-french-blue-600 active:bg-french-blue-600 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-french-blue-500 w-fit'
+      setting :rmd_button_primary, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-7 min-w-[2.75rem] bg-ocean-700 text-white border-ocean-700 active:bg-ocean-700 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500 w-fit'
 
       # Translate values of "colour_rule" grid columns to css classes:
       setting :grid_row_colours, default: { 'black' => 'text-blue-600',

@@ -50,7 +50,7 @@ module Crossbeams
         <<-HTML
           <div class="w-full"#{max_size}>
             <div class="h-0.5 relative top-5 my-0 mx-auto bg-slate-400" style="width: #{status_bar_width}%;">
-              <div class="bg-french-blue-500" style="width: #{current_position}%; transition: width 4500ms linear;">
+              <div class="bg-ocean-500" style="width: #{current_position}%; transition: width 4500ms linear;">
               </div>
             </div>
             <ul class="w-full m-0 p-0" style="font-size: 0">
@@ -108,7 +108,7 @@ module Crossbeams
           # css_class += position_classes(index, position)
           # id = position_id(index, position)
           # %(<li class="#{css_class.join(' ')}"#{id} style="width: #{width}%;">#{step}</li>)
-          colour = position >= index ? 'french-blue' : 'slate'
+          colour = position >= index ? 'ocean' : 'slate'
           line = <<~HTML
             <div class="h-px w-full grow bg-slate-200 ">
             </div>
@@ -134,11 +134,11 @@ module Crossbeams
         end.join("\n")
         # <<~HTML
         #   <div class="flex items-center">
-        #     <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-french-blue-500">
+        #     <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-ocean-500">
         #       <span class="text-xs select-none text-white">
         #         1
         #       </span>
-        #       <span class="text-sm font-semibold select-none text-center whitespace-nowrap w-fit absolute left-1/2 -translate-x-1/2 -bottom-5 text-french-blue-500">
+        #       <span class="text-sm font-semibold select-none text-center whitespace-nowrap w-fit absolute left-1/2 -translate-x-1/2 -bottom-5 text-ocean-500">
         #         Template details
         #       </span>
         #     </div>

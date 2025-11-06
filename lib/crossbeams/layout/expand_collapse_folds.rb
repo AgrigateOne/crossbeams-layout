@@ -35,19 +35,21 @@ module Crossbeams
         #   <a href="/" class="ml2 #{css_class.join(' ')}" #{title(false)}data-expand-collapse="close" data-expand-collapse-dom="#{parent_dom_id}">#{collapse_text}</a>
         # HTML
         <<~HTML
-          <a href="/" class="#{css_class}" #{title(true)}data-expand-collapse="open" data-expand-collapse-dom="#{parent_dom_id}">#{expand_text}</a>
-          <a href="/" class="ml2 #{css_class}" #{title(false)}data-expand-collapse="close" data-expand-collapse-dom="#{parent_dom_id}">#{collapse_text}</a>
+          <div class="mt-2">
+            <a href="/" class="#{css_class}" #{title(true)}data-expand-collapse="open" data-expand-collapse-dom="#{parent_dom_id}">#{expand_text}</a>
+            <a href="/" class="ml2 #{css_class}" #{title(false)}data-expand-collapse="close" data-expand-collapse-dom="#{parent_dom_id}">#{collapse_text}</a>
+          </div>
         HTML
       end
 
       private
 
       def expand_text
-        @options[:mini] ? Icon.new(:plus).render : "#{Icon.new(:plus, css_class: 'inline').render} Expand all"
+        @options[:mini] ? Icon.new(:plus, css_class: 'inline').render : "#{Icon.new(:plus, css_class: 'inline').render} Expand all"
       end
 
       def collapse_text
-        @options[:mini] ? Icon.new(:minus).render : "#{Icon.new(:minus, css_class: 'inline').render} Collapse all"
+        @options[:mini] ? Icon.new(:minus, css_class: 'inline').render : "#{Icon.new(:minus, css_class: 'inline').render} Collapse all"
       end
 
       def title(open)

@@ -35,7 +35,7 @@ module Crossbeams
         @full_dialog_height = false
         @half_dialog_height = false
         # @css_classes        = ['pa2']
-        @css_classes        = ['p-2']
+        @css_classes        = ['px-2 pb-2']
         @section_id         = "section-#{sequence}"
       end
 
