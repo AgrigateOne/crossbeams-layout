@@ -97,7 +97,7 @@ module Crossbeams
 
         def minus_icon(id)
           # Icon.new(:minus, css_class: 'red pointer', attrs: [%(data-remove-item="#{id}")]).render
-          Icon.new(:minus, css_class: 'text-red-500 cursor-pointer', attrs: [%(data-remove-item="#{id}")]).render
+          Icon.new(:minus, css_class: 'text-red-500 cursor-pointer inline', attrs: [%(data-remove-item="#{id}")]).render
         end
       end
     end

@@ -35,7 +35,7 @@ module Crossbeams
           <<-HTML
           <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}#{copy_prefix}
             #{label_render(id_base, @caption)}
-            <input class="#{inpclass}#{attr_class}" type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
+            <input class="#{inpclass}#{file_class}#{attr_class}" type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
             #{error_state}#{datalist}
           </div>
           HTML
@@ -237,6 +237,12 @@ module Crossbeams
           res << ' lowercase' if @field_config[:force_lowercase]
           res << ' pr-10' if @field_config[:copy_to_clipboard]
           res.join(' ')
+        end
+
+        def file_class
+          return '' unless subtype == :file
+
+          " #{SC.css_class(:file_input_button)}"
         end
 
         def attr_placeholder

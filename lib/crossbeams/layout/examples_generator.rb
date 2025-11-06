@@ -441,6 +441,7 @@ module Crossbeams
                                                  inp2: { required: true, caption: 'INP Two has a longer caption than normal' },
                                                  inp3: { copy_to_clipboard: true, caption: 'INP Three (copy to clipboard)' },
                                                  inp4: { force_uppercase: true, caption: 'INP Four (force uppercase)' },
+                                                 inp5: { renderer: :file, caption: 'INP Five (Upload a file)' },
                                                  dat1: { renderer: :date },
                                                  dat2: { renderer: :datetime, required: true, hint: Utils.classify_dom_elements('<h3>A hint</h3>For a datetime') },
                                                  chk1: { renderer: :checkbox },
@@ -499,6 +500,7 @@ module Crossbeams
           row.column do |col|
             col.add_field :inp3
             col.add_field :inp4
+            col.add_field :inp5
             col.add_field :mlt1
             col.add_field :rdo1
             col.add_field :txt1
