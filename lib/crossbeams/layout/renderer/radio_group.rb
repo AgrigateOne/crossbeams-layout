@@ -61,7 +61,7 @@ module Crossbeams
             second = true
             # <label for="#{id_base}_#{val.gsub(' ', '_')}">#{text}</label>
             <<~HTML
-              <input type="radio" #{field_id(val.gsub(' ', '_'))} #{name_attribute} value="#{val}"#{checked(val)}#{disabled(val)} class="#{xtra_class}#{SC.css_class(:checkbox)}" #{attrs.join(' ')}>
+              <input type="radio" #{field_id(val.gsub(' ', '_'))} #{name_attribute} value="#{val}"#{checked(val)}#{disabled(val)} class="#{xtra_class}#{SC.css_class(:checkbox)} align-middle" #{attrs.join(' ')}>
               #{label_render("#{id_base}_#{val.gsub(' ', '_')}", text, inline: true, check_required: false, pointer: true, ignore_hint: true)}
             HTML
           end.join(' ')

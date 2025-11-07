@@ -91,13 +91,13 @@ module Crossbeams
 
         def remove_item_renders
           @field_config[:items].map do |text, id|
-            %(<li class="#{SC.css_class(:li)}" data-item-id="#{id}">#{minus_icon(id)} #{text}</li>)
+            %(<li class="#{SC.css_class(:li)}" title="Remove this item" data-item-id="#{id}">#{minus_icon(id)} #{text}</li>)
           end.join("\n")
         end
 
         def minus_icon(id)
-          # Icon.new(:minus, css_class: 'red pointer', attrs: [%(data-remove-item="#{id}")]).render
-          Icon.new(:minus, css_class: 'text-red-500 cursor-pointer inline', attrs: [%(data-remove-item="#{id}")]).render
+          # Icon.new(:minus, css_class: 'text-red-500 cursor-pointer inline', attrs: [%(data-remove-item="#{id}")]).render
+          Icon.new(:remove, css_class: 'text-ocean-700 cursor-pointer inline', attrs: [%(data-remove-item="#{id}")]).render
         end
       end
     end

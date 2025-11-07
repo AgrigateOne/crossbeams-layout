@@ -21,7 +21,7 @@ module Crossbeams
       end
 
       def self.crossbeams_field_classes
-        'min-w-22 max-w-96'
+        'min-w-22 max-w-96 mb-2'
       end
     end
   end

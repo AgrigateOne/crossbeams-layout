@@ -35,7 +35,7 @@ module Crossbeams
         #   <a href="/" class="ml2 #{css_class.join(' ')}" #{title(false)}data-expand-collapse="close" data-expand-collapse-dom="#{parent_dom_id}">#{collapse_text}</a>
         # HTML
         <<~HTML
-          <div class="mt-2">
+          <div class="mt-2 flex flex-row gap-4 justify-end">
             <a href="/" class="#{css_class}" #{title(true)}data-expand-collapse="open" data-expand-collapse-dom="#{parent_dom_id}">#{expand_text}</a>
             <a href="/" class="ml2 #{css_class}" #{title(false)}data-expand-collapse="close" data-expand-collapse-dom="#{parent_dom_id}">#{collapse_text}</a>
           </div>

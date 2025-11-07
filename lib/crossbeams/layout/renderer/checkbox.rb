@@ -34,7 +34,7 @@ module Crossbeams
           <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
             <div>&nbsp;</div>
             <input #{name_attribute} type="hidden" value="f">
-            <input type="checkbox" value="t" class="#{SC.css_class(:checkbox)}" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>
+            <input type="checkbox" value="t" class="#{SC.css_class(:checkbox)} align-middle" #{checked} #{name_attribute} #{field_id} #{attrs.join(' ')}>
             #{label_render(id_base, @caption, inline: true, tooltip: tooltip, pointer: true)}
           </div>
           HTML

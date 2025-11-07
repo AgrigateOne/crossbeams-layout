@@ -54,7 +54,7 @@ module Crossbeams
           req = check_required && @field_config[:required] == true ? ' requiredlabel' : ''
           xtra_css = ' py-4' if bool
           point = pointer ? ' cursor-pointer' : ''
-          %(<div class="#{inline ? 'inline' : 'block'}#{xtra_css}">#{prefix}<label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
+          %(<div class="#{inline ? 'inline' : 'block'}#{xtra_css} mb-1">#{prefix}<label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
         end
 
         # The class for the field wrapper.

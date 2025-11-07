@@ -150,13 +150,13 @@ module Crossbeams
 
       def render_text
         if style == :back_button
-          "#{Icon.new(:back, css_class: 'align-middle mr-4 inline-block').render} #{text}"
+          "#{Icon.new(:back, css_class: 'align-middle inline-block').render} #{text}"
         elsif @icon
-          "#{Icon.new(@icon, css_class: 'align-middle mr-4 inline-block').render} #{text}"
+          "#{Icon.new(@icon, css_class: 'align-middle inline-block').render} #{text}"
         elsif @window
-          "#{Icon.new(:newwindow, css_class: 'align-middle mr-4 inline-block').render} #{text}"
+          "#{Icon.new(:newwindow, css_class: 'align-middle inline-block').render} #{text}"
         elsif @behaviour == :newtab
-          "#{Icon.new(:newtab, css_class: 'align-middle mr-4 inline-block').render} #{text}"
+          "#{Icon.new(:newtab, css_class: 'align-middle inline-block').render} #{text}"
         else
           text
         end
