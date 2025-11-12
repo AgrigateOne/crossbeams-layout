@@ -7,10 +7,16 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [2.3.1] - 2025-11-12
+### Added
 - Label has a new option: `:no_html_escape` which can be set to true if a label's value is set using `:with_value`. When set, any HTML in the text will not be escaped. This is useful for fields that store markdown content, but display HTML
 - Table gets a `:left_margin` option which can be in the range 0 to 7 and works like `:top_margin`, but for the left of the table
 - Example generator to build a page of all controls for use in css style testing
 ### Changed
+- Upgrade to Ruby 3.4.7
 ### Fixed
 - Diff: When comparing two records and one has no data, an exception would be raised
 - Column: during refactoring of build methods, the ability to add a grid to a column was lost
