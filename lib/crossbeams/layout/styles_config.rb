@@ -20,7 +20,7 @@ module Crossbeams
       setting :ul, default: 'list-disc list-inside'
       setting :ol, default: 'list-decimal list-inside'
       setting :li, default: 'list-item'
-      setting :link, default: 'text-ocean-500 text-base tracking-normal leading-6 font-normal underline hover:text-slate-800'
+      setting :link, default: 'text-ocean-600 text-base tracking-normal leading-6 font-normal underline hover:text-slate-800'
       setting :label, default: 'text-base font-normal tracking-normal leading-6 mb-1'
       setting :label_in_err, default: 'text-base font-normal tracking-normal leading-6 mb-1 text-red-600 disabled:slate-400'
       # setting :label_inline, default: 'text-base font-normal tracking-normal leading-6 mb-1'
@@ -49,9 +49,9 @@ module Crossbeams
       setting :icon_s, default: 'w-4 h-4 stroke-current'
       setting :hover_row, default: 'hover:bg-slate-100'
 
-      setting :button_secondary, default: 'flex items-center justify-left gap-3 flex-row rounded border-2 h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-$:secondary_colour$ bg-$:secondary_bg$ active:bg-ocean-700 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
+      setting :button_secondary, default: 'flex items-center justify-left gap-3 flex-row rounded border-2 border-$:secondary_bg$ h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-$:secondary_colour$ bg-$:secondary_bg$ active:bg-ocean-700 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
 
-      setting :button_primary, default: 'flex items-center justify-left gap-3 flex-row font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-2 h-[2.75rem] min-w-[2.75rem] bg-ocean-700 text-white border-ocean-700 active:bg-ocean-700 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500'
+      setting :button_primary, default: 'flex items-center justify-left gap-3 flex-row font-normal select-none whitespace-nowrap rounded border-2 border-ocean-700 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-2 h-[2.75rem] min-w-[2.75rem] bg-ocean-700 text-white border-ocean-700 active:bg-ocean-700 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500'
       setting :button_tertiary, default: 'flex items-center justify-left gap-3 flex-row mt-2 rounded h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-slate-800 active:bg-zinc-200 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
       setting :file_input_button, default: 'file:rounded file:border-2 file:h-[2.75rem] file:min-w-[2.75rem] file:px-4 file:py-2 file:outline-none file:select-none file:whitespace-nowrap file:cursor-pointer file:font-normal file:text-$:secondary_colour$ file:bg-$:secondary_bg$ file:active:bg-ocean-700 file:active:border-$:primary_h_colour$ file:hover:text-$:primary_h_colour$ file:hover:bg-$:secondary_h_bg$ file:focus-visible:ring file:focus-visible:ring-offset-white file:focus-visible:ring-offset-2 file:focus-visible:ring-ocean-500 file:border-none'
 

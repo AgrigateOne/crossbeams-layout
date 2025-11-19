@@ -160,7 +160,7 @@ module Crossbeams
 
       def add_extra_css_classes
         # @css_classes << 'crossbeams_layout-border' if show_border
-        @css_classes << 'my-4 border rounded' if show_border
+        @css_classes << 'my-4 pt-2 border border-slate-200 rounded' if show_border
         # @css_classes << 'crossbeams_layout-fit-height' if fit_height
         @css_classes << 'flex flex-1 grow' if fit_height
         # @css_classes << 'crossbeams_layout-full_dlg-height' if full_dialog_height

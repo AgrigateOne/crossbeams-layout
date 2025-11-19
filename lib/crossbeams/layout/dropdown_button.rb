@@ -47,7 +47,7 @@ module Crossbeams
             <button type="button"#{attrs}>
               #{render_text}
             </button>
-            <div class="crossbeams-dropdown-content min-w-full flex hidden absolute border right-0 top-11 z-10 bg-white">
+            <div class="crossbeams-dropdown-content min-w-full flex hidden absolute border border-slate-200 right-0 top-11 z-10 bg-white">
               #{dropdown_items}
             </div>
           </div>

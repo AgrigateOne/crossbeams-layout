@@ -2,6 +2,7 @@
 
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics/BlockLength
 module Crossbeams
   module Layout
     # Generate HTML examples
@@ -42,6 +43,7 @@ module Crossbeams
         @out << generate_repeating_request if %i[all repeating_request].include? classes
         @out << generate_callback_section if %i[all callback_section].include? classes
         @out << generate_dashboard if %i[all dashboard].include? classes
+        @out << generate_colours if %i[all colours].include? classes
         @out
       end
 
@@ -78,6 +80,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#repeating_request">Repeating Request</a></li>) if %i[all repeating_request].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#callback_section">Callback Section</a></li>) if %i[all callback_section].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#dashboard">Dashboard</a></li>) if %i[all dashboard].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#colours">Colours</a></li>) if %i[all colours].include? classes
         @out << '</ol>'
       end
 
@@ -130,9 +133,17 @@ module Crossbeams
         section.add_text 'Half Dialog height section'
         ar << section.render
 
-        section = Section.new({}, 6)
+        section = Section.new({}, 7)
         section.add_text 'Section with horizontal group showing button'
         section.horizontal_group do |grp|
+          grp.add_text 'Group'
+          grp.add_control control_type: :link, text: 'A Button', url: '/', style: :button
+        end
+        ar << section.render
+        section = Section.new({}, 8)
+        section.add_text 'Section with horizontal group showing button and caption'
+        section.horizontal_group do |grp|
+          grp.add_caption 'Caption'
           grp.add_text 'Group'
           grp.add_control control_type: :link, text: 'A Button', url: '/', style: :button
         end
@@ -547,10 +558,15 @@ module Crossbeams
         dash.lane do |lane|
           lane.caption 'Lane caption'
           lane.item_set do |items|
+            items.max_width 500
+
             items.item do |item|
               item.header 'Plain head'
               item.add_percentage 60
               item.add_label_val_array [['Array', 1], ['of', 2], ['elements', 3]]
+              item.add_label_val_array [['Array', 1], ['of', 2], ['gray elements', 3]], bg: :gray
+              item.add_label_val_array [['Array', 1], ['of', 2], ['blue elements', 3]], bg: :blue
+              item.add_label_val_array [['Array', 1], ['of', 2], ['big', 3]], big_text: true
             end
             items.item do |item|
               item.split_header %w[Split Header]
@@ -569,6 +585,72 @@ module Crossbeams
               item.add_label 'Label'
               item.add_label 'Label - centre w/colour', center: true, colour: :orange
               item.add_label_val 'Label w/val', 'val'
+              item.add_number 123, bg: :blue
+            end
+            items.item do |item|
+              item.add_rich_table [{ left: nil,
+                                     center: { type: :head_col,
+                                               header: 'TOTAL',
+                                               bg: :gray },
+                                     right: { type: :table,
+                                              header: 'PALLETS',
+                                              align: :right,
+                                              table: [['Cartons', 123], ['Pallets', 123]] } },
+                                   { left: { type: :table,
+                                             header: 'SHIPPED (123)',
+                                             align: :right,
+                                             table: [['Cartons', 123], ['Pallets', 123]] },
+                                     center: { type: :head_col,
+                                               header: 'LOAD',
+                                               bg: :gray },
+                                     right: { type: :table,
+                                              header: 'ALLOCATED (123}',
+                                              align: :right,
+                                              table: [['Cartons', 123], ['Pallets', 123]] } },
+                                   { left: { type: :table,
+                                             header: 'VERIFIED',
+                                             align: :right,
+                                             table: [['Cartons', 123], ['Pallets', 123]] },
+                                     center: { type: :head_col,
+                                               header: 'VERIFY',
+                                               bg: :gray },
+                                     right: { type: :table,
+                                              header: 'UNVERIFIED',
+                                              align: :right,
+                                              table: [['Cartons', 123], ['Pallets', 123]] } }]
+            end
+          end
+        end
+
+        dash.lane do |lane|
+          lane.caption 'Device dash'
+          lane.sub_caption ['a str 1', 'a str 2', 'a str 3', 'a str 4'].compact
+          lane.item_set do |items|
+            items.item do |item|
+              item.no_stretch!
+              item.add_network_state label: 'DEV-01',
+                                     ping_label: 'Network',
+                                     run_label: 'Software',
+                                     ping_state: :undef,
+                                     run_state: :undef,
+                                     dom_id_base: 'id1'
+              item.add_label 'CENTRE', center: true
+              item.add_label 'Individual Incentive', center: true, banner: :blue
+              item.add_label_val 'Login on reader', 'sometime', font_weight: :normal
+              table_opts = { rows: [{ button: 'btn1', setup: 'set1', label: 'lbl1' }], cols: %i[button setup label] }
+              item.add_popup_button 'Button allocations', popup_table: table_opts
+            end
+            items.item do |item|
+              item.no_stretch!
+              item.add_network_state label: 'DEV-01',
+                                     ping_label: 'Network',
+                                     run_label: 'Software',
+                                     ping_state: :ok,
+                                     run_state: :notok,
+                                     dom_id_base: 'id2'
+              item.add_label 'CENTRE', center: true
+              item.add_label 'Group Incentive', banner: :purple
+              item.add_label 'Active group members', center: true
             end
           end
         end
@@ -580,8 +662,22 @@ module Crossbeams
         ar << dash.render
         ar.join(separator)
       end
+
+      def generate_colours
+        cols = %w[black blue gray green ocean orange purple red sky slate yellow zinc]
+        nos = %w[50 100 200 300 400 500 600 700 800 900]
+        ar = [head('Colour classes', 'colours')]
+        cols.each do |col|
+          ar << <<~HTML
+            <span class="font-medium">#{col}</span><br>
+            #{nos.map { |n| %(<div class="p-2"><div class="inline-block w-52 p-2 bg-#{col}-#{n}">BG #{col}-#{n}</div><div class="inline-block w-52 p-2 border rounded-2 border-#{col}-#{n}">BORDER #{col}-#{n}</div><div class="inline-block w-52 p-2 text-#{col}-#{n}">TEXT #{col}-#{n}</div></div>) }.join("\n")}
+          HTML
+        end
+        ar.join(separator)
+      end
     end
   end
 end
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/ClassLength
+# rubocop:enable Metrics/BlockLength

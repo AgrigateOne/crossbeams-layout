@@ -226,8 +226,8 @@ module Crossbeams
                             </svg>
                            </button>
                            <!-- div class="crossbeams-colour-key-list border border:bg-slate-400 p-1 bg-white" -->
-                           <div class="crossbeams-dropdown-content text-nowrap hidden absolute right-0 top-12 z-10 border border:bg-slate-400 bg-white">
-                           <h3 class="#{SC.css_class(:h3)} text-center mb-2">Key for coloured rows</h3>
+                           <div class="crossbeams-dropdown-content text-nowrap hidden absolute right-0 top-12 z-10 px-4 py-2 border border-slate-200 bg-white">
+                           <h3 class="#{SC.css_class(:h3)} text-center mb-2 pb-2 border-b border-slate-400">Key for coloured rows</h3>
                            <ul>
                              #{options[:colour_key].map { |k, v| "<li class='#{SC.config.grid_row_colours[k] || k} #{SC.css_class(:hover_row)} px-2 py-1'>#{v}</li>" }.join}
                            </ul>
@@ -355,11 +355,13 @@ module Crossbeams
           return '' unless options[:multiselect]
 
           save_method = options[:multiselect_save_method] || 'http'
+          #   <svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 2C0 .9.9 0 2 0h14l4 4v14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5 0v6h10V2H5zm6 1h3v4h-3V3z"/></svg> Save selection
           <<~HTML
-            <label style="margin-left: 10px;">
-                <button class="#{SC.css_class(:button_primary)} crossbeams-view-savemulti" onclick="crossbeamsGridEvents.saveSelectedRows('#{grid_id}', '#{options[:multiselect_url]}', #{options[:can_be_cleared] == true}, '#{save_method}')" title="save selection"><svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 2C0 .9.9 0 2 0h14l4 4v14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5 0v6h10V2H5zm6 1h3v4h-3V3z"/></svg> Save selection
+            <div class="inline-block">
+              <button class="#{SC.css_class(:button_primary)} crossbeams-view-savemulti" onclick="crossbeamsGridEvents.saveSelectedRows('#{grid_id}', '#{options[:multiselect_url]}', #{options[:can_be_cleared] == true}, '#{save_method}')" title="save selection">
+                #{Icon.new(:save, css_class: 'align-middle inline-block').render} Save selection
               </button>
-            </label>
+            </div>
           HTML
         end
 

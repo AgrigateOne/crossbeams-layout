@@ -150,7 +150,7 @@ module Crossbeams
         # HTML
         # <button class="flex items-center justify-center gap-3 flex-row rounded border-2 h-11 p-3 font-medium text-slate-800 bg-slate-300 hover:text-ocean-700 hover:bg-ocean-100"
         <<~HTML
-          <button class="inline-block #{SC.css_class(:button_secondary)}"
+          <button class="#{SC.css_class(:button_secondary)}"
             onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">
             #{info_icon} #{toggle_caption}
           </button>
