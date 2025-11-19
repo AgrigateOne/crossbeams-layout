@@ -48,8 +48,8 @@ module Crossbeams
               @nodes << SortableList.new(page_config, prefix, items, options)
             end
           when :repeating_request
-            define_method(:add_repeating_request) do |url, interval, content|
-              @nodes << RepeatingRequest.new(page_config, url, interval, content)
+            define_method(:add_repeating_request) do |url, interval, content, options = {}|
+              @nodes << RepeatingRequest.new(page_config, url, interval, content, options)
             end
           when :address
             define_method(:add_address) do |addresses, opts = {}|

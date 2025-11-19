@@ -16,6 +16,7 @@ module Crossbeams
       setting :bodycopy, default: 'text-base tracking-normal leading-6 font-normal'
       setting :bodycopy_small, default: 'text-sm tracking-normal leading-6 font-normal'
 
+      setting :highlight_search_text, default: 'p-1 text-sky-700 bg-yellow-200'
       setting :row_maxwidth, default: 'max-width: 1200px;'
       setting :ul, default: 'list-disc list-inside'
       setting :ol, default: 'list-decimal list-inside'
