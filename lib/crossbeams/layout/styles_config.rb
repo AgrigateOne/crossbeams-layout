@@ -105,10 +105,10 @@ module Crossbeams
       setting :rmd_button_primary, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-7 min-w-[2.75rem] bg-ocean-700 text-white border-ocean-700 active:bg-ocean-700 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500 w-fit'
 
       # Translate values of "colour_rule" grid columns to css classes:
-      setting :grid_row_colours, default: { 'black' => 'text-blue-600',
+      setting :grid_row_colours, default: { 'black' => 'text-zinc-900',
                                             'blue' => 'text-blue-600',
                                             'brown' => 'text-yellow-800',
-                                            'dark-pink' => 'text-fuscia-600',
+                                            'dark-pink' => 'text-pink-600',
                                             'error' => 'text-red-600',
                                             'gray' => 'text-stone-400',
                                             'grey' => 'text-stone-400',
@@ -117,7 +117,7 @@ module Crossbeams
                                             'inprogress' => 'text-purple-900',
                                             'ok' => 'text-green-600',
                                             'orange' => 'text-orange-500',
-                                            'pink' => 'text-fuscia-400',
+                                            'pink' => 'text-pink-400',
                                             'purple' => 'text-purple-900',
                                             'ready' => 'text-green-600',
                                             'red' => 'text-red-600',

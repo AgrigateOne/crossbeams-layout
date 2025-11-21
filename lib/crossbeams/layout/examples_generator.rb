@@ -673,6 +673,9 @@ module Crossbeams
             #{nos.map { |n| %(<div class="p-2"><div class="inline-block w-52 p-2 bg-#{col}-#{n}">BG #{col}-#{n}</div><div class="inline-block w-52 p-2 border rounded-2 border-#{col}-#{n}">BORDER #{col}-#{n}</div><div class="inline-block w-52 p-2 text-#{col}-#{n}">TEXT #{col}-#{n}</div></div>) }.join("\n")}
           HTML
         end
+        StylesConfig.config.grid_row_colours.each do |key, cls|
+          ar << %(<span class="#{cls}">Grid row colour "#{key}"</span><br>)
+        end
         ar.join(separator)
       end
     end
