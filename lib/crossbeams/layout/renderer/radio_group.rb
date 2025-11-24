@@ -5,6 +5,8 @@ module Crossbeams
     module Renderer
       # Render a Radio Group Field.
       class RadioGroup < Base
+        SC = StylesConfig
+
         def configure(field_name, field_config, page_config)
           @field_name = field_name
           @field_config = field_config
@@ -14,13 +16,24 @@ module Crossbeams
 
         def render
           caption = @field_config[:caption] || present_field_as_label(@field_name)
+          # <<-HTML
+          # <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          #   <div class="cbl-radio cbl-input">
+          #     #{render_buttons}
+          #   </div>
+          #   <label #{tooltip}>#{caption}#{error_state}</label>
+          #   <div class="order-1">#{hint_trigger}</div>
+          # </div>
+          # HTML
+          # <label #{tooltip} class="#{SC.css_class(:label)}">#{caption}#{error_state}</label>
+          # <div>#{hint_trigger}</div>
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
+          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
+            #{label_render(id_base, caption, tooltip: tooltip) unless caption.empty?}
             <div class="cbl-radio cbl-input">
               #{render_buttons}
+              #{hint_trigger if caption.empty?}
             </div>
-            <label #{tooltip}>#{caption}#{error_state}</label>
-            <div class="order-1">#{hint_trigger}</div>
           </div>
           HTML
         end
@@ -42,10 +55,14 @@ module Crossbeams
         def render_buttons
           attrs = []
           attrs << behaviours
+          second = false
           @options.map do |text, val|
+            xtra_class = second ? 'ml-2 ' : ''
+            second = true
+            # <label for="#{id_base}_#{val.gsub(' ', '_')}">#{text}</label>
             <<~HTML
-              <input type="radio" #{field_id(val.gsub(' ', '_'))} #{name_attribute} value="#{val}"#{checked(val)}#{disabled(val)} #{attrs.join(' ')}>
-              <label for="#{id_base}_#{val.gsub(' ', '_')}">#{text}</label>
+              <input type="radio" #{field_id(val.gsub(' ', '_'))} #{name_attribute} value="#{val}"#{checked(val)}#{disabled(val)} class="#{xtra_class}#{SC.css_class(:checkbox)} align-middle" #{attrs.join(' ')}>
+              #{label_render("#{id_base}_#{val.gsub(' ', '_')}", text, inline: true, check_required: false, pointer: true, ignore_hint: true)}
             HTML
           end.join(' ')
         end
@@ -69,7 +86,7 @@ module Crossbeams
         def tooltip
           return '' unless @field_config[:tooltip]
 
-          %( title="#{@field_config[:tooltip]}")
+          %(title="#{@field_config[:tooltip]}")
         end
       end
     end

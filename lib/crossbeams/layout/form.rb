@@ -8,6 +8,8 @@ module Crossbeams
                   :got_row, :no_row, :csrf_tag, :remote_form, :form_config,
                   :multipart_form, :form_caption, :caption_level, :in_loading_page
 
+      SC = StylesConfig
+
       PROGRESS_ICON = <<~HTML
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg>
       HTML
@@ -239,20 +241,26 @@ module Crossbeams
       end
 
       def render
+        # TODO: remove buttons and place them inside the actions div...
         renders = sub_renders
         remote_str = remote_form ? ' data-remote="true"' : ''
         multipart_str = multipart_form ? ' enctype="multipart/form-data"' : ''
         submit_markup = if @inline || @no_submit
                           ''
                         else
+                          # <<~HTML
+                          #   <div class="crossbeams-actions pa2">
+                          #     #{submit_button}
+                          #   </div>
+                          # HTML
                           <<~HTML
-                            <div class="crossbeams-actions pa2">
+                            <div class="flex flex-row gap-2 justify-end mt-4">
                               #{submit_button}
                             </div>
                           HTML
                         end
         <<~HTML
-          #{render_caption}<form #{render_id}class="crossbeams-form" #{data_grid_id}#{gridfilter}#{as_loading}action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
+          #{render_caption}<form #{render_id}class="crossbeams-form ml-3"#{maxwidth_style} #{data_grid_id}#{gridfilter}#{as_loading}action="#{form_action}"#{multipart_str}#{remote_str} accept-charset="utf-8" method="POST">
             #{error_head}
             #{csrf_tag}
             #{form_method_str}
@@ -263,6 +271,12 @@ module Crossbeams
       end
 
       private
+
+      def maxwidth_style
+        # return '' unless @nodes.first.is_a?(Row)
+
+        %( style="#{SC.css_class(:row_maxwidth)}")
+      end
 
       def as_loading
         return '' unless @submit_in_loading_page
@@ -294,20 +308,34 @@ module Crossbeams
       def render_caption
         return '' if remote_form || form_caption.nil?
 
-        "<h#{caption_level}>#{form_caption}</h#{caption_level}>\n"
+        heading = "h#{caption_level}".to_sym
+        %(<#{heading} class="#{SC.css_class(heading)} my-2">#{form_caption}</h#{caption_level}>\n)
       end
 
       def render_id
         @dom_id.nil? ? '' : "id='#{@dom_id}' "
       end
 
-      def error_head
+      def error_head # rubocop:disable Metrics/AbcSize
         return hidden_form_errors unless page_config.form_errors && (page_config.form_errors[nil] || page_config.form_errors[:base] || page_config.form_errors[:base_with_highlights])
 
+        # <<~HTML
+        #   <div class="crossbeams-form-base-error pa1 mb1 bg-washerd-red brown">
+        #     <ul class="list"><li>#{base_messages.join('</li><li>')}</li></ul>
+        #   </div>
+        #   #{hidden_form_errors}
+        # HTML
+        # <div class="w-[376px] h-[63px] flex flex-row justify-start items-center gap-2 px-3 py-4 rounded bg-red-100">
+        #   <!-- content here -->
+        # </div>
+        # <div class="p-4 mb-4 bg-red-200 text-red-800">
+
+        # <div class="flex flex-row justify-start items-center gap-2 px-3 py-4 mb-4 rounded bg-red-100 text-red-700">
+        #   #{Icon.new(:info).render}
+        #   <ul><li>#{base_messages.join('</li><li>')}</li></ul>
+        # </div>
         <<~HTML
-          <div class="crossbeams-form-base-error pa1 mb1 bg-washed-red brown">
-            <ul class="list"><li>#{base_messages.join('</li><li>')}</li></ul>
-          </div>
+          #{Notice.new(page_config, "<ul><li>#{base_messages.join('</li><li>')}</li></ul>", show_caption: false, within_field: false, notice_type: :error).render}
           #{hidden_form_errors}
         HTML
       end
@@ -362,9 +390,11 @@ module Crossbeams
         hidden_str = @hidden_submit ? ' hidden' : ''
         extra_buttons = @buttons.map { |b| b.render(@remote_form) }.join("\n")
         if @view_only
-          %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-blue br2 dim pa3 ba b--near-white"#{hidden_str}>#{extra_buttons})
+          # %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog white bg-blue br2 dim pa3 ba b--near-white"#{hidden_str}>#{extra_buttons})
+          %(<input type="submit"#{id_str} name="commit" value="Close" class="close-dialog #{SC.css_class(:button_primary)}"#{hidden_str}>#{extra_buttons})
         else
-          %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{loading}#{extra_buttons})
+          # %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>#{loading}#{extra_buttons})
+          %(<input type="submit"#{id_str} name="commit" value="#{@submit_caption}"#{disable_command} class="#{SC.css_class(:button_primary)}"#{hidden_str}>#{loading}#{extra_buttons})
         end
       end
 
@@ -409,9 +439,11 @@ module Crossbeams
           id_str = @submit_id.nil? ? '' : %( id="#{@submit_id}")
           hidden_str = @hidden_submit ? ' hidden' : ''
           if @view_only
-            %(<input type="submit" name="commit"#{id_str} value="Close" class="close-dialog white bg-blue br2 dim pa3 ba b--near-white"#{hidden_str}>)
+            # %(<input type="submit" name="commit"#{id_str} value="Close" class="close-dialog white bg-blue br2 dim pa3 ba b--near-white"#{hidden_str}>)
+            %(<input type="submit" name="commit"#{id_str} value="Close" class="close-dialog #{SC.css_class(:button_primary)}"#{hidden_str}>)
           else
-            %(<input type="submit" name="commit"#{id_str} value="#{@submit_caption}" data#{remote_inject}-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
+            # %(<input type="submit" name="commit"#{id_str} value="#{@submit_caption}" data#{remote_inject}-disable-with="#{@disable_caption}" class="white bg-green br2 dim pa3 ba b--near-white"#{hidden_str}>)
+            %(<input type="submit" name="commit"#{id_str} value="#{@submit_caption}" data#{remote_inject}-disable-with="#{@disable_caption}" class="#{SC.css_class(:button_primary)}"#{hidden_str}>)
           end
         end
       end

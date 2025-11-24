@@ -6,6 +6,8 @@ module Crossbeams
     class Notice
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :text, :page_config, :notice_type, :caption, :show_caption, :inline_caption, :within_field
 
@@ -33,10 +35,19 @@ module Crossbeams
       def render
         div_start = within_field ? '<div class="crossbeams-field">' : ''
         div_end = within_field ? '</div>' : ''
-        css = "crossbeams-#{notice_type}-note"
+        # css = "crossbeams-#{notice_type}-note"
+        css = "#{SC.css_class(:notice)} #{SC.css_class("note_#{notice_type}")}"
+
+        # <<~HTML
+        #   #{div_start}<div class="#{css}">#{notice_caption}
+        #     <p>#{inline_notice_caption}#{text}</p>
+        #   </div>#{div_end}
+        # HTML
+        # <div class="flex flex-row justify-start items-center gap-2 px-3 py-4 mb-4 rounded bg-red-100 text-red-700">
         <<~HTML
-          #{div_start}<div class='#{css}'>#{notice_caption}
-            <p>#{inline_notice_caption}#{text}</p>
+          #{div_start}<div class="#{css}">
+            #{Icon.new(:info).render}
+            <p>#{notice_caption}#{inline_notice_caption}#{text}</p>
           </div>#{div_end}
         HTML
       end
@@ -52,14 +63,15 @@ module Crossbeams
         return '' unless show_caption
         return '' if inline_caption
 
-        "<p><strong>#{caption}:</strong></p>"
+        # %(<p><strong class="#{SC.css_class(:strong)}">#{caption}:</strong></p>)
+        %(<strong class="#{SC.css_class(:strong)}">#{caption}:</strong><br>)
       end
 
       def inline_notice_caption
         return '' unless show_caption
         return '' unless inline_caption
 
-        "<strong>#{caption}:</strong> "
+        %(<strong class="#{SC.css_class(:strong)}">#{caption}:</strong> )
       end
     end
   end

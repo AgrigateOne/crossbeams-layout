@@ -2,14 +2,19 @@
 
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics/BlockLength
 module Crossbeams
   module Layout
     # Generate HTML examples
     class ExamplesGenerator
-      attr_reader :classes
+      attr_reader :classes, :style
 
-      def initialize(classes = :all)
+      SCC = StylesConfig.config
+      SC = StylesConfig
+
+      def initialize(classes = :all, style: :tc)
         @classes = classes
+        @style = style
       end
 
       def generate_content # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
@@ -33,53 +38,70 @@ module Crossbeams
         @out << generate_contact_method if %i[all contact_method].include? classes
         @out << generate_grid if %i[all grid].include? classes
         @out << generate_diff if %i[all diff].include? classes
+        @out << generate_miscellaneous if %i[all generate_miscellaneous].include? classes
         @out << generate_loading_message if %i[all loading_message].include? classes
         @out << generate_repeating_request if %i[all repeating_request].include? classes
         @out << generate_callback_section if %i[all callback_section].include? classes
+        @out << generate_dashboard if %i[all dashboard].include? classes
+        @out << generate_colours if %i[all colours].include? classes
         @out
       end
 
       private
 
+      def add_class(key)
+        return '' if style == :tc
+
+        %( class="#{SCC.send(key)}")
+      end
+
       def build_contents # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-        @out << '<h2>Contents</h2><ol>'
-        @out << '<li><a href="#help_link">Help link</a></li>' if %i[all help_link].include? classes
-        @out << '<li><a href="#link">Link (and as buttons)</a></li>' if %i[all link].include? classes
-        @out << '<li><a href="#dropdown_button">Dropdown Button</a></li>' if %i[all dropdown_button].include? classes
-        @out << '<li><a href="#icons">Icons</a></li>' if %i[all icon].include? classes
-        @out << '<li><a href="#text">Text</a></li>' if %i[all text].include? classes
-        @out << '<li><a href="#form">Form</a></li>' if %i[all form].include? classes
-        @out << '<li><a href="#sections">Sections</a></li>' if %i[all section].include? classes
-        @out << '<li><a href="#tables">Tables</a></li>' if %i[all table].include? classes
-        @out << '<li><a href="#progress_step">Progress Step</a></li>' if %i[all progress_step].include? classes
-        @out << '<li><a href="#list">List</a></li>' if %i[all list].include? classes
-        @out << '<li><a href="#sortable_list">Sortable List</a></li>' if %i[all sortable_list].include? classes
-        @out << '<li><a href="#row">Rows and Cols</a></li>' if %i[all row].include? classes
-        @out << '<li><a href="#notice">Notice</a></li>' if %i[all notice].include? classes
-        @out << '<li><a href="#foldup">Foldup</a></li>' if %i[all foldup].include? classes
-        @out << '<li><a href="#address">Address</a></li>' if %i[all address].include? classes
-        @out << '<li><a href="#contact_method">Contact</a></li>' if %i[all contact_method].include? classes
-        @out << '<li><a href="#grid">Grid</a></li>' if %i[all grid].include? classes
-        @out << '<li><a href="#diff">Diff</a></li>' if %i[all diff].include? classes
-        @out << '<li><a href="#loading_message">Loading Mesage</a></li>' if %i[all loading_message].include? classes
-        @out << '<li><a href="#repeating_request">Repeating Request</a></li>' if %i[all repeating_request].include? classes
-        @out << '<li><a href="#callback_section">Callback Section</a></li>' if %i[all callback_section].include? classes
+        @out << %(<h2#{add_class(:h2)}>Contents</h2><ol#{add_class(:ol)}>)
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#help_link">Help link</a></li>) if %i[all help_link].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#link">Link (and as buttons)</a></li>) if %i[all link].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#dropdown_button">Dropdown Button</a></li>) if %i[all dropdown_button].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#icons">Icons</a></li>) if %i[all icon].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#text">Text</a></li>) if %i[all text].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#form">Form</a></li>) if %i[all form].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#sections">Sections</a></li>) if %i[all section].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#tables">Tables</a></li>) if %i[all table].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#progress_step">Progress Step</a></li>) if %i[all progress_step].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#list">List</a></li>) if %i[all list].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#sortable_list">Sortable List</a></li>) if %i[all sortable_list].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#row">Rows and Cols</a></li>) if %i[all row].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#notice">Notice</a></li>) if %i[all notice].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#foldup">Foldup</a></li>) if %i[all foldup].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#address">Address</a></li>) if %i[all address].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#contact_method">Contact</a></li>) if %i[all contact_method].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#grid">Grid</a></li>) if %i[all grid].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#diff">Diff</a></li>) if %i[all diff].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#miscellaneous">Miscellaneous styling</a></li>) if %i[all miscellaneous].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#loading_message">Loading Mesage</a></li>) if %i[all loading_message].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#repeating_request">Repeating Request</a></li>) if %i[all repeating_request].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#callback_section">Callback Section</a></li>) if %i[all callback_section].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#dashboard">Dashboard</a></li>) if %i[all dashboard].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#colours">Colours</a></li>) if %i[all colours].include? classes
         @out << '</ol>'
       end
 
       def head(caption, anchor)
-        %(<div class="tc b pv2 bt bl br mt4"><a name="#{anchor}">#{caption}</a></div>)
+        %(<div class="#{style == :tc ? 'tc b pv2 bt bl br mt4' : 'text-center font-bold py-2 border-t border-l border-r mt-8'}"><a name="#{anchor}">#{caption}</a></div>)
       end
 
       def separator
-        '<hr class="mt1 blue">'
+        %(<hr class="#{style == :tc ? 'mt1 blue' : 'mt-4 text-blue-500'}">)
       end
 
       def generate_icons
         ar = [head('Icons', 'icons')]
-        ar << '<table class="table-collapse"><thead><tr><th>Name</th><th class="br">Icon</th><th>Name</th><th class="br">Icon</th><th>Name</th><th class="br">Icon</th><th>Name</th><th>Icon</th></tr></thead><tbody>'
-        # ar += Icon.available_icons.map { |i| %(<tr><td class="pa2">#{i}</td><td class="pa2">#{Icon.render(i)}</td></tr>) }
-        Icon.available_icons.each_slice(4) { |i1, i2, i3, i4| ar << %(<tr><td class="pa2">#{i1}</td><td class="br pa2">#{Icon.render(i1)}</td><td class="pa2">#{i2}</td><td class="br pa2">#{Icon.render(i2)}</td><td class="pa2">#{i3}</td><td class="br pa2">#{Icon.render(i3)}</td><td class="pa2">#{i4}</td><td class="pa2">#{Icon.render(i4)}</td></tr>) }
+        if style == :tc
+          ar << '<table class="table-collapse"><thead><tr><th>Name</th><th class="br">Icon</th><th>Name</th><th class="br">Icon</th><th>Name</th><th class="br">Icon</th><th>Name</th><th>Icon</th></tr></thead><tbody>'
+          # ar += Icon.available_icons.map { |i| %(<tr><td class="pa2">#{i}</td><td class="pa2">#{Icon.render(i)}</td></tr>) }
+          Icon.available_icons.each_slice(4) { |i1, i2, i3, i4| ar << %(<tr><td class="pa2">#{i1}</td><td class="br pa2">#{Icon.render(i1)}</td><td class="pa2">#{i2}</td><td class="br pa2">#{Icon.render(i2)}</td><td class="pa2">#{i3}</td><td class="br pa2">#{Icon.render(i3)}</td><td class="pa2">#{i4}</td><td class="pa2">#{Icon.render(i4)}</td></tr>) }
+        else
+          ar << '<table class="border-collapse"><thead><tr><th>Name</th><th class="border-r">Icon</th><th>Name</th><th class="border-r">Icon</th><th>Name</th><th class="border-r">Icon</th><th>Name</th><th>Icon</th></tr></thead><tbody>'
+          Icon.available_icons.each_slice(4) { |i1, i2, i3, i4| ar << %(<tr><td class="p-2">#{i1}</td><td class="border-r p-2">#{Icon.render(i1)}</td><td class="p-2">#{i2}</td><td class="border-r p-2">#{Icon.render(i2)}</td><td class="p-2">#{i3}</td><td class="border-r p-2">#{Icon.render(i3)}</td><td class="p-2">#{i4}</td><td class="p-2">#{Icon.render(i4)}</td></tr>) }
+        end
         ar << '</tbody></table>'
         ar.join("\n")
       end
@@ -109,6 +131,22 @@ module Crossbeams
         section = Section.new({}, 6)
         section.half_dialog_height!
         section.add_text 'Half Dialog height section'
+        ar << section.render
+
+        section = Section.new({}, 7)
+        section.add_text 'Section with horizontal group showing button'
+        section.horizontal_group do |grp|
+          grp.add_text 'Group'
+          grp.add_control control_type: :link, text: 'A Button', url: '/', style: :button
+        end
+        ar << section.render
+        section = Section.new({}, 8)
+        section.add_text 'Section with horizontal group showing button and caption'
+        section.horizontal_group do |grp|
+          grp.add_caption 'Caption'
+          grp.add_text 'Group'
+          grp.add_control control_type: :link, text: 'A Button', url: '/', style: :button
+        end
         ar << section.render
         ar.join(separator)
       end
@@ -212,30 +250,30 @@ module Crossbeams
         ar = [head('Row + Col', 'row')]
         row = Row.new({}, 1, 1)
         row.column do |col|
-          col.add_text 'col1', css_classes: 'bg-orange'
+          col.add_text 'col1', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-500'
         end
         row.column do |col|
-          col.add_text 'col2', css_classes: 'bg-green'
+          col.add_text 'col2', css_classes: style == :tc ? 'bg-green' : 'bg-green-500'
         end
         ar << row.render
         row = Row.new({}, 1, 1)
         row.column do |col|
-          col.add_text 'one-sided col (with blank)', css_classes: 'bg-orange'
+          col.add_text 'one-sided col (with blank)', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-500'
         end
         row.blank_column
         ar << row.render
         row = Row.new({}, 1, 1)
         row.blank_column
         row.column do |col|
-          col.add_text 'other-sided col (with blank)', css_classes: 'bg-green'
+          col.add_text 'other-sided col (with blank)', css_classes: style == :tc ? 'bg-green' : 'bg-green-500'
         end
         ar << row.render
         row = Row.new({}, 1, 1)
         row.column do |col|
-          col.add_text 'col1 full width', css_classes: 'bg-orange'
+          col.add_text 'col1 full width', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-500'
         end
         row.column do |col|
-          col.add_text 'col2 full width', css_classes: 'bg-green'
+          col.add_text 'col2 full width', css_classes: style == :tc ? 'bg-green' : 'bg-green-500'
         end
         row.fit_width!
         ar << row.render
@@ -389,6 +427,16 @@ module Crossbeams
         ar.join(separator)
       end
 
+      def generate_miscellaneous
+        ar = [head('Miscellaneous', 'miscellaneous')]
+        [[:bg_green, 'GREEN'], [:bg_amber, 'AMBER'], [:bg_red, 'RED'], [:bg_blue, 'BLUE']].each do |key, name|
+          ar << %(<p>Background colour :#{key} <span class="px-2 py-2 #{SC.css_class(key)}">#{name}</span></p>)
+        end
+        ar << %(<p>Boolean display :show_check_on <span class="px-2 py-2 #{SC.css_class(:show_check_on)}">#{Icon.render(:checkon)}</span></p>)
+        ar << %(<p>Boolean display :show_check_off <span class="px-2 py-2 #{SC.css_class(:show_check_off)}">#{Icon.render(:checkoff)}</span></p>)
+        ar.join('<br>')
+      end
+
       # multipart
       def generate_form
         ar = [head('Form', 'form')]
@@ -401,18 +449,22 @@ module Crossbeams
 
         page_config = PageConfig.new({ form_object: OpenStruct.new(inp1: 'value', sel2: 'four', lbl1: 'Label 1', msl1: %w[one three]),
                                        fields: { inp1: { caption: 'INP One' },
-                                                 inp2: { required: true, caption: 'INP Two has a very long caption that wraps' },
+                                                 inp2: { required: true, caption: 'INP Two has a longer caption than normal' },
+                                                 inp3: { copy_to_clipboard: true, caption: 'INP Three (copy to clipboard)' },
+                                                 inp4: { force_uppercase: true, caption: 'INP Four (force uppercase)' },
+                                                 inp5: { renderer: :file, caption: 'INP Five (Upload a file)' },
                                                  dat1: { renderer: :date },
-                                                 dat2: { renderer: :datetime, required: true, hint: '<h3>A hint</h3>For a datetime' },
+                                                 dat2: { renderer: :datetime, required: true, hint: Utils.classify_dom_elements('<h3>A hint</h3>For a datetime') },
                                                  chk1: { renderer: :checkbox },
-                                                 chk2: { renderer: :checkbox, required: true, hint: '<h3>A hint</h3>For a checkbox' },
+                                                 # chk2: { renderer: :checkbox, required: true, hint: Utils.classify_dom_elements('<h3>A hint</h3>For a checkbox') },
+                                                 chk2: { renderer: :checkbox, required: true, hint: '<h3>A hint</h3>For a checkbox', tooltip: 'A tooltip here...' },
                                                  num1: { renderer: :integer, caption: 'Integer' },
                                                  num2: { renderer: :number, caption: 'Decimal', required: true },
                                                  mlt1: { renderer: :multi, options: %w[one two three four], required: true },
                                                  msl1: { renderer: :select_multiple, options: %w[one two three four], required: true, sort_items: false },
                                                  msl2: { renderer: :select_multiple, options: { 'Group1' => [['one', 1], ['two', 2]],
                                                                                                 'Group2' => [['three', 3], ['four', 4]] }, sort_items: false },
-                                                 rdo1: { renderer: :radio_group, options: [['Opt one', 'opt_one'], ['Opt two', 'opt_two']] },
+                                                 rdo1: { renderer: :radio_group, required: true, options: [['Opt one', 'opt_one'], ['Opt two', 'opt_two']] },
                                                  txt1: { renderer: :textarea, required: true },
                                                  lst1: { renderer: :list, items: %w[one two three], required: true },
                                                  lst2: { renderer: :list, items: [['One', 1], ['Two', 2], ['Three', 3]], filled_background: true, remove_item_url: '/a/path/$:id$/remove' },
@@ -427,7 +479,7 @@ module Crossbeams
                                                          required: true },
                                                  lbl1: { renderer: :label },
                                                  lbl2: { renderer: :label, with_value: 'A label' },
-                                                 sel1: { renderer: :select, options: %w[one two three], disabled_options: %w[four], prompt: 'Select something', min_charwidth: 20 },
+                                                 sel1: { renderer: :select, options: %w[one two three four five six seven eight nine ten eleven], disabled_options: %w[four], prompt: 'Select something', min_charwidth: 20 },
                                                  sel2: { renderer: :select, options: %w[one two three], disabled_options: %w[four], prompt: 'Select something', required: true } } })
         frm = Form.new(page_config, 1, 1)
         frm.form_id 'frm2'
@@ -457,6 +509,9 @@ module Crossbeams
         end
         frm.row do |row|
           row.column do |col|
+            col.add_field :inp3
+            col.add_field :inp4
+            col.add_field :inp5
             col.add_field :mlt1
             col.add_field :rdo1
             col.add_field :txt1
@@ -465,7 +520,7 @@ module Crossbeams
 
         ar << frm.render
 
-        page_config = PageConfig.new({ form_object: OpenStruct.new(inp1: nil), fields: { inp1: { caption: 'INP Inline', placeholder: 'like for search' } } })
+        page_config = PageConfig.new({ form_object: OpenStruct.new(inp1: nil), fields: { inp1: { caption: 'INP Inline', placeholder: 'Like for search' } } })
         frm = Form.new(page_config, 1, 1)
         frm.form_id 'frm3'
         frm.inline!
@@ -482,7 +537,7 @@ module Crossbeams
 
         page_config = PageConfig.new({ form_object: OpenStruct.new(inp1: 'value'),
                                        fields: { inp1: {}, inp2: { required: true } },
-                                       form_errors: { base: ['A base validation error'], inp2: ['value required'] } })
+                                       form_errors: { base: ['A base validation error'], inp2: ['value is incorrect'] } })
         frm = Form.new(page_config, 1, 1)
         frm.form_id 'frm-err'
         frm.caption ' Form With Errors'
@@ -494,8 +549,138 @@ module Crossbeams
       end
 
       # FORM + FORM-BUTTON + FIELDS
+
+      def generate_dashboard
+        ar = [head('Dashboard', 'dashboard')]
+        dash = Dashboard.new(caption: 'Example Dashboard')
+        dash.add_sub_caption 'A sub-caption...'
+
+        dash.lane do |lane|
+          lane.caption 'Lane caption'
+          lane.item_set do |items|
+            items.max_width 500
+
+            items.item do |item|
+              item.header 'Plain head'
+              item.add_percentage 60
+              item.add_label_val_array [['Array', 1], ['of', 2], ['elements', 3]]
+              item.add_label_val_array [['Array', 1], ['of', 2], ['gray elements', 3]], bg: :gray
+              item.add_label_val_array [['Array', 1], ['of', 2], ['blue elements', 3]], bg: :blue
+              item.add_label_val_array [['Array', 1], ['of', 2], ['big', 3]], big_text: true
+            end
+            items.item do |item|
+              item.split_header %w[Split Header]
+              item.add_percentage 85, large: true
+              item.add_table [%w[A table no col]], nil, 'Basic table, no cols'
+            end
+            items.item do |item|
+              item.split_header [%w[Split Header], %w[with val]]
+              item.add_label 'Lbl centre', center: true, large: true
+              item.add_table [{ a: 'but', table: 'no', with: 'border', col: 'though' }], %i[a table with col], nil, no_border: true
+            end
+            items.item do |item|
+              item.header 'Head with value'
+              item.header_value 'abc'
+              item.add_percentage 0, sub_text: 'Large - and subtext', large: true
+              item.add_label 'Label'
+              item.add_label 'Label - centre w/colour', center: true, colour: :orange
+              item.add_label_val 'Label w/val', 'val'
+              item.add_number 123, bg: :blue
+            end
+            items.item do |item|
+              item.add_rich_table [{ left: nil,
+                                     center: { type: :head_col,
+                                               header: 'TOTAL',
+                                               bg: :gray },
+                                     right: { type: :table,
+                                              header: 'PALLETS',
+                                              align: :right,
+                                              table: [['Cartons', 123], ['Pallets', 123]] } },
+                                   { left: { type: :table,
+                                             header: 'SHIPPED (123)',
+                                             align: :right,
+                                             table: [['Cartons', 123], ['Pallets', 123]] },
+                                     center: { type: :head_col,
+                                               header: 'LOAD',
+                                               bg: :gray },
+                                     right: { type: :table,
+                                              header: 'ALLOCATED (123}',
+                                              align: :right,
+                                              table: [['Cartons', 123], ['Pallets', 123]] } },
+                                   { left: { type: :table,
+                                             header: 'VERIFIED',
+                                             align: :right,
+                                             table: [['Cartons', 123], ['Pallets', 123]] },
+                                     center: { type: :head_col,
+                                               header: 'VERIFY',
+                                               bg: :gray },
+                                     right: { type: :table,
+                                              header: 'UNVERIFIED',
+                                              align: :right,
+                                              table: [['Cartons', 123], ['Pallets', 123]] } }]
+            end
+          end
+        end
+
+        dash.lane do |lane|
+          lane.caption 'Device dash'
+          lane.sub_caption ['a str 1', 'a str 2', 'a str 3', 'a str 4'].compact
+          lane.item_set do |items|
+            items.item do |item|
+              item.no_stretch!
+              item.add_network_state label: 'DEV-01',
+                                     ping_label: 'Network',
+                                     run_label: 'Software',
+                                     ping_state: :undef,
+                                     run_state: :undef,
+                                     dom_id_base: 'id1'
+              item.add_label 'CENTRE', center: true
+              item.add_label 'Individual Incentive', center: true, banner: :blue
+              item.add_label_val 'Login on reader', 'sometime', font_weight: :normal
+              table_opts = { rows: [{ button: 'btn1', setup: 'set1', label: 'lbl1' }], cols: %i[button setup label] }
+              item.add_popup_button 'Button allocations', popup_table: table_opts
+            end
+            items.item do |item|
+              item.no_stretch!
+              item.add_network_state label: 'DEV-01',
+                                     ping_label: 'Network',
+                                     run_label: 'Software',
+                                     ping_state: :ok,
+                                     run_state: :notok,
+                                     dom_id_base: 'id2'
+              item.add_label 'CENTRE', center: true
+              item.add_label 'Group Incentive', banner: :purple
+              item.add_label 'Active group members', center: true
+            end
+          end
+        end
+
+        dash.lane do |lane|
+          lane.caption 'Lane caption'
+          lane.no_data 'This is a lane showing that there is no data to display'
+        end
+        ar << dash.render
+        ar.join(separator)
+      end
+
+      def generate_colours
+        cols = %w[black blue gray green ocean orange purple red sky slate yellow zinc]
+        nos = %w[50 100 200 300 400 500 600 700 800 900]
+        ar = [head('Colour classes', 'colours')]
+        cols.each do |col|
+          ar << <<~HTML
+            <span class="font-medium">#{col}</span><br>
+            #{nos.map { |n| %(<div class="p-2"><div class="inline-block w-52 p-2 bg-#{col}-#{n}">BG #{col}-#{n}</div><div class="inline-block w-52 p-2 border rounded-2 border-#{col}-#{n}">BORDER #{col}-#{n}</div><div class="inline-block w-52 p-2 text-#{col}-#{n}">TEXT #{col}-#{n}</div></div>) }.join("\n")}
+          HTML
+        end
+        StylesConfig.config.grid_row_colours.each do |key, cls|
+          ar << %(<span class="#{cls}">Grid row colour "#{key}"</span><br>)
+        end
+        ar.join(separator)
+      end
     end
   end
 end
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/ClassLength
+# rubocop:enable Metrics/BlockLength

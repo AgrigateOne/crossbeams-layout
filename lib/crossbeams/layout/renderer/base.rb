@@ -5,6 +5,8 @@ module Crossbeams
     module Renderer
       # Base class for all field renderers.
       class Base # rubocop:disable Metrics/ClassLength
+        SC = StylesConfig
+
         def initialize
           @dom_loaded = []
         end
@@ -26,24 +28,53 @@ module Crossbeams
 
         # Create reasonable label text from a field name.
         def present_field_as_label(field)
-          field.to_s.sub(/_id$/, '').split('_').map(&:capitalize).join(' ')
+          # field.to_s.sub(/_id$/, '').split('_').map(&:capitalize).join(' ')
+          field.to_s.sub(/_id$/, '').split('_').join(' ').capitalize
         end
 
-        # The class for the field wrapper.
-        # (the div surrounding label and input is the wrapper)
-        def div_class
-          return 'crossbeams-field' unless @page_config.form_errors
+        def field_has_errors?
+          return false unless @page_config.form_errors
 
           has_err = if @field_config[:parent_field]
                       (@page_config.form_errors[@field_config[:parent_field]] || {})[@field_name]
                     else
                       @page_config.form_errors[@field_name]
                     end
-          if has_err
-            'crossbeams-field crossbeams-div-error bg-washed-red'
-          else
-            'crossbeams-field'
-          end
+          !has_err.nil?
+        end
+
+        def label_render(for_id, caption, inline: false, tooltip: nil, check_required: true, pointer: false, ignore_hint: false, prefix: '', bool: false) # rubocop:disable Metrics/ParameterLists, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+          css_class = field_has_errors? ? SC.css_class(:label_in_err) : SC.css_class(:label)
+          # css_class = if inline
+          #               field_has_errors? ? SC.css_class(:label_inline_in_err) : SC.css_class(:label_inline)
+          #             else
+          #               field_has_errors? ? SC.css_class(:label_in_err) : SC.css_class(:label)
+          #             end
+          toolt = tooltip.nil? ? '' : " #{tooltip}"
+          req = check_required && @field_config[:required] == true ? ' requiredlabel' : ''
+          xtra_css = ' py-4' if bool
+          point = pointer ? ' cursor-pointer' : ''
+          %(<div class="#{inline ? 'inline' : 'block'}#{xtra_css} mb-1">#{prefix}<label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
+        end
+
+        # The class for the field wrapper.
+        # (the div surrounding label and input is the wrapper)
+        def div_class
+          # return 'crossbeams-field' unless @page_config.form_errors
+
+          # has_err = if @field_config[:parent_field]
+          #             (@page_config.form_errors[@field_config[:parent_field]] || {})[@field_name]
+          #           else
+          #             @page_config.form_errors[@field_name]
+          #           end
+          # if has_err
+          #   # 'crossbeams-field crossbeams-div-error bg-washed-red'
+          #   'crossbeams-field crossbeams-div-error bg-red-200 text:red-700'
+          # else
+          #   'crossbeams-field'
+          # end
+          # 'crossbeams-field'
+          Utils.crossbeams_field_classes
         end
 
         # The value of the field extracted from the form object.
@@ -136,7 +167,8 @@ module Crossbeams
                    @page_config.form_errors[@field_name]
                  end
 
-          "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>" if errs
+          # "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>" if errs
+          %(<span class="font-normal text-red-700">#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>) if errs
         end
 
         # Render hint text associated with the field.
@@ -145,7 +177,7 @@ module Crossbeams
 
           <<~HTML
             <div style="display:none" data-cb-hint="#{@page_config.name}_#{@field_name}">
-              #{@field_config[:hint]}
+              #{Utils.classify_dom_elements(@field_config[:hint])}
             </div>
           HTML
         end
@@ -155,7 +187,8 @@ module Crossbeams
           return '' unless @field_config[:hint]
 
           Icon.render(:question,
-                      css_class: 'ml1 blue pointer',
+                      # css_class: 'ml1 blue pointer',
+                      css_class: 'mx-1 text-blue-500 cursor-pointer inline',
                       attrs: [
                         'title="Click for hint"',
                         "data-cb-hint-for='#{@page_config.name}_#{@field_name}'"

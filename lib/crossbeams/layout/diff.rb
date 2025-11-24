@@ -6,6 +6,8 @@ module Crossbeams
     class Diff # rubocop:disable Metrics/ClassLength
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :key, :rules, :use_files, :sort_nested
 
@@ -36,14 +38,26 @@ module Crossbeams
         left = diff.left
         right = diff.right
 
+        # <<-HTML
+        # <div class="crossbeams-field"#{no_padding}>
+        #   <div class="cbl-diff-container"#{max_width}>
+        #     <p class="cbl-diff-caption">#{rules[:left_caption] || 'Left'}</p>
+        #     #{left}
+        #   </div>
+        #   <div class="cbl-diff-container"#{max_width}>
+        #     <p class="cbl-diff-caption">#{rules[:right_caption] || 'Right'}</p>
+        #     #{right}
+        #   </div>
+        # </div>
+        # HTML
         <<-HTML
-        <div class="crossbeams-field"#{no_padding}>
-          <div class="cbl-diff-container"#{max_width}>
-            <p class="cbl-diff-caption">#{rules[:left_caption] || 'Left'}</p>
+        <div class="crossbeams-field flex flex-row"#{no_padding}>
+          <div class="p-1"#{max_width}>
+            <p class="#{SC.css_class(:h2)}">#{rules[:left_caption] || 'Left'}</p>
             #{left}
           </div>
-          <div class="cbl-diff-container"#{max_width}>
-            <p class="cbl-diff-caption">#{rules[:right_caption] || 'Right'}</p>
+          <div class="p-1"#{max_width}>
+            <p class="#{SC.css_class(:h2)}">#{rules[:right_caption] || 'Right'}</p>
             #{right}
           </div>
         </div>

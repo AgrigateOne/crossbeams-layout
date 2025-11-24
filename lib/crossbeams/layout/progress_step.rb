@@ -2,13 +2,13 @@
 
 module Crossbeams
   module Layout
-    # A progress steps renderer - for displaying positioin in amulti-step process.
+    # A progress steps renderer - for displaying position in a multi-step process.
     class ProgressStep
       extend MethodBuilder
 
       build_methods_for :csrf
       attr_reader :steps, :page_config, :position, :state_description,
-                  :show_finished, :current_step_id, :size
+                  :show_finished, :current_step_id, :size, :bottom_margin
 
       SIZES = %i[small medium default].freeze
 
@@ -34,14 +34,26 @@ module Crossbeams
       end
 
       # Render the control
-      def render
+      def render_old
+        # <<-HTML
+        #   <div class="cbl-progress-bar-wrapper"#{max_size}>
+        #     <div class="cbl-progress-status-bar" style="width: #{status_bar_width}%;">
+        #       <div class="cbl-current-status" style="width: #{current_position}%; transition: width 4500ms linear;">
+        #       </div>
+        #     </div>
+        #     <ul class="cbl-progress-bar">
+        #       #{render_steps}
+        #     </ul>
+        #   </div>
+        #   #{render_state}
+        # HTML
         <<-HTML
-          <div class="cbl-progress-bar-wrapper"#{max_size}>
-            <div class="cbl-progress-status-bar" style="width: #{status_bar_width}%;">
-              <div class="cbl-current-status" style="width: #{current_position}%; transition: width 4500ms linear;">
+          <div class="w-full"#{max_size}>
+            <div class="h-0.5 relative top-5 my-0 mx-auto bg-slate-400" style="width: #{status_bar_width}%;">
+              <div class="bg-ocean-700" style="width: #{current_position}%; transition: width 4500ms linear;">
               </div>
             </div>
-            <ul class="cbl-progress-bar">
+            <ul class="w-full m-0 p-0" style="font-size: 0">
               #{render_steps}
             </ul>
           </div>
@@ -49,7 +61,23 @@ module Crossbeams
         HTML
       end
 
+      def render
+        <<~HTML
+          <div class="w-2/3 my-7 mx-auto overflow-x-auto scrollbar-hidden#{xtra_class}"#{max_size}>
+            <div class="flex pb-5 px-10 m-auto" style="min-width: 19.5rem; width: #{status_bar_width}%;">
+              #{render_steps}
+            </div>
+          </div>
+        HTML
+      end
+
       private
+
+      def xtra_class
+        return '' unless bottom_margin
+
+        " mb-#{bottom_margin}"
+      end
 
       def max_size
         case size
@@ -73,6 +101,74 @@ module Crossbeams
       end
 
       def render_steps
+        # width = step_width
+        fullness = ''
+        steps.map.with_index do |step, index|
+          # css_class = ['cbl-step']
+          # css_class += position_classes(index, position)
+          # id = position_id(index, position)
+          # %(<li class="#{css_class.join(' ')}"#{id} style="width: #{width}%;">#{step}</li>)
+          colour = position >= index ? 'ocean-700' : 'slate-500'
+          line = <<~HTML
+            <div class="h-px w-full grow bg-slate-200 ">
+            </div>
+          HTML
+          # For now, drop the description.. (probably impossible to render properly below the step with this design)
+          # description = state_description[index]
+          # desc = description.nil? ? '' : %(<div class="mt-6 text-slate-600">#{description}</div>)
+          str = <<~HTML
+            <div class="flex items-center#{fullness}">
+              #{index.positive? ? line : ''}
+              <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-#{colour}">
+                <span class="text-xs select-none text-white">
+                  #{index + 1}
+                </span>
+                <span class="text-sm font-semibold select-none text-center whitespace-nowrap w-fit absolute left-1/2 -translate-x-1/2 -bottom-5 text-#{colour}">
+                  #{step}
+                </span>
+              </div>
+            </div>
+          HTML
+          fullness = ' w-full'
+          str
+        end.join("\n")
+        # <<~HTML
+        #   <div class="flex items-center">
+        #     <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-ocean-500">
+        #       <span class="text-xs select-none text-white">
+        #         1
+        #       </span>
+        #       <span class="text-sm font-semibold select-none text-center whitespace-nowrap w-fit absolute left-1/2 -translate-x-1/2 -bottom-5 text-ocean-500">
+        #         Template details
+        #       </span>
+        #     </div>
+        #   </div>
+        #   <div class="flex items-center w-full ">
+        #     <div class="h-px w-full grow bg-slate-200 ">
+        #     </div>
+        #     <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-slate-200">
+        #       <span class="text-xs select-none text-slate-500">
+        #         2
+        #       </span>
+        #       <span class="text-sm font-semibold select-none text-center truncate w-24 absolute left-1/2 -translate-x-1/2 -bottom-5 text-slate-500">
+        #         Select fields </span>
+        #     </div>
+        #   </div>
+        #   <div class="mr-7 flex items-center w-full ">
+        #     <div class="h-px w-full grow bg-slate-200 ">
+        #     </div>
+        #     <div class="grid place-items-center rounded-full w-6 h-6 relative grow-0 shrink-0 bg-slate-200">
+        #       <span class="text-xs select-none text-slate-500">
+        #         3
+        #       </span>
+        #       <span class="text-sm font-semibold select-none text-center whitespace-nowrap absolute left-1/2 -translate-x-1/2 -bottom-5 text-slate-500">
+        #         Populate default values </span>
+        #     </div>
+        #   </div>
+        # HTML
+      end
+
+      def render_steps_old
         width = step_width
         steps.map.with_index do |step, index|
           css_class = ['cbl-step']
@@ -126,7 +222,12 @@ module Crossbeams
 
       def check_size(opts)
         @size = opts[:size] || :default
-        raise ArgumentError, "Size must be one of #{SIZES.join(', ')}" unless SIZES.include?(@size)
+        raise ArgumentError, "Crossbeams::Layout::ProgressStep: Size must be one of #{SIZES.join(', ')}" unless SIZES.include?(@size)
+
+        @bottom_margin = opts[:bottom_margin].to_i
+        @bottom_margin = nil if bottom_margin.zero?
+        return if bottom_margin.nil?
+        raise ArgumentError, 'Crossbeams::Layout::ProgressStep: Bottom margin must be between 1 and 7' unless (1..7).include?(bottom_margin)
       end
     end
   end

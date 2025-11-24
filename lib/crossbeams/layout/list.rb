@@ -6,6 +6,8 @@ module Crossbeams
     class List
       attr_reader :items
 
+      SC = StylesConfig
+
       def initialize(page_config, items, options = {})
         @page_config = page_config
         @items       = Array(items)
@@ -67,13 +69,21 @@ module Crossbeams
       end
 
       def classes
-        return '' unless @options[:scroll_height] || @options[:filled_background]
+        # return '' unless @options[:scroll_height] || @options[:filled_background]
 
         validate_scroll_height
-        ar = []
-        ar << ' bg-light-gray ba b--silver br2 pt1 pb1' if @options[:filled_background]
-        ar << " cbl-list-scroll-#{@options[:scroll_height]}" if @options[:scroll_height]
+        ar = [SC.css_class(:ol)]
+        # ar << ' bg-light-gray ba b--silver br2 pt1 pb1' if @options[:filled_background]
+        ar << ' bg-slate-200 border border-slate-600 rounded py-1' if @options[:filled_background]
+        # ar << " cbl-list-scroll-#{@options[:scroll_height]}" if @options[:scroll_height]
+        ar << " #{scroll_height_class}" if @options[:scroll_height]
         %(class="#{ar.join}")
+      end
+
+      def scroll_height_class
+        return 'h-20 overflow-y-auto' if @options[:scroll_height] == :short
+
+        'h-44 overflow-y-auto'
       end
 
       def dom_id
@@ -83,8 +93,9 @@ module Crossbeams
       def caption
         return '' if @options[:caption].nil?
 
+        # <label>#{@options[:caption]}</label>
         <<~HTML
-          <label>#{@options[:caption]}</label>
+          <label class="#{SC.css_class(:label)}">#{@options[:caption]}</label>
         HTML
       end
 
@@ -101,18 +112,19 @@ module Crossbeams
       def plain_item_renders
         items = @items.first.is_a?(Array) ? @items.map(&:first) : @items
         items.map do |text|
-          %(<li>#{text}</li>)
+          %(<li class="#{SC.css_class(:li)}">#{text}</li>)
         end.join("\n")
       end
 
       def remove_item_renders
         @items.map do |text, id|
-          %(<li data-item-id="#{id}">#{minus_icon(id)} #{text}</li>)
+          %(<li class="#{SC.css_class(:li)}" title="Remove this item" data-item-id="#{id}">#{minus_icon(id)} #{text}</li>)
         end.join("\n")
       end
 
       def minus_icon(id)
-        Icon.new(:minus, css_class: 'red pointer', attrs: [%(data-remove-item="#{id}")]).render
+        # Icon.new(:minus, css_class: 'text-red-500 cursor-pointer inline', attrs: [%(data-remove-item="#{id}")]).render
+        Icon.new(:remove, css_class: 'text-ocean-700 cursor-pointer inline', attrs: [%(data-remove-item="#{id}")]).render
       end
     end
   end

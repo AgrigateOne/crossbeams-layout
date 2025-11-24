@@ -6,6 +6,8 @@ module Crossbeams
     class DropdownButton # rubocop:disable Metrics/ClassLength
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :text, :style, :css_class, :id, :visible, :items
 
@@ -16,7 +18,8 @@ module Crossbeams
         @css_class = options[:css_class] || ''
         @id        = options[:id]
         @visible   = options.fetch(:visible, true)
-        @items     = options[:items] || []
+        @inline    = options.fetch(:inline, false)
+        @items     = (Array(options[:items]) || []).compact
         @nodes     = []
         assert_options_ok!
       end
@@ -40,21 +43,64 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-          <div #{render_id}class="crossbeams-dropdown-button bn br2"#{hidden_string}>
+          <div #{render_id}class="crossbeams-dropdown-button w-fit relative#{inline_class}"#{hidden_string}>
             <button type="button"#{attrs}>
               #{render_text}
             </button>
-            <div class="crossbeams-dropdown-content">
+            <div class="crossbeams-dropdown-content min-w-full flex hidden absolute border border-slate-200 right-0 top-11 z-10 bg-white">
               #{dropdown_items}
             </div>
           </div>
         HTML
       end
+          # display: none;
+          # position: absolute;
+          # left: 0;
+          # top: 2rem;
+          # background-color: white;
+          # min-width: 160px;
+          # box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          # z-index: 1;
+        # }
+
+        # .crossbeams-dropdown-content a {
+          # color: black;
+          # padding: 12px 16px;
+          # text-decoration: none;
+          # display: block;
+        # }
+
+        # .crossbeams-dropdown-content a:hover {
+          # background-color: #d6d6e0;
+        # }
+
+        # .crossbeams-dropdown-button:hover .crossbeams-dropdown-content {
+          # display: block;
+        # }
+
+      #def render
+      #  <<-HTML
+      #    <div #{render_id}class="crossbeams-dropdown-button bn br2"#{hidden_string}>
+      #      <button type="button"#{attrs}>
+      #        #{render_text}
+      #      </button>
+      #      <div class="crossbeams-dropdown-content">
+      #        #{dropdown_items}
+      #      </div>
+      #    </div>
+      #  HTML
+      #end
 
       private
 
-      def dropdown_items
-        items.map do |item|
+      def inline_class
+        return '' unless @inline
+
+        ' inline-block'
+      end
+
+      def dropdown_items # rubocop:disable Metrics/AbcSize
+        Array(items).map do |item|
           # Include icons for direct, popup, replace, loading at the start of the text...
           icon = if item[:loading_window]
                    Icon.new(:newwindow).render
@@ -63,9 +109,23 @@ module Crossbeams
                  else
                    Icon.new(:link).render
                  end
-          %(<a data-button-dropdown="Y" href="#{item[:url]}" class="db pa2 dim nowrap"#{item_attrs(item)}>#{icon} #{item[:text]}</a>)
+          # %(<a data-button-dropdown="Y" href="#{item[:url]}" class="text-sky-600/80 hover:text-sky-600 flex hover:bg-slate-200 hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-700"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
+          %(<a data-button-dropdown="Y" href="#{item[:url]}" class="flex items-center gap-3 block w-min-fit w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none #{SC.css_class(:link)} hover:bg-slate-200"#{item_attrs(item)}>#{icon} #{item[:text]}</a>)
         end.join("\n")
       end
+      # def dropdown_items
+      #   items.map do |item|
+      #     # Include icons for direct, popup, replace, loading at the start of the text...
+      #     icon = if item[:loading_window]
+      #              Icon.new(:newwindow).render
+      #            elsif %i[popup replace_dialog].include?(item[:behaviour])
+      #              Icon.new(:window).render
+      #            else
+      #              Icon.new(:link).render
+      #            end
+      #     %(<a data-button-dropdown="Y" href="#{item[:url]}" class="db pa2 dim nowrap"#{item_attrs(item)}>#{icon} #{item[:text]}</a>)
+      #   end.join("\n")
+      # end
 
       def item_attrs(item)
         [
@@ -112,28 +172,64 @@ module Crossbeams
           raise ArgumentError, 'Crossbeams::Layout::DropdownButton - back button items must use direct links, not a dialog' if style == :back_button && %i[popup replace_dialog].include?(item[:behaviour])
         end
       end
+      # font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2
+      # p-3 h-[2.75rem] min-w-[2.75rem];
+
+      # !bg-ocean-50 !border-ocean-50 !text-ocean-700;
+
+      # /* default */
+      #     bg-slate-200 text-slate-800 border-slate-200
+      #     /* active */
+      #     active:bg-ocean-50 active:border-ocean-50 active:text-ocean-700
+      #     /* hover */
+      #     hover:bg-ocean-50 hover:border-ocean-50 hover:text-ocean-700
+      #     /* disabled */
+      #     disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200
+      #     /* focused */
+      #     focus-visible:ring-ocean-500;
 
       def class_strings
         case style
         when :button
-          %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-silver#{user_class}")
+          # %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-ocean-50 border-ocean-50 text-ocean-700 bg-slate-200 text-slate-800 border-slate-200 active:bg-ocean-50 active:border-ocean-50 active:text-ocean-700 hover:bg-ocean-50 hover:border-ocean-50 hover:text-ocean-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500#{user_class}")
+          %(class="inline-block #{SC.css_class(:button_secondary)}#{user_class}")
         when :small_button
-          %(class="pointer bn dim br1 ph2 dib white bg-silver#{user_class}")
+          # %(class="pointer bn dim br1 ph2 dib white bg-silver#{user_class}")
+          %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-1.5 h-[2.25rem] min-w-[2.25rem] bg-ocean-500 text-white border-ocean-500 active:bg-ocean-700 active:border-ocean-700 hover:bg-ocean-700 hover:border-ocean-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500)
         when :back_button
-          %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
+          # %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
+          # %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-ocean-500 border-ocean-500 text-white active:bg-ocean-700 active:border-ocean-700 active:text-ocean-700 hover:bg-ocean-700 hover:border-ocean-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500#{user_class}")
+          %(class="inline-block #{SC.css_class(:button_primary)}#{user_class}")
         when :action_button
-          %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-green#{user_class}")
+          # %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-green#{user_class}")
+          # %(class="font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-ocean-50 border-ocean-50 text-ocean-700 bg-slate-200 text-slate-800 border-slate-200 active:bg-ocean-50 active:border-ocean-50 active:text-ocean-700 hover:bg-ocean-50 hover:border-ocean-50 hover:text-ocean-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500#{user_class}")
+          %(class="inline-block #{SC.css_class(:button_primary)}#{user_class}")
         else
           raise ArgumentError, "Crossbeams::Layout::DropdownButton - invalid style option: #{style}"
         end
       end
+
+      # def class_strings
+      #   case style
+      #   when :button
+      #     %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-silver#{user_class}")
+      #   when :small_button
+      #     %(class="pointer bn dim br1 ph2 dib white bg-silver#{user_class}")
+      #   when :back_button
+      #     %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
+      #   when :action_button
+      #     %(class="pointer f6 bn dim br2 ph3 pv2 dib white bg-green#{user_class}")
+      #   else
+      #     raise ArgumentError, "Crossbeams::Layout::DropdownButton - invalid style option: #{style}"
+      #   end
+      # end
 
       def user_class
         css_class.empty? ? '' : " #{css_class}"
       end
 
       def hidden_string
-        return '' if visible
+        return '' if visible && !Array(items).empty?
 
         ' hidden'
       end
@@ -147,13 +243,13 @@ module Crossbeams
 
       def render_text # rubocop:disable Metrics/AbcSize
         if style == :back_button
-          "#{Icon.new(:back).render} #{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
+          "#{Icon.new(:back, css_class: 'align-middle inline-block').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2 inline-block']).render}"
         elsif @icon
-          "#{Icon.new(@icon).render} #{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
+          "#{Icon.new(@icon, css_class: 'align-middle inline-block').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2 inline-block']).render}"
         elsif @window
-          "#{Icon.new(:newwindow).render} #{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
+          "#{Icon.new(:newwindow, css_class: 'align-middle inline-block').render} #{text} #{Icon.new(:dropdown, css_class: ['ml-2 inline-block']).render}"
         else
-          "#{text} #{Icon.new(:dropdown, css_class: ['ml2']).render}"
+          "#{text} #{Icon.new(:dropdown, css_class: ['ml-2 inline-block']).render}"
         end
       end
 
