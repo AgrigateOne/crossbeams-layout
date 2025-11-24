@@ -5,9 +5,13 @@ require 'diffy'
 require 'json'
 require 'ostruct'
 require 'rouge'
+require 'dry/configurable'
+
 require 'crossbeams/layout/version'
+require 'crossbeams/layout/styles_config'
 require 'crossbeams/layout/method_builder'
 require 'crossbeams/layout/examples_generator'
+require 'crossbeams/layout/utils'
 
 require 'crossbeams/layout/callback_section'
 require 'crossbeams/layout/column'
@@ -20,6 +24,7 @@ require 'crossbeams/layout/form'
 require 'crossbeams/layout/form_button'
 require 'crossbeams/layout/grid'
 require 'crossbeams/layout/help_link'
+require 'crossbeams/layout/horizontal_group'
 require 'crossbeams/layout/icon'
 require 'crossbeams/layout/link'
 require 'crossbeams/layout/list'
@@ -54,9 +59,22 @@ require 'crossbeams/layout/renderer/textarea'
 require 'crossbeams/layout/renderer/field_factory'
 require 'crossbeams/layout/renderer/field_types'
 
+# Load the Dashboard components
+base = File.expand_path('layout/dashboard', __dir__)
+Dir[File.join(base, '*.rb')].sort.each { |f| require f }
+
 module Crossbeams
   # Layout an HTML page using DSL.
   module Layout
     class Error < StandardError; end
+
+    # Serve local developer documentation (ASCIIDoc)
+    class DeveloperDocumentation
+      DOCUMENTATION_FILES = %w[page_layout.adoc non_field_renderers.adoc field_renderers.adoc].freeze
+
+      def self.content(file)
+        File.read(File.join(File.dirname(__FILE__), '../../developer_documentation', "#{file.chomp('.adoc')}.adoc"))
+      end
+    end
   end
 end

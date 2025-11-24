@@ -48,8 +48,8 @@ module Crossbeams
               @nodes << SortableList.new(page_config, prefix, items, options)
             end
           when :repeating_request
-            define_method(:add_repeating_request) do |url, interval, content|
-              @nodes << RepeatingRequest.new(page_config, url, interval, content)
+            define_method(:add_repeating_request) do |url, interval, content, options = {}|
+              @nodes << RepeatingRequest.new(page_config, url, interval, content, options)
             end
           when :address
             define_method(:add_address) do |addresses, opts = {}|
@@ -72,6 +72,13 @@ module Crossbeams
               section = Section.new(page_config, nodes.length + 1)
               blk.call(section)
               @nodes << section
+            end
+          # Add a group that will render its children in a horizontal row
+          when :horizontal_group
+            define_method(:horizontal_group) do |&blk|
+              group = HorizontalGroup.new(page_config, nodes.length + 1)
+              blk.call(group)
+              @nodes << group
             end
           else
             raise ArgumentError, "#{node_name} is not a valid option for `build_methods_for`"

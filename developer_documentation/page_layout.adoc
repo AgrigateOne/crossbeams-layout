@@ -1,0 +1,647 @@
+= Page layout
+:toc:
+
+link:/developer_documentation/start.adoc[Back to documentation home]
+
+== Page layout
+
+Pages are laid out using a DSL which allows nesting of elements like sections, rows, columns and forms.
+
+== Simplest way of laying out a form
+
+[source,ruby]
+----
+layout = Crossbeams::Layout::Page.build(rules) do |page| #<1>
+  page.form_object ui_rule.form_object                   #<2>
+  page.form_values form_values                           #<3>
+  page.form_errors form_errors                           #<4>
+  page.form do |form|
+    form.action '/path/to/save_form'                     #<5>
+    form.remote!                                         #<6>
+    form.add_field :a_field                              #<7>
+  end
+end
+----
+<1> rules is the page_config.
+<2> The form object that contains the field values to bind to the form.
+<3> These values (a Hash or nil) will take precedence over the values in form_object when present.
+<4> A Hash of errors or nil - for errors to be displayed in the form next to the relevant field.
+<5> The form action to be called on submit.
+<6> Optional. Call this to make the form call the action remotely - via javascript `fetch` call.
+<7> A field to be rendered. The form object should return a value when sent this method, and the UI rules should include a renderer spec for it.
+
+== Overview example
+
+[source,ruby]
+----
+layout = Crossbeams::Layout::Page.build(rules) do |page|
+  page.form_values form_values
+  page.form_errors form_errors
+  page.section do |section|
+    section.horizontal_group do |grp|
+      grp.add_caption 'A test'
+      grp.add_control(..)
+    end
+    section.row do |row|
+      row.column do |col|
+        col.add_text 'a'
+      end
+      row.column do |col|
+        col.add_text 'b'
+      end
+    end
+    section.row do |row|
+      row.column do |col|
+        col.add_text 'a'
+      end
+      row.blank_column
+    end
+  end
+  page.section do |section|
+    section.fold_up do |fold|
+      fold.form do |form|
+        form.action '/path/to/save_form'
+        form.remote!
+        form.add_field :a_field
+      end
+    end
+  end
+end
+----
+
+== Sections
+
+Sections are divisions in a page. They can optionally display a caption (the default is no caption).
+They can be replaceable via AJAX calls - without affecting the rest of the page.
+
+=== Callback sections
+
+A callback section is a special type of section that has no content initially.
+Its only attributes are the (optional) caption and the url to call once the page has loaded.
+The called url is responsible for providing the content. This is a useful way of loading the same page in different ways and in different pages. It can also be useful if the page will take some time to load, as the page will display a loading indicator while the section is being fetched.
+
+
+=== Horizontal groups
+
+Horizontal groups allow you to lay out controls horizontally inside a section instead of vertically.
+
+== Rows and columns
+
+Using rows and columns, a page can display columns of information alongside each other. The responsive design will try to adapt the flow of columns to suit smaller/larger screens.
+
+== FoldUp
+
+A fold-up wraps a portion of the page and makes it collapsible. By default it renders collapsed and can be toggled open/closed by mouse.
+
+== DSL methods
+
+These are the methods used in building a page layout.
+
+=== Page
+
+|===
+|method |args |description
+
+|add_csrf_tag
+|tag
+|Adds tags to all nodes in a page (only forms will actually apply the tag)
+
+|form_object
+|object
+|Set the form_object attribute of the page config.
+
+|form_values
+|Hash
+|Set the form values in the page config.
+
+|form_errors
+|Hash
+|Set the form errors in the page config.
+
+|section (link:/developer_documentation/page_layout.adoc#_section[Section])
+|block
+|builds a Section using the block.
+
+|callback_section (link:/developer_documentation/page_layout.adoc#_callbacksection[CallbackSection])
+|block
+|builds a CalllbackSection using the block.
+
+|horizontal_group (link:/developer_documentation/page_layout.adoc#_horizontalgroup[HorizontalGroup])
+|block
+|builds an HorizontalGroup using the block.
+
+|row (link:/developer_documentation/page_layout.adoc#_row[Row])
+|block
+|builds a Row using the block.
+
+|fold_up (link:/developer_documentation/page_layout.adoc#_foldup[FoldUp])
+|block
+|builds a fold-up with the block as contents.
+
+|form (link:/developer_documentation/page_layout.adoc#_form[Form])
+|block
+|builds a form in the block.
+
+|with_form
+|block
+|builds a form in the block and returns the page object. Used when the page will only contain a form and nothing else.
+
+|add_grid (link:/developer_documentation/non_field_renderers.adoc#_grid[Grid])
+|grid_id (String), url (String), options (Hash)
+|Add a grid to the page.
+
+|add_table (link:/developer_documentation/non_field_renderers.adoc#_table[Table])
+|rows (Array), columns (Array), options (Hash)
+|Add a table to the page.
+
+|add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
+|text (String), options (Hash)
+|Add a block of Text to the page.
+
+|add_notice (link:/developer_documentation/non_field_renderers.adoc#_notice[Notice])
+|text (String), options (Hash)
+|Add a styled Notice to the page.
+
+|add_diff (link:/developer_documentation/non_field_renderers.adoc#_diff[Diff])
+|key (Symbol)
+|Displays a diff of two texts contained in the page_config.
+
+|add_list (link:/developer_documentation/non_field_renderers.adoc#_list[List])
+|items(Array), options (Hash)
+|Adds a list of items.
+
+|add_repeating_request (link:/developer_documentation/non_field_renderers.adoc#_repeatingrequest[RepeatingRequest])
+|url (String), interval (Integer), content (String)
+|Adds a section to the page that will poll the server with url every interval seconds.
+
+|add_help_link (link:/developer_documentation/non_field_renderers.adoc#_helplink[HelpLink])
+|options(Hash)
+|Add a button to launch a help page
+
+|render
+|
+|Renders all nodes in the page.
+
+|===
+
+=== Section
+
+|===
+|method |args |description
+
+|horizontal_group (link:/developer_documentation/page_layout.adoc#_horizontalgroup[HorizontalGroup])
+|block
+|builds an HorizontalGroup using the block.
+
+|row (link:/developer_documentation/page_layout.adoc#_row[Row])
+|block
+|builds a Row using the block.
+
+|form (link:/developer_documentation/page_layout.adoc#_form[Form])
+|block
+|builds a form in the block.
+
+|fold_up (link:/developer_documentation/page_layout.adoc#_foldup[FoldUp])
+|block
+|builds a fold-up with the block as contents.
+
+|expand_collapse (link:/developer_documentation/non_field_renderers.adoc#_expandcollapsefoldups[ExpandCollapseFoldUps])
+|options (Hash)
+|Add links/buttons to open or close all FoldUps in the same form.
+
+|dom_id
+|text (String)
+|Sets the `id` of the HTML element.
+
+|add_grid (link:/developer_documentation/non_field_renderers.adoc#_grid[Grid])
+|grid_id (String), url (String), options (Hash)
+|Add a Grid to the section.
+
+|add_caption
+|text (String)
+|Add a caption (rendered as header1) to the top of the section.
+
+|add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
+|text (String), options (Hash)
+|Add a block of Text to the section.
+
+|add_notice (link:/developer_documentation/non_field_renderers.adoc#_notice[Notice])
+|text (String), options (Hash)
+|Add a styled Notice to the section.
+
+|add_table (link:/developer_documentation/non_field_renderers.adoc#_table[Table])
+|rows (Array), columns (Array), options (Hash)
+|Add a table to the page.
+
+|add_progress_step (link:/developer_documentation/non_field_renderers.adoc#_progressstep[ProgressStep])
+|steps (Array), options (Hash)
+|Displays a "breadcrumb" of steps taken and to be taken.
+
+|add_repeating_request (link:/developer_documentation/non_field_renderers.adoc#_repeatingrequest[RepeatingRequest])
+|url (String), interval (Integer), content (String)
+|Adds a section to the page that will poll the server with url every interval seconds.
+
+|add_address (link:/developer_documentation/non_field_renderers.adoc#_address[Address])
+|addresses (Array), opts (Hash)
+|Display a number of addresses.
+
+|add_contact_method (link:/developer_documentation/non_field_renderers.adoc#_contactmethod[ContactMethod])
+|contact_methods (Array), opts (Hash)
+|Display a number of contact_methods.
+
+|add_diff (link:/developer_documentation/non_field_renderers.adoc#_diff[Diff])
+|key (Symbol)
+|Displays a diff of two texts contained in the page_config.
+
+|add_control (link:/developer_documentation/non_field_renderers.adoc#_link[Link], link:/developer_documentation/non_field_renderers.adoc#_dropdownbutton[DropdownButton])
+|page_control_definition (Hash)
+|Add a control (link / button / dropdown button) to the section.
+
+|show_border!
+|None
+|Show a border around the Section. No border is shown if this method is not called.
+
+|fit_height!
+|None
+|Makes the section fit in available space. Required to make a grid within the section expand to use available space.
+
+|full_dialog_height!
+|None
+|Makes the section take up most of the available height in a dialog.
+
+|half_dialog_height!
+|None
+|Makes the section take up about half the available height in a dialog.
+
+|render
+|
+|Renders the section and all nodes within it.
+
+|===
+
+=== HorizontalGroup
+
+A `HorizontalGroup` will align its nodes on the right by default, but you can use `align_left!` to alter that.
+The caption when present is always rendered on the left.
+
+|===
+|method |args |description
+
+|align_left!
+|None
+|Aligns elements to the left (default is right). Note that the caption will always align left.
+
+|add_caption
+|text (String)
+|Add a caption (rendered as header1) to the left of the group.
+
+|add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
+|text (String), options (Hash)
+|Add a block of Text to the section.
+
+|add_control (link:/developer_documentation/non_field_renderers.adoc#_link[Link], link:/developer_documentation/non_field_renderers.adoc#_dropdownbutton[DropdownButton])
+|page_control_definition (Hash)
+|Add a control (link / button / dropdown button) to the section.
+
+|add_table (link:/developer_documentation/non_field_renderers.adoc#_table[Table])
+|rows (Array), columns (Array), options (Hash)
+|Add a table to the page.
+
+|add_address (link:/developer_documentation/non_field_renderers.adoc#_address[Address])
+|addresses (Array), opts (Hash)
+|Display a number of addresses.
+
+|add_contact_method (link:/developer_documentation/non_field_renderers.adoc#_contactmethod[ContactMethod])
+|contact_methods (Array), opts (Hash)
+|Display a number of contact_methods.
+
+|add_help_link (link:/developer_documentation/non_field_renderers.adoc#_helplink[HelpLink])
+|options(Hash)
+|Add a button to launch a help page
+
+|render
+|
+|Renders the group and all nodes within it.
+
+|===
+
+=== CallbackSection
+
+You can use `caption = 'xxx'` and `url = `xxx'` to set the caption and callback URL.
+
+|===
+|method |args |description
+
+|callback_url
+|url (String)
+|Required. The url to call to render the content of the section
+
+|caption_text
+|caption (String)
+|The caption for the section. Defaults to `Section`
+
+|remote!
+|
+|Use this when rendering in a dialog, instead of in a page
+
+|render
+|
+|Renders the callback section
+
+|===
+
+=== Row
+
+|===
+|method |args |description
+
+|column (link:/developer_documentation/page_layout.adoc#_column[Column])
+|column_size (Symbol) - optional -- `:full/:half/:third/:quarter`. Currently ignored.
+|Add a column within the row.
+
+|blank_column
+|
+|Add a blank column within the row. Use this to make the other column in the row take up half this row's width.
+
+|render
+|
+|Renders the row and all columns within it.
+
+|fit_width!
+|
+|Force the row to use the width of the page.
+
+|===
+
+=== Column
+
+|===
+|method |args |description
+
+|form (link:/developer_documentation/page_layout.adoc#_form[Form])
+|block
+|builds a form in the block.
+
+|fold_up (link:/developer_documentation/page_layout.adoc#_foldup[FoldUp])
+|block
+|builds a fold-up with the block as contents.
+
+|add_field
+|name (String), options (Hash)
+|Add a Field to the column.
+
+|add_list (link:/developer_documentation/non_field_renderers.adoc#_list[List])
+|items(Array), options (Hash)
+|Adds a list of items.
+
+|add_sortable_list (link:/developer_documentation/non_field_renderers.adoc#_sortablelist[SortableList])
+|prefix (String), items (Array), options (Hash)
+|Add a sortable list control for sorting a list of ids using text values linked to the ids.
+
+|add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
+|text (String), options (Hash)
+|Add a block of Text to the column.
+
+|add_notice (link:/developer_documentation/non_field_renderers.adoc#_notice[Notice])
+|text (String), options (Hash)
+|Add a styled Notice to the column.
+
+|add_table (link:/developer_documentation/non_field_renderers.adoc#_table[Table])
+|rows (Array), columns (Array), options (Hash)
+|Add a table to the page.
+
+|add_grid (link:/developer_documentation/non_field_renderers.adoc#_grid[Grid])
+|grid_id (String), url (String), options (Hash)
+|Add a Grid to the column.
+
+|add_address (link:/developer_documentation/non_field_renderers.adoc#_address[Address])
+|addresses (Array), opts (Hash)
+|Display a number of addresses.
+
+|add_contact_method (link:/developer_documentation/non_field_renderers.adoc#_contactmethod[ContactMethod])
+|contact_methods (Array), opts (Hash)
+|Display a number of contact_methods.
+
+|add_diff (link:/developer_documentation/non_field_renderers.adoc#_diff[Diff])
+|key (Symbol)
+|Displays a diff of two texts contained in the page_config.
+
+|add_repeating_request (link:/developer_documentation/non_field_renderers.adoc#_repeatingrequest[RepeatingRequest])
+|url (String), interval (Integer), content (String)
+|Adds a section to the page that will poll the server with url every interval seconds.
+
+|add_control (link:/developer_documentation/non_field_renderers.adoc#_link[Link], link:/developer_documentation/non_field_renderers.adoc#_dropdownbutton[DropdownButton])
+|page_control_definition (Hash)
+|Add a control (link / button / dropdown button) to the section.
+
+|render
+|
+|Renders the column and all nodes within it.
+
+|===
+
+=== Form
+
+|===
+|method |args |description
+
+|form_config=
+|value (Hash)
+|Provide page config for the form. Use this when a page has more than one form in it. Otherwise the form will pick up this config from the page.
+
+|form_values
+|Hash
+|Set the form values for the form config (when there is more than one form in the page).
+
+|form_id
+|String
+|Set the form's DOM id value.
+
+|form_errors
+|Hash
+|Set the form errors for the form config (when there is more than one form in the page).
+
+|add_csrf_tag
+|tag
+|Adds a csrf tag to the form.
+
+|caption
+|String and optionally level number. e.g. `form.caption 'New thing', level: 3`.
+|Render a caption above the form (hidden for remote forms). The level can be 1..4 to render within h1..h4 tags. Default level is 2.
+
+|remote!
+|
+|Make this a remote form that will be submitted via a javascript `fetch`.
+
+|submit_in_loading_page!
+|
+|Make this form submit as a GET request in a popup "loading" page. Used mainly in filter forms to launch Jasper reports.
+
+|view_only!
+|
+|Make this a view-only form that cannot be submitted, only closed.
+
+|no_submit!
+|
+|Do not render a submit button in the form.
+
+|grid_filter!
+|
+|Use this form to filter the content of a grid on the same page.
+
+|grid_id
+|String
+|The id of the grid to be filtered. Only applicable if `grid_filter!` is applied.
+
+|briefly_disable_submit!
+|
+|Re-enable the submit button shortly after a form has submitted.
+
+|button_id
+|String
+|Set the DOM id of the submit button
+
+|initially_hide_button
+|Boolean
+|When `true`, the submit button will be hidden on render. Default is `false`.
+
+|multipart!
+|
+|Make this a multipart form for including file uploads.
+
+|inline!
+|
+|Include the submit button on the same line as an input. This only works if the form does not include rows and columns.
+
+|action
+|action (String)
+|Set the URL action to which the form will be submitted.
+
+|method
+|method (Symbol).
+|Set the method for form submission -- can be `:create` or `:update`. Default is `:create`.
+
+|row (link:/developer_documentation/page_layout.adoc#_row[Row])
+|block
+|builds a Row using the block.
+
+|fold_up (link:/developer_documentation/page_layout.adoc#_foldup[FoldUp])
+|block
+|builds a fold-up with the block as contents.
+
+|expand_collapse (link:/developer_documentation/non_field_renderers.adoc#_expandcollapsefoldups[ExpandCollapseFoldUps])
+|options (Hash)
+|Add links/buttons to open or close all FoldUps in the same form.
+
+|add_field
+|name (String), options (Hash)
+|Add a Field to the form.
+
+|add_button
+|caption (String), formaction (String), options (Hash)
+|Add an alternative button to the form (FormButton) -- so it can be submitted to a different URL.
+
+|add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
+|text (String), options (Hash)
+|Add a block of Text to the form.
+
+|add_notice (link:/developer_documentation/non_field_renderers.adoc#_notice[Notice])
+|text (String), options (Hash)
+|Add a styled Notice to the form.
+
+|add_list (link:/developer_documentation/non_field_renderers.adoc#_list[List])
+|items(Array), options (Hash)
+|Adds a list of items.
+
+|add_sortable_list (link:/developer_documentation/non_field_renderers.adoc#_sortablelist[SortableList])
+|prefix (String), items (Array), options (Hash)
+|Add a sortable list control for sorting a list of ids using text values linked to the ids.
+
+|add_address (link:/developer_documentation/non_field_renderers.adoc#_address[Address])
+|addresses (Array), opts (Hash)
+|Display a number of addresses.
+
+|add_contact_method (link:/developer_documentation/non_field_renderers.adoc#_contactmethod[ContactMethod])
+|contact_methods (Array), opts (Hash)
+|Display a number of contact_methods.
+
+|submit_captions
+|value (String), disabled_value (String), optional.
+|The caption for the submit button, and optionally the caption to show when the button is disabled while the form is being submitted. Disabled caption defaults to caption.
+
+|render
+|
+|Renders the form and all fields and other nodes within it.
+
+|===
+
+=== FoldUp
+
+|===
+|method |args |description
+
+|caption
+|caption_text (String)
+|Replaces the default text which is 'Details'.
+
+|open!
+|
+|Causes the control to render expanded. The default is to render collapsed.
+
+|add_csrf_tag
+|tag
+|Adds tags to all nodes in the control (only forms will actually apply the tag)
+
+|section (link:/developer_documentation/page_layout.adoc#_section[Section])
+|block
+|builds a Section using the block.
+
+|horizontal_group (link:/developer_documentation/page_layout.adoc#_horizontalgroup[HorizontalGroup])
+|block
+|builds an HorizontalGroup using the block.
+
+|row (link:/developer_documentation/page_layout.adoc#_row[Row])
+|block
+|builds a Row using the block.
+
+|form (link:/developer_documentation/page_layout.adoc#_form[Form])
+|block
+|builds a form in the block.
+
+|add_grid (link:/developer_documentation/non_field_renderers.adoc#_grid[Grid])
+|grid_id (String), url (String), options (Hash)
+|Add a grid to the page.
+
+|add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
+|text (String), options (Hash)
+|Add a block of Text to the page.
+
+|add_notice (link:/developer_documentation/non_field_renderers.adoc#_notice[Notice])
+|text (String), options (Hash)
+|Add a styled Notice to the page.
+
+|add_table (link:/developer_documentation/non_field_renderers.adoc#_table[Table])
+|rows (Array), columns (Array), options (Hash)
+|Add a table to the page.
+
+|add_address (link:/developer_documentation/non_field_renderers.adoc#_address[Address])
+|addresses (Array), opts (Hash)
+|Display a number of addresses.
+
+|add_contact_method (link:/developer_documentation/non_field_renderers.adoc#_contactmethod[ContactMethod])
+|contact_methods (Array), opts (Hash)
+|Display a number of contact_methods.
+
+|add_diff (link:/developer_documentation/non_field_renderers.adoc#_diff[Diff])
+|key (Symbol)
+|Displays a diff of two texts contained in the page_config.
+
+|add_field
+|name (String), options (Hash)
+|Add a Field to the fold-up inside a form.
+
+|render
+|
+|Renders all nodes in the fold-up.
+
+|===

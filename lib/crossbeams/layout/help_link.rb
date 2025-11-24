@@ -6,6 +6,8 @@ module Crossbeams
     class HelpLink
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_reader :text, :help_type, :path, :dialog
 
@@ -36,11 +38,22 @@ module Crossbeams
       #
       # @return [string] - HTML representation of this node.
       def render
-        <<-HTML
-          <div class="relative">
-            <a href="#{url}"class="#{position_classes}f6 link dim br2 ph3 pv2 dib white bg-blue" data-help-link="Y" target="cbf-help">#{Icon.new(:question).render} #{text}</a>
-          </div>
-        HTML
+        # <<-HTML
+        #   <div class="relative">
+        #     <a href="#{url}" class="#{position_classes}f6 link dim br2 ph3 pv2 dib white bg-blue" data-help-link="Y" target="cbf-help">#{Icon.new(:question).render} #{text}</a>
+        #   </div>
+        # HTML
+        if dialog
+          <<-HTML
+            <div class="relative">
+              <a href="#{url}" class="#{position_classes}#{SC.css_class(:button_primary)}" data-help-link="Y" target="cbf-help">#{Icon.new(:question, css_class: 'inline').render} #{text}</a>
+            </div>
+          HTML
+        else
+          <<-HTML
+            <a href="#{url}" class="#{position_classes}#{SC.css_class(:button_primary)}" data-help-link="Y" target="cbf-help">#{Icon.new(:question, css_class: 'inline').render} #{text}</a>
+          HTML
+        end
       end
 
       private
@@ -52,9 +65,10 @@ module Crossbeams
       end
 
       def position_classes
-        return '' if dialog
+        # return '' if dialog
 
-        "absolute top-#{@lift} right-0 "
+        # "absolute top-#{@lift} right-0 "
+        ''
       end
     end
   end

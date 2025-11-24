@@ -7,6 +7,9 @@ module Crossbeams
       class Lookup < Base
         attr_reader :lookup_name, :lookup_key, :hidden_fields, :show_field,
                     :param_keys, :param_values
+
+        SC = StylesConfig
+
         def configure(field_name, field_config, page_config)
           @field_name    = field_name
           @field_config  = field_config
@@ -23,8 +26,10 @@ module Crossbeams
         def render
           @current_field = @field_name
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-            <button type="button" data-lookup-name="#{lookup_name}" data-lookup-key="#{lookup_key}" #{render_param_keys} #{render_param_values}>#{@caption}</button>#{render_show_field}#{render_hidden_fields}
+          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
+          <div class="flex flex-row gap-2">
+            <button type="button" class="#{SC.css_class(:button_secondary)} px-2" data-lookup-name="#{lookup_name}" data-lookup-key="#{lookup_key}" #{render_param_keys} #{render_param_values}>#{@caption}</button>#{render_show_field}#{render_hidden_fields}
+            </div>
           </div>#{error_state(newline: false)}
           HTML
         end
@@ -46,9 +51,10 @@ module Crossbeams
           return '' if show_field.nil?
 
           @current_field = show_field
+          # <input type="text" readonly class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value(show_field).to_s)}" #{name_attribute} #{field_id}>
           <<~HTML
 
-            <input type="text" readonly class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value(show_field).to_s)}" #{name_attribute} #{field_id}>
+            <input type="text" readonly class="w-full border rounded leading-4 p-3 bg-gray-200 #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value(show_field).to_s)}" #{name_attribute} #{field_id}>
           HTML
         end
 
