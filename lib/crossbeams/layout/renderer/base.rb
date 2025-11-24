@@ -45,11 +45,6 @@ module Crossbeams
 
         def label_render(for_id, caption, inline: false, tooltip: nil, check_required: true, pointer: false, ignore_hint: false, prefix: '', bool: false) # rubocop:disable Metrics/ParameterLists, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
           css_class = field_has_errors? ? SC.css_class(:label_in_err) : SC.css_class(:label)
-          # css_class = if inline
-          #               field_has_errors? ? SC.css_class(:label_inline_in_err) : SC.css_class(:label_inline)
-          #             else
-          #               field_has_errors? ? SC.css_class(:label_in_err) : SC.css_class(:label)
-          #             end
           toolt = tooltip.nil? ? '' : " #{tooltip}"
           req = check_required && @field_config[:required] == true ? ' requiredlabel' : ''
           xtra_css = ' py-4' if bool
@@ -167,7 +162,6 @@ module Crossbeams
                    @page_config.form_errors[@field_name]
                  end
 
-          # "<span class='brown crossbeams-form-error'>#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>" if errs
           %(<span class="font-normal text-red-700">#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>) if errs
         end
 
