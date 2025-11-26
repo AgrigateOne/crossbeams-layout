@@ -54,7 +54,7 @@ module Crossbeams
 
         # The class for the field wrapper.
         # (the div surrounding label and input is the wrapper)
-        def div_class
+        def div_class(restrict_width: true)
           # return 'crossbeams-field' unless @page_config.form_errors
 
           # has_err = if @field_config[:parent_field]
@@ -69,7 +69,7 @@ module Crossbeams
           #   'crossbeams-field'
           # end
           # 'crossbeams-field'
-          Utils.crossbeams_field_classes
+          Utils.crossbeams_field_classes(restrict_width: restrict_width)
         end
 
         # The value of the field extracted from the form object.
