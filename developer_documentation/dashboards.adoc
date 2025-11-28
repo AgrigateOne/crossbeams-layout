@@ -11,6 +11,26 @@ An example:
 
 [source,ruby]
 ----
+tab = [{ left: nil,
+         center: { type: :head_col,
+                   header: 'TOTAL',
+                   bg: :gray },
+         right: { type: :table,
+                  header: 'PALLETS',
+                  align: :right,
+                  table: [['Cartons', 12], ['Pallets', 1]] } },
+       { left: { type: :table,
+                 header: "SHIPPED (2)",
+                 align: :right,
+                 table: [['Cartons', 24], ['Pallets', 2]] },
+         center: { type: :head_col,
+                   header: 'LOAD',
+                   bg: :gray },
+         right: { type: :table,
+                  header: "ALLOCATED (3)",
+                  align: :right,
+                  table: [['Cartons', 36], ['Pallets', 3]] } }]
+
 Crossbeams::Layout::Dashboard.build do |dash|
   dash.caption 'The main dashboard caption'
     dash.lane do |lane|
@@ -23,13 +43,206 @@ Crossbeams::Layout::Dashboard.build do |dash|
           item.add_label_val 'label', 'value'
         end
         items.item do |item|
-          item.header 'Target Markets'
-          tm_cartons.each_slice(2) do |ar|
-            item.add_label_val_array ar
+          item.header 'Number'
+          item.header_value 30
+          item.add_rich_table tab
+        end
+        items.item do |item|
+          item.header 'Perc'
+          item.add_percentage 14.6
+        end
+      end
+    end
+    dash.lane do |lane|
+      lane.sublane do |sub|
+        sub.caption 'With data'
+        sub.item_set do |items|
+          items.item do |item
+            item.split_header [['head', 1], ['more', 2]]
+            item.add_number 42
           end
         end
+      end
+      lane.sublane do |sub|
+        sub.caption 'A test'
+        sub.no_data
       end
     end
   end
 end
 ----
+
+== DSL methods
+
+These are the methods used in building a dashboard.
+
+=== Dashboard
+
+|===
+|method |args |description
+
+|caption
+|caption (String)
+|Caption for the whole dashboard
+
+|add_sub_caption
+|caption (String)
+|A 2nd level caption to appear under the caption
+
+|lane
+|block
+|Build a lane within the dashboard
+
+|add_repeating_request (link:/developer_documentation/non_field_renderers.adoc#_repeatingrequest[RepeatingRequest])
+|url (String), interval (Integer), content (String)
+|Adds a section to the page that will poll the server with url every interval seconds.
+
+|build
+|
+|Top-level container DSL method
+
+|render
+|
+|Renders all nodes in the dashboard.
+
+|===
+
+=== DashboardLane
+
+|===
+|method |args |description
+
+|caption
+|caption (String)
+|Caption for the whole dashboard
+
+|add_sub_caption
+|caption (String)
+|A 2nd level caption to appear under the caption
+
+|no_data
+|msg (String) - optional
+|Show that there is no data for the lane
+
+|sublane
+|Hash, block
+|Build a sublane
+
+|item_set
+|block
+|Build a set of items in the lane
+
+|render
+|
+|Renders all nodes in the lane.
+
+|===
+
+=== DashboardSubLane
+
+|===
+|method |args |description
+
+|caption
+|caption (String)
+|Caption for the whole dashboard
+
+|no_data
+|msg (String) - optional
+|Show that there is no data for the sub-lane
+
+|sublane
+|Hash, block
+|Build a sublane
+
+|item_set
+|block
+|Build a set of items in the lane
+
+|render
+|
+|Renders all nodes in the sub-lane.
+
+|===
+
+=== DashboardItemSet
+
+|===
+|method |args |description
+
+|max_width
+|val (Integer)
+|Maximum width in pixels for items within the set
+
+|item
+|block
+|Build an item
+
+|render
+|
+|Renders all nodes in the item set.
+
+|===
+
+=== DashboardItem
+
+|===
+|method |args |description
+
+|no_stretch!
+|
+|Do not stretch the height of the item
+
+|header
+|val (String)
+|A header made up of text
+
+|header_value
+|val (String)
+|A value to display to the right of the header
+
+|split_header
+|val (Array)
+|An array of headers (or for a 2D array, header/value combinations)
+
+|add_label
+|label (String), options (Hash) - optional
+|Display text. Options are: `:center` (true to align-centre), `:banner` (`:blue` or `:purple` as background), `:size` (`:large` or `:big`), colour (`:orange`), `:font_weight` (any value will display un-bold)
+
+|add_label_val
+|label (String), val (any), options (Hash) - optional
+|Display a label with a value below it. Options are: `:horizontal` (true: show on one line), `:val_dom_id` (DOM id for the value), `:val_colour` (blue colour can be overridden with `:error` or `:warning`), `:font_weight` (any value will display un-bold)
+
+|add_label_val_array
+|ary (Array), options (Hash) - optional
+|From a 2D array, display each 1st value above its 2nd value in a row. Options are `:big_text` (render large text if true), `:bg` (any value shows with a grey background)
+
+|add_rich_table
+|ary (Array)
+|Display a table of 3 columns, each of which can include a table. Each array element is a hash with keys: `:left`, `:center` and `:right`. The values can be nil or a hash. The hash key/values can be: `:type` - `:head_col` (just a heading) or `:table` (heading and table), `:header` (text), `:align` (default left, can be set to `:right`), `:bg` (can be `:gray` for background), `:table` (a 2D array of label/value pairs).
+
+|add_number
+|val (Number), options (Hash)
+|Display a large cnetre-aligned number. Option `:bg` can be set to `:blue`.
+
+|add_percentage
+|val (Number), options (Hash)
+|Display a percentage. Options are: `:large` (true for large text), `:zero_text` (to show instead of "0%"), `:sub_text` (to show under the percentage).
+
+|add_network_state
+|options (Hash)
+|Show the state of a device. Options are: `:label`, `:ping_label`,`:run_label`, `:ping_state`, `:run_state`, `:dom_id_base`. The two states can be `:undef`, `:ok`, `:notok`.
+
+|add_popup_button
+|label (String), popup_text (String or nil), popup_table (Hash with keys `:rows`, `:cols`)
+|A button that pops up the text or table when clicked.
+
+|add_table
+|rows (Array), cols (Array), caption (String or nil), options (Hash)
+|Display a table in the item
+
+|render
+|
+|Renders all nodes in the item.
+
+|===
