@@ -31,7 +31,7 @@ class Crossbeams::NoticeTest < Minitest::Test
     # Render with a non-default caption:
     renderer = Crossbeams::Layout::Notice.new(page_config, 'TEXT', caption: 'Override')
     assert_equal 'Override', renderer.caption
-    assert_match(/<strong>Override/, renderer.render)
+    assert_match(/<strong.+>Override/, renderer.render)
   end
 
   def test_types

@@ -41,12 +41,12 @@ class Crossbeams::DiffTest < Minitest::Test
 
   def test_caption
     renderer = make_basic_record_diff
-    assert renderer.render.include?('<p class="cbl-diff-caption">Before</p>')
+    assert renderer.render.include?('>Before</p>')
   end
 
   def test_caption_default
     renderer = make_basic_record_diff blank_captions: true
-    assert renderer.render.include?('<p class="cbl-diff-caption">Left</p>')
+    assert renderer.render.include?('>Left</p>')
   end
 
   def test_text_same
@@ -117,7 +117,7 @@ class Crossbeams::DiffTest < Minitest::Test
     page_config = Crossbeams::Layout::PageConfig.new({ name: 'test_form', form_object: OpenStruct.new(test_field: nil), fields: fields })
     renderer = Crossbeams::Layout::Diff.new(page_config, :test_field)
 
-    assert renderer.render.include?('<div class="cbl-diff-container" style="max-width:123px">')
+    assert renderer.render.include?('<div class="p-1" style="max-width:123px">')
   end
 
   def test_nested_record

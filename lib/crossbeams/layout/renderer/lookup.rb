@@ -14,7 +14,7 @@ module Crossbeams
           @field_name    = field_name
           @field_config  = field_config
           @page_config   = page_config
-          @caption       = field_config[:caption] || "Lookup #{present_field_as_label(field_name)}"
+          @caption       = field_config[:caption] || "Lookup #{present_field_as_label(field_name).downcase}"
           @show_field    = field_config[:show_field]
           @hidden_fields = Array(field_config[:hidden_fields])
           @lookup_name   = field_config.fetch(:lookup_name)
@@ -27,8 +27,11 @@ module Crossbeams
           @current_field = @field_name
           <<-HTML
           <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
-          <div class="flex flex-row gap-2">
-            <button type="button" class="#{SC.css_class(:button_secondary)} px-2" data-lookup-name="#{lookup_name}" data-lookup-key="#{lookup_key}" #{render_param_keys} #{render_param_values}>#{@caption}</button>#{render_show_field}#{render_hidden_fields}
+          <div class="grid grid-cols-[auto_1fr] gap-1">
+            <button type="button" class="#{SC.css_class(:button_secondary)}" data-lookup-name="#{lookup_name}" data-lookup-key="#{lookup_key}" #{render_param_keys} #{render_param_values}>
+              #{@caption}
+            </button>
+            #{render_show_field}#{render_hidden_fields}
             </div>
           </div>#{error_state(newline: false)}
           HTML
@@ -51,10 +54,8 @@ module Crossbeams
           return '' if show_field.nil?
 
           @current_field = show_field
-          # <input type="text" readonly class="cbl-input label-field bg-light-gray #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value(show_field).to_s)}" #{name_attribute} #{field_id}>
           <<~HTML
-
-            <input type="text" readonly class="w-full border rounded leading-4 p-3 bg-gray-200 #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value(show_field).to_s)}" #{name_attribute} #{field_id}>
+            <input type="text" readonly class="w-full rounded border border-slate-600 bg-gray-200 outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline-2 focus:ring-ocean-700 focus:border-ocean-700 text-slate-800 #{@field_config[:css_class]}" value="#{CGI.escapeHTML(value(show_field).to_s)}" #{name_attribute} #{field_id}>
           HTML
         end
 

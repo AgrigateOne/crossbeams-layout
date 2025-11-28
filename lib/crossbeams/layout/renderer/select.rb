@@ -63,13 +63,11 @@ module Crossbeams
         def apply_classes
           cls = ['w-full']
           cls << 'searchable-select' unless @native
-          # cls << 'cbl-input' if @native
           cls << SC.css_class(:select) if @native
           cls
         end
 
         def render_string(attrs)
-          # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<-HTML
           <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}"#{css_style}>#{hint_text}
             #{label_render(id_base, @caption)}

@@ -51,7 +51,11 @@ module Crossbeams
       #
       # @return [string] - HTML representation of this node.
       def render
-        return "#{dom_start}#{dom_end}" if rows.empty?
+        if rows.empty?
+          return "#{dom_start}#{dom_end}" if options[:dom_id]
+
+          return ''
+        end
 
         if options[:pivot] && options[:pivot] == true
           pivot_render
@@ -126,7 +130,7 @@ module Crossbeams
       end
 
       def dom_start
-        dom_id = %( id="#{options[:dom_id]}") unless options[:dom_id]
+        dom_id = %( id="#{options[:dom_id]}") if options[:dom_id]
 
         %(<div#{dom_id} class="#{SC.css_class(@tc_div)}#{top_margin}#{left_margin}">)
       end
@@ -151,7 +155,7 @@ module Crossbeams
           this_row << if i.zero?
                         %(<th class="#{SC.css_class(@tc_th)}" align='left'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>)
                       else
-                        %(<td class="#{SC.css_class(@tc_td)}"#{attr_for_col(col)} #{classes_for_col(col, e)} style='min-width:3rem'>#{e || '&nbsp;'}</td>)
+                        %(<td class="#{SC.css_class(@tc_td)}#{classes_for_col(col, e)}"#{attr_for_col(col)} style='min-width:3rem'>#{e || '&nbsp;'}</td>)
                       end
         end
         this_row << '</tr>'
@@ -173,7 +177,7 @@ module Crossbeams
           if columns.empty?
             %(<tr class="#{tr_css}">#{row.map { |r| %(<td class="#{SC.css_class(@tc_td)}"#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>) }.join}</tr>)
           else
-            %(<tr class="#{tr_css}">#{columns.map { |c| %(<td class="#{SC.css_class(@tc_td)}"#{attr_for_col(c)}#{classes_for_col(c, row[c])}>#{transform_cell(c, row[c])}</td>) }.join}</tr>)
+            %(<tr class="#{tr_css}">#{columns.map { |c| %(<td class="#{SC.css_class(@tc_td)}#{classes_for_col(c, row[c])}"#{attr_for_col(c)}>#{transform_cell(c, row[c])}</td>) }.join}</tr>)
           end
         end
       end
@@ -182,7 +186,7 @@ module Crossbeams
         class_calc = options.dig(:cell_classes, col)
         return '' if class_calc.nil?
 
-        " class='#{class_calc.call(val)}'"
+        " #{class_calc.call(val)}"
       end
 
       def transform_cell(col, val)

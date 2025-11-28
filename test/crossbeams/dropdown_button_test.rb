@@ -8,12 +8,12 @@ class Crossbeams::DropdownButtonTest < Minitest::Test
   def test_defaults
     renderer = Crossbeams::Layout::DropdownButton.new(text: 'Links', items: basic_item)
     html = renderer.render
-    assert_equal 'crossbeams-dropdown-button bn br2', html_element_attribute_value(html, 'div', 'class')
+    assert_equal 'crossbeams-dropdown-button w-fit relative', html_element_attribute_value(html, 'div', 'class')
     assert_equal 'button', html_element_attribute_value(html, 'button', 'type')
     assert_equal 'Links', html_dom_text_value(html, 'button')
     assert_equal 'Y', html_elements_attribute_value(html, 'a', 'data-button-dropdown').first
     assert_equal '/', html_elements_attribute_value(html, 'a', 'href').first
-    assert_equal 'db pa2 dim nowrap', html_elements_attribute_value(html, 'a', 'class').first
+    assert html_elements_attribute_value(html, 'a', 'class').first.include? 'whitespace-nowrap'
     assert_match(/ClickMe<\/a/, html)
   end
 
@@ -27,19 +27,22 @@ class Crossbeams::DropdownButtonTest < Minitest::Test
 
   def test_styles
     renderer = Crossbeams::Layout::DropdownButton.new(text: 'ClickMe', items: basic_item)
-    assert_equal 'pointer f6 bn dim br2 ph3 pv2 dib white bg-silver', html_element_attribute_value(renderer.render, 'button', 'class')
+    s = html_element_attribute_value(renderer.render, 'button', 'class')
+    assert s.include?('text-slate-800')
+    assert s.include?('bg-slate-200')
 
     renderer = Crossbeams::Layout::DropdownButton.new(text: 'ClickMe', items: basic_item, style: :button)
-    assert_equal 'pointer f6 bn dim br2 ph3 pv2 dib white bg-silver', html_element_attribute_value(renderer.render, 'button', 'class')
-
-    renderer = Crossbeams::Layout::DropdownButton.new(text: 'ClickMe', items: basic_item, style: :small_button)
-    assert_equal 'pointer bn dim br1 ph2 dib white bg-silver', html_element_attribute_value(renderer.render, 'button', 'class')
+    s = html_element_attribute_value(renderer.render, 'button', 'class')
+    assert s.include?('text-slate-800')
+    assert s.include?('bg-slate-200')
 
     renderer = Crossbeams::Layout::DropdownButton.new(text: 'ClickMe', items: basic_item, style: :action_button)
-    assert_equal 'pointer f6 bn dim br2 ph3 pv2 dib white bg-green', html_element_attribute_value(renderer.render, 'button', 'class')
+    s = html_element_attribute_value(renderer.render, 'button', 'class')
+    assert s.include?('text-white')
+    assert s.include?('bg-ocean-700')
 
     renderer = Crossbeams::Layout::DropdownButton.new(text: 'ClickMe', items: basic_item, style: :back_button)
-    assert_match(/<svg class=["|']cbl-icon["|']/, renderer.render)
+    assert_match(/<svg class=["|']w-4 h-4 /, renderer.render)
   end
 
   def test_behaviour

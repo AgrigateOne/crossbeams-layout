@@ -56,7 +56,6 @@ module Crossbeams
         end
 
         def render_string(attrs)
-          # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<-HTML
           <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}"#{css_style}>#{hint_text}
             #{label_render(id_base, @caption)}

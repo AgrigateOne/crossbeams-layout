@@ -24,7 +24,7 @@ module Crossbeams
       assert_match(/<\/div>The Caption/, renderer.render)
 
       renderer = Crossbeams::Layout::LoadingMessage.new(caption: 'The Caption', wrap_for_centre: true)
-      assert_match(/<\/div><p class="pa3">The Caption/, renderer.render)
+      assert_match(/<\/div><p class="p-3">The Caption/, renderer.render)
     end
   end
 end

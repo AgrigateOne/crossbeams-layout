@@ -28,7 +28,7 @@ module Crossbeams
       # setting :label_inline_in_err, default: 'text-base font-normal tracking-normal leading-6 mb-1 text-red-600'
 
       # setting :input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
-      setting :input, default: 'w-full rounded border border-slate-300 bg-white outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:ring-ocean-700 focus:border-ocean-700 text-slate-800'
+      setting :input, default: 'w-full rounded border border-slate-300 bg-white outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline-2 focus:ring-ocean-700 focus:border-ocean-700 text-slate-800'
       # setting :input_in_err, default: 'w-full rounded border border-red-600 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-red-600 focus:ring-offset-0 focus:border-red-600 focus-visible:border-red-600 text-red-600'
       setting :input_in_err, default: 'w-full rounded border border-red-200 bg-white outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline-2 focus:ring-red-500 focus:border-red-500 text-red-600'
 

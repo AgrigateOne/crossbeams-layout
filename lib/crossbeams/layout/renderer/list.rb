@@ -15,20 +15,11 @@ module Crossbeams
           validate_remove_item_url(field_config)
         end
 
-        def render # rubocop:disable Metrics/AbcSize
+        def render
           attrs = [] # For class, prompt etc...
-          # attrs << "class=\"cbl-input mt0 mr0 mb0 ml3 #{@field_config[:class]}#{scroll_class}#{bg_class}\""
           attrs << %(class="#{SC.css_class(:ol)} ml-3 #{@field_config[:class]}#{scroll_class}#{bg_class}")
           attrs << %(data-remove-item-url="#{@remove_item_url}") unless @remove_item_url.nil?
-          # <<-HTML
-          # <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-          #   <ol #{attrs.join(' ')} #{field_id}>
-          #   #{item_renders}
-          #   </ol>
-          #   <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
-          # </div>
-          # HTML
-          # <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
+
           <<-HTML
           <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
             #{label_render(id_base, @caption)}
@@ -91,12 +82,11 @@ module Crossbeams
 
         def remove_item_renders
           @field_config[:items].map do |text, id|
-            %(<li class="#{SC.css_class(:li)}" title="Remove this item" data-item-id="#{id}">#{minus_icon(id)} #{text}</li>)
+            %(<li class="#{SC.css_class(:li)}" title="Remove this item" data-item-id="#{id}">#{remove_icon(id)} #{text}</li>)
           end.join("\n")
         end
 
-        def minus_icon(id)
-          # Icon.new(:minus, css_class: 'text-red-500 cursor-pointer inline', attrs: [%(data-remove-item="#{id}")]).render
+        def remove_icon(id)
           Icon.new(:remove, css_class: 'text-ocean-700 cursor-pointer inline', attrs: [%(data-remove-item="#{id}")]).render
         end
       end

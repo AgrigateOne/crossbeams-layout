@@ -250,30 +250,30 @@ module Crossbeams
         ar = [head('Row + Col', 'row')]
         row = Row.new({}, 1, 1)
         row.column do |col|
-          col.add_text 'col1', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-500'
+          col.add_text 'col1', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-200 p-2'
         end
         row.column do |col|
-          col.add_text 'col2', css_classes: style == :tc ? 'bg-green' : 'bg-green-500'
+          col.add_text 'col2', css_classes: style == :tc ? 'bg-green' : 'bg-blue-200 p-2'
         end
         ar << row.render
         row = Row.new({}, 1, 1)
         row.column do |col|
-          col.add_text 'one-sided col (with blank)', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-500'
+          col.add_text 'one-sided col (with blank)', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-200 p-2'
         end
         row.blank_column
         ar << row.render
         row = Row.new({}, 1, 1)
         row.blank_column
         row.column do |col|
-          col.add_text 'other-sided col (with blank)', css_classes: style == :tc ? 'bg-green' : 'bg-green-500'
+          col.add_text 'other-sided col (with blank)', css_classes: style == :tc ? 'bg-green' : 'bg-blue-200 p-2'
         end
         ar << row.render
         row = Row.new({}, 1, 1)
         row.column do |col|
-          col.add_text 'col1 full width', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-500'
+          col.add_text 'col1 full width', css_classes: style == :tc ? 'bg-orange' : 'bg-orange-200 p-2'
         end
         row.column do |col|
-          col.add_text 'col2 full width', css_classes: style == :tc ? 'bg-green' : 'bg-green-500'
+          col.add_text 'col2 full width', css_classes: style == :tc ? 'bg-green' : 'bg-blue-200 p-2'
         end
         row.fit_width!
         ar << row.render
@@ -472,7 +472,7 @@ module Crossbeams
                                                          lookup_name: 'a_query',
                                                          lookup_key: 'a_key' },
                                                  lkp2: { renderer: :lookup,
-                                                         caption: 'Lkp with field',
+                                                         caption: 'Lkp with long caption field',
                                                          lookup_name: 'a_query',
                                                          lookup_key: 'a_key',
                                                          show_field: :fred,

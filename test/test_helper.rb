@@ -15,6 +15,10 @@ class RenderResult
     @doc.xpath("//#{element_type}")[0]&.text.strip
   end
 
+  def dom_text_values(element_type)
+    @doc.xpath("//#{element_type}").map{ |d| d&.text.strip }
+  end
+
   def input_attributes(element_type)
     xp = @doc.xpath("//#{element_type}")
     Hash[xp[0].attributes.map { |k,v| [k, v.value] }]
@@ -103,8 +107,19 @@ class RenderResult
     Hash[xp.first.attributes.map { |k, v| [v.name, v.value] }]
   end
 
+  def hidden_class(elem)
+    xp = @doc.xpath(%(//#{elem}[contains(@class, "hidden")]))
+    !xp.length.zero?
+  end
+
   def label_value
     xp = @doc.xpath('//div[contains(@class, "label-field")]')
+    return nil if xp.length.zero?
+    xp.first.text
+  end
+
+  def text_element_by_id(id)
+    xp = @doc.xpath(%(//div[@id="#{id}"]))
     return nil if xp.length.zero?
     xp.first.text
   end
@@ -124,6 +139,14 @@ end
 
 def html_dom_text_value(html_string, element_type)
   RenderResult.new(html_string).dom_text_value(element_type)
+end
+
+def html_dom_text_value_by_id(html_string, id = 'test_form_the_test_field')
+  RenderResult.new(html_string).text_element_by_id(id)
+end
+
+def html_dom_text_values(html_string, element_type)
+  RenderResult.new(html_string).dom_text_values(element_type)
 end
 
 def html_element_attribute_value(html_string, element_type, attribute)
@@ -188,6 +211,10 @@ end
 
 def html_element_field_caption(html_string)
   RenderResult.new(html_string).field_caption
+end
+
+def html_element_is_hidden(html_string, elem = 'div')
+  RenderResult.new(html_string).hidden_class(elem)
 end
 
 def simple_input_render(renderer, value, extra_configs = {}, form_values = nil, form_errors = nil)

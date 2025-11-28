@@ -126,24 +126,24 @@ class Crossbeams::InputTest < Minitest::Test
 
   def test_hide_on_load
     s = simple_input_render(:input, '123', hide_on_load: true)
-    attrs = html_element_wrapper(s)
-    assert_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    assert hidden, 'Should be hidden'
 
     s = simple_input_render(:input, '123')
-    attrs = html_element_wrapper(s)
-    refute_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    refute hidden, 'Should not be hidden'
 
     s = simple_input_render(:input, '123', initially_visible: false)
-    attrs = html_element_wrapper(s)
-    assert_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    assert hidden, 'Should be hidden'
 
     s = simple_input_render(:input, '123', initially_visible: false, hide_on_load: false)
-    attrs = html_element_wrapper(s)
-    assert_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    assert hidden, 'Should be hidden'
 
     s = simple_input_render(:input, '123', initially_visible: true)
-    attrs = html_element_wrapper(s)
-    refute_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    refute hidden, 'Should not be hidden'
   end
 
   def test_form_values

@@ -7,6 +7,8 @@ module Crossbeams
     class CallbackSection
       extend MethodBuilder
 
+      SC = StylesConfig
+
       build_methods_for :csrf
       attr_accessor :caption, :url
       attr_reader :sequence, :page_config
@@ -47,7 +49,7 @@ module Crossbeams
 
         <<-HTML
           <section id="section-#{sequence}" class="crossbeams_layout">
-          <h2>#{caption}</h2>
+          <h2 class="#{SC.css_class(:h2)}">#{caption}</h2>
           #{LoadingMessage.new(dom_id: "crossbeams_callback_target_#{sequence}").render}
           </section>
           <script>
@@ -62,7 +64,7 @@ module Crossbeams
       def remote_render
         <<-HTML
           <section id="section-#{sequence}" class="crossbeams_layout" data-callback-section-url="#{url}">
-          <h2>#{caption}</h2>
+          <h2 class="#{SC.css_class(:h2)}">#{caption}</h2>
           #{LoadingMessage.new(dom_id: "crossbeams_callback_target_#{sequence}").render}
           </section>
         HTML

@@ -42,16 +42,6 @@ module Crossbeams
       private
 
       def render_address(address)
-        # <<~HTML
-        #   <div class="center mw5 mw6-ns hidden ba mv4">
-        #     <h1 class="f4 bg-dark-blue white mv0 pv2 ph3" style="text-transform:lowercase">#{address_icon}#{render_address_type(address)}</h1>
-        #     <address class="f6 f5-ns lh-copy measure mv0 pa2">
-        #       #{combined_address_lines(address)}<br>
-        #       #{city_and_code(address)}<br>
-        #       #{address[:country]}
-        #     </address>
-        #   </div>
-        # HTML
         <<~HTML
           <div class="mx-auto max-w-xs md:max-w-sm border my-4">
             <h1 class="#{SC.css_class(:h1)} bg-blue-900 text-white m-0 py-2 px-3 lowercase">

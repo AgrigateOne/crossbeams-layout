@@ -27,17 +27,17 @@ class Crossbeams::Layout::FormTest < Minitest::Test
     assert_equal 'A Caption', form.form_caption
 
     render = form.render
-    assert_match '<h2>A Caption</h2>', render
+    assert_match(/<h2.+>A Caption<\/h2>/, render)
 
     form.caption 'A Caption', level: 1
     render = form.render
-    assert_match '<h1>A Caption</h1>', render
+    assert_match(/<h1.+>A Caption<\/h1>/, render)
 
     form.caption 'A Caption'
     form.remote!
     assert form.remote_form
     render = form.render
-    refute_match '<h2>A Caption</h2>', render
+    refute_match(/<h2.+>A Caption<\/h2>/, render)
 
     assert_raises(ArgumentError) { form.caption 'X', level: 'a' }
     assert_raises(ArgumentError) { form.caption 'X', level: 5 }
@@ -55,6 +55,6 @@ class Crossbeams::Layout::FormTest < Minitest::Test
 
     form.initially_hide_button
     render = form.render
-    assert_match 'white" hidden>', render
+    assert_match(/value="Submit".+ hidden>/, render)
   end
 end

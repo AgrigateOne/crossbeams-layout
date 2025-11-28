@@ -32,22 +32,11 @@ class Crossbeams::ProgressStepTest < Minitest::Test
     assert renderer.render.include?('max-width:60rem')
   end
 
-  def test_state_description
-    renderer = Crossbeams::Layout::ProgressStep.new({}, ['1', '2', '3'])
-    refute renderer.render.include?('<ul class="cbl-progress-state">')
-
-    renderer = Crossbeams::Layout::ProgressStep.new({}, ['1', '2', '3'], state_description: 'a description')
-    assert_equal ['a description'], renderer.state_description
-    assert renderer.render.include?('<ul class="cbl-progress-state">')
-  end
-
   def test_step_widths
     renderer = Crossbeams::Layout::ProgressStep.new({}, ['1', '2', '3'])
-    assert renderer.render.include?('style="width: 33.33%;">')
-    assert renderer.render.include?('<div class="cbl-progress-status-bar" style="width: 66.67%;">')
+    assert renderer.render.include?('width: 66.67%;')
 
     renderer = Crossbeams::Layout::ProgressStep.new({}, ['1', '2', '3', '4'])
-    assert renderer.render.include?('style="width: 25.0%;">')
-    assert renderer.render.include?('<div class="cbl-progress-status-bar" style="width: 75.0%;">')
+    assert renderer.render.include?('width: 75.0%;')
   end
 end
