@@ -14,11 +14,10 @@ module Crossbeams
           @caption      = field_config[:caption] || present_field_as_label(field_name)
         end
 
-        def render # rubocop:disable Metrics/AbcSize
+        def render
           cols = @field_config[:cols] || 20
           rows = @field_config[:rows] || 10
 
-          #   <label for="#{id_base}" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<~HTML
             <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
               #{label_render(id_base, @caption)}

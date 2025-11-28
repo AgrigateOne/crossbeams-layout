@@ -34,7 +34,6 @@ module Crossbeams
         @fit_height         = false
         @full_dialog_height = false
         @half_dialog_height = false
-        # @css_classes        = ['pa2']
         @css_classes        = ['px-2 pb-2']
         @section_id         = "section-#{sequence}"
       end
@@ -112,11 +111,9 @@ module Crossbeams
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
         add_extra_css_classes
 
-        # css_for_button_row = 'flex flex-col flex-wrap gap-3' # Might not work for all sections... (e.g. grid in dialog needs flex-col, not -row)
-        css_for_button_row = ''
         <<~HTML
           #{render_fit_height_caption}
-          <section id="#{@section_id}" class="#{css_for_button_row} #{@css_classes.join(' ')}">
+          <section id="#{@section_id}" class="#{@css_classes.join(' ')}">
           #{render_normal_caption}
             #{row_renders}
           </section>
@@ -154,18 +151,13 @@ module Crossbeams
       def render_caption
         return '' if hide_caption
 
-        # "<h2 class='ma1'>#{caption}</h2>"
-        %(<h1 class="#{SC.css_class(:h1)} my-2">#{caption}</h2>)
+        %(<h1 class="#{SC.css_class(:h1)} my-2">#{caption}</h1>)
       end
 
       def add_extra_css_classes
-        # @css_classes << 'crossbeams_layout-border' if show_border
         @css_classes << 'my-4 pt-2 border border-slate-200 rounded' if show_border
-        # @css_classes << 'crossbeams_layout-fit-height' if fit_height
         @css_classes << 'flex flex-1 grow' if fit_height
-        # @css_classes << 'crossbeams_layout-full_dlg-height' if full_dialog_height
         @css_classes << 'min-h-[20rem]' if full_dialog_height
-        # @css_classes << 'crossbeams_layout-half_dlg-height' if half_dialog_height
         @css_classes << 'min-h-[10rem]' if half_dialog_height
       end
     end

@@ -131,12 +131,12 @@ class Crossbeams::DatetimeTest < Minitest::Test
 
   def test_hide_on_load
     s = simple_input_render(:datetime, Time.now, hide_on_load: true)
-    attrs = html_element_wrapper(s)
-    assert_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    assert hidden, 'Should be hidden'
 
     s = simple_input_render(:datetime, Time.now)
-    attrs = html_element_wrapper(s)
-    refute_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    refute hidden, 'Should not be hidden'
   end
 end
 

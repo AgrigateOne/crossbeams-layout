@@ -19,15 +19,6 @@ module Crossbeams
           date_portion = value&.strftime('%Y-%m-%d')
           time_portion = value&.strftime('%H:%M') || default_time_string
 
-          # <<-HTML
-          # <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}
-          #   <input type="date" value="#{CGI.escapeHTML(date_portion.to_s)}" #{name_attribute(:date)}_date #{field_id(:date)}_date data-datetime="date" #{attr_list(:date).join(' ')}>
-          #   <input type="time" value="#{CGI.escapeHTML(time_portion.to_s)}" #{name_attribute(:time)}_time #{field_id(:time)}_time data-datetime="time" #{attr_list(:time).join(' ')}>
-          #   <input type="hidden" value="#{CGI.escapeHTML(value&.strftime('%Y-%m-%dT%H:%M').to_s)}" #{name_attribute} #{field_id}>
-          #   <label for="#{id_base}_date">#{@caption}#{error_state}#{hint_trigger}</label>
-          # </div>
-          # HTML
-          # <label for="#{id_base}_date" class="#{SC.css_class(:label)}">#{@caption}#{error_state}#{hint_trigger}</label>
           <<-HTML
           <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
             #{label_render("#{id_base}_date", @caption)}
@@ -59,7 +50,6 @@ module Crossbeams
 
         def attr_list(type)
           [
-            attr_class,
             attr_placeholder,
             attr_title,
             attr_minvalue(type),
@@ -69,12 +59,6 @@ module Crossbeams
             attr_required,
             behaviours
           ].compact
-        end
-
-        def attr_class
-          # res = ['cbl-input']
-          # %(class="#{res.join(' ')}")
-          ''
         end
 
         def attr_placeholder

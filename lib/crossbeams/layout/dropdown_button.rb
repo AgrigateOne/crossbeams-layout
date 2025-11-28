@@ -290,29 +290,3 @@ module Crossbeams
     end
   end
 end
-__END__
-Hover - show list
-Click item, amend URL (before popup/loading is fired in JS)
-How to reset it, though...
-URL has $:$ part - replaced by value of item, button has default
-Click button, place default in URL
-Click item, place value in URL & examine data- to see if popup/loading.
-
-  Might want a button that does nothing and only the hovers do something...
-  And a button that employs a default with dropdowns as alternates...
-
-  JS:
-  1. popup & loading & plain click(!) - does button have default param & if so, use it
-2. item click - place value in url & check if we need to click, popup or load...
-
-  data-dropdown-button-value=""
-item checks if linked to button with data-dropdown-value to decide if url must be changed... (else whole URL on item)
-
-<a
-href="/finished_goods/reports/addendum/516"
-class="f6 link dim br2 ph3 pv2 dib white bg-silver"
-data-loading-window="true"
-title="opens in a new window">
-<svg class="cbl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9 10V8h2v2h2v2h-2v2H9v-2H7v-2h2zM0 3c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm2 2v12h16V5H2z"></path></svg>
-Addendum
-</a>

@@ -32,14 +32,14 @@ class Crossbeams::InputTest < Minitest::Test
     assert_equal 'locn', lookup.lookup_name
     assert_equal 'std', lookup.lookup_key
     s = lookup.render
-    assert s.include?('Lookup The Test Field</button')
-    assert_equal 'Lookup The Test Field', html_lookup_button_caption(s)
+    assert s.match?(/Lookup the test field.+<\/button/m)
+    assert_equal 'Lookup the test field', html_lookup_button_caption(s).strip
 
     field_config = { renderer: :lookup, lookup_name: 'locn', lookup_key: 'std', caption: 'Something' }
     lookup = Crossbeams::Layout::Renderer::Lookup.new
     lookup.configure(field_name, field_config, page_config)
     s = lookup.render
-    assert_equal 'Something', html_lookup_button_caption(s)
+    assert_equal 'Something', html_lookup_button_caption(s).strip
     assert_equal 'locn', html_lookup_button_data(s, 'lookup-name')
     assert_equal 'std', html_lookup_button_data(s, 'lookup-key')
   end

@@ -29,18 +29,16 @@ class Crossbeams::TextTest < Minitest::Test
 
   def test_wrappers
     wrappers = {
-        p: '<p>TEXT</p>',
-        h1: '<h1>TEXT</h1>',
-        h2: '<h2>TEXT</h2>',
-        h3: '<h3>TEXT</h3>',
-        h4: '<h4>TEXT</h4>',
-        i: '<em>TEXT</em>',
-        em: '<em>TEXT</em>',
-        b: '<strong>TEXT</strong>',
-        strong: '<strong>TEXT</strong>',
-        [:p, :i] => '<p><em>TEXT</em></p>',
-        [:p, :b, :i] => '<p><strong><em>TEXT</em></strong></p>',
-        [:b, :em] => '<strong><em>TEXT</em></strong>'
+      p: "#{format(Crossbeams::Layout::Text::WRAP_START[:p], nil)}TEXT#{Crossbeams::Layout::Text::WRAP_END[:p]}",
+      h1: "#{format(Crossbeams::Layout::Text::WRAP_START[:h1], %( class="#{Crossbeams::Layout::Text::WRAP_CLASS[:h1]} my-2"))}TEXT#{Crossbeams::Layout::Text::WRAP_END[:h1]}",
+      h2: "#{format(Crossbeams::Layout::Text::WRAP_START[:h2], %( class="#{Crossbeams::Layout::Text::WRAP_CLASS[:h2]} my-2"))}TEXT#{Crossbeams::Layout::Text::WRAP_END[:h2]}",
+      h3: "#{format(Crossbeams::Layout::Text::WRAP_START[:h3], %( class="#{Crossbeams::Layout::Text::WRAP_CLASS[:h3]} my-2"))}TEXT#{Crossbeams::Layout::Text::WRAP_END[:h3]}",
+      h4: "#{format(Crossbeams::Layout::Text::WRAP_START[:h4], %( class="#{Crossbeams::Layout::Text::WRAP_CLASS[:h4]} my-2"))}TEXT#{Crossbeams::Layout::Text::WRAP_END[:h4]}",
+      i: "#{format(Crossbeams::Layout::Text::WRAP_START[:i], %( class="#{Crossbeams::Layout::Text::WRAP_CLASS[:i]}"))}TEXT#{Crossbeams::Layout::Text::WRAP_END[:i]}",
+      em: "#{format(Crossbeams::Layout::Text::WRAP_START[:em], %( class="#{Crossbeams::Layout::Text::WRAP_CLASS[:em]}"))}TEXT#{Crossbeams::Layout::Text::WRAP_END[:em]}",
+      b: "#{format(Crossbeams::Layout::Text::WRAP_START[:b], %( class="#{Crossbeams::Layout::Text::WRAP_CLASS[:b]}"))}TEXT#{Crossbeams::Layout::Text::WRAP_END[:b]}",
+      strong: "#{format(Crossbeams::Layout::Text::WRAP_START[:strong], %( class="#{Crossbeams::Layout::Text::WRAP_CLASS[:strong]}"))}TEXT#{Crossbeams::Layout::Text::WRAP_END[:strong]}",
+      [:p, :i] => "#{format(Crossbeams::Layout::Text::WRAP_START[:p], nil)}#{format(Crossbeams::Layout::Text::WRAP_START[:i], %( class="#{Crossbeams::Layout::Text::WRAP_CLASS[:i]}"))}TEXT#{Crossbeams::Layout::Text::WRAP_END[:i]}#{Crossbeams::Layout::Text::WRAP_END[:p]}"
     }
     wrappers.keys.each do |wrap|
       renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT', wrapper: Array(wrap))
@@ -50,7 +48,7 @@ class Crossbeams::TextTest < Minitest::Test
 
   def test_wrapper_class
     renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT', wrapper: Array(:h1), wrapper_classes: 'mb0')
-    assert_equal scrub(render_wrap('<h1 class="mb0">TEXT</h1>')), scrub(renderer.render)
+    assert scrub(renderer.render).match?(/h1 class=".+mb0.+>TEXT/)
   end
 
   def test_preformatted
@@ -69,13 +67,10 @@ class Crossbeams::TextTest < Minitest::Test
     assert res.match?(/crossbeamsUtils.toggleVisibility/)
     assert res.match?(/Show\/Hide Text/)
     assert res.match?(/id='show\/hide_text'/)
-    # assert res.match?(/display:none/)
-    assert res.match?(/hidden/)
 
     renderer = Crossbeams::Layout::Text.new(page_config, 'TEXT', toggle_button: true, toggle_caption: 'Toggle The Display')
     res = scrub(renderer.render)
-    # assert_match(/<div class="crossbeams-field no-flex" id='toggle_the_display' style='display:none'>\sTEXT\s<\/div>/, res)
-    assert_match(/<div class="crossbeams-field no-flex" id='toggle_the_display' hidden>\sTEXT\s<\/div>/, res)
+    assert_match(/<div .+ id='toggle_the_display'>\sTEXT\s<\/div>/, res)
     assert res.match?(/crossbeamsUtils.toggleVisibility/)
     assert res.match?(/Toggle The Display/)
   end

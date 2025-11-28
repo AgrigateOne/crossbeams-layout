@@ -19,7 +19,7 @@ class Crossbeams::RadioGroupTest < Minitest::Test
     assert_includes lbls.map { |l| l['for'] }, 'test_form_the_test_field_o'
 
     captions = html_labels_text(s)
-    assert_equal ['one', 'two', 'The Test Field'], captions
+    assert_equal ['The test field', 'one', 'two'], captions
   end
 
   def test_tooltip
@@ -76,23 +76,23 @@ class Crossbeams::RadioGroupTest < Minitest::Test
 
   def test_hide_on_load
     s = simple_radio_render('o', BASIC_OPTIONS, hide_on_load: true)
-    attrs = html_element_wrapper(s)
-    assert_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    assert hidden, 'Should be hidden'
 
     s = simple_radio_render('o', BASIC_OPTIONS)
-    attrs = html_element_wrapper(s)
-    refute_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    refute hidden, 'Should not be hidden'
 
     s = simple_radio_render('o', BASIC_OPTIONS, initially_visible: false)
-    attrs = html_element_wrapper(s)
-    assert_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    assert hidden, 'Should be hidden'
 
     s = simple_radio_render('o', BASIC_OPTIONS, initially_visible: false, hide_on_load: false)
-    attrs = html_element_wrapper(s)
-    assert_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    assert hidden, 'Should be hidden'
 
     s = simple_radio_render('o', BASIC_OPTIONS, initially_visible: true)
-    attrs = html_element_wrapper(s)
-    refute_includes attrs.keys, 'hidden'
+    hidden = html_element_is_hidden(s)
+    refute hidden, 'Should not be hidden'
   end
 end

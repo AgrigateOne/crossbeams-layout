@@ -20,12 +20,9 @@ module Crossbeams
 
         private
 
-        # FIXME: allows for hard-coded value to be used from form_values
-        #        when the ROM::Struct does not include the field.
         def value
           res = form_object_value
-          res = override_with_form_value(res)
-          res
+          override_with_form_value(res)
         end
       end
     end

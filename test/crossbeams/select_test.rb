@@ -4,16 +4,15 @@ class Crossbeams::SelectTest < Minitest::Test
   def test_basics
     s = simple_select_render(nil, ['a', 'b'])
     assert_nil html_selected_value(s)
-    assert_equal 'searchable-select', html_element_attribute_value(s, :select, :class)
+    assert_equal 'w-full searchable-select', html_element_attribute_value(s, :select, :class)
     s = simple_select_render(nil, ['a', 'b'], native: true)
-    assert_equal 'cbl-input', html_element_attribute_value(s, :select, :class)
+    assert html_element_attribute_value(s, :select, :class).start_with?('w-full bg-white border border-slate-300')
     s = simple_select_render(nil, ['a', 'b'], disabled: true)
     assert_equal 'true', html_element_attribute_value(s, :select, :disabled)
     s = simple_select_render(nil, ['a', 'b'], selected: 'b')
     assert_equal 'b', html_selected_value(s)
     s = simple_select_render('b', ['a', 'b'])
     assert_equal 'b', html_selected_value(s)
-    # assert_raises(Crossbeams::Layout::Error) { simple_select_render('c', ['a', 'b']) }
     s = simple_select_render('b', ['a', 'b'], form_value: 'a')
     assert_equal 'a', html_selected_value(s)
   end

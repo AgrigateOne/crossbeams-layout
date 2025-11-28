@@ -171,8 +171,6 @@ module Crossbeams
 
       def initialize(icon, opts = {})
         @icon = icon
-        # @css_class = "class='#{['cbl-icon', opts[:css_class]].compact.join(' ')}'"
-        # @css_class = "class='#{['inline-block w-5 h-5 fill-current relative top-0.5', opts[:css_class]].compact.join(' ')}'"
         @css_class = "class='#{[SC.css_class(:icon), opts[:css_class]].compact.join(' ')}'"
         @attrs = (opts[:attrs] || []).join(' ')
       end

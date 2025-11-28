@@ -114,14 +114,6 @@ module Crossbeams
 
       private
 
-      # # Initially hide the wrapper.
-      # def wrapper_visibility
-      #   @options[:hide_on_load] = !@options[:initially_visible] if @options&.key?(:initially_visible)
-      #   return '' unless @options[:hide_on_load]
-
-      #   ' hidden'
-      # end
-
       def wrapper_id
         return '' unless @options[:dom_id]
         raise ArgumentError, 'Crossbeams::Layout::Text cannot support both ":no_container" and a ":dom_id"' if @options[:no_container]
@@ -140,15 +132,6 @@ module Crossbeams
       def render_toggle_button
         return '' unless toggle_button
 
-        # Tachy: <a href="#" class="f6 link dim br2 ph3 pv2 dib white bg-silver"
-        # <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-ocean-700 hover:bg-ocean-100"
-        # <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-blue-600 hover:bg-blue-100"
-        # <<~HTML
-        #  <a href="#" class="text-sm no-underline rounded px-4 py-2 inline-block text-slate-800 bg-slate-300 hover:text-ocean-700 hover:bg-ocean-100"
-        #    onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">
-        #  #{info_icon} #{toggle_caption}</a>
-        # HTML
-        # <button class="flex items-center justify-center gap-3 flex-row rounded border-2 h-11 p-3 font-medium text-slate-800 bg-slate-300 hover:text-ocean-700 hover:bg-ocean-100"
         <<~HTML
           <button class="#{SC.css_class(:button_secondary)}"
             onclick="crossbeamsUtils.toggleVisibility('#{toggle_id}');return false">

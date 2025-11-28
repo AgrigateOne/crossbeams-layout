@@ -1,0 +1,35 @@
+= Dashboards
+:toc:
+
+link:/developer_documentation/start.adoc[Back to documentation home]
+
+== Dashboards
+
+Dashboards are laid out using a DSL much like for `Crossbeams::Layout::Page`, allowing for the declaration of lanes and items.
+
+An example:
+
+[source,ruby]
+----
+Crossbeams::Layout::Dashboard.build do |dash|
+  dash.caption 'The main dashboard caption'
+    dash.lane do |lane|
+      lane.caption '1st lane caption'
+      lane.sub_caption ['Array', 'of', 'sub-captions']
+      lane.item_set do |items|
+        items.item do |item|
+          item.header 'An item'
+          item.add_label_val_array [['2D', 'array'], ['label', 'value']]
+          item.add_label_val 'label', 'value'
+        end
+        items.item do |item|
+          item.header 'Target Markets'
+          tm_cartons.each_slice(2) do |ar|
+            item.add_label_val_array ar
+          end
+        end
+      end
+    end
+  end
+end
+----

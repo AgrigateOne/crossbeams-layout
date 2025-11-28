@@ -19,14 +19,6 @@ module Crossbeams
           date_related_value_getter
           setup_pattern_title
 
-          # <<-HTML
-          # <div #{wrapper_id} class="#{div_class}"#{wrapper_visibility}>#{hint_text}#{copy_prefix}
-          #   <input type="#{input_type}" value="#{CGI.escapeHTML(value.to_s)}" #{name_attribute} #{field_id} #{attr_list(datalist).join(' ')}>#{copy_suffix}
-          #   <label for="#{id_base}">#{@caption}#{error_state}#{hint_trigger}</label>
-          #   #{datalist}
-          # </div>
-          # HTML
-
           inpclass = if field_has_errors?
                        SC.css_class(:input_in_err)
                      else
@@ -39,25 +31,9 @@ module Crossbeams
             #{error_state}#{datalist}
           </div>
           HTML
-          # rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6"
         end
-        # <svg xmlns="http://www.w3.org/2000/svg" class="pointer-events-none w-8 h-8 absolute top-1/2 transform -translate-y-1/2 right-3" viewBox="0 0 20 20" fill="currentColor">
-        #   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-        #   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-        # </svg>
-
-        # <input type="email" name="email" id="email" placeholder="email@kemuscorp.com" class="form-input border border-gray-900 py-3 px-4 bg-white placeholder-gray-400 text-gray-500 appearance-none w-full block pr-14 focus:outline-none">
 
         private
-
-        # <ag1-financial-input id="price" placeholder="Add Price" class="ng-untouched ng-pristine ng-valid">
-        #   <div class="flex items-center relative">
-        #     <div class="absolute left-1 top-1/2 -translate-y-1/2 text-ocean-700 font-medium">
-        #       <div class="h-6 w-6 grid place-items-center"> € </div>
-        #     </div><!----><!----><!---->
-        #     <input type="text" inputmode="decimal" placeholder="Add Price" pattern="^-?\d{1,9}(\.\d{1,10})?$" class="!pl-8 ng-untouched ng-pristine ng-valid">
-        #   </div><!---->
-        # </ag1-financial-input>
 
         def copy_prefix
           return '' unless @field_config[:copy_to_clipboard]
@@ -66,21 +42,10 @@ module Crossbeams
           <button type="button" id="#{id_base}_clip" class="absolute mt-1 top-1/2 transform -translate-y-1/3 right-3 text-slate-500 hover:text-ocean-700" viewBox="0 0 20 20" data-clipboard="copy" title="Copy to clipboard">
             #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
           </button>)
-          # %(<div class="flex items-center relative">
-          #  <div class="absolute left-1 top-1/2 -translate-y-1/2 text-ocean-700 font-medium">
-          #    <div class="h-6 w-6 grid place-items-center">
-          #      #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
-          #    </div>
-          #  </div>)
         end
 
         def copy_suffix
           return '' unless @field_config[:copy_to_clipboard]
-
-          # %(<button type="button" id="#{id_base}_clip" class="cbl-clipcopy" data-clipboard="copy" title="Copy to clipboard">
-          # %(<button type="button" id="#{id_base}_clip" class="absolute top-1/2 transform -translate-y-1/2 right-3" viewBox="0 0 20 20" data-clipboard="copy" title="Copy to clipboard">
-          # #{Icon.render(:copy, attrs: ["id='#{id_base}_clip_i'", 'data-clipboard="copy"'])}
-          #  </button></div>)
 
           '</div>'
         end
@@ -110,14 +75,6 @@ module Crossbeams
 
         def date_related_input_type(in_type)
           in_type.to_s
-          # case in_type
-          # when :date     # yyyy-mm-dd
-          #   'date'
-          # when :month    # yyyy-mm
-          #   'month'
-          # when :time     # HH:MM
-          #   'time'
-          # end
         end
 
         DATE_VALUE_GETTERS = {
@@ -145,7 +102,7 @@ module Crossbeams
         def value
           res = form_object_value
           res = override_with_form_value(res)
-          if res.is_a?(BigDecimal) # TODO: read other frameworks to see best way of handling this...
+          if res.is_a?(BigDecimal)
             res.to_s('F')
           else
             @value_getter.nil? ? res : @value_getter.call(res)
@@ -228,10 +185,6 @@ module Crossbeams
         end
 
         def attr_class
-          # res = ['cbl-input']
-          # res << 'cbl-to-upper' if @field_config[:force_uppercase]
-          # res << 'cbl-to-lower' if @field_config[:force_lowercase]
-          # %(class="#{res.join(' ')}")
           res = []
           res << ' uppercase' if @field_config[:force_uppercase]
           res << ' lowercase' if @field_config[:force_lowercase]

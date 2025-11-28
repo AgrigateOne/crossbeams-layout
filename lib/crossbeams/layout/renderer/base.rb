@@ -28,7 +28,6 @@ module Crossbeams
 
         # Create reasonable label text from a field name.
         def present_field_as_label(field)
-          # field.to_s.sub(/_id$/, '').split('_').map(&:capitalize).join(' ')
           field.to_s.sub(/_id$/, '').split('_').join(' ').capitalize
         end
 
@@ -55,20 +54,6 @@ module Crossbeams
         # The class for the field wrapper.
         # (the div surrounding label and input is the wrapper)
         def div_class(restrict_width: true)
-          # return 'crossbeams-field' unless @page_config.form_errors
-
-          # has_err = if @field_config[:parent_field]
-          #             (@page_config.form_errors[@field_config[:parent_field]] || {})[@field_name]
-          #           else
-          #             @page_config.form_errors[@field_name]
-          #           end
-          # if has_err
-          #   # 'crossbeams-field crossbeams-div-error bg-washed-red'
-          #   'crossbeams-field crossbeams-div-error bg-red-200 text:red-700'
-          # else
-          #   'crossbeams-field'
-          # end
-          # 'crossbeams-field'
           Utils.crossbeams_field_classes(restrict_width: restrict_width)
         end
 

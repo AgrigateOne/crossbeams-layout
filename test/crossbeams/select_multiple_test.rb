@@ -4,14 +4,13 @@ class Crossbeams::SelectMultipleTest < Minitest::Test
   def test_basics
     s = simple_select_multiple_render(nil, ['a', 'b'])
     assert_nil html_selected_value(s)
-    assert_equal 'searchable-multi-select', html_element_attribute_value(s, :select, :class)
+    assert html_element_attribute_value(s, :select, :class).include? 'searchable-multi-select'
     s = simple_select_multiple_render(nil, ['a', 'b'], disabled: true)
     assert_equal 'true', html_element_attribute_value(s, :select, :disabled)
     s = simple_select_multiple_render(nil, ['a', 'b'], selected: 'b')
     assert_equal 'b', html_selected_value(s)
     s = simple_select_multiple_render('b', ['a', 'b'])
     assert_equal 'b', html_selected_value(s)
-    # assert_raises(Crossbeams::Layout::Error) { simple_select_render('c', ['a', 'b']) }
     s = simple_select_multiple_render('b', ['a', 'b'], form_value: 'a')
     assert_equal 'a', html_selected_value(s)
   end

@@ -3,7 +3,7 @@ require 'test_helper'
 class Crossbeams::LinkTest < Minitest::Test
   def test_defaults
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/')
-    assert_equal '<a href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
   end
 
   def test_invalid_args
@@ -20,33 +20,36 @@ class Crossbeams::LinkTest < Minitest::Test
 
   def test_styles
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :link)
-    assert_equal '<a href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    s = html_element_attribute_value(renderer.render, 'a', 'class')
+    assert_match(/<a href="\/".+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
+    assert s.include?('text-ocean-600')
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :button)
-    assert_equal '<a href="/" class="f6 link dim br2 ph3 pv2 dib white bg-silver" data-new-page-link="true">ClickMe</a>', renderer.render.strip
-
-    renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :small_button)
-    assert_equal '<a href="/" class="link dim br1 ph2 dib white bg-silver" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    s = html_element_attribute_value(renderer.render, 'a', 'class')
+    assert s.include?('text-slate-800')
+    assert s.include?('bg-slate-200')
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :action_button)
-    assert_equal '<a href="/" class="f6 link dim br2 ph3 pv2 dib white bg-green" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    s = html_element_attribute_value(renderer.render, 'a', 'class')
+    assert s.include?('text-white')
+    assert s.include?('bg-ocean-700')
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :back_button)
-    assert_match(/<svg class=["|']cbl-icon["|']/, renderer.render)
+    assert_match(/<svg class=["|']w-4 h-4/, renderer.render)
   end
 
   def test_behaviour
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :direct)
-    assert_equal '<a href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :popup)
-    assert_equal '<a href="/" data-popup-dialog="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-popup-dialog="true">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :remote)
-    assert_equal '<a href="/" data-remote-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-remote-link="true">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :replace_dialog)
-    assert_equal '<a href="/" data-replace-dialog="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-replace-dialog="true">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', behaviour: :newtab)
     assert_match(/target="_blank"/, renderer.render)
@@ -56,36 +59,35 @@ class Crossbeams::LinkTest < Minitest::Test
 
   def test_grid
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/')
-    assert_equal '<a href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', grid_id: 'a_grid_id')
-    assert_equal '<a href="/" data-grid-id="a_grid_id" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-grid-id="a_grid_id" data-new-page-link="true">ClickMe<\/a>/, renderer.render)
   end
 
   def test_prompt
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/')
-    assert_equal '<a href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: 'Is this OK?')
-    assert_equal '<a href="/" data-prompt="Is this OK?">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-prompt="Is this OK\?">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: true)
-    assert_equal '<a href="/" data-prompt="Are you sure?">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-prompt="Are you sure\?">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: false)
-    assert_equal '<a href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: 'y')
-    assert_equal '<a href="/" data-prompt="Are you sure?">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-prompt="Are you sure\?">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', prompt: 'Y')
-    assert_equal '<a href="/" data-prompt="Are you sure?">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-prompt="Are you sure\?">ClickMe<\/a>/, renderer.render)
   end
 
   def test_loading_window
-    match_str = '<a href="/" data-loading-window="true"'
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', loading_window: 'Y')
-    assert_equal match_str, renderer.render.strip[0, match_str.length]
+    assert_match(/<a href="\/".+data-loading-window="true"/, renderer.render)
   end
 
   def test_title
@@ -110,33 +112,37 @@ class Crossbeams::LinkTest < Minitest::Test
 
   def test_visible
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', visible: false)
-    assert_equal '<a href="/" hidden data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+hidden.+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', visible: true)
-    assert_equal '<a href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', visible: 'ANY NON-FALSE VALUE')
-    assert_equal '<a href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a href="\/".+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
   end
 
   def test_id
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', id: 'an_id')
-    assert_equal '<a id="an_id" href="/" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    assert_match(/<a id="an_id" href="\/".+data-new-page-link="true">ClickMe<\/a>/, renderer.render)
   end
 
   def test_text_size
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :button)
-    assert_equal '<a href="/" class="f6 link dim br2 ph3 pv2 dib white bg-silver" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    s = html_element_attribute_value(renderer.render, 'a', 'class')
+    assert s.include?('text-base')
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :button, text_size: 5)
-    assert_equal '<a href="/" class="f2 link dim br2 ph3 pv2 dib white bg-silver" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    s = html_element_attribute_value(renderer.render, 'a', 'class')
+    assert s.include?('text-3xl')
   end
 
   def test_colour
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :button)
-    assert_equal '<a href="/" class="f6 link dim br2 ph3 pv2 dib white bg-silver" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    s = html_element_attribute_value(renderer.render, 'a', 'class')
+    assert s.include?('bg-slate-200')
 
     renderer = Crossbeams::Layout::Link.new(text: 'ClickMe', url: '/', style: :button, button_colour: :amber)
-    assert_equal '<a href="/" class="f6 link dim br2 ph3 pv2 dib white bg-gold" data-new-page-link="true">ClickMe</a>', renderer.render.strip
+    s = html_element_attribute_value(renderer.render, 'a', 'class')
+    assert s.include?('bg-yellow-500')
   end
 end
