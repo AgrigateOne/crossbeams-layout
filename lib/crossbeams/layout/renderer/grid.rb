@@ -184,7 +184,7 @@ module Crossbeams
               </span>
             </div>
 
-            <div class="inline-block">
+            <div class="inline-block ml-1">
             #{save_multiselect_button(grid_id, options)}
             #{colour_btn}
             #{actions_button}

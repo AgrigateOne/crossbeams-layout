@@ -63,7 +63,7 @@ module Crossbeams
         # Chevron up and chevron down on left
         <<~HTML
           <details class="rounded-lg mt-4 border border-slate-300 bg-white px-2"#{open_state}>
-            <summary class="cursor-pointer #{SC.css_class(:h1)} px-2 py-4">#{caption_text}</summary>
+            <summary class="cursor-pointer #{SC.css_class(:h1)} px-2 py-4 text-nowrap">#{caption_text}</summary>
             #{row_renders}
           </details>
         HTML

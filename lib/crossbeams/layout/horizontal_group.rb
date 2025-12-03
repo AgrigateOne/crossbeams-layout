@@ -12,7 +12,8 @@ module Crossbeams
                         :contact_method,
                         :csrf,
                         :table,
-                        :text
+                        :text,
+                        :fold_up
 
       attr_reader :sequence, :nodes, :page_config, :caption_text
 

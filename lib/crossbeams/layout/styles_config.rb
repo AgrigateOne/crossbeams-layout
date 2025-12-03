@@ -37,7 +37,7 @@ module Crossbeams
 
       setting :select, default: 'bg-white border border-slate-300 outline-none px-3 py-2 text-slate-900 rounded selection:bg-ocean-700 selection:text-white focus-visible:ring-ocean-700 focus-visible:border-ocean-700 disabled:text-slate-400 disabled:placeholder:text-slate-400 disabled:cursor-not-allowed placeholder:!text-slate-500'
 
-      setting :textarea, default: 'w-full rounded border border-slate-300 bg-white outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
+      setting :textarea, default: 'resize w-full rounded border border-slate-300 bg-white outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
 
       # setting :rmd_input, default: 'w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600'
       setting :rmd_input, default: 'w-full rounded border border-slate-300 bg-white outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline-2 focus:ring-ocean-700 focus:border-ocean-700 text-slate-800'
@@ -88,9 +88,9 @@ module Crossbeams
       setting :table_row_even, default: '$:hover_row$ bg-slate-50'
       # setting :table_info_th, default: 'p-4 border-r border-b border-slate-200 text-slate-500'
       # setting :table_info_td, default: 'px-4 py-2'
-      setting :table_th, default: 'p-5 py-2 border-t border-slate-300 text-slate-800 font-semibold'
+      setting :table_th, default: 'p-5 py-2 border-t border-b border-slate-300 text-slate-800 font-semibold'
       setting :table_th_no_b, default: 'p-5 py-2 text-slate-800 font-semibold'
-      setting :table_td, default: 'px-5 py-2 border-t border-slate-300'
+      setting :table_td, default: 'px-5 py-2 border-t border-b border-slate-300'
       setting :table_td_no_b, default: 'px-5 py-2'
       setting :table_caption, default: 'p-5 py-2 border-b border-slate-300 text-slate-800 font-semibold'
 
@@ -119,7 +119,7 @@ module Crossbeams
                                             'orange' => 'cbl-grid-orange',
                                             'pink' => 'cbl-grid-pink',
                                             'purple' => 'cbl-grid-purple',
-                                            'ready' => 'cbl-grid-green',
+                                            'ready' => 'cbl-grid-blue',
                                             'red' => 'cbl-grid-red',
                                             'warning' => 'cbl-grid-orange',
                                             'yellow' => 'cbl-grid-yellow' }
