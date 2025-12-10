@@ -14,6 +14,7 @@ require 'crossbeams/layout/examples_generator'
 require 'crossbeams/layout/utils'
 
 require 'crossbeams/layout/callback_section'
+require 'crossbeams/layout/collection'
 require 'crossbeams/layout/column'
 require 'crossbeams/layout/diff'
 require 'crossbeams/layout/dropdown_button'

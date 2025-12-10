@@ -716,6 +716,11 @@ and all words start with initial capital letter.
 |true or false
 |false
 
+|:restrict_width
+|Limit the control to a maxwidth?
+|true or false
+|true
+
 |:hide_on_load
 |HTML `hidden` attribute for the field wrapper. If `true`, the field and label will be hidden, but can be shown again e.g. by a `:show_element` behaviour. Opposite behaviour of `initially_visible`.
 |true or false

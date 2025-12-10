@@ -7,6 +7,7 @@ module Crossbeams
       extend MethodBuilder
 
       build_methods_for :address,
+                        :collection,
                         :contact_method,
                         :csrf,
                         :diff,

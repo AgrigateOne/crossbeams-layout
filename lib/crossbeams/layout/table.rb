@@ -69,7 +69,7 @@ module Crossbeams
       def head
         <<~HTML
           <thead>
-            <tr>
+            <tr class="#{SC.css_class(:table_row_odd)}">
               #{format_column_headers.join}
             </tr>
           </thead>
@@ -141,21 +141,29 @@ module Crossbeams
 
       def pivot_strings(elements)
         out = []
+        cnt = elements.length - 1
         elements.each_with_index do |elem, i|
-          out << pivot_row(elem, i).join
+          out << pivot_row(elem, i, cnt == i).join
         end
         out
       end
 
-      def pivot_row(elem, index) # rubocop:disable Metrics/AbcSize
-        this_row = [%(<tr class="#{SC.css_class(index.odd? ? :table_row_even : :table_row_odd)}">)]
+      def pivot_row(elem, index, last) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        css_class = if last
+                      index.odd? ? :table_row_even_last : :table_row_odd_last
+                    else
+                      index.odd? ? :table_row_even : :table_row_odd
+                    end
+        this_row = [%(<tr class="#{SC.css_class(css_class)}">)]
         col = nil
+        lc = elem.length - 1
+        puts "Pivot length: #{lc}"
         elem.each_with_index do |e, i|
           col = e if i.zero?
           this_row << if i.zero?
                         %(<th class="#{SC.css_class(@tc_th)}" align='left'>#{header_translate[e] || e.to_s.capitalize.tr('_', ' ')}</th>)
                       else
-                        %(<td class="#{SC.css_class(@tc_td)}#{classes_for_col(col, e)}"#{attr_for_col(col)} style='min-width:3rem'>#{e || '&nbsp;'}</td>)
+                        %(<td class="#{SC.css_class(lc == i ? :table_td_last : @tc_td)}#{classes_for_col(col, e)}"#{attr_for_col(col)} style='min-width:3rem'>#{e || '&nbsp;'}</td>)
                       end
         end
         this_row << '</tr>'
@@ -169,15 +177,22 @@ module Crossbeams
         columns.map { |c| %(<th class="#{SC.css_class(@tc_th)}">#{header_translate[c] || c.to_s.capitalize.tr('_', ' ')}</th>) }
       end
 
-      def strings # rubocop:disable Metrics/AbcSize
+      def strings # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         odd = true
-        rows.map do |row|
-          tr_css = odd ? SC.css_class(:table_row_odd) : SC.css_class(:table_row_even)
+        cnt = rows.length - 1
+        rows.map.with_index do |row, index|
+          tr_css = if cnt == index
+                     odd ? SC.css_class(:table_row_odd_last) : SC.css_class(:table_row_even_last)
+                   else
+                     odd ? SC.css_class(:table_row_odd) : SC.css_class(:table_row_even)
+                   end
           odd = !odd
           if columns.empty?
-            %(<tr class="#{tr_css}">#{row.map { |r| %(<td class="#{SC.css_class(@tc_td)}"#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>) }.join}</tr>)
+            lc = row.length - 1
+            %(<tr class="#{tr_css}">#{row.map.with_index { |r, i| %(<td class="#{SC.css_class(lc == i ? :table_td_last : @tc_td)}"#{r.is_a?(Numeric) ? ' align="right"' : ''}>#{r}</td>) }.join}</tr>)
           else
-            %(<tr class="#{tr_css}">#{columns.map { |c| %(<td class="#{SC.css_class(@tc_td)}#{classes_for_col(c, row[c])}"#{attr_for_col(c)}>#{transform_cell(c, row[c])}</td>) }.join}</tr>)
+            lc = columns.length - 1
+            %(<tr class="#{tr_css}">#{columns.map.with_index { |c, i| %(<td class="#{SC.css_class(lc == i ? :table_td_last : @tc_td)}#{classes_for_col(c, row[c])}"#{attr_for_col(c)}>#{transform_cell(c, row[c])}</td>) }.join}</tr>)
           end
         end
       end

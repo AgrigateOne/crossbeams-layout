@@ -20,7 +20,8 @@ module Crossbeams
       end
 
       def self.crossbeams_field_classes(restrict_width: true)
-        max = ' max-w-96' if restrict_width
+        # max = ' max-w-96' if restrict_width
+        max = " #{Crossbeams::Layout::StylesConfig.config.row_maxwidth}" if restrict_width
         "min-w-22 mb-2#{max}"
       end
     end

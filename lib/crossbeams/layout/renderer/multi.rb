@@ -14,6 +14,7 @@ module Crossbeams
           @caption      = field_config[:caption] || present_field_as_label(field_name)
           @optgroup = optgroup?(@field_config[:options], [])
           @options_2d = using_2d_options?(@field_config[:options], [])
+          @restrict_width = @field_config.fetch(:restrict_width, true)
           prepare_selected
           prepare_options
           @disabled_options = @optgroup ? {} : []
@@ -33,7 +34,7 @@ module Crossbeams
 
         def render_string(attrs)
           <<-HTML
-          <div #{wrapper_id} class="#{div_class}#{wrapper_visibility}">#{hint_text}
+          <div #{wrapper_id} class="#{div_class(restrict_width: @restrict_width)}#{wrapper_visibility}">#{hint_text}
             #{label_render(id_base, @caption)}
             <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple="multiple" data-multi="true"#{required_str}#{disabled_str}>
             #{make_prompt}#{build_1_or_2_options}

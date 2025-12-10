@@ -3,7 +3,7 @@
 module Crossbeams
   module Layout
     # A link renderer - for rendering a link outside a form.
-    class Link
+    class Link # rubocop:disable Metrics/ClassLength
       extend MethodBuilder
 
       SC = StylesConfig
@@ -94,29 +94,23 @@ module Crossbeams
         raise ArgumentError, 'Crossbeams::Layout::Link icon is not applicable for back button or loading window' if @icon && (style == :back_button || @window)
       end
 
-      # %(<a data-button-dropdown="Y" href="#{item[:url]}" class="text-sky-600/80 hover:text-sky-600 flex hover:bg-slate-200 hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-700"#{item_attrs(item)}>#{icon} <span>#{item[:text]}</span></a>)
-      def class_strings
+      def class_strings # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
         case style
         when :button
           to_colour = "bg-#{button_colour}-500"
           from_colour = "bg-#{SC.css_class(:secondary_bg)}"
           to_colour = "bg-#{SC.css_class(:secondary_bg)}" if button_colour.nil?
-          # %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-#{col}#{user_class}")
-          # %(class="block #{button_font_size} font-medium select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 p-3 h-[2.75rem] min-w-[2.75rem] bg-ocean-50 border-ocean-50 text-ocean-700 bg-slate-200 text-slate-800 border-slate-200 active:bg-ocean-50 active:border-ocean-50 active:text-ocean-700 hover:bg-ocean-50 hover:border-ocean-50 hover:text-ocean-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500#{user_class}")
           %(class="#{hidden_string} #{button_font_size} #{SC.css_class(:button_secondary).gsub(from_colour, to_colour)} max-w-fit#{user_class}")
         when :small_button
           warn 'Crossbeams::Layout::Link - style `small_button` has been deprecated. Use an icon button instead.'
-          # %(class="link dim br1 ph2 dib white bg-silver#{user_class}")
           %(class="#{SC.css_class(:link)}#{inline_class}#{hidden_string}")
         when :back_button
-          # %(class="block f#{button_font_size} link dim br2 ph3 pv2 dib white bg-dark-blue#{user_class}")
           %(class="#{hidden_string} #{button_font_size} #{SC.css_class(:button_primary)} max-w-fit#{user_class}")
         when :action_button
-          # %(class="f#{button_font_size} link dim br2 ph3 pv2 dib white bg-green#{user_class}")
-          # %(class="block #{button_font_size} font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 bg-ocean-700 border-ocean-700 p-3 h-[2.75rem] min-w-[2.75rem] bg-ocean-500 text-white border-ocean-500 active:bg-ocean-700 active:border-ocean-700 hover:bg-ocean-700 hover:border-ocean-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500#{user_class}")
           %(class="#{hidden_string} #{button_font_size} #{SC.css_class(:button_primary)} max-w-fit #{user_class}")
+        when :collection_button
+          %(class="#{hidden_string} #{SC.css_class(:button_for_collection)} #{user_class}")
         else
-          # css_class.empty? ? %(class="text-sky-600/80 hover:text-sky-600 flex hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-700#{inline_class}") : %(class="text-sky-600/80 hover:text-sky-600 flex hover:underline items-center gap-3 w-full grow py-2 px-3 rounded cursor-pointer outline-none whitespace-nowrap select-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-700 #{css_class}#{inline_class}")
           css_class.empty? ? %(class="#{SC.css_class(:link)}#{inline_class}#{hidden_string}") : %(class="#{SC.css_class(:link)}#{css_class}#{inline_class}#{hidden_string}")
         end
       end
@@ -124,15 +118,15 @@ module Crossbeams
       def button_colour
         case @colour
         when nil, :standard
-          nil # 'silver'
+          nil
         when :green
-          'green' # 'dark-green'
+          'green'
         when :amber
-          'yellow' # 'gold'
+          'yellow'
         when :red
-          'red' # 'dark-red'
+          'red'
         when :blue
-          'blue' # 'dark-blue'
+          'blue'
         else
           raise ArgumentError, "Invalid button colour - #{@colour}"
         end

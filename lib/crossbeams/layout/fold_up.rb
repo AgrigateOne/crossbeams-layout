@@ -9,6 +9,7 @@ module Crossbeams
       SC = StylesConfig
 
       build_methods_for :address,
+                        :collection,
                         :contact_method,
                         :csrf,
                         :diff,

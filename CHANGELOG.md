@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Collection component for displaying a wrapped list of buttons or badges
 ### Changed
 ### Fixed
 

@@ -27,6 +27,7 @@ module Crossbeams
         @out << generate_text if %i[all text].include? classes
         @out << generate_form if %i[all form].include? classes
         @out << generate_sections if %i[all section].include? classes
+        @out << generate_collections if %i[all collection].include? classes
         @out << generate_tables if %i[all table].include? classes
         @out << generate_progress_step if %i[all progress_step].include? classes
         @out << generate_list if %i[all list].include? classes
@@ -64,6 +65,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#text">Text</a></li>) if %i[all text].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#form">Form</a></li>) if %i[all form].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#sections">Sections</a></li>) if %i[all section].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#collections">Collections</a></li>) if %i[all collection].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#tables">Tables</a></li>) if %i[all table].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#progress_step">Progress Step</a></li>) if %i[all progress_step].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#list">List</a></li>) if %i[all list].include? classes
@@ -85,11 +87,11 @@ module Crossbeams
       end
 
       def head(caption, anchor)
-        %(<div class="#{style == :tc ? 'tc b pv2 bt bl br mt4' : 'text-center font-bold py-2 border-t border-l border-r mt-8'}"><a name="#{anchor}">#{caption}</a></div>)
+        %(<div class="#{style == :tc ? 'tc b pv2 bt bl br mt4' : 'text-center font-bold py-2 bg-ocean-200 mt-8'}"><a name="#{anchor}">#{caption}</a></div>)
       end
 
       def separator
-        %(<hr class="#{style == :tc ? 'mt1 blue' : 'mt-4 text-blue-500'}">)
+        %(<hr class="#{style == :tc ? 'mt1 blue' : 'mt-4 mb-2 text-blue-500'}">)
       end
 
       def generate_icons
@@ -104,6 +106,23 @@ module Crossbeams
         end
         ar << '</tbody></table>'
         ar.join("\n")
+      end
+
+      def generate_collections
+        ar = [head('Collections', 'collections')]
+        collection = Collection.new
+        9.times do |n|
+          collection.add_control control_type: :link,
+                                 text: "Control button #{n + 1}",
+                                 url: '/'
+        end
+        ar << collection.render
+
+        collection = Collection.new
+        collection.add_list %w[one two three four five six seven eight nine ninehundred-ninety-nine]
+        ar << collection.render
+
+        ar.join(separator)
       end
 
       def generate_sections

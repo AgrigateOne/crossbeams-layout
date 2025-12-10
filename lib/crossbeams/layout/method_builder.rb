@@ -80,6 +80,12 @@ module Crossbeams
               blk.call(group)
               @nodes << group
             end
+          when :collection
+            define_method(:collection) do |&blk|
+              collection = Collection.new
+              blk.call(collection)
+              @nodes << collection
+            end
           else
             raise ArgumentError, "#{node_name} is not a valid option for `build_methods_for`"
           end
