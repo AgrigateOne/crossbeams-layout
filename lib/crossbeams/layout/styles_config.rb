@@ -102,8 +102,10 @@ module Crossbeams
       setting :rmd_table, default: 'w-full h-full border-collapse overflow-auto'
       setting :rmd_table_row_odd, default: '$:hover_row$'
       setting :rmd_table_row_even, default: '$:hover_row$ bg-slate-50'
-      setting :rmd_table_td_label, default: 'px-5 py-2 w-1/2 border-t border-slate-300 text-slate-800 font-semibold'
-      setting :rmd_table_td_value, default: 'px-5 py-2 w-1/2 border-t border-slate-300'
+      setting :rmd_table_row_header, default: 'bg-slate-200'
+      setting :rmd_table_td_header, default: 'px-5 py-2 text-slate-800 font-semibold'
+      setting :rmd_table_td_label, default: 'px-5 py-2 border-t border-slate-300 text-slate-800 font-semibold'
+      setting :rmd_table_td_value, default: 'px-5 py-2 border-t border-slate-300'
       setting :rmd_select, default: 'bg-white border border-slate-300 outline-none px-3 py-2 text-slate-900 rounded selection:bg-ocean-700 selection:text-white focus-visible:ring-ocean-700 focus-visible:border-ocean-700 disabled:text-slate-400 disabled:placeholder:text-slate-400 disabled:cursor-not-allowed placeholder:!text-slate-500'
 
       setting :rmd_button_primary, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 min-w-[2.75rem] bg-ocean-700 text-white border-ocean-700 active:bg-ocean-700 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500 w-full py-7'
