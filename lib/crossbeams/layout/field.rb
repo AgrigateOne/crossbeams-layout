@@ -21,6 +21,17 @@ module Crossbeams
         field_config[:renderer] == :hidden
       end
 
+      def field_has_errors? # rubocop:disable Metrics/AbcSize
+        return false unless page_config.form_errors
+
+        has_err = if field_config[:parent_field]
+                    (page_config.form_errors[field_config[:parent_field]] || {})[name]
+                  else
+                    page_config.form_errors[name]
+                  end
+        !has_err.nil?
+      end
+
       def render
         renderer = Renderer::FieldFactory.new(name, field_config, page_config)
         renderer.render

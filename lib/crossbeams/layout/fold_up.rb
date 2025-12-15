@@ -61,6 +61,7 @@ module Crossbeams
         return '' if invisible?
 
         row_renders = nodes.reject(&:invisible?).map(&:render).join("\n")
+        check_if_validation_errors_force_open
         # Chevron up and chevron down on left
         <<~HTML
           <details class="rounded-lg mt-4 border border-slate-300 bg-white px-2"#{open_state}>
@@ -92,6 +93,15 @@ module Crossbeams
 
       def open_state
         @open ? ' open' : ''
+      end
+
+      def check_if_validation_errors_force_open
+        return if @open
+
+        force_open = @nodes.any? do |node|
+          node.respond_to?(:field_has_errors?) && node.field_has_errors?
+        end
+        @open = true if force_open
       end
     end
   end
