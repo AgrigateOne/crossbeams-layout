@@ -262,6 +262,8 @@ module Crossbeams
           lnk = Link.new(text: "Clickme (#{colour}", url: '/a/path', style: :button, button_colour: colour)
           ar << lnk.render
         end
+        lnk = Link.new(text: 'InVisible (YOU SHOULD NOT SEE ME)', url: '/a/path', style: :button, visible: false)
+        ar << lnk.render
         ar.join(separator)
       end
 

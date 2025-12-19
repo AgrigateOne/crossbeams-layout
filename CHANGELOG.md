@@ -9,7 +9,9 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Added
 - Collection component for displaying a wrapped list of buttons or badges
 ### Changed
+- If a FoldUp contains any validation errors, ensure it renders in open mode
 ### Fixed
+- Link elements were not honoring the visible attribute
 
 ## [2.3.2] - 2025-11-24
 ### Changed

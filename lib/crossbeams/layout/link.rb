@@ -70,12 +70,6 @@ module Crossbeams
         ].join(' ').squeeze(' ').rstrip
       end
 
-      def inline_class
-        return '' unless @inline
-
-        ' inline-block'
-      end
-
       def render_id
         return '' unless id
 
@@ -100,19 +94,38 @@ module Crossbeams
           to_colour = "bg-#{button_colour}-500"
           from_colour = "bg-#{SC.css_class(:secondary_bg)}"
           to_colour = "bg-#{SC.css_class(:secondary_bg)}" if button_colour.nil?
-          %(class="#{hidden_string} #{button_font_size} #{SC.css_class(:button_secondary).gsub(from_colour, to_colour)} max-w-fit#{user_class}")
+          %(class="#{button_font_size} #{btn_secondary.gsub(from_colour, to_colour)} max-w-fit #{user_class}")
         when :small_button
           warn 'Crossbeams::Layout::Link - style `small_button` has been deprecated. Use an icon button instead.'
-          %(class="#{SC.css_class(:link)}#{inline_class}#{hidden_string}")
+          %(class="#{SC.css_class(:link)}#{inline_or_hidden}")
         when :back_button
-          %(class="#{hidden_string} #{button_font_size} #{SC.css_class(:button_primary)} max-w-fit#{user_class}")
+          %(class="#{btn_primary} max-w-fit#{user_class}")
         when :action_button
-          %(class="#{hidden_string} #{button_font_size} #{SC.css_class(:button_primary)} max-w-fit #{user_class}")
+          %(class="#{button_font_size} #{btn_primary} max-w-fit #{user_class}")
         when :collection_button
-          %(class="#{hidden_string} #{SC.css_class(:button_for_collection)} #{user_class}")
+          %(class="#{btn_collection} #{user_class}")
         else
-          css_class.empty? ? %(class="#{SC.css_class(:link)}#{inline_class}#{hidden_string}") : %(class="#{SC.css_class(:link)}#{css_class}#{inline_class}#{hidden_string}")
+          css_class.empty? ? %(class="#{SC.css_class(:link)}#{inline_or_hidden}") : %(class="#{SC.css_class(:link)}#{css_class}#{inline_or_hidden}")
         end
+      end
+
+      def btn_primary
+        tweak_display(SC.css_class(:button_primary))
+      end
+
+      def btn_secondary
+        tweak_display(SC.css_class(:button_secondary))
+      end
+
+      def btn_collection
+        tweak_display(SC.css_class(:button_for_collection))
+      end
+
+      def tweak_display(css)
+        return css.sub('flex', 'hidden') unless @visible
+        return css.sub('flex', 'inline-block') if @inline
+
+        css
       end
 
       def button_colour
@@ -133,13 +146,27 @@ module Crossbeams
       end
 
       def user_class
-        css_class.empty? ? inline_class : " #{css_class}#{inline_class}"
+        # css_class.empty? ? inline_class : " #{css_class}#{inline_class}"
+        css_class
       end
 
       def hidden_string
         return '' if visible
 
-        ' hidden'
+        'hidden'
+      end
+
+      def inline_class
+        return '' unless @inline
+
+        ' inline-block'
+      end
+
+      def inline_or_hidden
+        return ' hidden' unless @visible
+        return ' inline-block' if @inline
+
+        ''
       end
 
       def render_text
