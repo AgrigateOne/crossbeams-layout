@@ -21,9 +21,7 @@ module Crossbeams
           <<~HTML
             <div #{wrapper_id} class="#{div_class(restrict_width: false)}#{wrapper_visibility}">#{hint_text}
               #{label_render(id_base, @caption)}
-              <textarea #{name_attribute} #{field_id} class="#{SC.css_class(:textarea)}" #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">
-                #{CGI.escapeHTML(value.to_s)}
-              </textarea>#{error_state}
+              <textarea #{name_attribute} #{field_id} class="#{SC.css_class(:textarea)}" #{attr_list.join(' ')} cols="#{cols}" rows="#{rows}">#{CGI.escapeHTML(value.to_s)}</textarea>#{error_state}
             </div>
           HTML
         end
