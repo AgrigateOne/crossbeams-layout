@@ -23,7 +23,7 @@ module Crossbeams
             <div class="cbl-radio cbl-input">
               #{render_buttons}
               #{hint_trigger if caption.empty?}
-            </div>
+            </div>#{error_state(newline: false)}
           </div>
           HTML
         end

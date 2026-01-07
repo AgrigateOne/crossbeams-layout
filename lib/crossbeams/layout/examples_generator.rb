@@ -557,13 +557,36 @@ module Crossbeams
         ar << frm.render
 
         page_config = PageConfig.new({ form_object: OpenStruct.new(inp1: 'value'),
-                                       fields: { inp1: {}, inp2: { required: true } },
-                                       form_errors: { base: ['A base validation error'], inp2: ['value is incorrect'] } })
+                                       fields: { inp1: {},
+                                                 inp2: { required: true },
+                                                 inp3: { renderer: :textarea },
+                                                 inp4: { renderer: :checkbox },
+                                                 inp5: { renderer: :datetime },
+                                                 inp6: { renderer: :select_multiple, options: %w[a b c d] },
+                                                 inp7: { renderer: :select, options: %w[a b c d] },
+                                                 inp8: { renderer: :radio_group, options: [%w[a b], %w[c d]] },
+                                                 inp9: { renderer: :multi, options: %w[a b c d] } },
+                                       form_errors: { base: ['A base validation error'],
+                                                      inp2: ['value is incorrect'],
+                                                      inp3: ['value is incorrect'],
+                                                      inp4: ['value is incorrect'],
+                                                      inp5: ['value is incorrect'],
+                                                      inp6: ['value is incorrect'],
+                                                      inp7: ['value is incorrect'],
+                                                      inp8: ['value is incorrect'],
+                                                      inp9: ['value is incorrect'] } })
         frm = Form.new(page_config, 1, 1)
         frm.form_id 'frm-err'
         frm.caption ' Form With Errors'
         frm.add_field :inp1
         frm.add_field :inp2
+        frm.add_field :inp3
+        frm.add_field :inp4
+        frm.add_field :inp5
+        frm.add_field :inp6
+        frm.add_field :inp7
+        frm.add_field :inp8
+        frm.add_field :inp9
         ar << frm.render
 
         ar.join(separator)

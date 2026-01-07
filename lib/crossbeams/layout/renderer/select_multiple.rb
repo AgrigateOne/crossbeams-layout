@@ -62,7 +62,7 @@ module Crossbeams
             #{backup_empty_select}
             <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple>
             #{make_prompt}#{build_1_or_2_options}
-            </select>
+            </select>#{error_state(newline: false)}
           </div>
           HTML
         end

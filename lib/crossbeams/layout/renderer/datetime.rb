@@ -25,7 +25,7 @@ module Crossbeams
             <div class="w-full flex flex-grow">
             <input class="w-full rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600" type="date" value="#{CGI.escapeHTML(date_portion.to_s)}" #{name_attribute(:date)}_date #{field_id(:date)} data-datetime="date" #{attr_list(:date).join(' ')}>
             <input class="w-1/3 rounded border border-slate-300 bg-white outline outline-2 outline-transparent outline-offset-2 px-3 py-2 appearance-none text-base leading-6 focus:outline focus:outline-2 focus:outline-transparent focus:outline-offset-2 focus:shadow focus:ring focus:ring-offset-0 focus:border-blue-600 focus-visible:border-blue-600" type="time" value="#{CGI.escapeHTML(time_portion.to_s)}" #{name_attribute(:time)}_time #{field_id(:time)} data-datetime="time" #{attr_list(:time).join(' ')}>
-            </div>
+            </div>#{error_state(newline: false)}
             <input type="hidden" value="#{CGI.escapeHTML(value&.strftime('%Y-%m-%dT%H:%M').to_s)}" #{name_attribute} #{field_id}>
           </div>
           HTML

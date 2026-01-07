@@ -38,7 +38,7 @@ module Crossbeams
             #{label_render(id_base, @caption)}
             <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} multiple="multiple" data-multi="true"#{required_str}#{disabled_str}>
             #{make_prompt}#{build_1_or_2_options}
-            </select>#{error_state}
+            </select>#{error_state(newline: false)}
           </div>
           HTML
         end
