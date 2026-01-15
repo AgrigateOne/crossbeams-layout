@@ -58,7 +58,7 @@ module Crossbeams
 
           validate_scroll_height
           # " cbl-list-scroll-#{@field_config[:scroll_height]}"
-          return 'h-20 overflow-y-auto' if @options[:scroll_height] == :short
+          return 'h-20 overflow-y-auto' if @field_config[:scroll_height] == :short
 
           'h-44 overflow-y-auto'
         end
