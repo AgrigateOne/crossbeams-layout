@@ -34,7 +34,11 @@ module Crossbeams
 
       def btn_class
         if @bg_colour
-          SC.css_class(:button_secondary).sub("bg-#{SC.css_class(:secondary_bg)}", bg_colour)
+          if @bg_colour == :blue
+            SC.css_class(:button_primary)
+          else
+            SC.css_class(:button_secondary).sub("bg-#{SC.css_class(:secondary_bg)}", bg_colour).sub("text-#{SC.css_class(:primary_colour)}", 'text-white')
+          end
         else
           SC.css_class(:button_secondary)
         end

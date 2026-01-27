@@ -538,6 +538,11 @@ module Crossbeams
             col.add_field :txt1
           end
         end
+        frm.add_button 'Blue action', '/', colour: :blue
+        frm.add_button 'Green action', '/', colour: :green
+        frm.add_button 'Amber action', '/', colour: :amber
+        frm.add_button 'Red action', '/', colour: :red
+        frm.add_button 'Std action', '/'
 
         ar << frm.render
 
