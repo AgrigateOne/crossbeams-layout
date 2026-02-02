@@ -77,6 +77,7 @@ module Crossbeams
           # For now, drop the description.. (probably impossible to render properly below the step with this design)
           # description = state_description[index]
           # desc = description.nil? ? '' : %(<div class="mt-6 text-slate-600">#{description}</div>)
+          b_pos = index.odd? ? '-bottom-4 md:-bottom-5' : '-bottom-6 md:-bottom-5'
           str = <<~HTML
             <div class="flex items-center#{fullness}">
               #{index.positive? ? line : ''}
@@ -84,7 +85,7 @@ module Crossbeams
                 <span class="text-xs select-none text-white">
                   #{index + 1}
                 </span>
-                <span class="text-sm font-semibold select-none text-center whitespace-nowrap w-fit absolute left-1/2 -translate-x-1/2 -bottom-5 text-#{colour}">
+                <span class="text-sm font-semibold select-none text-center whitespace-nowrap w-fit absolute left-1/2 -translate-x-1/2 #{b_pos} text-#{colour}">
                   #{step}
                 </span>
               </div>
