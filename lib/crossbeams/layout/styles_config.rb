@@ -72,14 +72,15 @@ module Crossbeams
       setting :secondary_colour, default: 'slate-800'
       setting :secondary_bg, default: 'slate-200'
 
-      setting :text_warning, default: 'text-orange-600'
-      setting :bg_warning, default: 'bg-orange-100'
+      setting :text_warning, default: 'text-orange-700'
+      setting :bg_warning, default: 'border-orange-500'
       setting :text_error, default: 'text-red-600'
+
       # setting :notice, default: 'm-2 p-1.5 border border-ocean-700'
       setting :notice, default: 'm-2 flex flex-row justify-start items-center gap-2 px-3 py-4 mb-4 border-l-4 rounded'
       setting :note_info, default: 'bg-sky-50 border-sky-500 text-sky-700'
       setting :note_success, default: 'bg-green-50 border-green-500 text-green-700'
-      setting :note_warning, default: 'bg-orange-50 border-orange-500 text-orange-700'
+      setting :note_warning, default: 'bg-orange-50 $:bg_warning$ $:text_warning$'
       setting :note_error, default: 'bg-red-50 border-red-500 text-red-600'
 
       setting :table_div, default: 'border border-slate-300 rounded-lg overflow-auto'
