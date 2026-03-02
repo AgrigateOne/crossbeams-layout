@@ -42,7 +42,7 @@ module Crossbeams
       # @return [string] - HTML representation of this node.
       def render
         <<-HTML
-        #{caption}<ol class="#{SC.css_class(:ol)}" id="#{prefix}-sortable-items" class="cbl-sortable-items">
+        #{caption}<ol class="#{SC.css_class(:ol)} min-h-5" id="#{prefix}-sortable-items" class="cbl-sortable-items">
         #{item_renders}
         </ol>
         <input type="hidden" name="#{input_name}" id="#{prefix}-sorted_ids" value="#{item_ids}" size="50" data-sortable-prefix="#{prefix}"#{grouping}/>
