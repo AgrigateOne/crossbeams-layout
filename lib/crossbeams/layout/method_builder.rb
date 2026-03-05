@@ -28,12 +28,12 @@ module Crossbeams
               @nodes << row
             end
           when :text
-            define_method(:add_text) do |text, opts = {}|
-              @nodes << Text.new(page_config, text, opts)
+            define_method(:add_text) do |text, options = {}|
+              @nodes << Text.new(page_config, text, options)
             end
           when :notice
-            define_method(:add_notice) do |text, opts = {}|
-              @nodes << Notice.new(page_config, text, opts)
+            define_method(:add_notice) do |text, options = {}|
+              @nodes << Notice.new(page_config, text, options)
             end
           when :diff
             define_method(:add_diff) do |key|
@@ -51,9 +51,13 @@ module Crossbeams
             define_method(:add_repeating_request) do |url, interval, content, options = {}|
               @nodes << RepeatingRequest.new(page_config, url, interval, content, options)
             end
+          when :tab_set
+            define_method(:add_tab_set) do |items, options = {}|
+              @nodes << TabSet.new(page_config, items, options)
+            end
           when :address
-            define_method(:add_address) do |addresses, opts = {}|
-              @nodes << Address.new(page_config, addresses, opts)
+            define_method(:add_address) do |addresses, options = {}|
+              @nodes << Address.new(page_config, addresses, options)
             end
           when :contact_method
             define_method(:add_contact_method) do |contact_methods, options = {}|

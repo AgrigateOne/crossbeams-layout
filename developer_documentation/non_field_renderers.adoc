@@ -24,6 +24,7 @@ The following renderers that do not bind to fields in a form are available:
 * <<Notice>>
 * <<ExpandCollapseFoldUps>>
 * <<FormButton>>
+* <<TabSet>>
 
 === Link
 
@@ -1119,5 +1120,56 @@ form.add_button('More', '/resource/more', remote: false)
 |Should the button render in a disabled state?
 |Boolean
 |None. Defaults to `false`.
+
+|===
+
+=== TabSet
+
+Add a row of tabs that can load content from a URL when clicked. The tab can implement a link to load a page, or to replace content in a linked DOM element.
+
+e.g.
+[source,ruby]
+----
+page.add_tab_set([{ text: 'Left', url: '/left' },
+                  { text: 'Centre', url: '/centre', remote: true },
+                  { text: 'Right', url: '/right' }],
+                 active_tab_index: 1,
+                 target_dom_id: 'replace_me')
+
+# With pre-loaded content:
+page.add_tab_set([{ text: 'Left', preload_dom_id: 'dom_left' },
+                  { text: 'Centre', preload_dom_id: 'dom_centre' },
+                  { text: 'Right', preload_dom_id: 'dom_right' }],
+                 preloaded_tabs: true)
+----
+
+|===
+|attribute |description |possible values |default
+
+|items
+|The tabs (name and url)
+a|An array of hashes with keys:
+
+* `:text` (the tab caption),
+* `:url` (the URL to call)
+* and optionally `:remote` (true to replace the contents of the DOM element with id matching `:target_dom_id`).
+* and optionally `:preload_dom_id` (the id of a DOM element to show when this tab is clicked).
+
+|None. must be provided.
+
+|options - :active_tab_index
+|Denote the active tab by specifying the index of the `items` array.
+|Integer
+|0 (the first tab will be active)
+
+|options - :target_dom_id
+|the id of a DOM element to be populated with the results of the URL call when the tab item is `:remote`.
+|String
+|None. Not required if all the elements of the items array load a page on click.
+
+|options - :preloaded_tabs
+|True if the tabs should be used to show/hide content already-loaded in the page.
+|Boolean
+|False
 
 |===

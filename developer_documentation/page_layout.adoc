@@ -154,6 +154,10 @@ These are the methods used in building a page layout.
 |rows (Array), columns (Array), options (Hash)
 |Add a table to the page.
 
+|add_tab_set (link:/developer_documentation/non_field_renderers.adoc#_tabset[TabSet])
+|items (Array), options (Hash)
+|Add a set of tabs to the page.
+
 |add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
 |text (String), options (Hash)
 |Add a block of Text to the page.
@@ -212,6 +216,10 @@ These are the methods used in building a page layout.
 |dom_id
 |text (String)
 |Sets the `id` of the HTML element.
+
+|hide_on_load!
+|None.
+|Renders the Section as a hidden element when the page loads.
 
 |add_grid (link:/developer_documentation/non_field_renderers.adoc#_grid[Grid])
 |grid_id (String), url (String), options (Hash)

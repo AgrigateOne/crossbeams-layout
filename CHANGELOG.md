@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- TabSet component for rendering a row of tabs
 - Collection component for displaying a wrapped list of buttons or badges
 ### Changed
 - If a FoldUp contains any validation errors, ensure it renders in open mode
