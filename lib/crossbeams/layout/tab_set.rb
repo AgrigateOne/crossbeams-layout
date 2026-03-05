@@ -72,7 +72,7 @@ module Crossbeams
         required_keys = preloaded_tabs ? [:text] : %i[text url]
         raise ArgumentError, 'TabSet: All items must have :text and :url attributes' unless items.all? { |i| (i.keys & required_keys) == required_keys }
         raise ArgumentError, 'TabSet: A target DOM id is required for remote tab items' if options[:target_dom_id].nil? && items.any? { |i| i[:remote] }
-        raise ArgumentError, 'TabSet: A preload DOM id is required for preloaded tab items' if options[:preloaded_tabs].nil? && items.any? { |i| i[:preload_dom_id].nil? }
+        raise ArgumentError, 'TabSet: A preload DOM id is required for preloaded tab items' if options[:preloaded_tabs] && items.any? { |i| i[:preload_dom_id].nil? }
         raise ArgumentError, "TabSet: Active tab index is out of range (0..#{items.length - 1} permitted)" if options[:active_tab_index] && (options[:active_tab_index] > items.length || options[:active_tab_index].negative?)
       end
     end
