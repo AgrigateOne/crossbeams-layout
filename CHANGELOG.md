@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [2.3.3] - 2026-03-05
+### Added
 - TabSet component for rendering a row of tabs
 - Collection component for displaying a wrapped list of buttons or badges
 ### Changed
