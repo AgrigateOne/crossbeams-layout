@@ -15,6 +15,7 @@ module Crossbeams
                         :repeating_request,
                         :row,
                         :section,
+                        :tab_set,
                         :horizontal_group,
                         :table,
                         :text

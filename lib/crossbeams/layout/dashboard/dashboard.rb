@@ -26,6 +26,10 @@ module Crossbeams
         @caption = caption
       end
 
+      def add_tab_set(items, options = {})
+        @nodes << TabSet.new({}, items, options)
+      end
+
       def add_sub_caption(caption)
         @nodes << %(<div class="py-2 font-semibold">#{caption}</div>)
       end

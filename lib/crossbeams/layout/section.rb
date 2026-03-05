@@ -26,17 +26,18 @@ module Crossbeams
       SC = StylesConfig
 
       def initialize(page_config, sequence)
-        @caption            = 'Section'
-        @sequence           = sequence
-        @nodes              = []
-        @page_config        = page_config
-        @hide_caption       = true
-        @show_border        = false
-        @fit_height         = false
+        @caption = 'Section'
+        @sequence = sequence
+        @nodes = []
+        @page_config = page_config
+        @hide_caption = true
+        @show_border = false
+        @fit_height = false
         @full_dialog_height = false
         @half_dialog_height = false
-        @css_classes        = ['px-2 pb-2']
-        @section_id         = "section-#{sequence}"
+        @hide_on_load = false
+        @css_classes = ['px-2 pb-2']
+        @section_id = "section-#{sequence}"
       end
 
       def add_caption(caption)
@@ -46,6 +47,10 @@ module Crossbeams
 
       def dom_id(id)
         @section_id = id
+      end
+
+      def hide_on_load!
+        @hide_on_load = true
       end
 
       def show_border!
@@ -114,11 +119,17 @@ module Crossbeams
 
         <<~HTML
           #{render_fit_height_caption}
-          <section id="#{@section_id}" class="#{@css_classes.join(' ')}">
+          <section id="#{@section_id}" class="#{@css_classes.join(' ')}#{hide_class}">
           #{render_normal_caption}
             #{row_renders}
           </section>
         HTML
+      end
+
+      def hide_class
+        return '' unless @hide_on_load
+
+        ' hidden'
       end
 
       # Are there any Javascript snippets to be included in the page's DOMContentLoaded event?

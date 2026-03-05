@@ -39,6 +39,7 @@ module Crossbeams
         @out << generate_contact_method if %i[all contact_method].include? classes
         @out << generate_grid if %i[all grid].include? classes
         @out << generate_diff if %i[all diff].include? classes
+        @out << generate_tab_set if %i[all tab_set].include? classes
         @out << generate_miscellaneous if %i[all generate_miscellaneous].include? classes
         @out << generate_loading_message if %i[all loading_message].include? classes
         @out << generate_repeating_request if %i[all repeating_request].include? classes
@@ -77,6 +78,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#contact_method">Contact</a></li>) if %i[all contact_method].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#grid">Grid</a></li>) if %i[all grid].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#diff">Diff</a></li>) if %i[all diff].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#tab_set">Tab Set</a></li>) if %i[all tab_set].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#miscellaneous">Miscellaneous styling</a></li>) if %i[all miscellaneous].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#loading_message">Loading Mesage</a></li>) if %i[all loading_message].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#repeating_request">Repeating Request</a></li>) if %i[all repeating_request].include? classes
@@ -709,6 +711,16 @@ module Crossbeams
           lane.no_data 'This is a lane showing that there is no data to display'
         end
         ar << dash.render
+        ar.join(separator)
+      end
+
+      def generate_tab_set
+        ar = [head('Tab Set', 'tab_set')]
+        sets = [[nil, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: '3', url: '/' }, { text: 'The fourth is the widest', url: '/' }]],
+                [1, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: 'Three', url: '/' }, { text: 'The fourth is the widest', url: '/' }]]]
+        sets.each do |active, target, items|
+          ar << TabSet.new({}, items, { active_tab_index: active, target_dom_id: target }).render
+        end
         ar.join(separator)
       end
 
