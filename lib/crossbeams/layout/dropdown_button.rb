@@ -67,7 +67,7 @@ module Crossbeams
           # Include icons for direct, popup, replace, loading at the start of the text...
           icon = if item[:loading_window]
                    Icon.new(:newwindow).render
-                 elsif %i[popup replace_dialog].include?(item[:behaviour])
+                 elsif %i[popup replace_dialog remote].include?(item[:behaviour])
                    Icon.new(:window).render
                  else
                    Icon.new(:link).render
@@ -116,7 +116,7 @@ module Crossbeams
 
         items.each do |item|
           raise ArgumentError, 'Crossbeams::Layout::DropdownButton - items must have URL and TEXT attributes' unless item[:url] && item[:text]
-          raise ArgumentError, 'Crossbeams::Layout::DropdownButton you cannot have a loading window that is also a popup' if item[:loading_window] && %i[popup replace_dialog].include?(item[:behaviour])
+          raise ArgumentError, 'Crossbeams::Layout::DropdownButton you cannot have a loading window that is also a popup' if item[:loading_window] && %i[popup replace_dialog remote].include?(item[:behaviour])
           raise ArgumentError, 'Crossbeams::Layout::DropdownButton - back button items must use direct links, not a loading window' if style == :back_button && item[:loading_window]
           raise ArgumentError, 'Crossbeams::Layout::DropdownButton - back button items must use direct links, not a dialog' if style == :back_button && %i[popup replace_dialog].include?(item[:behaviour])
         end
@@ -174,6 +174,8 @@ module Crossbeams
           'data-popup-dialog="true"'
         when :replace_dialog
           'data-replace-dialog="true"'
+        when :remote
+          'data-remote-link="true"'
         else
           ''
         end

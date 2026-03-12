@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- For dropdown button items, the behaviour can now be `:remote` as well
 ### Changed
 ### Fixed
 

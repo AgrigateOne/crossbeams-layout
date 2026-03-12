@@ -170,8 +170,8 @@ section.add_control(control_type: :dropdown_button, text: 'Do something', style:
 |None. must be provided.
 
 |item options - :behaviour
-|How the link behaves when clicked. Can open the url in a new page, can open the url in a popup dialog or can replace an already-open dialog.
-|`:direct`, `:popup` or `:replace_dialog`.
+|How the link behaves when clicked. Can open the url in a new page, can open the url in a popup dialog, can make a remote call or can replace an already-open dialog.
+|`:direct`, `:popup`, `:remote` or `:replace_dialog`.
 |`:direct`
 
 |item options - :grid_id
