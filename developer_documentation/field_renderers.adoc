@@ -123,7 +123,7 @@ a|
 |Pattern to restrict input in the browser. (See `:pattern_msg` below for setting the input's `title`)
 a|
 * :no_spaces (user cannot type in a space)
-* :valid_filename (user cannot type in characters that are problematic in file names - _spaces, /, \, *, ?, :, &, ", <, >, pipechar_)
+* :valid_filename (user cannot type in characters that are problematic in file names - _spaces, /, \, *, ?, :, &, ", ', <, >, pipechar_)
 * :lowercase_underscore (can only type underscore or lowercase)
 * :alphanumeric (can only type alphanumeric characters: A-Z, a-z, 0-9)
 * :ipv4_address (user must enter a valid 1pv4 address)
