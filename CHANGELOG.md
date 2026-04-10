@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - For dropdown button items, the behaviour can now be `:remote` as well
+- Added single quotes to the list of chars that gets rejected by the `:valid_filename` regex.
 ### Changed
 ### Fixed
 
