@@ -8,8 +8,9 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - For dropdown button items, the behaviour can now be `:remote` as well
-- Added single quotes to the list of chars that gets rejected by the `:valid_filename` regex.
+- Added single quotes to the list of chars that gets rejected by the `:valid_filename` regex
 ### Changed
+- Styling for RMD buttons tweaked to render better when there is more than one button
 ### Fixed
 
 ## [2.3.3] - 2026-03-05
