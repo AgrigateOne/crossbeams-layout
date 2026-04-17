@@ -71,6 +71,10 @@ module Crossbeams
                           Grid.new(page_config, grid_id, url, options)
                         end
             end
+          when :chart
+            define_method(:add_chart) do |spec, options = {}|
+              @nodes << Chart.new(page_config, spec, options)
+            end
           when :section
             define_method(:section) do |&blk|
               section = Section.new(page_config, nodes.length + 1)

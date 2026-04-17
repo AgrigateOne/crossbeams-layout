@@ -6,7 +6,8 @@ module Crossbeams
     class Page
       extend MethodBuilder
 
-      build_methods_for :diff,
+      build_methods_for :chart,
+                        :diff,
                         :collection,
                         :fold_up,
                         :grid,

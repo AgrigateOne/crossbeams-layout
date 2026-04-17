@@ -112,6 +112,10 @@ module Crossbeams
       setting :rmd_button_action, default: 'font-normal select-none whitespace-nowrap rounded border-2 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 min-w-[2.75rem] bg-ocean-700 text-white border-ocean-700 active:bg-ocean-700 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500'
       setting :rmd_button_secondary, default: 'rounded border-2 border-$:secondary_bg$ min-w-1/4 px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-$:secondary_colour$ bg-$:secondary_bg$ active:bg-ocean-700 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
 
+      setting :chart_wrapper, default: 'w-full'
+      setting :chart_container, default: 'w-full'
+      setting :chart_caption, default: 'text-lg font-semibold mb-2'
+
       # Translate values of "colour_rule" grid columns to css classes:
       setting :grid_row_colours, default: { 'black' => 'cbl-grid-black',
                                             'blue' => 'cbl-grid-blue',
