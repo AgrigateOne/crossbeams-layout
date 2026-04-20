@@ -40,7 +40,28 @@ module Crossbeams
     #   page.add_chart(chart, id: 'my-chart')
     #
     class Chart
+      # Options that are passed to Chart (vs ChartTypes)
+      CHART_OPTIONS = %i[id height width caption embed_options].freeze
+
       attr_reader :chart_id, :spec, :page_config, :options
+
+      # Extract Chart-specific options from a combined options hash.
+      # Used by convenience methods like add_bar_chart.
+      #
+      # @param options [Hash] Combined options hash
+      # @return [Hash] Options for Chart initialization
+      def self.extract_options(options)
+        options.slice(*CHART_OPTIONS)
+      end
+
+      # Extract spec-specific options (everything except Chart container options).
+      # Used by convenience methods to pass only relevant options to ChartTypes.
+      #
+      # @param options [Hash] Combined options hash
+      # @return [Hash] Options for ChartTypes spec generation
+      def self.extract_spec_options(options)
+        options.reject { |k, _| CHART_OPTIONS.include?(k) }
+      end
 
       def initialize(page_config, spec, options = {})
         @page_config = page_config

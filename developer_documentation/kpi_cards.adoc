@@ -1,0 +1,291 @@
+= KPI Cards
+:toc:
+
+link:/developer_documentation/start.adoc[Back to documentation home]
+
+== KPI Cards
+
+KPI (Key Performance Indicator) cards display metric values with labels in a responsive grid layout. They're ideal for dashboards and summary views.
+
+=== Basic Usage
+
+[source,ruby]
+----
+section.add_kpi_cards([
+  { label: 'Total Sales', value: 82_450 },
+  { label: 'Orders', value: 1234 },
+  { label: 'Revenue', value: '$45,000' }
+])
+----
+
+This renders a responsive grid with 2 columns on small screens, 3 on medium, and 6 on large.
+
+=== Single Card
+
+For adding a single KPI card:
+
+[source,ruby]
+----
+section.add_kpi_card(label: 'Active Users', value: 1_234)
+----
+
+== Item Properties
+
+Each item in the array accepts:
+
+|===
+|Property |Required |Description
+
+|`label`
+|Yes
+|Small uppercase text above the value
+
+|`value`
+|Yes
+|The main metric value
+
+|`subtitle`
+|No
+|Additional context below the value
+
+|`tone`
+|No
+|Visual indicator: `:default`, `:info`, `:success`, `:warning`, `:danger`
+
+|`icon`
+|No
+|Icon name (uses existing Icon utility)
+
+|===
+
+=== Example with All Properties
+
+[source,ruby]
+----
+section.add_kpi_cards([
+  { label: 'Revenue', value: '$125,000', subtitle: 'This month', tone: :success },
+  { label: 'Pending', value: 45, tone: :warning },
+  { label: 'Errors', value: 3, tone: :danger }
+])
+----
+
+== Options
+
+=== Container Options
+
+|===
+|Option |Default |Description
+
+|`columns`
+|`{ sm: 2, md: 3, lg: 6 }`
+|Responsive column configuration
+
+|`gap`
+|`'gap-4'`
+|Spacing between cards
+
+|`wrapper_class`
+|`''`
+|Additional CSS class for the grid container
+
+|===
+
+=== Card Styling Options
+
+|===
+|Option |Default |Description
+
+|`card_class`
+|(from StylesConfig)
+|Additional CSS class for each card
+
+|`label_class`
+|(from StylesConfig)
+|Override label CSS class
+
+|`value_class`
+|(from StylesConfig)
+|Override value CSS class
+
+|`subtitle_class`
+|(from StylesConfig)
+|Override subtitle CSS class
+
+|===
+
+=== Value Formatter
+
+Format values dynamically using a lambda:
+
+[source,ruby]
+----
+section.add_kpi_cards(
+  [
+    { label: 'Total', value: 1000 },
+    { label: 'Average', value: 33.333 }
+  ],
+  value_formatter: ->(val, item) { 
+    item[:label] == 'Average' ? format('%.1f', val) : number_with_delimiter(val) 
+  }
+)
+----
+
+The formatter receives:
+
+* `val` - The raw value
+* `item` - The full item hash (for context-based formatting)
+
+== Tones
+
+Tones add visual indicators through colored left borders and value text:
+
+|===
+|Tone |Border Color |Value Color
+
+|`:default`
+|None
+|Default text
+
+|`:info`
+|Sky blue
+|Sky blue
+
+|`:success`
+|Green
+|Green
+
+|`:warning`
+|Amber
+|Amber
+
+|`:danger`
+|Red
+|Red
+
+|===
+
+== Custom Column Layout
+
+[source,ruby]
+----
+# Fixed columns
+section.add_kpi_cards(items, columns: 4)
+
+# Responsive columns
+section.add_kpi_cards(items, columns: { sm: 1, md: 2, lg: 4 })
+----
+
+== Complete Dashboard Example
+
+[source,ruby]
+----
+page = Crossbeams::Layout::Page.build(form_object: OpenStruct.new) do |page, _config|
+  page.section do |section|
+    section.add_caption('Production Dashboard')
+    
+    section.add_kpi_cards(
+      [
+        { label: 'Total Labels', value: 82_450, subtitle: 'All time' },
+        { label: 'Today', value: 2_340, tone: :info },
+        { label: 'This Week', value: 15_820 },
+        { label: 'Avg / Day', value: 2748.33 },
+        { label: 'Peak Day', value: 4180, tone: :success },
+        { label: 'Scrapped', value: 124, tone: :warning }
+      ],
+      value_formatter: ->(val, item) { 
+        case item[:label]
+        when 'Avg / Day' then format('%.1f', val)
+        else val.is_a?(Numeric) ? val.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1,').reverse : val
+        end
+      }
+    )
+  end
+  
+  page.section do |section|
+    section.add_caption('Sales Metrics')
+    
+    section.row do |row|
+      row.column do |col|
+        col.add_kpi_cards(
+          [
+            { label: 'Revenue', value: '$125,000', tone: :success },
+            { label: 'Orders', value: 1_234 }
+          ],
+          columns: 2
+        )
+      end
+      
+      row.column do |col|
+        col.add_bar_chart(sales_data, x_field: :month, y_field: :total)
+      end
+    end
+  end
+end
+----
+
+== StylesConfig Settings
+
+The following settings can be customized in `StylesConfig`:
+
+|===
+|Setting |Description
+
+|`kpi_cards_wrapper`
+|Grid container
+
+|`kpi_card`
+|Individual card
+
+|`kpi_card_info`
+|Info tone card modifier
+
+|`kpi_card_success`
+|Success tone card modifier
+
+|`kpi_card_warning`
+|Warning tone card modifier
+
+|`kpi_card_danger`
+|Danger tone card modifier
+
+|`kpi_label`
+|Label text
+
+|`kpi_value`
+|Value text
+
+|`kpi_value_info`
+|Info tone value modifier
+
+|`kpi_value_success`
+|Success tone value modifier
+
+|`kpi_value_warning`
+|Warning tone value modifier
+
+|`kpi_value_danger`
+|Danger tone value modifier
+
+|`kpi_subtitle`
+|Subtitle text
+
+|`kpi_icon`
+|Icon styling
+
+|===
+
+== Availability
+
+The `add_kpi_cards` and `add_kpi_card` methods are available on:
+
+* `Page`
+* `Section`
+* `Column`
+
+== Validation
+
+The component validates inputs and raises `ArgumentError` for:
+
+* `items` not being an array
+* Items missing required `label` or `value` keys
+* Invalid `tone` values

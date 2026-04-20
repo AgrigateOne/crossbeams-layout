@@ -6,15 +6,22 @@ module Crossbeams
     class Page
       extend MethodBuilder
 
-      build_methods_for :chart,
+      build_methods_for :area_chart,
+                        :bar_chart,
+                        :chart,
                         :diff,
                         :collection,
+                        :donut_chart,
                         :fold_up,
                         :grid,
+                        :kpi_cards,
+                        :line_chart,
                         :list,
                         :notice,
+                        :pie_chart,
                         :repeating_request,
                         :row,
+                        :scatter_chart,
                         :section,
                         :tab_set,
                         :horizontal_group,

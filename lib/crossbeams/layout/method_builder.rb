@@ -75,6 +75,57 @@ module Crossbeams
             define_method(:add_chart) do |spec, options = {}|
               @nodes << Chart.new(page_config, spec, options)
             end
+          when :bar_chart
+            define_method(:add_bar_chart) do |data, x_field:, y_field:, **options|
+              chart_opts = Chart.extract_options(options)
+              spec_opts = Chart.extract_spec_options(options)
+              spec = ChartTypes.bar_chart(data, x_field: x_field, y_field: y_field, **spec_opts)
+              @nodes << Chart.new(page_config, spec, chart_opts)
+            end
+          when :line_chart
+            define_method(:add_line_chart) do |data, x_field:, y_field:, **options|
+              chart_opts = Chart.extract_options(options)
+              spec_opts = Chart.extract_spec_options(options)
+              spec = ChartTypes.line_chart(data, x_field: x_field, y_field: y_field, **spec_opts)
+              @nodes << Chart.new(page_config, spec, chart_opts)
+            end
+          when :pie_chart
+            define_method(:add_pie_chart) do |data, value_field:, category_field:, **options|
+              chart_opts = Chart.extract_options(options)
+              spec_opts = Chart.extract_spec_options(options)
+              spec = ChartTypes.pie_chart(data, value_field: value_field, category_field: category_field, **spec_opts)
+              @nodes << Chart.new(page_config, spec, chart_opts)
+            end
+          when :donut_chart
+            define_method(:add_donut_chart) do |data, value_field:, category_field:, **options|
+              chart_opts = Chart.extract_options(options)
+              spec_opts = Chart.extract_spec_options(options)
+              spec = ChartTypes.donut_chart(data, value_field: value_field, category_field: category_field, **spec_opts)
+              @nodes << Chart.new(page_config, spec, chart_opts)
+            end
+          when :area_chart
+            define_method(:add_area_chart) do |data, x_field:, y_field:, **options|
+              chart_opts = Chart.extract_options(options)
+              spec_opts = Chart.extract_spec_options(options)
+              spec = ChartTypes.area_chart(data, x_field: x_field, y_field: y_field, **spec_opts)
+              @nodes << Chart.new(page_config, spec, chart_opts)
+            end
+          when :scatter_chart
+            define_method(:add_scatter_chart) do |data, x_field:, y_field:, **options|
+              chart_opts = Chart.extract_options(options)
+              spec_opts = Chart.extract_spec_options(options)
+              spec = ChartTypes.scatter_chart(data, x_field: x_field, y_field: y_field, **spec_opts)
+              @nodes << Chart.new(page_config, spec, chart_opts)
+            end
+          when :kpi_cards
+            define_method(:add_kpi_cards) do |items, **options|
+              @nodes << KpiCards.new(page_config, items, options)
+            end
+            define_method(:add_kpi_card) do |label:, value:, **options|
+              item = { label: label, value: value }.merge(options.slice(:subtitle, :tone, :icon))
+              card_options = options.except(:subtitle, :tone, :icon)
+              @nodes << KpiCards.new(page_config, [item], card_options)
+            end
           when :section
             define_method(:section) do |&blk|
               section = Section.new(page_config, nodes.length + 1)

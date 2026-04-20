@@ -14,6 +14,7 @@ module Crossbeams
                         :fold_up,
                         :horizontal_group,
                         :grid,
+                        :kpi_cards,
                         :list,
                         :notice,
                         :repeating_request,

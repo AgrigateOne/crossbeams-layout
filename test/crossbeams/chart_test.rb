@@ -151,4 +151,231 @@ class Crossbeams::ChartTest < Minitest::Test
 
     assert page.includes_javascript?
   end
+
+  # Chart type convenience method tests
+
+  def sample_data
+    [{ category: 'A', value: 28 }, { category: 'B', value: 55 }, { category: 'C', value: 43 }]
+  end
+
+  def test_add_bar_chart
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_bar_chart(sample_data, x_field: :category, y_field: :value, id: 'bar-chart')
+    end
+
+    html = page.render
+    assert_includes html, 'id="bar-chart"'
+    assert_includes html, '"type":"bar"'
+    assert_includes html, '"field":"category"'
+    assert_includes html, '"field":"value"'
+  end
+
+  def test_add_bar_chart_with_title
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_bar_chart(sample_data, x_field: :category, y_field: :value, id: 'titled-bar', title: 'Sales Chart')
+    end
+
+    html = page.render
+    assert_includes html, '"text":"Sales Chart"'
+  end
+
+  def test_add_bar_chart_with_color_field
+    data = [
+      { category: 'A', value: 10, group: 'X' },
+      { category: 'A', value: 20, group: 'Y' }
+    ]
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_bar_chart(data, x_field: :category, y_field: :value, color_field: :group, id: 'grouped-bar')
+    end
+
+    html = page.render
+    assert_includes html, '"color":'
+    assert_includes html, '"field":"group"'
+  end
+
+  def test_add_line_chart
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_line_chart(sample_data, x_field: :category, y_field: :value, id: 'line-chart')
+    end
+
+    html = page.render
+    assert_includes html, 'id="line-chart"'
+    assert_includes html, '"type":"line"'
+  end
+
+  def test_add_line_chart_with_points
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_line_chart(sample_data, x_field: :category, y_field: :value, show_points: true, id: 'line-points')
+    end
+
+    html = page.render
+    assert_includes html, '"point":{'
+    assert_includes html, '"filled":true'
+  end
+
+  def test_add_pie_chart
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_pie_chart(sample_data, value_field: :value, category_field: :category, id: 'pie-chart')
+    end
+
+    html = page.render
+    assert_includes html, 'id="pie-chart"'
+    assert_includes html, '"type":"arc"'
+    assert_includes html, '"theta":'
+    assert_includes html, '"color":'
+  end
+
+  def test_add_donut_chart
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_donut_chart(sample_data, value_field: :value, category_field: :category, id: 'donut-chart')
+    end
+
+    html = page.render
+    assert_includes html, 'id="donut-chart"'
+    assert_includes html, '"innerRadius":'
+  end
+
+  def test_add_area_chart
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_area_chart(sample_data, x_field: :category, y_field: :value, id: 'area-chart')
+    end
+
+    html = page.render
+    assert_includes html, 'id="area-chart"'
+    assert_includes html, '"type":"area"'
+  end
+
+  def test_add_scatter_chart
+    data = [{ x: 1, y: 2 }, { x: 3, y: 4 }]
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_scatter_chart(data, x_field: :x, y_field: :y, id: 'scatter-chart')
+    end
+
+    html = page.render
+    assert_includes html, 'id="scatter-chart"'
+    assert_includes html, '"type":"point"'
+  end
+
+  def test_section_add_bar_chart
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.section do |section|
+        section.add_bar_chart(sample_data, x_field: :category, y_field: :value, id: 'section-bar')
+      end
+    end
+
+    html = page.render
+    assert_includes html, 'id="section-bar"'
+    assert page.includes_javascript?
+  end
+
+  def test_chart_options_extraction
+    options = Crossbeams::Layout::Chart.extract_options(
+      id: 'test',
+      height: 400,
+      width: 600,
+      caption: 'Test',
+      embed_options: { actions: false },
+      title: 'Ignored',
+      color_field: :also_ignored
+    )
+
+    assert_equal 'test', options[:id]
+    assert_equal 400, options[:height]
+    assert_equal 600, options[:width]
+    assert_equal 'Test', options[:caption]
+    assert_equal({ actions: false }, options[:embed_options])
+    refute options.key?(:title)
+    refute options.key?(:color_field)
+  end
+
+  def test_spec_options_extraction
+    options = Crossbeams::Layout::Chart.extract_spec_options(
+      id: 'test',
+      height: 400,
+      width: 600,
+      caption: 'Test',
+      embed_options: { actions: false },
+      title: 'Chart Title',
+      color_field: :group,
+      show_points: true
+    )
+
+    assert_equal 'Chart Title', options[:title]
+    assert_equal :group, options[:color_field]
+    assert_equal true, options[:show_points]
+    refute options.key?(:id)
+    refute options.key?(:height)
+    refute options.key?(:width)
+    refute options.key?(:caption)
+    refute options.key?(:embed_options)
+  end
+
+  def test_convenience_chart_with_container_dimensions_still_has_spec_width_container
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_bar_chart(sample_data, x_field: :category, y_field: :value, id: 'sized-chart', width: '100%', height: 500)
+    end
+
+    html = page.render
+    assert_includes html, '"width":"container"'
+    assert_includes html, 'width: 100%'
+    assert_includes html, 'height: 500px'
+  end
+
+  def test_chart_height_option_affects_spec
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_bar_chart(sample_data, x_field: :category, y_field: :value, id: 'spec-height', chart_height: 300)
+    end
+
+    html = page.render
+    assert_includes html, '"height":300'
+  end
+
+  def test_convenience_chart_with_all_options
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_bar_chart(
+        sample_data,
+        x_field: :category,
+        y_field: :value,
+        id: 'full-opts',
+        width: 800,
+        height: 400,
+        caption: 'Sales Report',
+        embed_options: { actions: false },
+        title: 'Monthly Sales',
+        color_field: :category
+      )
+    end
+
+    html = page.render
+    assert_includes html, 'id="full-opts"'
+    assert_includes html, 'width: 800px'
+    assert_includes html, 'height: 400px'
+    assert_includes html, 'Sales Report'
+    assert_includes html, '"text":"Monthly Sales"'
+    assert_includes html, '"width":"container"'
+
+    js = page.render_dom_loaded_js
+    assert_includes js, '"actions":false'
+  end
+
+  def test_line_chart_with_container_dimensions
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_line_chart(sample_data, x_field: :category, y_field: :value, id: 'line-sized', width: '100%', height: 300, show_points: true)
+    end
+
+    html = page.render
+    assert_includes html, '"width":"container"'
+    assert_includes html, '"point":{'
+    assert_includes html, 'width: 100%'
+  end
+
+  def test_pie_chart_with_container_dimensions
+    page = Crossbeams::Layout::Page.build do |p, _config|
+      p.add_pie_chart(sample_data, value_field: :value, category_field: :category, id: 'pie-sized', width: 400, height: 400)
+    end
+
+    html = page.render
+    assert_includes html, '"width":"container"'
+    assert_includes html, 'width: 400px'
+  end
 end

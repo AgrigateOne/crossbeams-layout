@@ -116,6 +116,21 @@ module Crossbeams
       setting :chart_container, default: 'w-full'
       setting :chart_caption, default: 'text-lg font-semibold mb-2'
 
+      setting :kpi_cards_wrapper, default: ''
+      setting :kpi_card, default: 'bg-white border border-slate-200 rounded-lg p-4 shadow-sm'
+      setting :kpi_card_info, default: 'border-l-4 border-l-sky-500'
+      setting :kpi_card_success, default: 'border-l-4 border-l-green-500'
+      setting :kpi_card_warning, default: 'border-l-4 border-l-amber-500'
+      setting :kpi_card_danger, default: 'border-l-4 border-l-red-500'
+      setting :kpi_label, default: 'text-xs font-medium text-slate-500 uppercase tracking-wide'
+      setting :kpi_value, default: 'text-2xl font-semibold text-slate-800 mt-1'
+      setting :kpi_value_info, default: 'text-sky-700'
+      setting :kpi_value_success, default: 'text-green-700'
+      setting :kpi_value_warning, default: 'text-amber-700'
+      setting :kpi_value_danger, default: 'text-red-700'
+      setting :kpi_subtitle, default: 'text-sm text-slate-500 mt-1'
+      setting :kpi_icon, default: 'w-5 h-5 text-slate-400 mb-2'
+
       # Translate values of "colour_rule" grid columns to css classes:
       setting :grid_row_colours, default: { 'black' => 'cbl-grid-black',
                                             'blue' => 'cbl-grid-blue',

@@ -9,4 +9,6 @@
 * link:/developer_documentation/non_field_renderers.adoc[Non-field Renderers]
 * link:/developer_documentation/field_renderers.adoc[Field Renderers]
 * link:/developer_documentation/dashboards.adoc[Dashboards]
+* link:/developer_documentation/charts.adoc[Charts]
+* link:/developer_documentation/kpi_cards.adoc[KPI Cards]
 

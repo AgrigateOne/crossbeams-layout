@@ -7,17 +7,24 @@ module Crossbeams
       extend MethodBuilder
 
       build_methods_for :address,
+                        :area_chart,
+                        :bar_chart,
                         :chart,
                         :collection,
                         :contact_method,
                         :csrf,
                         :diff,
+                        :donut_chart,
                         :horizontal_group,
                         :fold_up,
                         :grid,
+                        :kpi_cards,
+                        :line_chart,
                         :notice,
+                        :pie_chart,
                         :repeating_request,
                         :row,
+                        :scatter_chart,
                         :table,
                         :text
 

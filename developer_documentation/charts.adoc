@@ -1,0 +1,405 @@
+= Charts
+:toc:
+
+link:/developer_documentation/start.adoc[Back to documentation home]
+
+== Charts
+
+The `crossbeams-layout` gem includes chart components for rendering interactive Vega/Vega-Lite charts. Charts can be added using simple convenience methods like `add_bar_chart`, `add_pie_chart`, etc., without needing to know Vega specifications.
+
+=== Modern Styling
+
+All charts come with modern, consistent styling that matches the crossbeams-layout Tailwind theme:
+
+* *Color palette* based on ocean (primary) and slate (secondary) colors
+* *Rounded corners* on bars, pie slices, and other elements
+* *Clean typography* using system fonts
+* *Subtle grid lines* and axis styling
+* *Smooth line charts* with optional filled points
+* *Transparent backgrounds* for seamless integration
+
+== JavaScript Setup Required
+
+Before using charts, the host application must:
+
+=== 1. Include the Vega JavaScript libraries
+
+Via CDN:
+
+[source,html]
+----
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+----
+
+Or via npm/yarn:
+
+[source,bash]
+----
+yarn add vega vega-lite vega-embed
+----
+
+=== 2. Add the chart loader object
+
+Add this to your application's JavaScript:
+
+[source,javascript]
+----
+window.crossbeamsCharts = {
+  render: function(elementId, spec, options) {
+    vegaEmbed('#' + elementId, spec, options).catch(console.error);
+  }
+};
+----
+
+== Quick Start
+
+Add charts to a Page or Section using the convenience methods:
+
+[source,ruby]
+----
+page.section do |section|
+  section.add_bar_chart(
+    sales_data,
+    x_field: :month,
+    y_field: :revenue,
+    id: 'sales-chart',
+    caption: 'Monthly Revenue'
+  )
+end
+----
+
+== Available Chart Types
+
+=== Bar Chart
+
+[source,ruby]
+----
+section.add_bar_chart(data, x_field:, y_field:, **options)
+----
+
+|===
+|Option |Description
+
+|`x_field`
+|Field name for x-axis (categories)
+
+|`y_field`
+|Field name for y-axis (values)
+
+|`title`
+|Chart title (embedded in chart)
+
+|`color_field`
+|Field for color grouping (grouped bars)
+
+|`horizontal`
+|`true` for horizontal bars
+
+|`stacked`
+|`true` for stacked bars (with `color_field`)
+
+|===
+
+*Example:*
+
+[source,ruby]
+----
+data = [
+  { product: 'Apples', sales: 120 },
+  { product: 'Oranges', sales: 85 },
+  { product: 'Bananas', sales: 95 }
+]
+
+section.add_bar_chart(data, x_field: :product, y_field: :sales, title: 'Fruit Sales')
+----
+
+*Grouped Bar Chart:*
+
+[source,ruby]
+----
+data = [
+  { product: 'Apples', sales: 120, region: 'North' },
+  { product: 'Apples', sales: 80, region: 'South' },
+  { product: 'Oranges', sales: 85, region: 'North' },
+  { product: 'Oranges', sales: 95, region: 'South' }
+]
+
+section.add_bar_chart(data, x_field: :product, y_field: :sales, color_field: :region)
+----
+
+=== Line Chart
+
+[source,ruby]
+----
+section.add_line_chart(data, x_field:, y_field:, **options)
+----
+
+|===
+|Option |Description
+
+|`x_field`
+|Field name for x-axis
+
+|`y_field`
+|Field name for y-axis
+
+|`title`
+|Chart title
+
+|`color_field`
+|Field for multiple series
+
+|`show_points`
+|`true` to show data points on line
+
+|`x_type`
+|Axis type: `'temporal'`, `'ordinal'`, `'quantitative'`
+
+|===
+
+*Example:*
+
+[source,ruby]
+----
+data = [
+  { month: 'Jan', revenue: 1200 },
+  { month: 'Feb', revenue: 1500 },
+  { month: 'Mar', revenue: 1350 }
+]
+
+section.add_line_chart(data, x_field: :month, y_field: :revenue, show_points: true)
+----
+
+=== Pie Chart
+
+[source,ruby]
+----
+section.add_pie_chart(data, value_field:, category_field:, **options)
+----
+
+|===
+|Option |Description
+
+|`value_field`
+|Field name for slice values
+
+|`category_field`
+|Field name for slice categories
+
+|`title`
+|Chart title
+
+|===
+
+*Example:*
+
+[source,ruby]
+----
+data = [
+  { category: 'Electronics', amount: 450 },
+  { category: 'Clothing', amount: 320 },
+  { category: 'Food', amount: 280 }
+]
+
+section.add_pie_chart(data, value_field: :amount, category_field: :category)
+----
+
+=== Donut Chart
+
+[source,ruby]
+----
+section.add_donut_chart(data, value_field:, category_field:, **options)
+----
+
+Same as pie chart but with a hole in the center.
+
+|===
+|Option |Description
+
+|`inner_radius`
+|Size of inner hole (default: 50)
+
+|===
+
+=== Area Chart
+
+[source,ruby]
+----
+section.add_area_chart(data, x_field:, y_field:, **options)
+----
+
+|===
+|Option |Description
+
+|`x_field`
+|Field name for x-axis
+
+|`y_field`
+|Field name for y-axis
+
+|`title`
+|Chart title
+
+|`color_field`
+|Field for stacked areas
+
+|`x_type`
+|Axis type: `'temporal'`, `'ordinal'`, `'quantitative'`
+
+|===
+
+=== Scatter Chart
+
+[source,ruby]
+----
+section.add_scatter_chart(data, x_field:, y_field:, **options)
+----
+
+|===
+|Option |Description
+
+|`x_field`
+|Field name for x-axis
+
+|`y_field`
+|Field name for y-axis
+
+|`title`
+|Chart title
+
+|`color_field`
+|Field for point colors
+
+|`size_field`
+|Field for point sizes
+
+|===
+
+== Common Options (All Chart Types)
+
+These options apply to all chart types:
+
+|===
+|Option |Description
+
+|`id`
+|DOM id for the chart (auto-generated if not provided)
+
+|`height`
+|Chart height in pixels or CSS value
+
+|`width`
+|Chart width in pixels or CSS value
+
+|`caption`
+|Caption displayed above the chart wrapper
+
+|`embed_options`
+|Vega-embed options (e.g., `{ actions: false }`)
+
+|===
+
+== Example: Dashboard with Multiple Charts
+
+[source,ruby]
+----
+page = Crossbeams::Layout::Page.build(form_object: OpenStruct.new) do |page, _config|
+  page.section do |section|
+    section.add_caption('Sales Dashboard')
+    
+    section.row do |row|
+      row.column do |col|
+        col.add_line_chart(
+          monthly_sales,
+          x_field: :month,
+          y_field: :sales,
+          show_points: true,
+          id: 'sales-trend',
+          height: 300,
+          caption: 'Monthly Sales Trend'
+        )
+      end
+      
+      row.column do |col|
+        col.add_pie_chart(
+          category_breakdown,
+          value_field: :amount,
+          category_field: :category,
+          id: 'category-pie',
+          height: 300,
+          caption: 'Sales by Category'
+        )
+      end
+    end
+    
+    section.row do |row|
+      row.column do |col|
+        col.add_bar_chart(
+          regional_data,
+          x_field: :region,
+          y_field: :revenue,
+          color_field: :product,
+          id: 'regional-sales',
+          height: 350,
+          caption: 'Revenue by Region'
+        )
+      end
+    end
+  end
+end
+----
+
+== DOM Loaded JavaScript
+
+The chart initialization JavaScript is automatically included via `Page#render_dom_loaded_js`. Ensure your layout template wraps this in a DOMContentLoaded handler:
+
+[source,erb]
+----
+<% if page.includes_javascript? %>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      <%= page.render_dom_loaded_js.html_safe %>
+    });
+  </script>
+<% end %>
+----
+
+== Disabling Chart Actions Menu
+
+By default, Vega-Embed shows an actions menu. To disable:
+
+[source,ruby]
+----
+section.add_bar_chart(data, x_field: :x, y_field: :y, embed_options: { actions: false })
+----
+
+== Advanced: Custom Vega Specs
+
+For complex charts not covered by the convenience methods, use `add_chart` with a full Vega-Lite spec or the https://github.com/ankane/vega-ruby[vega-ruby] gem:
+
+[source,ruby]
+----
+# With vega-ruby gem
+chart = Vega.lite
+  .data(data)
+  .mark(type: 'bar', tooltip: true)
+  .encoding(
+    x: { field: 'month', type: 'ordinal' },
+    y: { field: 'revenue', type: 'quantitative' }
+  )
+
+section.add_chart(chart, id: 'custom-chart')
+
+# With a Hash spec
+section.add_chart(
+  {
+    '$schema' => 'https://vega.github.io/schema/vega-lite/v5.json',
+    'data' => { 'values' => data },
+    'mark' => 'bar',
+    'encoding' => { ... }
+  },
+  id: 'hash-chart'
+)
+----
