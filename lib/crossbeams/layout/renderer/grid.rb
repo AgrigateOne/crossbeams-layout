@@ -22,6 +22,8 @@ module Crossbeams
           @colour_key = options[:colour_key]
           @bookmark_row_on_action = options[:grid_params].nil? ? false : options[:grid_params][:bookmark_row_on_action] || false
           @col_defs = options[:col_defs]&.to_json
+
+          @has_id_col = options[:col_defs]&.find { |r| r[:field] == 'id' }
           @row_defs = options[:row_defs]&.to_json
           @field_update_url = "'#{options[:field_update_url]}'" || 'null'
           @extra_context = (options[:extra_context] || {}).to_json
@@ -206,7 +208,7 @@ module Crossbeams
                                      colour_key: @colour_key)
           <<~HTML
             <div id="#{@grid_id}-frame" class="grid-frame" style="#{height_style};margin-bottom:4em">#{head_section}
-              <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_nested_grid} #{denote_multiselect} #{denote_group_expanded} #{denote_tree} #{denote_ssrm}></div>
+              <div id="#{@grid_id}" style="height:100%;" class="ag-theme-balham" data-gridurl="#{url}" data-grid="grid" #{denote_has_id}#{denote_nested_grid} #{denote_multiselect} #{denote_group_expanded} #{denote_tree} #{denote_ssrm}></div>
             </div>
           HTML
         end
@@ -289,6 +291,10 @@ module Crossbeams
 
         def denote_nested_grid
           @nested_grid ? 'data-nested-grid="y"' : ''
+        end
+
+        def denote_has_id
+          @has_id_col ? 'data-has-id-col="y"' : ''
         end
 
         def denote_multiselect
