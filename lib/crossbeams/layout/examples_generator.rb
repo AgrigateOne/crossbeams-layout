@@ -46,6 +46,7 @@ module Crossbeams
         @out << generate_callback_section if %i[all callback_section].include? classes
         @out << generate_dashboard if %i[all dashboard].include? classes
         @out << generate_colours if %i[all colours].include? classes
+        @out << generate_layout_grid if %i[all layout_grid].include? classes
         @out
       end
 
@@ -85,6 +86,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#callback_section">Callback Section</a></li>) if %i[all callback_section].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#dashboard">Dashboard</a></li>) if %i[all dashboard].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#colours">Colours</a></li>) if %i[all colours].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#layout_grid">LayoutGrid</a></li>) if %i[all layout_grid].include? classes
         @out << '</ol>'
       end
 
@@ -716,7 +718,7 @@ module Crossbeams
 
       def generate_tab_set
         ar = [head('Tab Set', 'tab_set')]
-        sets = [[nil, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: '3', url: '/' }, { text: 'The fourth is the widest', url: '/' }]],
+        sets = [[nil, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: '3', url: '/', disabled: true }, { text: 'The fourth is the widest', url: '/' }]],
                 [1, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: 'Three', url: '/' }, { text: 'The fourth is the widest', url: '/' }]]]
         sets.each do |active, target, items|
           ar << TabSet.new({}, items, { active_tab_index: active, target_dom_id: target }).render
@@ -737,6 +739,25 @@ module Crossbeams
         StylesConfig.config.grid_row_colours.each do |key, cls|
           ar << %(<span class="#{cls}">Grid row colour "#{key}"</span><br>)
         end
+        ar.join(separator)
+      end
+
+      def generate_layout_grid
+        ar = [head('LayoutGrid', 'layout_grid')]
+        lay = LayoutGrid.new({})
+        lay.specify_row 1
+        lay.specify_row 2
+        lay.specify_row 3
+        lay.specify_row 4
+        lay.specify_row 6
+        lay.specify_row 12
+        3.times do |cnt|
+          lay.add_kpi_card "Col #{cnt + 1}", "KPI #{cnt + 1}"
+        end
+        25.times do |cnt|
+          lay.add_text "Col #{cnt + 4}"
+        end
+        ar << lay.render
         ar.join(separator)
       end
     end

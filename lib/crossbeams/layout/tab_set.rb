@@ -50,6 +50,7 @@ module Crossbeams
       def render_items # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
         items.map.with_index do |item, index|
           state_class = index == active_tab_index ? 'text-ocean-700 font-medium border-ocean-700 border-b-3' : 'text-slate-500 hover:text-slate-600 hover:border-slate-300 hover:border-b-3 cursor-pointer'
+          state_class = 'text-slate-500 hover:text-slate-600 hover:border-slate-300 hover:border-b-3 cursor-not-allowed' if item[:disabled]
           active = index == active_tab_index ? 'Y' : 'N'
           remote = item[:remote] ? 'Y' : 'N'
           target = item[:remote] ? target_dom_id : ''
@@ -57,7 +58,7 @@ module Crossbeams
           preload = preloaded_tabs ? 'Y' : 'N'
           <<~HTML
             <li class="inline-block p-2 min-w-28 text-center #{state_class}"
-                data-tabset-url="#{item[:url]}"
+                data-tabset-url="#{item[:url] unless item[:disabled]}"
                 data-tabset-active="#{active}"
                 data-tabset-remote="#{remote}"
                 data-tabset-target="#{target}"

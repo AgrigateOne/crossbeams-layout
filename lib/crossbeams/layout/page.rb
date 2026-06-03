@@ -10,6 +10,7 @@ module Crossbeams
                         :collection,
                         :fold_up,
                         :grid,
+                        :layout_grid,
                         :list,
                         :notice,
                         :repeating_request,

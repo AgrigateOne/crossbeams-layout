@@ -17,6 +17,12 @@ module Crossbeams
               blk.call(fold_up)
               @nodes << fold_up
             end
+          when :layout_grid
+            define_method(:layout_grid) do |&blk|
+              grid = LayoutGrid.new(page_config)
+              blk.call(grid)
+              @nodes << grid
+            end
           when :csrf
             define_method(:add_csrf_tag) do |tag|
               @nodes.each { |node| node.add_csrf_tag(tag) if node.respond_to?(:add_csrf_tag) }
@@ -30,6 +36,21 @@ module Crossbeams
           when :text
             define_method(:add_text) do |text, options = {}|
               @nodes << Text.new(page_config, text, options)
+            end
+          when :kpi_card
+            define_method(:add_kpi_card) do |text, measure|
+              @nodes << KPICard.new(page_config, text, measure)
+            end
+          when :chart
+            define_method(:add_chart) do |type, options|
+              case type
+              when :donut
+                @nodes << DonutChart.new(options)
+              when :bar
+                @nodes << BarChart.new(options)
+              else
+                raise ArgumentError, "#{type} is not a valid Chart type"
+              end
             end
           when :notice
             define_method(:add_notice) do |text, options = {}|

@@ -1154,6 +1154,7 @@ a|An array of hashes with keys:
 * `:url` (the URL to call)
 * and optionally `:remote` (true to replace the contents of the DOM element with id matching `:target_dom_id`).
 * and optionally `:preload_dom_id` (the id of a DOM element to show when this tab is clicked).
+* and optionally `:disabled` (true if the tab should not be clicked).
 
 |None. must be provided.
 
