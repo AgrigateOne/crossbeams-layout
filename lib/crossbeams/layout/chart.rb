@@ -31,9 +31,9 @@ module Crossbeams
       end
 
       def render
-        @dom_loaded << "crossbeamsCharts.render('#{@dom_id}', #{spec_json}, #{opts});"
+        # @dom_loaded << "crossbeamsCharts.render('#{@dom_id}', #{spec_json}, #{opts});"
 
-        %(<div id="#{@dom_id}" class="m-2" style="width:100%;height:100%"></div>)
+        %(<div id="#{@dom_id}" class="m-2" style="width:100%;height:100%" data-vega-def='#{spec_json}' data-vega-opts='#{opts}'></div>)
       end
 
       def filename
@@ -54,6 +54,21 @@ module Crossbeams
       end
 
       def spec_json
+        range = ['#2BBBFF',
+                 '#007FFF',
+                 '#B0DC36',
+                 '#739C14',
+                 '#818CF8',
+                 '#4F46E5',
+                 '#FCB323',
+                 '#DA6B05']
+        range_cat = if @data[:values].length < 8
+                      p @data[:values].length
+                      range.first(@data[:values].length)
+                    else
+                      range
+                    end
+
         {
           '$schema': 'https://vega.github.io/schema/vega-lite/v6.json',
           'width': 'container',
@@ -92,16 +107,7 @@ module Crossbeams
               'grid': true
             },
             'range': {
-              'category': [
-                '#2BBBFF',
-                '#B0DC36',
-                '#FCB323',
-                '#818CF8',
-                '#007FFF',
-                '#739C14',
-                '#DA6B05',
-                '#4F46E5'
-              ],
+              'category': range_cat,
               'heatmap': ['#c6dafc', '#5e97f6', '#2a56c6']
             }
           }
