@@ -61,7 +61,7 @@ module Crossbeams
       def render
         # <div style="display: grid;grid-template-columns: repeat(12, 1fr);grid-template-rows:repeat(#{rowcnt}, 1fr);grid-column-gap: 10px">
         <<-HTML
-          <div #{dom_id_render}style="display: grid;grid-template-columns: repeat(12, 1fr);grid-template-rows:repeat(1, 1fr);grid-column-gap: 10px">
+          <div #{dom_id_render}data-laygrid-container="y" style="display: grid;grid-template-columns: repeat(12, 1fr);grid-template-rows:repeat(1, 1fr);grid-column-gap: 10px">
             #{render_items}
           </div>
         HTML
@@ -107,7 +107,7 @@ module Crossbeams
         @rows.each_with_index do |cnt, idx|
           cnt.times do |n|
             row_start, col_start, row_end, col_end = calc_grid_col(idx, cnt, n)
-            ar << %(<div style="grid-area: #{row_start} / #{col_start} / #{row_end} / #{col_end}">)
+            ar << %(<div data-laygrid-cell="#{idx + 1}-#{n + 1}-#{cnt}" style="grid-area: #{row_start} / #{col_start} / #{row_end} / #{col_end}">)
             ar << (@nodes[pos] || Notice.new(page_config, 'This layout has an element missing here', notice_type: :error)).render
             pos += 1
             ar << '</div>'

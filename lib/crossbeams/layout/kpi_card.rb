@@ -28,9 +28,9 @@ module Crossbeams
 
       def render
         <<~HTML
-          <div class="p-6 rounded-2xl border border-slate-300 m-2 bg-white">
-            <div class="w-full text-2xl p-3 text-center">#{text}</div>
-            <div class="text-blue-600 text-5xl p-3 text-center">#{measure}</div>
+          <div data-kpi="y" class="p-6 rounded-2xl border border-slate-300 m-2 bg-white">
+            <div data-kpi-title="y" class="w-full text-2xl p-3 text-center">#{text}</div>
+            <div data-kpi-measure="y" class="text-blue-600 text-5xl p-3 text-center">#{measure}</div>
           </div>
         HTML
       end
