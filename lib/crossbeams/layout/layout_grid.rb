@@ -61,7 +61,7 @@ module Crossbeams
       def render
         # <div style="display: grid;grid-template-columns: repeat(12, 1fr);grid-template-rows:repeat(#{rowcnt}, 1fr);grid-column-gap: 10px">
         <<-HTML
-          <div #{dom_id_render}data-laygrid-container="y" style="display: grid;grid-template-columns: repeat(12, 1fr);grid-template-rows:repeat(1, 1fr);grid-column-gap: 10px">
+          <div #{dom_id_render}data-laygrid-container="Y" style="display: grid;grid-template-columns: repeat(12, 1fr);grid-template-rows:repeat(1, 1fr);grid-column-gap: 10px">
             #{render_items}
           </div>
         HTML

@@ -8,8 +8,11 @@ module Crossbeams
 
       build_methods_for :diff,
                         :collection,
+                        :download_dashboard_button,
+                        :filter,
                         :fold_up,
                         :grid,
+                        :horizontal_group,
                         :layout_grid,
                         :list,
                         :notice,
@@ -17,7 +20,6 @@ module Crossbeams
                         :row,
                         :section,
                         :tab_set,
-                        :horizontal_group,
                         :table,
                         :text
 

@@ -11,6 +11,7 @@ module Crossbeams
       build_methods_for :address,
                         :contact_method,
                         :csrf,
+                        :download_dashboard_button,
                         :table,
                         :text,
                         :fold_up

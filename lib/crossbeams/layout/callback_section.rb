@@ -17,6 +17,7 @@ module Crossbeams
         @caption  = 'Section'
         @sequence = sequence
         @page_config = page_config
+        @dom_id = "section-#{sequence}"
         @remote = false
         @nodes       = []
       end
@@ -43,12 +44,16 @@ module Crossbeams
         @url = url
       end
 
+      def dom_id(val)
+        @dom_id = val
+      end
+
       # Render the control
       def render
         return remote_render if @remote
 
         <<-HTML
-          <section id="section-#{sequence}" class="crossbeams_layout">
+          <section id="#{@dom_id}" class="crossbeams_layout">
           <h2 class="#{SC.css_class(:h2)}">#{caption}</h2>
           #{LoadingMessage.new(dom_id: "crossbeams_callback_target_#{sequence}").render}
           </section>

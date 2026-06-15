@@ -10,6 +10,7 @@ module Crossbeams
                         :collection,
                         :contact_method,
                         :csrf,
+                        :download_dashboard_button,
                         :diff,
                         :horizontal_group,
                         :fold_up,

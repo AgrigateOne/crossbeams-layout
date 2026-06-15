@@ -23,6 +23,12 @@ module Crossbeams
               blk.call(grid)
               @nodes << grid
             end
+          when :filter
+            define_method(:filter) do |&blk|
+              filter = Filter.new
+              blk.call(filter)
+              @nodes << filter
+            end
           when :csrf
             define_method(:add_csrf_tag) do |tag|
               @nodes.each { |node| node.add_csrf_tag(tag) if node.respond_to?(:add_csrf_tag) }
@@ -83,6 +89,10 @@ module Crossbeams
           when :contact_method
             define_method(:add_contact_method) do |contact_methods, options = {}|
               @nodes << ContactMethod.new(page_config, contact_methods, options)
+            end
+          when :download_dashboard_button
+            define_method(:add_download_dashboard_button) do |options = {}|
+              @nodes << DownloadDashboardButton.new(options)
             end
           when :grid
             define_method(:add_grid) do |grid_id, url, options = {}|

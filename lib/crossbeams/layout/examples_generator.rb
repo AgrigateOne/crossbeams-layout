@@ -47,6 +47,7 @@ module Crossbeams
         @out << generate_dashboard if %i[all dashboard].include? classes
         @out << generate_colours if %i[all colours].include? classes
         @out << generate_layout_grid if %i[all layout_grid].include? classes
+        @out << generate_download_dashboard_button if %i[all download_dashboard_button].include? classes
         @out
       end
 
@@ -87,6 +88,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#dashboard">Dashboard</a></li>) if %i[all dashboard].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#colours">Colours</a></li>) if %i[all colours].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#layout_grid">LayoutGrid</a></li>) if %i[all layout_grid].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#download_dashboard_button">DownloadDashboardButton</a></li>) if %i[all download_dashboard_button].include? classes
         @out << '</ol>'
       end
 
@@ -395,6 +397,15 @@ module Crossbeams
         btn = DropdownButton.new(text: 'Drop button', items: [{ url: '/a/path', text: 'Link1 std' }, { url: '/a/path', text: 'Link2 loading window', loading_window: true }, { url: '/a/path', text: 'Link3 popup', behaviour: :popup }])
         ar << btn.render
         btn = DropdownButton.new(text: 'Back button', items: [{ url: '/a/path', text: 'Link1' }, { url: '/a/path', text: 'Link2' }, { url: '/a/path', text: 'Link3' }], style: :back_button)
+        ar << btn.render
+        ar.join(separator)
+      end
+
+      def generate_download_dashboard_button
+        ar = [head('Download Dashboard Button', 'download_dashboard_button')]
+        btn = DownloadDashboardButton.new
+        ar << btn.render
+        btn = DownloadDashboardButton.new(text: 'Download Me', title: 'A title', tabset_id: 'dom_tabset_id', filter_id: 'dom_filter_id')
         ar << btn.render
         ar.join(separator)
       end
