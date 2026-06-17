@@ -46,9 +46,10 @@ module Crossbeams
         text = selected_param_texts
 
         <<~HTML
-          <div class="flex gap-1 items-center justify-end" data-page-filter="Y" data-filter-for-dom-id="#{@target_dom_id}" data-filter-url="#{@url}">
+          <div class="flex gap-2 items-top justify-end mb-2" data-page-filter="Y" data-filter-for-dom-id="#{@target_dom_id}" data-filter-url="#{@url}">
+            <div class="p-2">Filter:</div>
             #{filter_renders}
-            <button class="hidden #{SC.css_class(:button_secondary).sub('flex ', '')}" data-filter-btn-apply="Y">Apply</button>
+            <button class="hidden #{SC.css_class(:button_primary).sub('flex ', '')}" data-filter-btn-apply="Y">Apply</button>
             <button class="hidden #{SC.css_class(:button_secondary).sub('flex ', '')}" data-filter-btn-clear="Y">Clear</button>
             <input type="hidden" name="#{dom_id}_values" value="#{params}" />
             <input type="hidden" name="#{dom_id}_text" value="#{text}" />

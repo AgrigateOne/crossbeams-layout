@@ -48,6 +48,7 @@ module Crossbeams
         @out << generate_colours if %i[all colours].include? classes
         @out << generate_layout_grid if %i[all layout_grid].include? classes
         @out << generate_download_dashboard_button if %i[all download_dashboard_button].include? classes
+        @out << generate_filter if %i[all download_filter].include? classes
         @out
       end
 
@@ -89,6 +90,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#colours">Colours</a></li>) if %i[all colours].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#layout_grid">LayoutGrid</a></li>) if %i[all layout_grid].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#download_dashboard_button">DownloadDashboardButton</a></li>) if %i[all download_dashboard_button].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#filter">Filter</a></li>) if %i[all download_dashboard_button].include? classes
         @out << '</ol>'
       end
 
@@ -407,6 +409,21 @@ module Crossbeams
         ar << btn.render
         btn = DownloadDashboardButton.new(text: 'Download Me', title: 'A title', tabset_id: 'dom_tabset_id', filter_id: 'dom_filter_id')
         ar << btn.render
+        ar.join(separator)
+      end
+
+      def generate_filter
+        ar = [head('Filter', 'filter')]
+        filter = Filter.new
+        filter.url '/'
+        filter.target_dom_id 'aaa'
+        filter.add_filter(:a_field, items: %w[One Two Three])
+        ar << filter.render
+        filter = Filter.new
+        filter.url '/'
+        filter.target_dom_id 'bbb'
+        filter.add_filter(:b_field, items: %w[One Two Three], selected: 'Two')
+        ar << filter.render
         ar.join(separator)
       end
 

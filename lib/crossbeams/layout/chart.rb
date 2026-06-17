@@ -63,7 +63,6 @@ module Crossbeams
                  '#FCB323',
                  '#DA6B05']
         range_cat = if @data[:values].length < 8
-                      p @data[:values].length
                       range.first(@data[:values].length)
                     else
                       range
@@ -94,11 +93,12 @@ module Crossbeams
               'group-title': { 'font': 'Arial, sans-serif', 'fontSize': 14 }
             },
             'title': {
-              'font': 'Arial, sans-serif',
-              'fontSize': 16,
-              'fontWeight': 'bold',
+              'font': 'sans-serif',
+              'fontSize': 24,
+              'fontWeight': 'regular',
               'dy': -3,
-              'anchor': 'start'
+              'anchor': 'middle',
+              'align': 'center'
             },
             'axis': {
               'gridColor': '#ccc',

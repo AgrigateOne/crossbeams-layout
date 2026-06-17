@@ -42,10 +42,12 @@ module Crossbeams
         attrs = [%(class="w-full searchable-multi-select")]
         #   #{backup_empty_select}
         <<~HTML
-          <div id="filter_field_#{field_name}" data-filter-wrapper="Y" class="border border-slate-600 rounded-full p-2 flex items-center">
-            <label class="" data-filter-field="Y">#{caption}</label>
-            <div class="inline-flex px-1" data-filter-label-val="Y">#{selected_values(prefix: true)}</div>
-            <div class="min-w-2 w-auto hidden" data-filter-lookup="Y">
+          <div class="relative">
+            <div id="filter_field_#{field_name}" data-filter-wrapper="Y" class="border border-slate-600 rounded-full p-2 flex items-center">
+              <label class="" data-filter-field="Y">#{caption}</label>
+              <div class="inline-flex" data-filter-label-val="Y">#{selected_values(prefix: true)}</div>
+            </div>
+            <div class="hidden absolute min-w-96" data-filter-lookup="Y">
               <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} data-filter-select="Y" multiple>
               #{build_1_or_2_options}
               </select>
@@ -92,7 +94,7 @@ module Crossbeams
         return '' if items.empty?
 
         if prefix
-          "| #{items.map { |i| i.is_a?(Array) ? i.first : i }.join(', ')}"
+          %(<span class="px-1">| #{items.map { |i| i.is_a?(Array) ? i.first : i }.join(', ')}</span>)
         else
           items.map { |i| i.is_a?(Array) ? i.first : i }.join(', ')
         end
