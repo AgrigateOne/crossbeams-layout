@@ -157,7 +157,7 @@ module Crossbeams
         this_row = [%(<tr class="#{SC.css_class(css_class)}">)]
         col = nil
         lc = elem.length - 1
-        puts "Pivot length: #{lc}"
+
         elem.each_with_index do |e, i|
           col = e if i.zero?
           this_row << if i.zero?

@@ -15,6 +15,7 @@ module Crossbeams
                         :horizontal_group,
                         :layout_grid,
                         :list,
+                        :no_data,
                         :notice,
                         :repeating_request,
                         :row,

@@ -82,6 +82,10 @@ module Crossbeams
             define_method(:add_tab_set) do |items, options = {}|
               @nodes << TabSet.new(page_config, items, options)
             end
+          when :no_data
+            define_method(:no_data) do |options = {}|
+              @nodes << NoData.new(options)
+            end
           when :address
             define_method(:add_address) do |addresses, options = {}|
               @nodes << Address.new(page_config, addresses, options)

@@ -48,7 +48,8 @@ module Crossbeams
         @out << generate_colours if %i[all colours].include? classes
         @out << generate_layout_grid if %i[all layout_grid].include? classes
         @out << generate_download_dashboard_button if %i[all download_dashboard_button].include? classes
-        @out << generate_filter if %i[all download_filter].include? classes
+        @out << generate_filter if %i[all filter].include? classes
+        @out << generate_no_data if %i[all no_data].include? classes
         @out
       end
 
@@ -90,7 +91,8 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#colours">Colours</a></li>) if %i[all colours].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#layout_grid">LayoutGrid</a></li>) if %i[all layout_grid].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#download_dashboard_button">DownloadDashboardButton</a></li>) if %i[all download_dashboard_button].include? classes
-        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#filter">Filter</a></li>) if %i[all download_dashboard_button].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#filter">Filter</a></li>) if %i[all filter].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#no_data">No Data</a></li>) if %i[all no_data].include? classes
         @out << '</ol>'
       end
 
@@ -424,6 +426,15 @@ module Crossbeams
         filter.target_dom_id 'bbb'
         filter.add_filter(:b_field, items: %w[One Two Three], selected: 'Two')
         ar << filter.render
+        ar.join(separator)
+      end
+
+      def generate_no_data
+        ar = [head('NoData', 'no_data')]
+        no_data = NoData.new
+        ar << no_data.render
+        no_data = NoData.new(msg: 'A different message for no data', sub_msg: '...with a sub-message')
+        ar << no_data.render
         ar.join(separator)
       end
 

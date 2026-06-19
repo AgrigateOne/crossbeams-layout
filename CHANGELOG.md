@@ -14,6 +14,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 - Chart component and sub-classes DonutChart and BarChart for rendering Vega charts
 - Filter and FilterField components for laying out a filter on a page
 - DownloadDashboardButton for downloading a dashboard page to PDF
+- NoData control to display a message when there is no data to show
 ### Changed
 - Styling for RMD buttons tweaked to render better when there is more than one button
 ### Fixed
