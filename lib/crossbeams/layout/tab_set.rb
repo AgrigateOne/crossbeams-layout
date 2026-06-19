@@ -4,13 +4,14 @@ module Crossbeams
   module Layout
     # A line of click-able tabs
     class TabSet
-      attr_reader :items, :active_tab_index, :target_dom_id, :preloaded_tabs
+      attr_reader :items, :active_tab_index, :target_dom_id, :preloaded_tabs, :dom_id
 
       def initialize(page_config, items, options = {})
         @page_config = page_config
         @items = Array(items)
         @active_tab_index = options[:active_tab_index] || 0
         @target_dom_id = options[:target_dom_id]
+        @dom_id = options.fetch(:dom_id, "tset-#{SecureRandom.hex(4)}")
         @preloaded_tabs = options[:preloaded_tabs] || false
         validate_options(options)
       end
@@ -38,7 +39,7 @@ module Crossbeams
       def render
         <<~HTML
           <div class="my-4">
-            <ul class="flex">
+            <ul class="flex" id="#{dom_id}">
               #{render_items}
             </ul>
           </div>
@@ -47,9 +48,10 @@ module Crossbeams
 
       private
 
-      def render_items # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+      def render_items # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         items.map.with_index do |item, index|
           state_class = index == active_tab_index ? 'text-ocean-700 font-medium border-ocean-700 border-b-3' : 'text-slate-500 hover:text-slate-600 hover:border-slate-300 hover:border-b-3 cursor-pointer'
+          state_class = 'text-slate-500 hover:text-slate-600 hover:border-slate-300 hover:border-b-3 cursor-not-allowed' if item[:disabled]
           active = index == active_tab_index ? 'Y' : 'N'
           remote = item[:remote] ? 'Y' : 'N'
           target = item[:remote] ? target_dom_id : ''
@@ -57,7 +59,7 @@ module Crossbeams
           preload = preloaded_tabs ? 'Y' : 'N'
           <<~HTML
             <li class="inline-block p-2 min-w-28 text-center #{state_class}"
-                data-tabset-url="#{item[:url]}"
+                data-tabset-url="#{item[:url] unless item[:disabled]}"
                 data-tabset-active="#{active}"
                 data-tabset-remote="#{remote}"
                 data-tabset-target="#{target}"

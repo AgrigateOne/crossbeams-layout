@@ -25,10 +25,10 @@ module Crossbeams
 
       def initialize(page_config, sequence)
         @caption_text = 'Details'
-        @open         = false
-        @sequence     = sequence
-        @nodes        = []
-        @page_config  = page_config
+        @open = false
+        @sequence = sequence
+        @nodes = []
+        @page_config = page_config
       end
 
       def caption(value)

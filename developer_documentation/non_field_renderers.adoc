@@ -25,6 +25,13 @@ The following renderers that do not bind to fields in a form are available:
 * <<ExpandCollapseFoldUps>>
 * <<FormButton>>
 * <<TabSet>>
+* <<LayoutGrid>>
+* <<KPICard>>
+* <<Chart>>
+* <<Filter>>
+* <<FilterField>>
+* <<NoData>>
+* <<DownloadDashboardButton>>
 
 === Link
 
@@ -1154,6 +1161,7 @@ a|An array of hashes with keys:
 * `:url` (the URL to call)
 * and optionally `:remote` (true to replace the contents of the DOM element with id matching `:target_dom_id`).
 * and optionally `:preload_dom_id` (the id of a DOM element to show when this tab is clicked).
+* and optionally `:disabled` (true if the tab should not be clicked).
 
 |None. must be provided.
 
@@ -1173,3 +1181,267 @@ a|An array of hashes with keys:
 |False
 
 |===
+
+=== LayoutGrid
+
+Add a set of rows laid out in a CSS 12-column Grid formation. Specify the number of columnsfor each row and then add controls to fit in the cells.
+A row can have 1, 2, 3, 4, 6 or 12 columns.
+
+Call `specify_row(no_of_columns)` to add a horizontal row which can contain the specified number of columns.
+
+Controls added after the call will fill column slots in order from left to right.
+
+e.g.
+[source,ruby]
+----
+page.layout_grid do |grid|
+  grid.specify_row(3)
+
+  grid.add_kpi_card 'Total full pallets', "#{dash[:total_full_pallets]} Pallets"
+  grid.add_kpi_card 'Total partial pallets', "#{dash[:total_partial_pallets]} Pallets"
+  grid.add_kpi_card 'Average pallet age', "#{dash[:average_pallet_age]} hours"
+
+  grid.specify_row(1)
+  grid.add_chart(:bar,
+                 title: 'Total pallets per Target Region',
+                 y_field: :count,
+                 x_field: :target_market_group_name,
+                 x_title: 'Target region',
+                 data: dash[:total_pallets_per_tr])
+  end
+end
+----
+
+=== KPICard
+
+A KPI Card is used to clearly display an indicator and its value.
+
+|===
+|attribute |description |possible values |default
+
+|text
+|The text to display as the description
+|String
+|None. must be provided.
+
+|measure
+|The text to display as the KPI measurement.
+|String
+|None. must be provided.
+
+|===
+
+=== Chart
+
+Show a chart in the browser. Use `add_chart(:chart_type, options)` to add a chart.
+
+The `:chart_type` will instantiate the correct subclass of `Chart` (e.g. `:donut` => `DonutChart`, `:bar` => `BarChart`)
+
+[source,ruby]
+----
+grid.add_chart(:donut,
+               dom_id: 'vegal-1',
+               title: 'Total pallets per Inventory Code',
+               q_field: :count,
+               n_field: :inventory_code,
+               n_title: 'Inv. code',
+               data: dash[:total_pallets_per_inventory_code])
+
+grid.specify_row(1)
+grid.add_chart(:bar,
+               title: 'Pallets in stock by standard pack code',
+               x_field: :standard_pack_code,
+               y_field: :count,
+               x_title: 'Pack',
+               data: dash[:total_pallets_per_standard_pack_code])
+----
+
+|===
+|attribute |description |possible values |default
+
+|option - :dom_id
+|The DOM id of the chart
+|String
+|A random id
+
+|options - :title
+|The chart title
+|String
+|Blank
+
+|options - :show_source
+|If true, you can download the Vega JSON source for the chart from the browser
+|Boolean
+|false. **Never** set this to true for a live site
+
+|options - :data
+|The data for the grid. The format of each row will depend on the type of chart
+|Array
+|[]
+
+|options - :q_field
+|Quantitative field (Donut chart)
+|String
+|None. Required for applicable chart types
+
+|options - :n_field
+|Nominal field (Donut chart)
+|String
+|None. Required for applicable chart types
+
+|options - :n_title
+|Nominal field title
+|String
+|A humanised version of `:n_field`
+
+|options - :y_field
+|Y-axis field (Bar chart)
+|String
+|None. Required for applicable chart types
+
+|options - :x_field
+|X-axis field (Bar chart)
+|String
+|None. Required for applicable chart types
+
+|options - :x_title
+|X-axis field title
+|String
+|A humanised version of `:x_field`
+
+|===
+
+=== Filter
+
+Add a set of filters to a page. The filter names are listed horizontally. On click, a multiselect is shown, and buttons to apply or clear the filter are shown.
+
+Call `url` to specify the URL to call to apply or clear the filter.
+
+Call `target_dom_id` to specify the id of the DOM element that is to be replaced with the content returned when applying or clearing the filter.
+
+Call `add_filter` to add a `FilterField`.
+
+[source,ruby]
+----
+page.filter do |filter|
+  filter.url '/packhouse_performance/dashboards/stock_overview/pallets'
+  filter.target_dom_id 'so_pallets_section'
+
+  filter.add_filter(:commodity_id,
+                    items: MasterfilesApp::CommodityRepo.new.for_select_commodities,
+                    selected: dash.dig(:filters, :commodity_id))
+  filter.add_filter(:cultivar_id,
+                    items: MasterfilesApp::CultivarRepo.new.for_select_cultivars,
+                    selected: dash.dig(:filters, :cultivar_id))
+end
+----
+
+=== FilterField
+
+A field in a `Filter` - specifying the attributes of a field to apply as a filter.
+
+[source,ruby]
+----
+page.filter do |filter|
+  filter.add_filter(:commodity_id,
+                    items: MasterfilesApp::CommodityRepo.new.for_select_commodities,
+                    selected: dash.dig(:filters, :commodity_id))
+  filter.add_filter(:cultivar_id,
+                    items: MasterfilesApp::CultivarRepo.new.for_select_cultivars,
+                    selected: dash.dig(:filters, :cultivar_id))
+end
+----
+
+|===
+|attribute |description |possible values |default
+
+|field_name
+|The name of the filter
+|Symbol
+|None. Required
+
+|options - :items
+|The multiselect options that can be chosen
+|Array (1-dimensional or 2-dimensional), or Hash
+|None. Required
+
+|options - :selected
+|The options that are pre-selected
+|Array (1-dimensional)
+|[]
+
+|options - :caption
+|The filter field caption
+|String
+|The field name without "_id" or underscores, capitalised
+
+|===
+
+=== NoData
+
+This control renders a block in the browser with a "no data" message. Use this to clearly show the user that there is no data for their request, and optionally provide suggestions as to what they can do instead.
+
+[source,ruby]
+----
+if dash[:no_data]
+  if dash[:filters].empty?
+    page.no_data
+  else
+    page.no_data msg: 'There is no data for this filter',
+                 sub_msg: 'Please clear the filter, or apply a different selection'
+  end
+end
+----
+
+|===
+|attribute |description |possible values |default
+
+|options - :msg
+|The main no-data message
+|String
+|"There is no data to display"
+
+|options - :sub_msg
+|The optional sub-title to explain the situation further, or offer advice.
+|String
+|None
+
+|===
+
+=== DownloadDashboardButton
+
+This control renders a button that will analyse a LayoutGrid on a page, build a JSON payload to send to the backend and generate a PDF file for download.
+
+[source,ruby]
+----
+page.horizontal_group do |grp|
+  grp.add_caption 'Stock Overview'
+  grp.add_download_dashboard_button title: 'Stock Overview', tabset_id: 'dash_tabset'
+end
+----
+
+|===
+|attribute |description |possible values |default
+
+|options - :text
+|The button caption
+|String
+|"Download PDF"
+
+|options - :title
+|The title of the PDF
+|String
+|None
+
+|options - :tabset_id
+|The id of a TabSet DOM element. The active tab will be used as the PDF sub-title, if present.
+|String
+|None
+
+|options - :filter_id
+|The id of a Filter DOM element. If a filter is set, it will be described in the PDF
+|String
+|None
+
+|===
+

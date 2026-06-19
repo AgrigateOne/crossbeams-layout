@@ -17,6 +17,18 @@ module Crossbeams
               blk.call(fold_up)
               @nodes << fold_up
             end
+          when :layout_grid
+            define_method(:layout_grid) do |&blk|
+              grid = LayoutGrid.new(page_config)
+              blk.call(grid)
+              @nodes << grid
+            end
+          when :filter
+            define_method(:filter) do |&blk|
+              filter = Filter.new
+              blk.call(filter)
+              @nodes << filter
+            end
           when :csrf
             define_method(:add_csrf_tag) do |tag|
               @nodes.each { |node| node.add_csrf_tag(tag) if node.respond_to?(:add_csrf_tag) }
@@ -30,6 +42,21 @@ module Crossbeams
           when :text
             define_method(:add_text) do |text, options = {}|
               @nodes << Text.new(page_config, text, options)
+            end
+          when :kpi_card
+            define_method(:add_kpi_card) do |text, measure|
+              @nodes << KPICard.new(page_config, text, measure)
+            end
+          when :chart
+            define_method(:add_chart) do |type, options|
+              case type
+              when :donut
+                @nodes << DonutChart.new(options)
+              when :bar
+                @nodes << BarChart.new(options)
+              else
+                raise ArgumentError, "#{type} is not a valid Chart type"
+              end
             end
           when :notice
             define_method(:add_notice) do |text, options = {}|
@@ -55,6 +82,10 @@ module Crossbeams
             define_method(:add_tab_set) do |items, options = {}|
               @nodes << TabSet.new(page_config, items, options)
             end
+          when :no_data
+            define_method(:no_data) do |options = {}|
+              @nodes << NoData.new(options)
+            end
           when :address
             define_method(:add_address) do |addresses, options = {}|
               @nodes << Address.new(page_config, addresses, options)
@@ -62,6 +93,10 @@ module Crossbeams
           when :contact_method
             define_method(:add_contact_method) do |contact_methods, options = {}|
               @nodes << ContactMethod.new(page_config, contact_methods, options)
+            end
+          when :download_dashboard_button
+            define_method(:add_download_dashboard_button) do |options = {}|
+              @nodes << DownloadDashboardButton.new(options)
             end
           when :grid
             define_method(:add_grid) do |grid_id, url, options = {}|

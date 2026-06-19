@@ -66,6 +66,22 @@ layout = Crossbeams::Layout::Page.build(rules) do |page|
       end
     end
   end
+  page.layout_grid do |grid|
+    grid.specify_row(3)
+
+    grid.add_kpi_card 'Total full pallets', "#{dash[:total_full_pallets]} Pallets"
+    grid.add_kpi_card 'Total partial pallets', "#{dash[:total_partial_pallets]} Pallets"
+    grid.add_kpi_card 'Average pallet age', "#{dash[:average_pallet_age]} hours"
+
+    grid.specify_row(1)
+    grid.add_chart(:bar,
+                   title: 'Total pallets per Target Region',
+                   y_field: :count,
+                   x_field: :target_market_group_name,
+                   x_title: 'Target region',
+                   data: dash[:total_pallets_per_tr])
+    end
+  end
 end
 ----
 
@@ -92,6 +108,10 @@ Using rows and columns, a page can display columns of information alongside each
 == FoldUp
 
 A fold-up wraps a portion of the page and makes it collapsible. By default it renders collapsed and can be toggled open/closed by mouse.
+
+== LayoutGrid
+
+A layout grid provides a CSS grid layout of rows - each with a specified number of columns.
 
 == DSL methods
 
@@ -182,6 +202,14 @@ These are the methods used in building a page layout.
 |options(Hash)
 |Add a button to launch a help page
 
+|layout_grid (link:/developer_documentation/non_field_renderers.adoc#_layoutgrid[LayoutGrid])
+|block
+|Add a CSS grid layout
+
+|add_no_data (link:/developer_documentation/non_field_renderers.adoc#_nodata[NoData])
+|options(Hash)
+|Display a No Data message
+
 |render
 |
 |Renders all nodes in the page.
@@ -265,6 +293,14 @@ These are the methods used in building a page layout.
 |page_control_definition (Hash)
 |Add a control (link / button / dropdown button) to the section.
 
+|add_download_dashboard_button (link:/developer_documentation/non_field_renderers.adoc#_downloaddashboardbutton[DownloadDashboardButton])
+|options(Hash)
+|Display a button for downloading a PDF of the page
+
+|add_no_data (link:/developer_documentation/non_field_renderers.adoc#_nodata[NoData])
+|options(Hash)
+|Display a No Data message
+
 |show_border!
 |None
 |Show a border around the Section. No border is shown if this method is not called.
@@ -326,6 +362,10 @@ The caption when present is always rendered on the left.
 |add_help_link (link:/developer_documentation/non_field_renderers.adoc#_helplink[HelpLink])
 |options(Hash)
 |Add a button to launch a help page
+
+|add_download_dashboard_button (link:/developer_documentation/non_field_renderers.adoc#_downloaddashboardbutton[DownloadDashboardButton])
+|options(Hash)
+|Display a button for downloading a PDF of the page
 
 |render
 |
@@ -441,6 +481,10 @@ You can use `caption = 'xxx'` and `url = `xxx'` to set the caption and callback 
 |add_control (link:/developer_documentation/non_field_renderers.adoc#_link[Link], link:/developer_documentation/non_field_renderers.adoc#_dropdownbutton[DropdownButton])
 |page_control_definition (Hash)
 |Add a control (link / button / dropdown button) to the section.
+
+|add_no_data (link:/developer_documentation/non_field_renderers.adoc#_nodata[NoData])
+|options(Hash)
+|Display a No Data message
 
 |render
 |
@@ -647,6 +691,45 @@ You can use `caption = 'xxx'` and `url = `xxx'` to set the caption and callback 
 |add_field
 |name (String), options (Hash)
 |Add a Field to the fold-up inside a form.
+
+|render
+|
+|Renders all nodes in the fold-up.
+
+|===
+
+=== LayoutGrid
+
+|===
+|method |args |description
+
+|specify_row
+|no_cols (Integer)
+|Add a row and specify how many columns to split it into.
+
+|add_grid (link:/developer_documentation/non_field_renderers.adoc#_grid[Grid])
+|grid_id (String), url (String), options (Hash)
+|Add a grid to the next cell in the layout.
+
+|add_kpi_card (link:/developer_documentation/non_field_renderers.adoc#_kpicard[KPICard])
+|text (String), measure (String)
+|Add a KPI card to the next cell in the layout.
+
+|add_chart (link:/developer_documentation/non_field_renderers.adoc#_chart[Chart])
+|chart_type (Symbol), options (Hash)
+|Add a chart to the next cell in the layout.
+
+|add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
+|text (String), options (Hash)
+|Add a block of Text to next cell in the the layout.
+
+|add_notice (link:/developer_documentation/non_field_renderers.adoc#_notice[Notice])
+|text (String), options (Hash)
+|Add a styled Notice to next cell in the the layout.
+
+|add_csrf_tag
+|tag
+|Adds tags to all nodes in the control (only forms will actually apply the tag)
 
 |render
 |

@@ -7,6 +7,7 @@ module Crossbeams
       extend MethodBuilder
 
       build_methods_for :address,
+                        :chart,
                         :collection,
                         :contact_method,
                         :csrf,
@@ -15,6 +16,7 @@ module Crossbeams
                         :horizontal_group,
                         :grid,
                         :list,
+                        :no_data,
                         :notice,
                         :repeating_request,
                         :sortable_list,
