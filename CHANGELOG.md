@@ -7,11 +7,21 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [2.3.4] - 2026-06-19
+### Added
 - For dropdown button items, the behaviour can now be `:remote` as well
 - Added single quotes to the list of chars that gets rejected by the `:valid_filename` regex
+- LayoutGrid component for specifying a CSS grid layout
+- KPICard component for displaying KPI information in a dashboard
+- Chart component and sub-classes DonutChart and BarChart for rendering Vega charts
+- Filter and FilterField components for laying out a filter on a page
+- DownloadDashboardButton for downloading a dashboard page to PDF
+- NoData control to display a message when there is no data to show
 ### Changed
 - Styling for RMD buttons tweaked to render better when there is more than one button
-### Fixed
 
 ## [2.3.3] - 2026-03-05
 ### Added
