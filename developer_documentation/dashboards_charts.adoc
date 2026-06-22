@@ -9,11 +9,165 @@ Dashboards are laid out using a DSL much like for `Crossbeams::Layout::Page`, bu
 
 These dashboard pages are typically made up from the following components:
 
-* TabsSet
-* DownloadDashboardButton
-* Filter and FilterField
-* LayoutGrid
-* KPICard
-* Chart (and its sub-classes)
+* link:/developer_documentation/non_field_renderers.adoc#_tabset[TabSet]
+* link:/developer_documentation/non_field_renderers.adoc#_downloaddashboardbutton[DownloadDashboardButton]
+* link:/developer_documentation/non_field_renderers.adoc#_filter[Filter] and link:/developer_documentation/non_field_renderers.adoc#_filterfield[FilterField]
+* link:/developer_documentation/non_field_renderers.adoc#_layoutgrid[LayoutGrid]
+* link:/developer_documentation/non_field_renderers.adoc#_kpicard[KPICard]
+* link:/developer_documentation/non_field_renderers.adoc#_chart[Chart] (and its sub-classes)
+* link:/developer_documentation/non_field_renderers.adoc#_nodata[NoData]
 
-The last three components are used to lay out the actual dashboard display, the first three are optional but useful components.
+The first three are optional but useful components, the next three are used to layout the actual dashboard display and the last can be used if there is no data to show.
+
+== An example
+
+Here is an example of a page that has three tabs, each of which loads a dashboard.
+
+There is a `show` view that sets out the tab set and a callback section to load the first tab's dashboard (`show_pallets`).
+The detail view (`show_pallets`) can be loaded via a fetch request:
+
+- from the callback,
+- when the relevant tab is clicked,
+- or when the filter is applied or cleard.
+
+=== The show view
+
+[source,ruby]
+----
+Crossbeams::Layout::Page.build(rules) do |page|
+  page.horizontal_group do |grp|
+    grp.add_caption 'Stock Overview'
+    grp.add_download_dashboard_button title: 'Stock Overview', tabset_id: 'dash_tabset' <1>
+  end
+
+  items = [{ text: 'Pallets',
+             url: '/packhouse_performance/dashboards/stock_overview/pallets',           <2>
+             remote: true },
+           { text: 'Full Bins',
+             url: '/packhouse_performance/dashboards/full_bins',
+             remote: true },
+           { text: 'Empty Bins',
+             url: '/packhouse_performance/dashboards/empty_bins',
+             disabled: true }]
+  page.add_tab_set items, dom_id: 'dash_tabset', target_dom_id: 'so_pallets_section'
+
+  page.callback_section do |section|
+    section.dom_id 'so_pallets_section'
+    section.caption_text ''
+    section.callback_url '/packhouse_performance/dashboards/stock_overview/pallets'    <2>
+  end
+end
+----
+<1> The button to download the page as a PDF includes the title (matching the page caption) and the DOM id of the TabSet below. The text of the active tab serves as a sub-title for the PDF when a `tabset_id` is provided.
+<2> The first tab and the callback section load the same dashboard url.
+
+=== The detail (show_pallets) view
+
+[source,ruby]
+----
+Crossbeams::Layout::Page.build(rules) do |page|
+  if fullpage
+    page.add_text 'Stock Overview - Pallets', wrapper: :h1                             <1>
+  else
+    page.filter do |filter|                                                            <2>
+      filter.url '/packhouse_performance/dashboards/stock_overview/pallets'            <3>
+      filter.target_dom_id 'so_pallets_section'                                        <4>
+
+      filter.add_filter(:commodity_id,
+                        items: MasterfilesApp::CommodityRepo.new.for_select_commodities,
+                        selected: dash.dig(:filters, :commodity_id))
+      filter.add_filter(:cultivar_id,
+                        items: MasterfilesApp::CultivarRepo.new.for_select_cultivars,
+                        selected: dash.dig(:filters, :cultivar_id))
+      filter.add_filter(:puc_id,
+                        caption: 'PUC',
+                        items: MasterfilesApp::FarmRepo.new.for_select_pucs,
+                        selected: dash.dig(:filters, :puc_id))
+    end
+  end
+
+  if dash[:no_data]                                                                    <5>
+    if dash[:filters].empty?
+      page.no_data
+    else
+      page.no_data msg: 'There is no data for this filter',
+                   sub_msg: 'Please clear the filter, or apply a different selection'
+    end
+  else
+    page.layout_grid do |grid|                                                         <6>
+      grid.specify_row(3)                                                              <7>
+
+      grid.add_kpi_card 'Total full pallets',                                          <8>
+                        UtilityFunctions.count_phrase(dash[:total_full_pallets], 'Pallets')
+      grid.add_kpi_card 'Total partial pallets',
+                        UtilityFunctions.count_phrase(dash[:total_partial_pallets], 'Pallets')
+      grid.add_kpi_card 'Average pallet age',
+                        UtilityFunctions.count_phrase(dash[:average_pallet_age], 'hours')
+
+      grid.specify_row(2)
+      grid.add_kpi_card 'Total inspected pallets',
+                        UtilityFunctions.count_phrase(dash[:total_inspected_pallets], 'Pallets')
+      grid.add_kpi_card 'Total uninspected pallets',
+                        UtilityFunctions.count_phrase(dash[:total_uninspected_pallets], 'Pallets')
+
+      grid.specify_row(3)
+      grid.add_chart(:donut,                                                           <9>
+                     title: 'Total pallets per Target Region',
+                     q_field: :count,
+                     n_field: :target_market_group_name,
+                     n_title: 'Target region',
+                     data: dash[:total_pallets_per_tr])
+      grid.add_chart(:donut,
+                     title: 'Total pallets per Cultivar',
+                     q_field: :count,
+                     n_field: :cultivar_name,
+                     n_title: 'Cultivar',
+                     data: dash[:total_pallets_per_cultivar])
+      grid.add_chart(:donut,
+                     dom_id: 'vegal-1',
+                     title: 'Total pallets per Inventory Code',
+                     q_field: :count,
+                     n_field: :inventory_code,
+                     n_title: 'Inv. code',
+                     data: dash[:total_pallets_per_inventory_code])
+
+      grid.specify_row(1)
+      grid.add_chart(:bar,
+                     title: 'Pallets in stock by standard pack code',
+                     x_field: :standard_pack_code,
+                     y_field: :count,
+                     x_title: 'Pack',
+                     data: dash[:total_pallets_per_standard_pack_code])
+
+      grid.specify_row(1)
+      cols = Crossbeams::DataGrid::ColumnDefiner.new.make_columns do |mk|              <10>
+        mk.col 'id', nil, hide: true
+        mk.col 'pallet_number'
+        mk.integer 'cartons_per_pallet', nil, width: 200
+        mk.col 'standard_pack_code'
+        mk.col 'cultivar_name'
+        mk.col 'created_at', nil, data_type: :datetime
+      end
+      rows = dash[:latest_activity]
+      grid.add_grid('grd-latest',
+                    nil,
+                    height: 30,
+                    col_defs: cols,
+                    row_defs: rows,
+                    caption: 'Latest activity')
+    end
+  end
+  page.add_text JSON.pretty_generate(dash), syntax: :json                              <11>
+end
+----
+<1> If this is shown on a presentation dashboard, you do not want to show the filter, and the page is not inside `show` (with its tab set), so you need to show a header.
+<2> The filter is specified inside the tab
+<3> The url of this callback page needs to be specified for the filter so that it can be reloaded when a filter is applied
+<4> The filter also needs the DOM id of the element inside of which to render the reloaded dashboard
+<5> If there is no data to display, show a `NoData` control instead of empty KPIs and Charts. Note that the default message needs to be overridden if a filter is causing no data to be returned.
+<6> This is the start of the dashboard - a CSS grid layout.
+<7> For each row in the LayoutGrid, specify the number of columns to be filled.
+<8> Here are three KPI cards to fill the three columns specified in this row.
+<9> Here are three Donut Charts to fill the three columns specified in this row.
+<10> The LayoutGrid can also contain a grid.
+<11> For debug purposes, it can be useful to show the data behind the KPIs and Charts. Do not do this for production dashboards.
