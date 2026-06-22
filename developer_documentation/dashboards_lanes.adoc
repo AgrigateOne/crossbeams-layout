@@ -1,9 +1,9 @@
-= Dashboards
+= Dashboards showing state in lanes
 :toc:
 
 link:/developer_documentation/start.adoc[Back to documentation home]
 
-== Dashboards
+== Dashboards showing state in lanes
 
 Dashboards are laid out using a DSL much like for `Crossbeams::Layout::Page`, allowing for the declaration of lanes and items.
 

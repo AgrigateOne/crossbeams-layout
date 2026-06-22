@@ -8,5 +8,7 @@
 * link:/developer_documentation/page_layout.adoc[Page layout]
 * link:/developer_documentation/non_field_renderers.adoc[Non-field Renderers]
 * link:/developer_documentation/field_renderers.adoc[Field Renderers]
-* link:/developer_documentation/dashboards.adoc[Dashboards]
+
+* link:/developer_documentation/dashboards_charts.adoc[Dashboards for KPI cards and Charts]
+* link:/developer_documentation/dashboards_lanes.adoc[Dashboards showing state in lanes]
 

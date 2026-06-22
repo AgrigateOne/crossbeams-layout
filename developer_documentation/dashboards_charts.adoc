@@ -1,0 +1,19 @@
+= Dashboards for KPI cards and charts
+:toc:
+
+link:/developer_documentation/start.adoc[Back to documentation home]
+
+== Dashboards for KPI cards and charts
+
+Dashboards are laid out using a DSL much like for `Crossbeams::Layout::Page`, but laid out using a CSS grid.
+
+These dashboard pages are typically made up from the following components:
+
+* TabsSet
+* DownloadDashboardButton
+* Filter and FilterField
+* LayoutGrid
+* KPICard
+* Chart (and its sub-classes)
+
+The last three components are used to lay out the actual dashboard display, the first three are optional but useful components.
