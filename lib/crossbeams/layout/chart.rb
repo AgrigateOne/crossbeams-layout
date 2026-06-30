@@ -53,6 +53,12 @@ module Crossbeams
         hs.to_json
       end
 
+      def validate_required_options(options, keys)
+        missing = []
+        keys.each { |k| missing << k unless options.key?(k) }
+        raise ArgumentError, "Required options are missing: #{missing.join(', ')}." unless missing.empty?
+      end
+
       def spec_json
         range = ['#2BBBFF',
                  '#007FFF',
@@ -145,6 +151,8 @@ module Crossbeams
       def initialize(options)
         super
 
+        validate_required_options(options, %i[q_field n_field n_title])
+
         @data = { 'values': options[:data] || [] }
         @mark = { 'type': 'arc', 'innerRadius': 90, 'tooltip': { 'content': 'encoding' } }
         @encoding = {
@@ -156,8 +164,10 @@ module Crossbeams
 
     # Bar charts
     class BarChart < Chart
-      def initialize(options) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      def initialize(options)
         super
+
+        validate_required_options(options, %i[x_field y_field])
 
         @data = { 'values': options[:data] || [] }
         @mark = { type: 'bar', cornerRadiusEnd: 4, 'tooltip': { 'content': 'encoding' } }
@@ -169,13 +179,36 @@ module Crossbeams
         x_encoding, y_encoding = y_encoding, x_encoding if options[:horizontal]
 
         @encoding = { x: x_encoding, y: y_encoding }
-        @encoding[:color] = color_encoding(options[:color_field]) if options[:color_field]
-        @encoding[:xOffset] = { field: options[:color_field].to_s } if options[:color_field] && !options[:stacked]
+        # @encoding[:color] = color_encoding(options[:color_field]) if options[:color_field]
+        # @encoding[:xOffset] = { field: options[:color_field].to_s } if options[:color_field] && !options[:stacked]
 
         # @encoding = {
         #   'theta': { 'field': options[:q_field], 'type': 'quantitative' },
         #   'color': { 'field': options[:n_field], 'type': 'nominal' }
         # }
+      end
+    end
+
+    # Stacked Bar charts
+    class StackedBarChart < Chart
+      def initialize(options) # rubocop:disable Metrics/AbcSize
+        super
+
+        validate_required_options(options, %i[x_field y_field colour_field])
+
+        @data = { 'values': options[:data] || [] }
+        @mark = { type: 'bar', cornerRadiusEnd: 4, 'tooltip': { 'content': 'encoding' } }
+        x_field = options[:x_field]
+        y_field = options[:y_field]
+        x_encoding = { field: x_field.to_s, type: options[:x_type] || 'nominal', axis: { labelAngle: 0 }, title: options[:x_title] || human_string(options[:x_field]) }
+        y_encoding = { field: y_field.to_s, type: options[:y_type] || 'quantitative' }
+
+        x_encoding, y_encoding = y_encoding, x_encoding if options[:horizontal]
+
+        @encoding = { x: x_encoding, y: y_encoding }
+
+        # @encoding[:color] = { field: :count_type, scale: { range: ['#007FFF', '#4C78A8'] }, title: 'Units' }
+        @encoding[:color] = { field: options[:colour_field], title: options[:colour_title] || options[:colour_field] }
       end
     end
   end
