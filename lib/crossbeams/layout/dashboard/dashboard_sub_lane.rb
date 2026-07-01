@@ -18,7 +18,7 @@ module Crossbeams
       end
 
       def no_data(msg = nil)
-        @no_data = msg || 'There is no data to display'
+        @nodes << NoData.new(msg: msg)
       end
 
       def item_set
@@ -31,7 +31,6 @@ module Crossbeams
         <<-HTML
           <div class="mt-3 mb-5 flex flex-col bg-slate-100 px-3 py-3 gap-3">
             #{show_caption}
-            #{show_no_data}
             #{nodes.map(&:render).join("\n")}
           </div>
         HTML
@@ -43,12 +42,6 @@ module Crossbeams
         return nil if @caption.nil?
 
         %(<h3 class="#{SC.css_class(:h3)}">#{@caption}</h3>)
-      end
-
-      def show_no_data
-        return nil if @no_data.nil?
-
-        %(<div class="p-7 bg-blue-200 text-blue-900">#{@no_data}</div>)
       end
     end
   end
