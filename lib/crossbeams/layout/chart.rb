@@ -208,7 +208,7 @@ module Crossbeams
         @encoding = { x: x_encoding, y: y_encoding }
 
         # @encoding[:color] = { field: :count_type, scale: { range: ['#007FFF', '#4C78A8'] }, title: 'Units' }
-        @encoding[:color] = { field: options[:colour_field], title: options[:colour_title] || options[:colour_field] }
+        @encoding[:color] = { field: options[:colour_field], title: options[:colour_title] || human_string(options[:colour_field]) }
       end
     end
   end

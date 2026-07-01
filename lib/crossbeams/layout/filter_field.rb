@@ -44,10 +44,10 @@ module Crossbeams
       def render
         # swap inline-flex  for hidden to show...
         attrs = [%(class="w-full searchable-multi-select")]
-        #   #{backup_empty_select}
+        wrap_class = @has_selection ? 'border-ocean-600 text-ocean-700 bg-ocean-50' : 'border-slate-600'
         <<~HTML
           <div class="relative">
-            <div id="filter_field_#{field_name}" data-filter-wrapper="Y" data-filter-set="#{field_name}" class="border border-slate-600 rounded-full p-2 flex items-center">
+            <div id="filter_field_#{field_name}" data-filter-wrapper="Y" data-filter-set="#{field_name}" class="border #{wrap_class} rounded-full p-2 flex items-center">
               <label class="" data-filter-field="Y" data-filter-set="#{field_name}">#{caption}</label>
               <div class="inline-flex" data-filter-label-val="Y" data-filter-set="#{field_name}">#{selected_values(prefix: true)}</div>
             </div>
