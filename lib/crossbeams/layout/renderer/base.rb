@@ -46,9 +46,12 @@ module Crossbeams
           css_class = field_has_errors? ? SC.css_class(:label_in_err) : SC.css_class(:label)
           toolt = tooltip.nil? ? '' : " #{tooltip}"
           req = check_required && @field_config[:required] == true ? ' requiredlabel' : ''
-          xtra_css = ' py-4' if bool
+          wrap_css = [inline ? 'inline' : 'block', 'mb-1']
+          wrap_css << 'py-4' if bool
+          wrap_css << 'whitespace-nowrap' if @field_config[:hint] && !ignore_hint
+
           point = pointer ? ' cursor-pointer' : ''
-          %(<div class="#{inline ? 'inline' : 'block'}#{xtra_css} mb-1">#{prefix}<label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
+          %(<div class="#{wrap_css.join(' ')}">#{prefix}<label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
         end
 
         # The class for the field wrapper.
