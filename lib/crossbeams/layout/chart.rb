@@ -164,7 +164,7 @@ module Crossbeams
 
     # Bar charts
     class BarChart < Chart
-      def initialize(options)
+      def initialize(options) # rubocop:disable Metrics/AbcSize
         super
 
         validate_required_options(options, %i[x_field y_field])
@@ -179,7 +179,7 @@ module Crossbeams
         x_encoding, y_encoding = y_encoding, x_encoding if options[:horizontal]
 
         @encoding = { x: x_encoding, y: y_encoding }
-        # @encoding[:color] = color_encoding(options[:color_field]) if options[:color_field]
+        @encoding[:color] = { value: '#007FFF' }
         # @encoding[:xOffset] = { field: options[:color_field].to_s } if options[:color_field] && !options[:stacked]
 
         # @encoding = {
