@@ -52,7 +52,7 @@ module Crossbeams
               <div class="inline-flex" data-filter-label-val="Y" data-filter-set="#{field_name}">#{selected_values(prefix: true)}</div>
             </div>
             <div class="hidden absolute min-w-96" data-filter-lookup="Y" data-filter-lkp-set="#{field_name}">
-              <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} data-filter-select="Y" multiple>
+              <select #{attrs.join(' ')} #{name_attribute_multi} #{field_id} data-filter-select="Y" data-filter-change-apply="Y" multiple>
               #{build_1_or_2_options}
               </select>
             </div>
