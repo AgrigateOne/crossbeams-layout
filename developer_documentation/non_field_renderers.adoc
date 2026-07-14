@@ -1180,6 +1180,11 @@ a|An array of hashes with keys:
 |Boolean
 |False
 
+|options - :nested
+|True if the tabs are nested inside another TabSet
+|Boolean
+|False
+
 |===
 
 === LayoutGrid
@@ -1235,7 +1240,7 @@ A KPI Card is used to clearly display an indicator and its value.
 
 Show a chart in the browser. Use `add_chart(:chart_type, options)` to add a chart.
 
-The `:chart_type` will instantiate the correct subclass of `Chart` (e.g. `:donut` => `DonutChart`, `:bar` => `BarChart`)
+The `:chart_type` will instantiate the correct subclass of `Chart` (e.g. `:donut` => `DonutChart`, `:bar` => `BarChart`, `:stacked_bar` => `StackedBarChart`)
 
 [source,ruby]
 ----
@@ -1309,7 +1314,44 @@ grid.add_chart(:bar,
 |String
 |A humanised version of `:x_field`
 
+|options - :colour_field
+|Colour field (StackedBar chart)
+|String
+|None. Required for applicable chart types
+
+|options - :colour_title
+|Colour field title
+|String
+|A humanised version of `:colour_field`
+
 |===
+
+==== Expectations per chart type
+
+Although each chart type is generated in the same way (`add_chart(:type, options)`), the different sub-types have distinct expectations for the `options` hash.
+
+Most of these options reference field names in records of the `data` array option.
+
+NOTE: the `:data` option provides an array of data for the chart to use. If there is no data for a chart, you can pass in an empty array, or nil.
+
+==== :bar
+
+x_field, y_field:: the fields representing the two axes.
+x_type, y_type:: Optional, defaults to 'nominal' for X and 'quantitative' for Y.
+x_title:: Label for the x-axis, defaults to the value of the `x_field`.
+
+==== :stacked_bar
+
+As for `:bar` above, with these additional options:
+
+colour_field:: The field that is used to assign the quantitative value to a particular bar.
+colour_title:: The Legend to display for the stacks, defaults to the value of the `colour_field`.
+
+==== :donut
+
+q_field:: The name of the quantitative field.
+n_field:: The name of the nominal field.
+n_title:: Label for the nominal field, defaults to the value of `n_field`.
 
 === Filter
 

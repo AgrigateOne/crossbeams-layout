@@ -79,7 +79,7 @@ module Crossbeams
 
     # Serve local developer documentation (ASCIIDoc)
     class DeveloperDocumentation
-      DOCUMENTATION_FILES = %w[page_layout.adoc non_field_renderers.adoc field_renderers.adoc dashboards.adoc].freeze
+      DOCUMENTATION_FILES = %w[page_layout.adoc non_field_renderers.adoc field_renderers.adoc dashboards_lanes.adoc dashboards_charts.adoc].freeze
 
       def self.content(file)
         File.read(File.join(File.dirname(__FILE__), '../../developer_documentation', "#{file.chomp('.adoc')}.adoc"))

@@ -178,6 +178,10 @@ These are the methods used in building a page layout.
 |items (Array), options (Hash)
 |Add a set of tabs to the page.
 
+|filter (link:/developer_documentation/non_field_renderers.adoc#_filter[Filter])
+|block
+|Builds a filter using the block.
+
 |add_text (link:/developer_documentation/non_field_renderers.adoc#_text[Text])
 |text (String), options (Hash)
 |Add a block of Text to the page.

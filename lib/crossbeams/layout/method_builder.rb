@@ -54,6 +54,8 @@ module Crossbeams
                 @nodes << DonutChart.new(options)
               when :bar
                 @nodes << BarChart.new(options)
+              when :stacked_bar
+                @nodes << StackedBarChart.new(options)
               else
                 raise ArgumentError, "#{type} is not a valid Chart type"
               end

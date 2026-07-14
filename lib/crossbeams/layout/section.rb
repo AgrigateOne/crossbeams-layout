@@ -19,6 +19,8 @@ module Crossbeams
                         :notice,
                         :repeating_request,
                         :row,
+                        :section,
+                        :tab_set,
                         :table,
                         :text
 

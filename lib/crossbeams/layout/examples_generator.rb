@@ -49,6 +49,7 @@ module Crossbeams
         @out << generate_layout_grid if %i[all layout_grid].include? classes
         @out << generate_download_dashboard_button if %i[all download_dashboard_button].include? classes
         @out << generate_filter if %i[all filter].include? classes
+        @out << generate_chart if %i[all chart].include? classes
         @out << generate_no_data if %i[all no_data].include? classes
         @out
       end
@@ -92,6 +93,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#layout_grid">LayoutGrid</a></li>) if %i[all layout_grid].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#download_dashboard_button">DownloadDashboardButton</a></li>) if %i[all download_dashboard_button].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#filter">Filter</a></li>) if %i[all filter].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#chart">Chart</a></li>) if %i[all chart].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#no_data">No Data</a></li>) if %i[all no_data].include? classes
         @out << '</ol>'
       end
@@ -429,6 +431,12 @@ module Crossbeams
         ar.join(separator)
       end
 
+      def generate_chart
+        ar = [head('Chart', 'chart')]
+        ar << DonutChart.new(data: [{ "cultivar_name": 'CIR', "count": 51 }, { "cultivar_name": 'FUJ', "count": 71 }],  title: 'Total pallets per Cultivar', q_field: :count, n_field: :cultivar_name, n_title: 'Cultivar').render
+        ar.join(separator)
+      end
+
       def generate_no_data
         ar = [head('NoData', 'no_data')]
         no_data = NoData.new
@@ -757,10 +765,11 @@ module Crossbeams
 
       def generate_tab_set
         ar = [head('Tab Set', 'tab_set')]
-        sets = [[nil, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: '3', url: '/', disabled: true }, { text: 'The fourth is the widest', url: '/' }]],
-                [1, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: 'Three', url: '/' }, { text: 'The fourth is the widest', url: '/' }]]]
-        sets.each do |active, target, items|
-          ar << TabSet.new({}, items, { active_tab_index: active, target_dom_id: target }).render
+        sets = [[nil, nil, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: '3', url: '/', disabled: true }, { text: 'The fourth is the widest', url: '/' }]],
+                [1, nil, false, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: 'Three', url: '/' }, { text: 'The fourth is the widest', url: '/' }]],
+                [1, nil, true, [{ text: 'Nested', url: '/' }, { text: 'tabset', url: '/' }]]]
+        sets.each do |active, target, nested, items|
+          ar << TabSet.new({}, items, { active_tab_index: active, target_dom_id: target, nested: nested }).render
         end
         ar.join(separator)
       end

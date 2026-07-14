@@ -8,6 +8,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Changed
+- TabSet gets a `nested` option so that nested tabs can be rendered with extra styling
 ### Fixed
 
 ## [2.3.4] - 2026-06-19
