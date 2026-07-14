@@ -13,6 +13,7 @@ module Crossbeams
         @target_dom_id = options[:target_dom_id]
         @dom_id = options.fetch(:dom_id, "tset-#{SecureRandom.hex(4)}")
         @preloaded_tabs = options[:preloaded_tabs] || false
+        @nested = options[:nested] || false
         validate_options(options)
       end
 
@@ -37,8 +38,9 @@ module Crossbeams
       # Render a set of Tabs
       # @return [string] the HTML for a set of tabs
       def render
+        ml_class = @nested ? ' ml-12' : ''
         <<~HTML
-          <div class="my-4">
+          <div class="my-4#{ml_class}">
             <ul class="flex" id="#{dom_id}">
               #{render_items}
             </ul>

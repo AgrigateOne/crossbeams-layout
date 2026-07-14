@@ -1180,6 +1180,11 @@ a|An array of hashes with keys:
 |Boolean
 |False
 
+|options - :nested
+|True if the tabs are nested inside another TabSet
+|Boolean
+|False
+
 |===
 
 === LayoutGrid

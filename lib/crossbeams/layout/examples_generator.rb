@@ -765,10 +765,11 @@ module Crossbeams
 
       def generate_tab_set
         ar = [head('Tab Set', 'tab_set')]
-        sets = [[nil, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: '3', url: '/', disabled: true }, { text: 'The fourth is the widest', url: '/' }]],
-                [1, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: 'Three', url: '/' }, { text: 'The fourth is the widest', url: '/' }]]]
-        sets.each do |active, target, items|
-          ar << TabSet.new({}, items, { active_tab_index: active, target_dom_id: target }).render
+        sets = [[nil, nil, nil, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: '3', url: '/', disabled: true }, { text: 'The fourth is the widest', url: '/' }]],
+                [1, nil, false, [{ text: 'One', url: '/' }, { text: 'A second tab', url: '/' }, { text: 'Three', url: '/' }, { text: 'The fourth is the widest', url: '/' }]],
+                [1, nil, true, [{ text: 'Nested', url: '/' }, { text: 'tabset', url: '/' }]]]
+        sets.each do |active, target, nested, items|
+          ar << TabSet.new({}, items, { active_tab_index: active, target_dom_id: target, nested: nested }).render
         end
         ar.join(separator)
       end
