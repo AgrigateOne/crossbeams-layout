@@ -150,7 +150,7 @@ module Crossbeams
                    @page_config.form_errors[@field_name]
                  end
 
-          %(<span class="font-normal text-red-700">#{newline ? '<br>' : ''}#{errs.compact.join('; ')}</span>) if errs
+          %(<span class="font-normal text-red-700">#{newline ? '<br>' : ''}#{err_string(errs)}</span>) if errs
         end
 
         # Render hint text associated with the field.
@@ -197,6 +197,14 @@ module Crossbeams
         end
 
         private
+
+        def err_string(errs)
+          if errs.is_a?(Hash)
+            errs.map { |k, v| "#{k}: #{v.join(', ')}" }.join(', ')
+          else
+            errs.compact.join('; ')
+          end
+        end
 
         def build_behaviour(rule) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
           return %(data-change-values="#{split_change_affects(rule[:change_affects])}") if rule[:change_affects]
