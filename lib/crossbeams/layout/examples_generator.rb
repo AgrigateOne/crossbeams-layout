@@ -266,12 +266,12 @@ module Crossbeams
           lnk = Link.new(text: "Clickme (#{size})", url: '/a/path', style: :button, text_size: size)
           ar << lnk.render
         end
-        %i[standard button small_button back_button action_button].each do |style|
+        %i[standard button small_button back_button action_button info_button success_button warning_button error_button].each do |style|
           lnk = Link.new(text: "Clickme (#{style})", url: '/a/path', style: style)
           ar << lnk.render
         end
         %i[standard red green amber blue].each do |colour|
-          lnk = Link.new(text: "Clickme (#{colour}", url: '/a/path', style: :button, button_colour: colour)
+          lnk = Link.new(text: "Clickme (#{colour})", url: '/a/path', style: :button, button_colour: colour)
           ar << lnk.render
         end
         lnk = Link.new(text: 'InVisible (YOU SHOULD NOT SEE ME)', url: '/a/path', style: :button, visible: false)

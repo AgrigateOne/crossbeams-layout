@@ -7,6 +7,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Link: add styles `:info_button`, `:success_button`, `:warning_button`, `:error_button`
 ### Changed
 - TabSet gets a `nested` option so that nested tabs can be rendered with extra styling
 ### Fixed

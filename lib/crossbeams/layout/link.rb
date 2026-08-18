@@ -100,6 +100,14 @@ module Crossbeams
           %(class="#{SC.css_class(:link)}#{inline_or_hidden}")
         when :back_button
           %(class="#{btn_primary} max-w-fit#{user_class}")
+        when :info_button
+          %(class="#{button_font_size} #{btn_info} max-w-fit #{user_class}")
+        when :success_button
+          %(class="#{button_font_size} #{btn_success} max-w-fit #{user_class}")
+        when :warning_button
+          %(class="#{button_font_size} #{btn_warning} max-w-fit #{user_class}")
+        when :error_button
+          %(class="#{button_font_size} #{btn_error} max-w-fit #{user_class}")
         when :action_button
           %(class="#{button_font_size} #{btn_primary} max-w-fit #{user_class}")
         when :collection_button
@@ -115,6 +123,22 @@ module Crossbeams
 
       def btn_secondary
         tweak_display(SC.css_class(:button_secondary))
+      end
+
+      def btn_success
+        tweak_display(SC.css_class(:button_success))
+      end
+
+      def btn_warning
+        tweak_display(SC.css_class(:button_warning))
+      end
+
+      def btn_error
+        tweak_display(SC.css_class(:button_error))
+      end
+
+      def btn_info
+        tweak_display(SC.css_class(:button_info))
       end
 
       def btn_collection

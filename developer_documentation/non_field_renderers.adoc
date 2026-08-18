@@ -58,11 +58,11 @@ section.add_control(control_type: :link, text: 'Do something', url: '/path/to/so
 
 |options - :style
 |How the link is styled - as a normal link, or to look like a button. A back button renders in blue with a left-pointing arrow glyph. An action button renders in blue.
-|`:link`, `:button`, `:action_button` or `:back_button`.
+|`:link`, `:button`, `:action_button`, `:info_button`, `:success_button`, `:warning_button`, `:error_button` or `:back_button`.
 |`:link`
 
 |options - :text_size
-|Only applies when `style` is `:button`, `:back_button` or `:action_button`. Uses a scale of 1 to 6 with 1 being standard and 6 being the largest.
+|Only applies when `style` is `:button`, `:back_button`, `:info_button`, `:success_button`, `:warning_button`, `:error_button` or `:action_button`. Uses a scale of 1 to 6 with 1 being standard and 6 being the largest.
 |1 to 6
 |1
 
