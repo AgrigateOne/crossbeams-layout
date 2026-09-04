@@ -1194,6 +1194,8 @@ A row can have 1, 2, 3, 4, 6 or 12 columns.
 
 Call `specify_row(no_of_columns)` to add a horizontal row which can contain the specified number of columns.
 
+Call `make_rows_for_up_to_6_cols(no_of_columns)` to add enough rows for the given number of columns.
+
 Controls added after the call will fill column slots in order from left to right.
 
 e.g.
@@ -1214,6 +1216,11 @@ page.layout_grid do |grid|
                  x_title: 'Target region',
                  data: dash[:total_pallets_per_tr])
   end
+
+  # When the number of columns is only known at runtime:
+  # This will create the best combination of rows and columns:
+  grid.make_rows_for_up_to_6_cols(array.length)
+  array.each { |txt, val| grid.add_kpi_card text, val }
 end
 ----
 

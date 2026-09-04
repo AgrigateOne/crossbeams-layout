@@ -33,6 +33,28 @@ module Crossbeams
         @rows << no_cols.to_i
       end
 
+      # Given a total number of columns to be rendered,
+      # specify optimal rows for the layout.
+      # Nothing is rendered if tot_cols is zero.
+      #
+      # @param tot_cols [integer] the total number of columns to be rendered
+      # @return [void] (the method specifies the required rows)
+      def make_rows_for_up_to_6_cols(tot_cols)
+        return if tot_cols.zero?
+
+        cols = tot_cols.dup
+        rules = { 1 => [1], 2 => [2], 3 => [3], 4 => [4], 5 => [3, 2], 6 => [6],
+                  7 => [4, 3], 8 => [4, 4], 9 => [6, 3], 10 => [6, 4], 11 => [4, 4, 3], 12 => [6, 6] }
+
+        ar = []
+        while cols > 12
+          ar << rules[12]
+          cols -= 12
+        end
+        ar << rules[cols]
+        ar.flatten.each { |n| specify_row(n) }
+      end
+
       # Is this node invisible?
       #
       # @return [boolean] - true if it should not be rendered at all, else false.
