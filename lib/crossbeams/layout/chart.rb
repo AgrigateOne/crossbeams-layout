@@ -174,7 +174,7 @@ module Crossbeams
         x_field = options[:x_field]
         y_field = options[:y_field]
         x_encoding = { field: x_field.to_s, type: options[:x_type] || 'nominal', axis: { labelAngle: 0 }, title: options[:x_title] || human_string(options[:x_field]) }
-        y_encoding = { field: y_field.to_s, type: options[:y_type] || 'quantitative' }
+        y_encoding = { field: y_field.to_s, type: options[:y_type] || 'quantitative', title: options[:y_title] || human_string(options[:y_field]) }
 
         x_encoding, y_encoding = y_encoding, x_encoding if options[:horizontal]
 
@@ -191,7 +191,7 @@ module Crossbeams
 
     # Stacked Bar charts
     class StackedBarChart < Chart
-      def initialize(options) # rubocop:disable Metrics/AbcSize
+      def initialize(options) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
         super
 
         validate_required_options(options, %i[x_field y_field colour_field])
@@ -201,7 +201,7 @@ module Crossbeams
         x_field = options[:x_field]
         y_field = options[:y_field]
         x_encoding = { field: x_field.to_s, type: options[:x_type] || 'nominal', axis: { labelAngle: 0 }, title: options[:x_title] || human_string(options[:x_field]) }
-        y_encoding = { field: y_field.to_s, type: options[:y_type] || 'quantitative' }
+        y_encoding = { field: y_field.to_s, type: options[:y_type] || 'quantitative', title: options[:y_title] || human_string(options[:y_field]) }
 
         x_encoding, y_encoding = y_encoding, x_encoding if options[:horizontal]
 
