@@ -17,6 +17,7 @@ module Crossbeams
       build_methods_for :csrf,
                         :grid,
                         :text,
+                        :heatmap_table,
                         :kpi_card,
                         :chart,
                         :notice

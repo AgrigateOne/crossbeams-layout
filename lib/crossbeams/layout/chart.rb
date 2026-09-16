@@ -13,7 +13,7 @@ module Crossbeams
         @data = nil
         @mark = nil
         @encoding = nil
-        @show_source = options.fetch(:show_soource, false)
+        @show_source = options.fetch(:show_source, false)
       end
 
       # Are there any Javascript snippets to be included in the page's DOMContentLoaded event?
@@ -44,7 +44,7 @@ module Crossbeams
       end
 
       def opts
-        hs = { actions: { editor: false }, downloadFileName: filename } # dl filename default to some asect of the title?
+        hs = { actions: { editor: false }, downloadFileName: filename } # dl filename default to some aspect of the title?
         # downloadFileName
         unless @show_source
           hs[:actions][:source] = false

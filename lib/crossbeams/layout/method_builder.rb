@@ -43,6 +43,10 @@ module Crossbeams
             define_method(:add_text) do |text, options = {}|
               @nodes << Text.new(page_config, text, options)
             end
+          when :heatmap_table
+            define_method(:add_heatmap_table) do |data, options = {}|
+              @nodes << HeatmapTable.new(data, options)
+            end
           when :kpi_card
             define_method(:add_kpi_card) do |text, measure|
               @nodes << KPICard.new(page_config, text, measure)
