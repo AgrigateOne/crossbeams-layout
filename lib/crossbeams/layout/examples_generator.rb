@@ -50,6 +50,7 @@ module Crossbeams
         @out << generate_download_dashboard_button if %i[all download_dashboard_button].include? classes
         @out << generate_filter if %i[all filter].include? classes
         @out << generate_chart if %i[all chart].include? classes
+        @out << generate_heatmap_table if %i[all heatmap_table].include? classes
         @out << generate_no_data if %i[all no_data].include? classes
         @out
       end
@@ -94,6 +95,7 @@ module Crossbeams
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#download_dashboard_button">DownloadDashboardButton</a></li>) if %i[all download_dashboard_button].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#filter">Filter</a></li>) if %i[all filter].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#chart">Chart</a></li>) if %i[all chart].include? classes
+        @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#heatmap_table">HeatmapTable</a></li>) if %i[all heatmap_table].include? classes
         @out << %(<li#{add_class(:li)}><a#{add_class(:link)} href="#no_data">No Data</a></li>) if %i[all no_data].include? classes
         @out << '</ol>'
       end
@@ -434,6 +436,19 @@ module Crossbeams
       def generate_chart
         ar = [head('Chart', 'chart')]
         ar << DonutChart.new(data: [{ "cultivar_name": 'CIR', "count": 51 }, { "cultivar_name": 'FUJ', "count": 71 }],  title: 'Total pallets per Cultivar', q_field: :count, n_field: :cultivar_name, n_title: 'Cultivar').render
+        ar.join(separator)
+      end
+
+      def generate_heatmap_table
+        ar = [head('HeatmapTable', 'heatmap_table')]
+        data = [
+          %w[PUC 10 20 30 TOTAL],
+          ['E123', 10, 20, 30, 60],
+          ['E123', 15, 40, 13, 68],
+          ['E123', 35, 18, 16, 69],
+          ['TOTAL', 60, 78, 59, 197]
+        ]
+        ar << HeatmapTable.new(data, col_title: 'Size').render
         ar.join(separator)
       end
 

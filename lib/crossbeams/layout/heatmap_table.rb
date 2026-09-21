@@ -2,9 +2,9 @@
 
 module Crossbeams
   module Layout
-    # Heatmap component for use in LayoutGrid dashboards
+    # Discrete heatmap component for use in LayoutGrid dashboards
     class HeatmapTable # rubocop:disable Metrics/ClassLength
-      attr_reader :caption, :human_numbers, :data, :row_height, :edge_col_width, :col_width, :last_row, :width, :height, :bands
+      attr_reader :title, :human_numbers, :data, :row_height, :edge_col_width, :col_width, :last_row, :width, :height, :bands
 
       SC = StylesConfig
 
@@ -25,7 +25,7 @@ module Crossbeams
       CELL_DARK = 'cell-dark'
 
       def initialize(data, options = {})
-        @caption = options.fetch(:caption, 'Heatmap')
+        @title = options.fetch(:title, 'Heatmap')
         @human_numbers = options.fetch(:human_numbers, false)
         @data = data
         @row_height = 40
@@ -33,6 +33,9 @@ module Crossbeams
         @col_width = 64
         @zero_as = options[:zero_as]
         @last_row = data.length - 1
+        @row_title = options[:row_title] # y_title
+        @col_title = options[:col_title] # x_title
+        @cell_title = options[:cell_title] || 'Value' # cell_title
       end
 
       def invisible?
@@ -47,7 +50,7 @@ module Crossbeams
         ar += render_data
         ar << end_image
         <<~HTML
-          <div data-heatmap="Y" class="m-2">
+          <div data-heatmap="Y" class="m-2 overflow-x-scroll">
             #{ar.join("\n")}
           </div>
         HTML
@@ -72,7 +75,9 @@ module Crossbeams
         ar
       end
 
-      def build_header_row(row) # rubocop:disable Metrics/AbcSize
+      def build_header_row(row) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+        @row_title ||= row[0]
+        @col_head_values = row.dup
         len = row.length
         ar = []
         ar << %(<rect x="0" y="50" rx="5" ry="5" width="#{width - edge_col_width}" height="#{row_height}" fill="#2563eb" stroke="#fff" stroke-width="1"/>)
@@ -85,20 +90,20 @@ module Crossbeams
         ar.join("\n")
       end
 
-      def build_footer_row(row, y) # rubocop:disable Metrics/AbcSize, Naming/MethodParameterName
+      def build_footer_row(row, y) # rubocop:disable Metrics/AbcSize, Naming/MethodParameterName, Metrics/CyclomaticComplexity
         len = row.length
         ar = []
         ar << %(<rect x="0" y="#{y}" rx="5" ry="5" width="#{width}" height="#{row_height}" fill="#e5e7eb" stroke="#fff" stroke-width="1"/>)
         row.each_with_index do |col, idx|
           x = idx.zero? ? 0 : edge_col_width + ((idx - 1) * col_width)
           w = idx.zero? || idx == len - 1 ? edge_col_width : col_width
-          css_class = idx.zero? ? 'total-name' : 'total-text'
+          css_class = idx.zero? || idx == len - 1 ? 'total-name' : 'total-text'
           ar << %(<text x="#{x.zero? ? w / 2 : x + (w / 2)}" y="#{y + (row_height / 2 + row_height / 10)}" text-anchor="middle" class="#{css_class}">#{humanize_number(col, zero_as: @zero_as)}</text>)
         end
         ar.join("\n")
       end
 
-      def build_data_row(row, y) # rubocop:disable Metrics/AbcSize, Naming/MethodParameterName
+      def build_data_row(row, y) # rubocop:disable Metrics/AbcSize, Naming/MethodParameterName, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         len = row.length
         ar = []
         #  aria-label="Marketing variety: CIR; Standard cartons: 1114987.75597; Grade: Grade 1"
@@ -106,9 +111,17 @@ module Crossbeams
           x = idx.zero? ? 0 : edge_col_width + ((idx - 1) * col_width)
           w = idx.zero? || idx == len - 1 ? edge_col_width : col_width
           fill, css_class = evaluate_col_fill(col, idx, idx == len - 1)
+          # <g class="cell" onpointermove="crossbeamsUtils.showCBTooltip(evt)" onpointerleave="crossbeamsUtils.hideCBTooltip();" aria-label="#{@row_title}: #{row[0]}; #{@cell_title}: #{col ? col.to_f : '-'}; #{@col_title}: #{@col_head_values[idx]}">
+          aria = if idx.zero? || idx == len - 1
+                   ''
+                 else
+                   %(aria-label="#{@row_title}: #{row[0]}; #{@cell_title}: #{col ? col.to_f : '-'}; #{@col_title}: #{@col_head_values[idx]}")
+                 end
           ar << <<~SVG
-            <rect x="#{x}" y="#{y}" rx="5" ry="5" width="#{w}" height="#{row_height}" fill="#{fill}" class="cell-bg" stroke="#fff" stroke-width="1"/>
-            <text x="#{x.zero? ? w / 2 : x + (w / 2)}" y="#{y + (row_height / 2 + row_height / 10)}" text-anchor="middle" aria-label="PUC: x; STD Cartons: #{col ? col.to_f : '-'}; Size: nn" class="#{css_class}">#{humanize_number(col, zero_as: @zero_as)}</text>
+            <g class="cell" #{aria}>
+              <rect x="#{x}" y="#{y}" rx="5" ry="5" width="#{w}" height="#{row_height}" fill="#{fill}" class="cell-bg" stroke="#fff" stroke-width="1"/>
+              <text x="#{x.zero? ? w / 2 : x + (w / 2)}" y="#{y + (row_height / 2 + row_height / 10)}" text-anchor="middle" pointer-events="none" class="#{css_class}">#{humanize_number(col, zero_as: @zero_as)}</text>
+            </g>
           SVG
         end
         ar.join("\n")
@@ -155,8 +168,9 @@ module Crossbeams
       def start_image
         # Using 100% for width & height is OK for a full table, but not for a sparse table.
         # Using the same w & h for viewport maybe renders better, but text should increase?
+        # <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="#{height + 50}" viewBox="0 0 #{width} #{height + 50}">
         <<~SVG
-          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="#{height + 50}" viewBox="0 0 #{width} #{height + 50}">
+          <svg xmlns="http://www.w3.org/2000/svg" class="min-w-full" height="#{height + 50}" viewBox="0 0 #{width} #{height + 50}">
             <defs>
               <style>
                 .cell-text { font-family: Arial, Helvetica, sans-serif; font-size: 16px; fill: #000; }
@@ -170,7 +184,7 @@ module Crossbeams
             </defs>
 
           <!-- Heading -->
-          <text x="#{width / 2}" y="30" class="heading-text" text-anchor="middle">#{caption}</text>
+          <text x="#{width / 2}" y="30" class="heading-text" text-anchor="middle">#{title}</text>
           <!-- Background -->
           <rect y="50" width="#{width}" height="#{height}" fill="#fff"/>
         SVG

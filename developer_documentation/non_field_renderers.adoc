@@ -28,6 +28,7 @@ The following renderers that do not bind to fields in a form are available:
 * <<LayoutGrid>>
 * <<KPICard>>
 * <<Chart>>
+* <<HeatmapTable>>
 * <<Filter>>
 * <<FilterField>>
 * <<NoData>>
@@ -1359,6 +1360,61 @@ colour_title:: The Legend to display for the stacks, defaults to the value of th
 q_field:: The name of the quantitative field.
 n_field:: The name of the nominal field.
 n_title:: Label for the nominal field, defaults to the value of `n_field`.
+
+=== HeatmapTable
+
+Render an SVG table of data with "heatmap" colours applied to cells based on their value in relation to the full set of values.
+
+[source,ruby]
+----
+grid.specify_row(1)
+grid.add_heatmap_table data,
+                       title: 'Size distribution per week (std cartons)',
+                       human_numbers: true,
+                       row_title: 'PUC',
+                       col_title: 'Size',
+                       cell_title: 'STD cartons'
+----
+
+|===
+|attribute |description |possible values |default
+
+|data
+|The data as a two-dimensional array
+|Array
+|None
+
+|options - :title
+|The chart title
+|String
+|"Heatmap"
+
+|options - :human_numbers
+|If true, the cell values will be humanized: 1000 => 1k, 1000 000 => 1m
+|Boolean
+|false
+
+|options - :zero_as
+|An optional string to display in cells instead of "0", or when the value is nil
+|String
+|nil
+
+|options - :row_title
+|The name of the 1st Y column (row names)
+|String
+|The cell value of the first column of the first row of data
+
+|options - :col_title
+|The group name for the columns
+|String
+|nil
+
+|options - :cell_title
+|The name of the cell value
+|String
+|"Value"
+
+|===
 
 === Filter
 
