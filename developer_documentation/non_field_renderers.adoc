@@ -1365,16 +1365,58 @@ n_title:: Label for the nominal field, defaults to the value of `n_field`.
 
 Render an SVG table of data with "heatmap" colours applied to cells based on their value in relation to the full set of values.
 
+The query for this data should return rows with three fields - one for the row name, one for the column name and one for the value to show in the cell defined by the intersection of the row and column. In the example below those fields are: `:puc_code`, `:size_count` and `:standard_cartons`.
+
 [source,ruby]
 ----
 grid.specify_row(1)
-grid.add_heatmap_table data,
+table = Crossbeams::Layout::HeatmapTable.prepare_table_from_data(data) do |opts|
+  opts.row_title = 'PUC'
+  opts.row_key = :puc_code
+  opts.col_key = :size_count
+  opts.val_key = :standard_cartons
+end
+grid.add_heatmap_table table,
                        title: 'Size distribution per week (std cartons)',
                        human_numbers: true,
                        row_title: 'PUC',
                        col_title: 'Size',
                        cell_title: 'STD cartons'
 ----
+
+[NOTE]
+====
+The helper method on the class (`prepare_table_from_data(data, exclude_zero_total_rows: true)` takes query data and prepares the crosstab table required for a heatmap table.
+
+The method receives the data, and an option (`exclude_zero_total_rows` which defaults to true and will exclude all rows where the row total is zero).
+
+It is called with a block where you specify options for the preparation of the table.
+
+[source,ruby]
+----
+table = Crossbeams::Layout::HeatmapTable.prepare_table_from_data(data) do |opts|
+  # REQUIRED options:
+  opts.row_title = 'PUC'             # The column header at top left
+  opts.row_key   = :puc_code         # A valid key for a data row
+  opts.col_key   = :size_count       # A valid key for a data row
+  opts.val_key   = :standard_cartons # A valid key for a data row
+
+  # OPTIONAL options (here showing the defaults)
+  opts.row_agg_title = 'TOTAL'       # The column header at top right
+  opts.foot_title    = 'TOTAL'       # The column footer at bottom left
+  opts.agg_func      = :sum          # :sum or :avg_perc
+  opts.col_fmt       = nil           # nil or a lambda function.
+  opts.sort_by       = ->(c) { c == 'None' ? 0 : c.to_i }
+end
+----
+
+`agg_func`:: defines how to caluclate row aggregation for the end of the row and for the footer. `:sum` will sum all values, while `:avg_perc` will calculate an average for the row and express that as a percentage of the grand total.
+
+`col_fmt`:: is used to format the column headings. When nil, the column value will be displayed as-is. If a lambda function is provided, this will be called with the column value. e.g. `->(c) { "W#{c.delete_prefix('0')}" }` will turn `['01', '02', '10']` into `['W1', 'W2', 'W10']`.
+
+`sort_by`:: is a lambda function that is used to sort the column values. The default is to convert the values to integers and sort in ascending order.
+====
+
 
 |===
 |attribute |description |possible values |default

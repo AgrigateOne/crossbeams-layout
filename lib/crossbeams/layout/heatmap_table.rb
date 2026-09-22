@@ -4,7 +4,7 @@ module Crossbeams
   module Layout
     # Discrete heatmap component for use in LayoutGrid dashboards
     class HeatmapTable # rubocop:disable Metrics/ClassLength
-      attr_reader :title, :human_numbers, :data, :row_height, :edge_col_width, :col_width, :last_row, :width, :height, :bands
+      attr_reader :title, :human_numbers, :data, :row_height, :edge_col_width, :col_width, :last_row, :width, :img_width, :startx, :height, :bands, :zero_as
 
       SC = StylesConfig
 
@@ -56,71 +56,146 @@ module Crossbeams
         HTML
       end
 
+      def self.prepare_table_from_data(data, exclude_zero_total_rows: true) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        o = OpenStruct.new(row_title: nil,
+                           row_agg_title: 'TOTAL',
+                           foot_title: 'TOTAL',
+                           row_key: nil,
+                           col_key: nil,
+                           val_key: nil,
+                           agg_func: :sum,
+                           col_fmt: nil,
+                           sort_by: ->(c) { c == 'None' ? 0 : c.to_i })
+        yield o
+
+        hs = {}
+        gtot = BigDecimal('0')
+        data.each do |r|
+          hs[r[o.row_key]] ||= {}
+          hs[r[o.row_key]][r[o.col_key]] = r[o.val_key]
+          gtot += r[o.val_key] unless r[o.val_key].nil?
+        end
+        colset = Set.new
+        data.each { |a| colset << a[o.col_key] }
+        cols = colset.sort_by { |c| o.sort_by.call(c) }.to_a
+        cnt = cols.length
+
+        par = [[o.row_title || 'Row'] + cols.map { |c| o.col_fmt ? o.col_fmt.call(c) : c } + [o.row_agg_title || 'TOTAL']]
+        coltot = Hash[cols.zip([0.0] * cols.length)]
+        hs.keys.sort.each do |row_key|
+          ftot = 0.0
+          rec = [row_key] + cols.map do |c|
+            ftot += hs[row_key][c] if hs[row_key][c]
+            coltot[c] += hs[row_key][c] if hs[row_key][c]
+            hs[row_key][c]
+          end + row_total(ftot, cnt, gtot, o)
+          par << rec unless exclude_zero_total_rows && ftot.zero?
+        end
+        par << [o.foot_title || 'TOTAL'] + cols.map { |c| coltot[c] } + grand_total(gtot, cnt, o)
+        par
+      end
+
+      def self.row_total(ftot, cnt, gtot, opts)
+        if opts.agg_func == :sum
+          [ftot]
+        elsif opts.agg_func == :avg_perc
+          [ftot.zero? ? '0.00%' : format('%.2f%%', (ftot / cnt) / gtot * 100.0)]
+        else
+          []
+        end
+      end
+
+      def self.grand_total(gtot, cnt, opts)
+        if opts.agg_func == :sum
+          [gtot]
+        elsif opts.agg_func == :avg_perc
+          [format('%.1f%%', ((gtot / cnt) / gtot) * 100.0)]
+        else
+          []
+        end
+      end
+
+      private_class_method :row_total, :grand_total
+
       private
 
       def render_data
         ar = []
-        y = 50
+        y_pos = 50
         data.each_with_index do |row, rdx|
           ar << case rdx
                 when 0
                   build_header_row(row)
                 when last_row
-                  build_footer_row(row, y)
+                  build_footer_row(row, y_pos)
                 else
-                  build_data_row(row, y)
+                  build_data_row(row, y_pos)
                 end
-          y += row_height
+          y_pos += row_height
         end
         ar
       end
 
-      def build_header_row(row) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+      def x_for_current_index(idx)
+        idx.zero? ? startx : startx + edge_col_width + ((idx - 1) * col_width)
+      end
+
+      def col_width_for_current_index(idx, len)
+        idx.zero? || idx == len - 1 ? edge_col_width : col_width
+      end
+
+      def x_for_cell_text(x_pos, width)
+        x_pos.zero? ? width / 2 : x_pos + (width / 2)
+      end
+
+      def y_for_cell_text(y_pos)
+        y_pos + row_height / 2 + row_height / 10
+      end
+
+      def build_header_row(row) # rubocop:disable Metrics/AbcSize
         @row_title ||= row[0]
         @col_head_values = row.dup
         len = row.length
         ar = []
-        ar << %(<rect x="0" y="50" rx="5" ry="5" width="#{width - edge_col_width}" height="#{row_height}" fill="#2563eb" stroke="#fff" stroke-width="1"/>)
+        ar << %(<rect x="#{startx}" y="50" rx="5" ry="5" width="#{width - edge_col_width}" height="#{row_height}" fill="#2563eb" stroke="#fff" stroke-width="1"/>)
         row.each_with_index do |col, idx|
-          x = idx.zero? ? 0 : edge_col_width + ((idx - 1) * col_width)
-          w = idx.zero? || idx == len - 1 ? edge_col_width : col_width
+          x = x_for_current_index(idx)
+          w = col_width_for_current_index(idx, len)
           css_class = idx == len - 1 ? 'header-end' : 'header-text'
-          ar << %(<text x="#{x.zero? ? w / 2 : x + (w / 2)}" y="#{50 + row_height / 2 + row_height / 10}" text-anchor="middle" class="#{css_class}">#{col}</text>)
+          ar << %(<text x="#{x_for_cell_text(x, w)}" y="#{y_for_cell_text(50)}" text-anchor="middle" class="#{css_class}">#{col}</text>)
         end
         ar.join("\n")
       end
 
-      def build_footer_row(row, y) # rubocop:disable Metrics/AbcSize, Naming/MethodParameterName, Metrics/CyclomaticComplexity
+      def build_footer_row(row, y_pos) # rubocop:disable Metrics/AbcSize
         len = row.length
         ar = []
-        ar << %(<rect x="0" y="#{y}" rx="5" ry="5" width="#{width}" height="#{row_height}" fill="#e5e7eb" stroke="#fff" stroke-width="1"/>)
+        ar << %(<rect x="#{startx}" y="#{y_pos}" rx="5" ry="5" width="#{width}" height="#{row_height}" fill="#e5e7eb" stroke="#fff" stroke-width="1"/>)
         row.each_with_index do |col, idx|
-          x = idx.zero? ? 0 : edge_col_width + ((idx - 1) * col_width)
-          w = idx.zero? || idx == len - 1 ? edge_col_width : col_width
+          x = x_for_current_index(idx)
+          w = col_width_for_current_index(idx, len)
           css_class = idx.zero? || idx == len - 1 ? 'total-name' : 'total-text'
-          ar << %(<text x="#{x.zero? ? w / 2 : x + (w / 2)}" y="#{y + (row_height / 2 + row_height / 10)}" text-anchor="middle" class="#{css_class}">#{humanize_number(col, zero_as: @zero_as)}</text>)
+          ar << %(<text x="#{x_for_cell_text(x, w)}" y="#{y_for_cell_text(y_pos)}" text-anchor="middle" class="#{css_class}">#{humanize_number(col)}</text>)
         end
         ar.join("\n")
       end
 
-      def build_data_row(row, y) # rubocop:disable Metrics/AbcSize, Naming/MethodParameterName, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      def build_data_row(row, y_pos) # rubocop:disable Metrics/AbcSize
         len = row.length
         ar = []
-        #  aria-label="Marketing variety: CIR; Standard cartons: 1114987.75597; Grade: Grade 1"
         row.each_with_index do |col, idx|
-          x = idx.zero? ? 0 : edge_col_width + ((idx - 1) * col_width)
-          w = idx.zero? || idx == len - 1 ? edge_col_width : col_width
+          x = x_for_current_index(idx)
+          w = col_width_for_current_index(idx, len)
           fill, css_class = evaluate_col_fill(col, idx, idx == len - 1)
-          # <g class="cell" onpointermove="crossbeamsUtils.showCBTooltip(evt)" onpointerleave="crossbeamsUtils.hideCBTooltip();" aria-label="#{@row_title}: #{row[0]}; #{@cell_title}: #{col ? col.to_f : '-'}; #{@col_title}: #{@col_head_values[idx]}">
           aria = if idx.zero? || idx == len - 1
                    ''
                  else
-                   %(aria-label="#{@row_title}: #{row[0]}; #{@cell_title}: #{col ? col.to_f : '-'}; #{@col_title}: #{@col_head_values[idx]}")
+                   %( aria-label="#{@row_title}: #{row[0]}; #{@cell_title}: #{col ? col.to_f : '-'}; #{@col_title}: #{@col_head_values[idx]}")
                  end
           ar << <<~SVG
-            <g class="cell" #{aria}>
-              <rect x="#{x}" y="#{y}" rx="5" ry="5" width="#{w}" height="#{row_height}" fill="#{fill}" class="cell-bg" stroke="#fff" stroke-width="1"/>
-              <text x="#{x.zero? ? w / 2 : x + (w / 2)}" y="#{y + (row_height / 2 + row_height / 10)}" text-anchor="middle" pointer-events="none" class="#{css_class}">#{humanize_number(col, zero_as: @zero_as)}</text>
+            <g class="cell"#{aria}>
+              <rect x="#{x}" y="#{y_pos}" rx="5" ry="5" width="#{w}" height="#{row_height}" fill="#{fill}" class="cell-bg" stroke="#fff" stroke-width="1"/>
+              <text x="#{x_for_cell_text(x, w)}" y="#{y_for_cell_text(y_pos)}" text-anchor="middle" pointer-events="none" class="#{css_class}">#{humanize_number(col)}</text>
             </g>
           SVG
         end
@@ -157,20 +232,24 @@ module Crossbeams
 
       def analyse_data # rubocop:disable Metrics/AbcSize
         vals = data[1..-2].map { |r| r[1..-2] }.flatten.map { |c| c.nil? ? nil : BigDecimal(c) }
-        min = vals.compact.min
-        max = vals.compact.max
+        min = vals.compact.min || 0
+        max = vals.compact.max || 100
         range = (max - min) / 10.0
         @bands = 10.times.map { |n| n * range }
         @width = (edge_col_width * 2) + ((data.first.length - 2) * col_width)
-        @height = data.length * row_height
+        @height = (data.length * row_height) + 50
+        calculate_image_dims
+      end
+
+      def calculate_image_dims
+        cap_width = title.length * 14
+        @img_width = [cap_width, width].max
+        @startx = img_width > width ? (img_width - width) / 2 : 0
       end
 
       def start_image
-        # Using 100% for width & height is OK for a full table, but not for a sparse table.
-        # Using the same w & h for viewport maybe renders better, but text should increase?
-        # <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="#{height + 50}" viewBox="0 0 #{width} #{height + 50}">
         <<~SVG
-          <svg xmlns="http://www.w3.org/2000/svg" class="min-w-full" height="#{height + 50}" viewBox="0 0 #{width} #{height + 50}">
+          <svg xmlns="http://www.w3.org/2000/svg" class="min-w-full" width="#{img_width}" height="#{height}" viewBox="0 0 #{img_width} #{height}">
             <defs>
               <style>
                 .cell-text { font-family: Arial, Helvetica, sans-serif; font-size: 16px; fill: #000; }
@@ -183,10 +262,10 @@ module Crossbeams
               </style>
             </defs>
 
-          <!-- Heading -->
-          <text x="#{width / 2}" y="30" class="heading-text" text-anchor="middle">#{title}</text>
           <!-- Background -->
-          <rect y="50" width="#{width}" height="#{height}" fill="#fff"/>
+          <rect y="0" width="#{img_width}" height="#{height}" fill="#fff"/>
+          <!-- Heading -->
+          <text x="#{img_width / 2}" y="30" class="heading-text" text-anchor="middle">#{title}</text>
         SVG
       end
 
@@ -197,8 +276,7 @@ module Crossbeams
       # Format a number as 999k, 999m when over 1000 or 1000000
       #
       # @param number [string,number,nil] the number to format
-      # @param zer_as [string] Optional. A string to return instead of "0".
-      def humanize_number(number, zero_as: nil) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      def humanize_number(number) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         return zero_as || '' if number.nil?
         return number unless human_numbers
         return number if number.to_s.match?(/[a-df-zA-Z-%]/) # Ignore "e" (which will be present for scientific notation)
