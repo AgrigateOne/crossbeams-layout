@@ -56,7 +56,7 @@ module Crossbeams
         HTML
       end
 
-      def self.prepare_table_from_data(data, exclude_zero_total_rows: true) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      def self.prepare_table_from_data(data, exclude_zero_total_rows: true, order_by: :row) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         o = OpenStruct.new(row_title: nil,
                            row_agg_title: 'TOTAL',
                            foot_title: 'TOTAL',
@@ -81,6 +81,7 @@ module Crossbeams
         cnt = cols.length
 
         par = [[o.row_title || 'Row'] + cols.map { |c| o.col_fmt ? o.col_fmt.call(c) : c } + [o.row_agg_title || 'TOTAL']]
+        ar = []
         coltot = Hash[cols.zip([0.0] * cols.length)]
         hs.keys.sort.each do |row_key|
           ftot = 0.0
@@ -89,27 +90,41 @@ module Crossbeams
             coltot[c] += hs[row_key][c] if hs[row_key][c]
             hs[row_key][c]
           end + row_total(ftot, cnt, gtot, o)
-          par << rec unless exclude_zero_total_rows && ftot.zero?
+          ar << rec unless exclude_zero_total_rows && ftot.zero?
         end
+        par += case order_by
+               when :total_desc
+                 ar.sort_by { |r| 1 - r[1...-1].sum { |a| a.nil? ? 0 : a } }
+               when :total_asc
+                 ar.sort_by { |r| r[1...-1].sum { |a| a.nil? ? 0 : a } }
+               else # :row
+                 ar
+               end
         par << [o.foot_title || 'TOTAL'] + cols.map { |c| coltot[c] } + grand_total(gtot, cnt, o)
         par
       end
 
       def self.row_total(ftot, cnt, gtot, opts)
-        if opts.agg_func == :sum
+        case opts.agg_func
+        when :sum
           [ftot]
-        elsif opts.agg_func == :avg_perc
+        when :avg_perc
           [ftot.zero? ? '0.00%' : format('%.2f%%', (ftot / cnt) / gtot * 100.0)]
+        when :avg
+          [ftot.zero? ? '0.00' : format('%.2f', ftot / cnt)]
         else
           []
         end
       end
 
       def self.grand_total(gtot, cnt, opts)
-        if opts.agg_func == :sum
+        case opts.agg_func
+        when :sum
           [gtot]
-        elsif opts.agg_func == :avg_perc
+        when :avg_perc
           [format('%.1f%%', ((gtot / cnt) / gtot) * 100.0)]
+        when :avg
+          [format('%.1f', gtot / cnt)]
         else
           []
         end
@@ -186,7 +201,7 @@ module Crossbeams
         row.each_with_index do |col, idx|
           x = x_for_current_index(idx)
           w = col_width_for_current_index(idx, len)
-          fill, css_class = evaluate_col_fill(col, idx, idx == len - 1)
+          fill, css_class, heat = evaluate_col_fill(col, idx, idx == len - 1)
           aria = if idx.zero? || idx == len - 1
                    ''
                  else
@@ -194,7 +209,7 @@ module Crossbeams
                  end
           ar << <<~SVG
             <g class="cell"#{aria}>
-              <rect x="#{x}" y="#{y_pos}" rx="5" ry="5" width="#{w}" height="#{row_height}" fill="#{fill}" class="cell-bg" stroke="#fff" stroke-width="1"/>
+              <rect x="#{x}" y="#{y_pos}" rx="5" ry="5" width="#{w}" height="#{row_height}" fill="#{fill}" data-heat="#{heat}" class="cell-bg" stroke="#fff" stroke-width="1"/>
               <text x="#{x_for_cell_text(x, w)}" y="#{y_for_cell_text(y_pos)}" text-anchor="middle" pointer-events="none" class="#{css_class}">#{humanize_number(col)}</text>
             </g>
           SVG
@@ -203,30 +218,30 @@ module Crossbeams
       end
 
       def evaluate_col_fill(col, idx, last_col) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
-        return ['#e5e7eb', CELL_CLASS] if idx.zero? || last_col
-        return [HEATS[:other], CELL_CLASS] if col.nil?
+        return ['#e5e7eb', CELL_CLASS, 'N'] if idx.zero? || last_col
+        return [HEATS[:other], CELL_CLASS, 'N'] if col.nil?
 
         case BigDecimal(col)
         when bands[0]..bands[1]
-          [HEATS[0], CELL_CLASS]
+          [HEATS[0], CELL_CLASS, 1]
         when bands[1]..bands[2]
-          [HEATS[1], CELL_CLASS]
+          [HEATS[1], CELL_CLASS, 2]
         when bands[2]..bands[3]
-          [HEATS[2], CELL_CLASS]
+          [HEATS[2], CELL_CLASS, 3]
         when bands[3]..bands[4]
-          [HEATS[3], CELL_CLASS]
+          [HEATS[3], CELL_CLASS, 4]
         when bands[4]..bands[5]
-          [HEATS[4], CELL_CLASS]
+          [HEATS[4], CELL_CLASS, 5]
         when bands[5]..bands[6]
-          [HEATS[5], CELL_DARK]
+          [HEATS[5], CELL_DARK, 6]
         when bands[6]..bands[7]
-          [HEATS[6], CELL_DARK]
+          [HEATS[6], CELL_DARK, 7]
         when bands[7]..bands[8]
-          [HEATS[7], CELL_DARK]
+          [HEATS[7], CELL_DARK, 8]
         when bands[8]..bands[9]
-          [HEATS[8], CELL_DARK]
+          [HEATS[8], CELL_DARK, 9]
         else
-          [HEATS[:max], CELL_DARK]
+          [HEATS[:max], CELL_DARK, 10]
         end
       end
 
