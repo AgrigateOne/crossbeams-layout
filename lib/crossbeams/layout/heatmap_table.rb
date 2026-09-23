@@ -56,7 +56,7 @@ module Crossbeams
         HTML
       end
 
-      def self.prepare_table_from_data(data, exclude_zero_total_rows: true, order_by: :row) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      def self.prepare_table_from_data(data, exclude_zero_total_rows: true, order_by: :total_desc) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         o = OpenStruct.new(row_title: nil,
                            row_agg_title: 'TOTAL',
                            foot_title: 'TOTAL',
@@ -65,6 +65,7 @@ module Crossbeams
                            val_key: nil,
                            agg_func: :sum,
                            col_fmt: nil,
+                           row_sort_func: nil,
                            sort_by: ->(c) { c == 'None' ? 0 : c.to_i })
         yield o
 
@@ -92,13 +93,18 @@ module Crossbeams
           end + row_total(ftot, cnt, gtot, o)
           ar << rec unless exclude_zero_total_rows && ftot.zero?
         end
+
         par += case order_by
-               when :total_desc
-                 ar.sort_by { |r| 1 - r[1...-1].sum { |a| a.nil? ? 0 : a } }
                when :total_asc
                  ar.sort_by { |r| r[1...-1].sum { |a| a.nil? ? 0 : a } }
-               else # :row
-                 ar
+               when :row
+                 if o.row_sort_func
+                   ar.sort_by { |r| o.row_sort_func.call(r[0]) }
+                 else
+                   ar
+                 end
+               else # :total_desc
+                 ar.sort_by { |r| 1 - r[1...-1].sum { |a| a.nil? ? 0 : a } }
                end
         par << [o.foot_title || 'TOTAL'] + cols.map { |c| coltot[c] } + grand_total(gtot, cnt, o)
         par

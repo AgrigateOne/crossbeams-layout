@@ -1386,9 +1386,9 @@ grid.add_heatmap_table table,
 
 [NOTE]
 ====
-The helper method on the class (`prepare_table_from_data(data, exclude_zero_total_rows: true, order_by: :row)` takes query data and prepares the crosstab table required for a heatmap table.
+The helper method on the class (`prepare_table_from_data(data, exclude_zero_total_rows: true, order_by: :total_desc)` takes query data and prepares the crosstab table required for a heatmap table.
 
-The method receives the data, and two options (`exclude_zero_total_rows` which defaults to true and will exclude all rows where the row total is zero and `:order_by` which defaults to `:row`, and can be `:total_desc` or `:total_asc` - to order the rows by the row value, or by the row total, ascending or descending).
+The method receives the data, and two options (`exclude_zero_total_rows` which defaults to true and will exclude all rows where the row total is zero and `:order_by` which defaults to `:total_desc`, and can be `:row` or `:total_asc` - to order the rows by the row value, or by the row total, ascending or descending).
 
 It is called with a block where you specify options for the preparation of the table.
 
@@ -1406,6 +1406,7 @@ table = Crossbeams::Layout::HeatmapTable.prepare_table_from_data(data) do |opts|
   opts.foot_title    = 'TOTAL'       # The column footer at bottom left
   opts.agg_func      = :sum          # :sum, :avg or :avg_perc
   opts.col_fmt       = nil           # nil or a lambda function.
+  opts.row_sort_func = nil           # nil or a lambda function.
   opts.sort_by       = ->(c) { c == 'None' ? 0 : c.to_i }
 end
 ----
@@ -1413,6 +1414,8 @@ end
 `agg_func`:: defines how to caluclate row aggregation for the end of the row and for the footer. `:sum` will sum all values, while `:avg` will calculate the row average, and `:avg_perc` will calculate an average for the row and express that as a percentage of the grand total.
 
 `col_fmt`:: is used to format the column headings. When nil, the column value will be displayed as-is. If a lambda function is provided, this will be called with the column value. e.g. `->(c) { "W#{c.delete_prefix('0')}" }` will turn `['01', '02', '10']` into `['W1', 'W2', 'W10']`.
+
+`row_sort_func`:: is used to override the default row order (when `order_by: :row` is specified). The default is to sort as strings, but if the row is defined by an integer value, you can sort using `->(c) { c.to_s.match?(/^\D+$/) ? c : c.to_s.rjust(6, '0') }` to get `50, 60, 100, 120` instead of `100, 120, 50, 60`.
 
 `sort_by`:: is a lambda function that is used to sort the column values. The default is to convert the values to integers and sort in ascending order.
 ====
