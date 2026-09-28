@@ -1404,14 +1404,14 @@ table = Crossbeams::Layout::HeatmapTable.prepare_table_from_data(data) do |opts|
   # OPTIONAL options (here showing the defaults)
   opts.row_agg_title = 'TOTAL'       # The column header at top right
   opts.foot_title    = 'TOTAL'       # The column footer at bottom left
-  opts.agg_func      = :sum          # :sum, :avg or :avg_perc
+  opts.agg_func      = :sum          # :sum, :avg, :avg_perc or :perc
   opts.col_fmt       = nil           # nil or a lambda function.
   opts.row_sort_func = nil           # nil or a lambda function.
   opts.sort_by       = ->(c) { c == 'None' ? 0 : c.to_i }
 end
 ----
 
-`agg_func`:: defines how to caluclate row aggregation for the end of the row and for the footer. `:sum` will sum all values, while `:avg` will calculate the row average, and `:avg_perc` will calculate an average for the row and express that as a percentage of the grand total.
+`agg_func`:: defines how to caluclate row aggregation for the end of the row and for the footer. `:sum` will sum all values, while `:avg` will calculate the row average, `:avg_perc` will calculate an average for the row and express that as a percentage of the grand total, and `:perc` will calculate the row total as an average of the grand total.
 
 `col_fmt`:: is used to format the column headings. When nil, the column value will be displayed as-is. If a lambda function is provided, this will be called with the column value. e.g. `->(c) { "W#{c.delete_prefix('0')}" }` will turn `['01', '02', '10']` into `['W1', 'W2', 'W10']`.
 

@@ -110,7 +110,7 @@ module Crossbeams
         par
       end
 
-      def self.row_total(ftot, cnt, gtot, opts)
+      def self.row_total(ftot, cnt, gtot, opts) # rubocop:disable Metrics/CyclomaticComplexity
         case opts.agg_func
         when :sum
           [ftot]
@@ -118,6 +118,8 @@ module Crossbeams
           [ftot.zero? ? '0.00%' : format('%.2f%%', (ftot / cnt) / gtot * 100.0)]
         when :avg
           [ftot.zero? ? '0.00' : format('%.2f', ftot / cnt)]
+        when :perc
+          [ftot.zero? ? '0.00%' : format('%.2f', ftot / gtot * 100.0)]
         else
           []
         end
@@ -131,6 +133,8 @@ module Crossbeams
           [format('%.1f%%', ((gtot / cnt) / gtot) * 100.0)]
         when :avg
           [format('%.1f', gtot / cnt)]
+        when :perc
+          ['100%']
         else
           []
         end
