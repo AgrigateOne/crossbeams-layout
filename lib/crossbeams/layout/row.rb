@@ -59,8 +59,14 @@ module Crossbeams
           # NOTE: should the row be in charge of the column widths? i.e. if 1 col, full width, 2 cols, 1/2 width etc?
           # (Pass 1,2,3,4 in to the render method)
           col_renders = nodes.reject(&:invisible?).map(&:render).join("\n<!-- End Col -->\n")
+
+          # The `@lg:flex-row` class is here to swap from flex-col to flex-row when the parent with `@container` class
+          # is narrower than @container.@lg - see https://tailwindcss.com/docs/responsive-design
+          # @container is set on the main page div and on dialog content divs in view layouts.
+          # This will lead to columns rendering below one another on narrow mobile pages, but side-by-side on other pages.
+
           <<-HTML
-          <div class="#{row_class}">
+          <div class="#{row_class} flex flex-col @lg:flex-row w-full gap-2">
             #{col_renders}
           </div>
           HTML

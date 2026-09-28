@@ -12,6 +12,7 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Changed
 - TabSet gets a `nested` option so that nested tabs can be rendered with extra styling
 ### Fixed
+- Row will render Columns below each other on small screens
 
 ## [2.3.4] - 2026-06-19
 ### Added
