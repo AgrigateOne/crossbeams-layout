@@ -43,6 +43,13 @@ module Crossbeams
           HTML
         end
 
+        # def backup_empty_select
+        #   # Hidden blank value to be submitted as a param if the Multi is cleared.
+        #   # A cleared Mult param will be ['']
+        #   # A non-clered Multi param will include an empty string: ['', '1', '2']
+        #   %(<input #{name_attribute_multi} type="hidden" value="">)
+        # end
+
         def required_str
           @field_config[:required] ? ' required' : ''
         end

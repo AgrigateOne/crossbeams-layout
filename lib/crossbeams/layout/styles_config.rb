@@ -3,7 +3,7 @@
 module Crossbeams
   module Layout
     # Configured classes for styling HMTL elements
-    class StylesConfig
+    class StylesConfig # rubocop:disable Metrics/ClassLength
       extend Dry::Configurable
 
       setting :h1, default: 'text-xl tracking-normal font-medium leading-none'  # title-large
@@ -55,13 +55,16 @@ module Crossbeams
 
       setting :button_primary, default: 'flex items-center justify-left gap-3 flex-row font-normal select-none whitespace-nowrap rounded border-2 border-ocean-700 cursor-pointer outline-none focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 px-4 py-2 h-[2.75rem] min-w-[2.75rem] bg-ocean-700 text-white border-ocean-700 active:bg-ocean-700 active:border-$:primary_h_colour$ hover:bg-$:primary_h_colour$ hover:border-$:primary_h_colour$ disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-200 disabled:hover:bg-slate-200 disabled:hover:border-slate-200 focus-visible:ring-ocean-500'
       setting :button_tertiary, default: 'flex items-center justify-left gap-3 flex-row mt-2 rounded h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal text-slate-800 active:bg-zinc-200 active:border-$:primary_h_colour$ hover:text-$:primary_h_colour$ hover:bg-$:secondary_h_bg$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
+      setting :button_info, default: 'flex items-center justify-left gap-3 flex-row rounded border-2 border-$:secondary_bg$ h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal $:text_info$ $:bg_info$ active:bg-ocean-700 active:border-$:primary_h_colour$ hover:$:h_text_info$ hover:$:h_bg_info$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
+      setting :button_success, default: 'flex items-center justify-left gap-3 flex-row rounded border-2 border-$:secondary_bg$ h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal $:text_success$ $:bg_success$ active:bg-ocean-700 active:border-$:primary_h_colour$ hover:$:h_text_success$ hover:$:h_bg_success$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
+      setting :button_warning, default: 'flex items-center justify-left gap-3 flex-row rounded border-2 border-$:secondary_bg$ h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal $:text_warning$ $:bg_warning$ active:bg-ocean-700 active:border-$:primary_h_colour$ hover:$:h_text_warning$ hover:$:h_bg_warning$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
+      setting :button_error, default: 'flex items-center justify-left gap-3 flex-row rounded border-2 border-$:secondary_bg$ h-[2.75rem] min-w-[2.75rem] px-4 py-2 outline-none select-none whitespace-nowrap cursor-pointer font-normal $:text_error$ $:bg_error$ active:bg-ocean-700 active:border-$:primary_h_colour$ hover:$:h_text_error$ hover:$:h_bg_error$ focus-visible:ring focus-visible:ring-offset-white focus-visible:ring-offset-2 focus-visible:ring-ocean-500'
       setting :file_input_button, default: 'file:rounded file:border-2 file:h-[2.75rem] file:min-w-[2.75rem] file:px-4 file:py-2 file:outline-none file:select-none file:whitespace-nowrap file:cursor-pointer file:font-normal file:text-$:secondary_colour$ file:bg-$:secondary_bg$ file:active:bg-ocean-700 file:active:border-$:primary_h_colour$ file:hover:text-$:primary_h_colour$ file:hover:bg-$:secondary_h_bg$ file:focus-visible:ring file:focus-visible:ring-offset-white file:focus-visible:ring-offset-2 file:focus-visible:ring-ocean-500 file:border-none'
 
       setting :primary_colour, default: 'slate-800'
       setting :primary_bg, default: 'slate-300'
       setting :primary_h_colour, default: 'ocean-700'
       setting :primary_h_bg, default: 'ocean-100'
-      setting :secondary_h_bg, default: 'ocean-50'
       setting :show_check_on, default: 'text-green-700'
       setting :show_check_off, default: 'text-red-600'
       setting :bg_green, default: 'bg-green-500'
@@ -71,16 +74,33 @@ module Crossbeams
 
       setting :secondary_colour, default: 'slate-800'
       setting :secondary_bg, default: 'slate-200'
+      setting :secondary_h_bg, default: 'ocean-50'
+
+      setting :text_info, default: 'text-sky-800'
+      setting :bg_info, default: 'bg-sky-100'
+      setting :h_text_info, default: 'text-sky-900'
+      setting :h_bg_info, default: 'bg-sky-50'
+
+      setting :text_success, default: 'text-green-600'
+      setting :bg_success, default: 'bg-green-100'
+      setting :h_text_success, default: 'text-green-800'
+      setting :h_bg_success, default: 'bg-green-50'
 
       setting :text_warning, default: 'text-orange-600'
       setting :bg_warning, default: 'bg-orange-100'
+      setting :h_text_warning, default: 'text-orange-800'
+      setting :h_bg_warning, default: 'bg-orange-50'
+
       setting :text_error, default: 'text-red-600'
-      # setting :notice, default: 'm-2 p-1.5 border border-ocean-700'
+      setting :bg_error, default: 'bg-red-100'
+      setting :h_text_error, default: 'text-red-800'
+      setting :h_bg_error, default: 'bg-red-50'
+
       setting :notice, default: 'm-2 flex flex-row justify-start items-center gap-2 px-3 py-4 mb-4 rounded'
-      setting :note_info, default: 'bg-sky-100 text-sky-800'
-      setting :note_success, default: 'bg-green-100 text-green-600'
+      setting :note_info, default: '$:bg_info$ $:text_info$'
+      setting :note_success, default: '$:bg_success$ $:text_success$'
       setting :note_warning, default: '$:bg_warning$ $:text_warning$'
-      setting :note_error, default: 'bg-red-100 text-red-600'
+      setting :note_error, default: '$:bg_error$ $:text_error$'
 
       setting :table_div, default: 'border border-slate-300 rounded-lg overflow-auto'
       setting :table_div_no_b, default: 'overflow-auto'

@@ -15,9 +15,10 @@ These dashboard pages are typically made up from the following components:
 * link:/developer_documentation/non_field_renderers.adoc#_layoutgrid[LayoutGrid]
 * link:/developer_documentation/non_field_renderers.adoc#_kpicard[KPICard]
 * link:/developer_documentation/non_field_renderers.adoc#_chart[Chart] (and its sub-classes)
+* link:/developer_documentation/non_field_renderers.adoc#_heatmaptable[HeatmapTable]
 * link:/developer_documentation/non_field_renderers.adoc#_nodata[NoData]
 
-The first three are optional but useful components, the next three are used to layout the actual dashboard display and the last can be used if there is no data to show.
+The first three are optional but useful components, the next four are used to layout the actual dashboard display and the last can be used if there is no data to show.
 
 == An example
 
