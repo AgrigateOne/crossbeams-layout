@@ -28,13 +28,14 @@ module Crossbeams
 
       # Build a page. Instantiates a Page and calls build on it.
       # @param [options]
-      def self.build(&block)
-        new.build(&block)
+      def self.build(scan_with_camera = false, &block) # rubocop:disable Style/OptionalBooleanParameter
+        new.build(scan_with_camera, &block)
       end
 
       # Build a page.
       # Passes the page instance and page_config to the block.
-      def build
+      def build(scan_with_camera = false) # rubocop:disable Style/OptionalBooleanParameter
+        @scan_with_camera = scan_with_camera
         yield self
         self
       end
@@ -53,6 +54,7 @@ module Crossbeams
       # Define a form in the page.
       def form
         form = RMDForm.new
+        form.scan_with_camera(@scan_with_camera)
         yield form
         @nodes << form
       end
@@ -127,7 +129,6 @@ module Crossbeams
 
       # Render the page and all its child nodes.
       def render
-        # render notice, errs etc and form if applicabel
         <<~HTML
           <h1 class="#{SC.css_class(:h1)}">#{@title}#{page_number_and_page_count}</h1>
           #{notes_section}

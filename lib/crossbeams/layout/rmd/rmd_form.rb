@@ -100,6 +100,41 @@ module Crossbeams
         HTML
       end
 
+      def add_multiple_scan_fields(root_name, count, opts)
+        count.times do |cnt|
+          name = "#{root_name}_#{cnt + 1}".to_sym
+          required = case opts[:required]
+                     when :none
+                       false
+                     when :first
+                       cnt.zero?
+                     else
+                       true
+                     end
+          plus = { required: required }
+          plus[:caption] = opts[:captions][cnt] if opts[:captions]&.[](cnt)
+          add_scan_field(name, opts.merge(plus))
+        end
+      end
+
+      def add_scan_field(name, opts) # rubocop:disable Metrics/AbcSize
+        raise ArgumentError, 'RMDForm: add_scan_field - "scan_type" must be provided' unless opts[:scan_type]
+
+        options = { scan: 'key248_all' }.merge(opts)
+        @current_field = name
+        label = make_caption(name, options)
+        data_type = options[:data_type] || 'text'
+        required = options[:required].nil? || options[:required] ? ' required' : ''
+        autofocus = autofocus_for_field(name)
+        label_render = %(<span class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
+
+        nodes << <<~HTML
+          <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}">#{label_render}<br>
+          <div class="rmdScanFieldGroup flex items-center"><input class="flex-grow p-2 #{field_input_class}#{field_upper_class(options)} rounded-l" id="#{@form_name}_#{name}" type="#{data_type}"#{decimal_or_int(data_type, options)}#{minmax_val(options)} name="#{@form_name}[#{name}]" placeholder="Scan #{label}"#{scan_opts(options)} #{render_behaviours} value="#{field_value(form_values[name])}"#{required}#{autofocus}#{lookup_data(options)}#{submit_form(options)}#{set_readonly(form_values[name], 'Scan ')}#{attr_upper(options)}>#{clear_button('Scan ')}</div>#{hidden_scan_type(name, options)}#{lookup_display(name, options)}
+          #{field_error_message}</div>
+        HTML
+      end
+
       # Add a field to the form.
       # The field will render as an input with name = FORM_NAME[FIELD_NAME]
       # and id = FORM_NAME_FIELD_NAME.
@@ -112,7 +147,6 @@ module Crossbeams
       # @option options [String] :data_type the input type. Defaults to 'text'.
       # @option options [Integer] :minvalue the minimum value allowed in the input.
       # @option options [Integer] :maxvalue the maximum value allowed in the input.
-      # @option options [Integer] :width the input with in rem. Defaults to 12.
       # @option options [Boolean] :allow_decimals can a data_type="number" input accept decimals?
       # @option options [Boolean] :submit_form Should the form be submitted automatically after a scan result is placed in this field?
       # @option options [Boolean] :submit_form_set Should the form be submitted automatically after a scan result is placed in the last of the set of fields with this option?
@@ -120,30 +154,21 @@ module Crossbeams
       # Possible values are: key248_all (any symbology), key249_3o9 (309), key250_upc (UPC), key251_ean (EAN), key252_2d (2D - QR etc)
       # @option options [Symbol] :scan_type the type of barcode to expect in the field. This must have a matching entry in AppConst::BARCODE_PRINT_RULES.
       # @return [void]
-      def add_field(name, options = {}) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+      def add_field(name, options = {}) # rubocop:disable Metrics/AbcSize
+        return add_scan_field(name, options) if options[:scan]
+
         @current_field = name
-        # label = options[:label] || name.to_s.delete_suffix('_id').gsub('_', ' ').capitalize
         label = make_caption(name, options)
-        for_scan = options[:scan] ? 'Scan ' : ''
         data_type = options[:data_type] || 'text'
-        width = options[:width] || 12
         required = options[:required].nil? || options[:required] ? ' required' : ''
         autofocus = autofocus_for_field(name)
         label_render = %(<span class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
-        # if for_scan, render icon in end of input, else normal
-        nodes << if options[:scan]
-                   <<~HTML
-                     <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}">#{label_render}<br>
-                     <div class="rmdScanFieldGroup flex items-center"><input class="flex-grow p-2 #{field_input_class}#{field_upper_class(options)} rounded-l" id="#{@form_name}_#{name}" type="#{data_type}"#{decimal_or_int(data_type, options)}#{minmax_val(options)} name="#{@form_name}[#{name}]" placeholder="#{for_scan}#{label}"#{scan_opts(options)} #{render_behaviours} style="widaaath:#{width}rem;" value="#{field_value(form_values[name])}"#{required}#{autofocus}#{lookup_data(options)}#{submit_form(options)}#{set_readonly(form_values[name], for_scan)}#{attr_upper(options)}>#{clear_button(for_scan)}</div>#{hidden_scan_type(name, options)}#{lookup_display(name, options)}
-                     #{field_error_message}</div>
-                   HTML
-                 else
-                   <<~HTML
-                     <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}">#{label_render}<br>
-                     <div class="rmdScanFieldGroup rounded has-[:focus-within]:border-ocean-700 border border-slate-300"><input class="p-2 #{field_input_class}#{field_upper_class(options)}" id="#{@form_name}_#{name}" type="#{data_type}"#{decimal_or_int(data_type, options)}#{minmax_val(options)} name="#{@form_name}[#{name}]" placeholder="#{for_scan}#{label}"#{scan_opts(options)} #{render_behaviours} style="widaaath:#{width}rem;" value="#{field_value(form_values[name])}"#{required}#{autofocus}#{lookup_data(options)}#{submit_form(options)}#{set_readonly(form_values[name], for_scan)}#{attr_upper(options)}>#{clear_button(for_scan)}</div>#{hidden_scan_type(name, options)}#{lookup_display(name, options)}
-                     #{field_error_message}</div>
-                   HTML
-                 end
+
+        nodes << <<~HTML
+          <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}">#{label_render}<br>
+          <div class="rmdScanFieldGroup rounded has-[:focus-within]:border-ocean-700 border border-slate-300"><input class="p-2 #{field_input_class}#{field_upper_class(options)}" id="#{@form_name}_#{name}" type="#{data_type}"#{decimal_or_int(data_type, options)}#{minmax_val(options)} name="#{@form_name}[#{name}]" placeholder="#{label}"#{scan_opts(options)} #{render_behaviours} value="#{field_value(form_values[name])}"#{required}#{autofocus}#{lookup_data(options)}#{submit_form(options)}#{attr_upper(options)}></div>#{hidden_scan_type(name, options)}#{lookup_display(name, options)}
+          #{field_error_message}</div>
+        HTML
       end
 
       # Add a label field (display-only) to the form.
@@ -161,9 +186,9 @@ module Crossbeams
       # @option no_bg [Boolean] should this element be rendered without a background colour?
       # @option value_class [String] a string of css class(es) to wrap around the label value.
       # @return [void]
-      def add_label(name, value, options = {})
+      def add_label(name, options = {})
+        value = field_value(form_values[name]) || options[:with_value]
         v_classes = [options[:value_class]]
-        # label = options[:label] || name.to_s.delete_suffix('_id').gsub('_', ' ').capitalize
         label = make_caption(name, options)
         hidden_value = options[:hidden_value]
         bg = options[:no_bg] ? '' : 'bg-slate-200 '
@@ -171,7 +196,7 @@ module Crossbeams
         div_css_class = %( class="#{v_classes.compact.join(' ')}")
         nodes << <<~HTML
           <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}"><span>#{label}</span>
-          <div#{div_css_class} id="#{@form_name}_#{name}_value">#{field_value(value)} &nbsp;</div>#{hidden_label(name, hidden_value)}
+          <div#{div_css_class} id="#{@form_name}_#{name}_value">#{value} &nbsp;</div>#{hidden_label(name, hidden_value)}
           </div>
         HTML
       end
@@ -537,7 +562,7 @@ module Crossbeams
 
       def scan_opts(options)
         if options[:scan]
-          %( data-scanner="#{options[:scan]}" data-scan-rule="#{options[:scan_type]}" autocomplete="off")
+          %( data-scanner="#{options[:scan]}" data-scan-rule="#{options[:scan_type] == :any ? '' : options[:scan_type]}" autocomplete="off")
         else
           ''
         end
