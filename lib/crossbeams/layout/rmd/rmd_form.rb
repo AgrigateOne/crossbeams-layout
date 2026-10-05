@@ -24,11 +24,11 @@ module Crossbeams
       end
 
       def values(value)
-        @form_values = value
+        @form_values = value || {}
       end
 
       def errors(value)
-        @form_errors = value
+        @form_errors = value || {}
       end
 
       def name(value)

@@ -63,22 +63,22 @@ module Crossbeams
         @title = value
       end
 
-      def info(value, options = {})
+      def info_notice(value, options = {})
         @info = value
         @info_caption = options[:caption] if options[:caption]
       end
 
-      def success(value, options = {})
+      def success_notice(value, options = {})
         @success = value
         @success_caption = options[:caption] if options[:caption]
       end
 
-      def warning(value, options = {})
+      def warning_notice(value, options = {})
         @warning = value
         @warning_caption = options[:caption] if options[:caption]
       end
 
-      def error(value, options = {})
+      def error_notice(value, options = {})
         @error = value
         @error_caption = options[:caption] if options[:caption]
       end
