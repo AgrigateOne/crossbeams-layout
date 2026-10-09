@@ -69,6 +69,9 @@ require 'crossbeams/layout/renderer/field_factory'
 require 'crossbeams/layout/renderer/field_types'
 require 'crossbeams/layout/filter_field'
 
+require 'crossbeams/layout/rmd/rmd_page'
+require 'crossbeams/layout/rmd/rmd_form'
+
 # Load the Dashboard components
 base = File.expand_path('layout/dashboard', __dir__)
 Dir[File.join(base, '*.rb')].sort.each { |f| require f }
