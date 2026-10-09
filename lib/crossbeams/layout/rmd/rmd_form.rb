@@ -27,42 +27,81 @@ module Crossbeams
         @csrf_tag = nil
       end
 
+      # Set the form values
+      #
+      # @param value [hash] the form bindings
+      # @return [void]
       def values(value)
         @form_values = value || {}
       end
 
+      # Set the form errors
+      #
+      # @param value [hash] the validation errors for the form
+      # @return [void]
       def errors(value)
         @form_errors = value || {}
       end
 
+      # Set the form name
+      #
+      # @param value [symbol] the form name (group name in parameters)
+      # @return [void]
       def name(value)
         @form_name = value
       end
 
+      # Set the form submit button caption
+      #
+      # @param value [string] the caption for the submit button
+      # @return [void]
       def button_caption(value)
         @button_caption = value
       end
 
+      # Set the form submit button to hidden on load
+      #
+      # @param value [boolean] is the submit button hidden on form load?
+      # @return [void]
       def button_initially_hidden!
         @button_initially_hidden = true
       end
 
+      # Set the form submit button's DOM id
+      #
+      # @param value [string] the DOM id
+      # @return [void]
       def button_id(value)
         @button_id = value
       end
 
+      # Style the form submit button as a small button
+      #
+      # @param value [boolean] render a small submit button?
+      # @return [void]
       def small_submit!
         @small_submit = true
       end
 
+      # Render the form without a submit button
+      #
+      # @param value [boolean] no submit button?
+      # @return [void]
       def no_submit!
         @no_submit = true
       end
 
+      # The current lookup values for fields
+      #
+      # @param value [hash] keys match the field names and values are displayed as the current lookup value
       def form_lookups(value)
         @form_lookups = value || {}
       end
 
+      # Set scan with camera on or off
+      #
+      # @param value [boolean] if true, use the camera for scanning, else use the device's image scanner
+      # @return [void]
       def scan_with_camera(value)
         @scan_with_camera = value
       end
@@ -71,18 +110,31 @@ module Crossbeams
         false
       end
 
+      # Set the CSRF tag
+      #
+      # @param tag [string] the csrf tag
+      # @return [void]
       def add_csrf_tag(tag)
         @csrf_tag = tag
       end
 
+      # Set the form action
+      #
+      # @param value [string] the action endpoint
+      # @return [void]
       def action(act)
         @form_action = act
       end
 
+      # Set the progress text
+      #
+      # @param value [string] text describing progress
+      # @return [void]
       def progress(value)
         @progress = value
       end
 
+      # Render the form and all its child nodes.
       def render
         raise ArgumentError, 'RMDForm: no CSRF tag provided' if csrf_tag.nil?
 
@@ -99,10 +151,24 @@ module Crossbeams
         HTML
       end
 
-      def add_multiple_scan_fields(root_name, count, opts)
+      # Add a set of scan fields with numeric suffix.
+      #
+      #     add_multiple_scan_fields(:pallet, 3, required: :first, captions: %w[AAA BBB])
+      #
+      #     => pallet_1, required: true, caption: 'AAA'
+      #     => pallet_2, required: false, caption: 'BBB'
+      #     => pallet_3, required: false, caption: 'Pallet 3'
+      #
+      # @param root_name [string] the field name without the numeric suffix
+      # @param count [integer] the number of fields to generate
+      # @param options [hash] options. These are the same as for `add_scan_field`, with two changes
+      # @option options [array] :captions an array of captions, one for each field. Optional, if nil/empty, the field name will be used
+      # @option options [symbol] :required can be `:none`, `:first` or `:all`. All is the default. First will make just the 1st field required
+      # @return [void]
+      def add_multiple_scan_fields(root_name, count, options)
         count.times do |cnt|
           name = "#{root_name}_#{cnt + 1}".to_sym
-          required = case opts[:required]
+          required = case options[:required]
                      when :none
                        false
                      when :first
@@ -111,15 +177,20 @@ module Crossbeams
                        true
                      end
           plus = { required: required }
-          plus[:caption] = opts[:captions][cnt] if opts[:captions]&.[](cnt)
-          add_scan_field(name, opts.merge(plus))
+          plus[:caption] = options[:captions][cnt] if options[:captions]&.[](cnt)
+          add_scan_field(name, options.merge(plus))
         end
       end
 
-      def add_scan_field(name, opts) # rubocop:disable Metrics/AbcSize
+      # Add a field for scanning
+      #
+      # @param name [symbol] the name of the form field.
+      # @param options (Hash) options for the field. These are the same as for `add_field`, but `:scan_type` is required
+      # @return [void]
+      def add_scan_field(name, options) # rubocop:disable Metrics/AbcSize
         raise ArgumentError, 'RMDForm: add_scan_field - "scan_type" must be provided' unless opts[:scan_type]
 
-        options = { scan: 'key248_all' }.merge(opts)
+        options = { scan: 'key248_all' }.merge(options)
         @current_field = name
         label = make_caption(name, options)
         data_type = options[:data_type] || :text
@@ -141,8 +212,8 @@ module Crossbeams
       # and id = FORM_NAME_FIELD_NAME.
       #
       # @param name [symbol] the name of the form field.
-      # @param label [string] the caption for the label to appear beside the input.
       # @param options (Hash) options for the field
+      # @option options [String] :caption the caption for the label to appear beside the input.
       # @option options [Boolean] :required Is the field required? Defaults to true.
       # @option options [Boolean] :hide_on_load should this element be hidden when the form loads?
       # @option options [String] :data_type the input type. Defaults to 'text'.
@@ -205,6 +276,19 @@ module Crossbeams
         HTML
       end
 
+      # Add a hidden field to the form.
+      #
+      # @param name [symbol] the name of the form field.
+      # @param with_value [string] override the value of the hidden field. Optional. The default is to use the form value.
+      def add_hidden_field(name, with_value: nil)
+        value = with_value || form_values[name]
+        return '' if value.nil?
+
+        nodes << <<~HTML
+          <input id ="#{@form_name}_#{name}" type="hidden" name="#{@form_name}[#{name}]" value="#{field_value(value)}">
+        HTML
+      end
+
       # TODO: Add disabled_items to select
 
       # Add a select box to the form.
@@ -212,11 +296,11 @@ module Crossbeams
       # and id = FORM_NAME_FIELD_NAME.
       #
       # @param name [symbol] the name of the form field.
-      # @param label [string] the caption for the label to appear beside the select.
       # @param options (Hash) options for the field
       # @option options [Boolean] :required Is the field required? Defaults to true.
       # @option options [Boolean] :hide_on_load should this element be hidden when the form loads?
       # @option options [String] :value the selected value.
+      # @option options [String] :caption the caption for the label to appear beside the select.
       # @option options [String,Boolean] :prompt if true, display a generic prompt. If a string, display the string as prompt.
       # @option options [Array,Hash] :items the select options.
       # @return [void]
@@ -243,8 +327,8 @@ module Crossbeams
       # The value returned in params is 't' or 'f'.
       #
       # @param name [symbol] the name of the form field.
-      # @param label [string] the caption for the label to appear beside the input.
       # @param options (Hash) options for the field
+      # @option options [String] :caption the caption for the label to appear beside the input.
       # @option options [Boolean] :hide_on_load should this element be hidden when the form loads?
       # @return [void]
       def add_toggle(name, options = {})
@@ -443,12 +527,25 @@ module Crossbeams
         HTML
       end
 
+      # Add a link (styled as a button)
+      #
+      # @param url [string] the URL to call
+      # @param text [string] the button caption
+      # @param options (Hash) options for the header
+      # @option options [String] :prompt when present, ask the user to confirm, showing this text
+      # @return [void]
       def add_link(url, text, options = {})
         hs = { url: url, text: text }
         hs[:prompt] = options[:prompt] if options[:prompt]
         @links << hs
       end
 
+      # Add a button to take a photo (on mobile) or upload an image (on desktop)
+      #
+      # @param name [symbol] the name of the form field.
+      # @param options (Hash) options for the header
+      # @option options [String] :caption the caption for the label to appear beside the input.
+      # @return [void]
       def add_image(name, options = {})
         label = make_caption(name, options)
 
@@ -461,6 +558,11 @@ module Crossbeams
         @multipart = true
       end
 
+      # Define behaviours for fields on the form
+      #
+      # Pass in a block
+      #
+      # @return [void]
       def behaviours
         raise ArgumentError, 'Behaviours must be defined before fields' unless @nodes.empty?
 
