@@ -3,10 +3,12 @@
 module Crossbeams
   module Layout
     # A Form for rendering on an RMD page
-    class RMDForm
+    class RMDForm # rubocop:disable Metrics/ClassLength
       attr_reader :nodes, :form_action, :multipart, :small_submit, :form_errors, :form_values, :csrf_tag, :rules
 
       SC = StylesConfig
+
+      VALID_DATA_TYPES = %i[button checkbox color date datetime-local email file hidden image month number password radio range reset search submit tel text time url week].freeze
 
       def initialize
         @nodes = []
@@ -20,6 +22,8 @@ module Crossbeams
         @small_submit = false
         @no_submit = false
         @button_caption = 'Submit'
+        @button_id = nil
+        @button_initially_hidden = false
         @csrf_tag = nil
       end
 
@@ -37,6 +41,14 @@ module Crossbeams
 
       def button_caption(value)
         @button_caption = value
+      end
+
+      def button_initially_hidden!
+        @button_initially_hidden = true
+      end
+
+      def button_id(value)
+        @button_id = value
       end
 
       def small_submit!
@@ -74,19 +86,6 @@ module Crossbeams
       def render
         raise ArgumentError, 'RMDForm: no CSRF tag provided' if csrf_tag.nil?
 
-        # <<~HTML
-        #  <h1 class="#{SC.css_class(:h1)}">#{caption}#{page_number_and_page_count}</h1>
-        #  <form action="#{action}" method="POST" #{"enctype='multipart/form-data'" if @multipart}>
-        #    #{error_section}
-        #    #{notes_section}
-        #    #{camera_section}
-        #    #{csrf_tag}
-        #    #{field_renders}
-        #    #{submit_section}
-        #  </form>
-        #  #{progress_section}
-        #  <div id="txtShow" class="mt-3 bg-blue-100 text-ocean-800 rounded p-3 w-full"></div>
-        # HTML
         <<~HTML
           <form action="#{form_action}" method="POST" #{"enctype='multipart/form-data'" if multipart}>
             #{error_section}
@@ -123,7 +122,9 @@ module Crossbeams
         options = { scan: 'key248_all' }.merge(opts)
         @current_field = name
         label = make_caption(name, options)
-        data_type = options[:data_type] || 'text'
+        data_type = options[:data_type] || :text
+        raise ArgumentError, "#{data_type} is not a valid type for an input field" unless VALID_DATA_TYPES.include?(data_type.to_sym)
+
         required = options[:required].nil? || options[:required] ? ' required' : ''
         autofocus = autofocus_for_field(name)
         label_render = %(<span class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
@@ -157,9 +158,12 @@ module Crossbeams
       def add_field(name, options = {}) # rubocop:disable Metrics/AbcSize
         return add_scan_field(name, options) if options[:scan]
 
+        # Validate data_type can't be "string"...
         @current_field = name
         label = make_caption(name, options)
-        data_type = options[:data_type] || 'text'
+        data_type = options[:data_type] || :text
+        raise ArgumentError, "#{data_type} is not a valid type for an input field" unless VALID_DATA_TYPES.include?(data_type.to_sym)
+
         required = options[:required].nil? || options[:required] ? ' required' : ''
         autofocus = autofocus_for_field(name)
         label_render = %(<span class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
@@ -225,11 +229,11 @@ module Crossbeams
         value = form_values[name] || options[:value]
         label_render = %(<span class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
         nodes << <<~HTML
-          <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}"#{field_error_state}>#{label_render}#{field_error_message}<br>
+          <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}"#{field_error_state}>#{label_render}<br>
           <select class="py-2 px-3 #{Crossbeams::Layout::StylesConfig.css_class(:rmd_select)}#{field_error_class} w-full h-fit" id="#{@form_name}_#{name}" name="#{@form_name}[#{name}]" #{required}#{autofocus} #{render_behaviours}>
             #{make_prompt(options[:prompt])}#{build_options(items, value)}
           </select>
-          </div>
+          #{field_error_message}</div>
         HTML
       end
 
@@ -479,7 +483,7 @@ module Crossbeams
         end
       end
 
-      def dropdown_change(field_name, conditions = {})
+      def dropdown_change(field_name, conditions = {}) # rubocop:disable Metrics/CyclomaticComplexity
         raise(ArgumentError, 'Dropdown change behaviour requires `notify: url`.') if (conditions[:notify] || []).any? { |c| c[:url].nil? }
 
         @rules << { field_name => {
@@ -503,7 +507,7 @@ module Crossbeams
         } }
       end
 
-      def keyup(field_name, conditions = {})
+      def keyup(field_name, conditions = {}) # rubocop:disable Metrics/CyclomaticComplexity
         raise(ArgumentError, 'Key up behaviour requires `notify: url`.') if (conditions[:notify] || []).any? { |c| c[:url].nil? }
 
         @rules << { field_name => {
@@ -517,7 +521,7 @@ module Crossbeams
         } }
       end
 
-      def input_change(field_name, conditions = {})
+      def input_change(field_name, conditions = {}) # rubocop:disable Metrics/CyclomaticComplexity
         raise(ArgumentError, 'Input change behaviour requires `notify: url`.') if (conditions[:notify] || []).any? { |c| c[:url].nil? }
 
         @rules << { field_name => {
@@ -531,7 +535,7 @@ module Crossbeams
         } }
       end
 
-      def lose_focus(field_name, conditions = {})
+      def lose_focus(field_name, conditions = {}) # rubocop:disable Metrics/CyclomaticComplexity
         raise(ArgumentError, 'Key up behaviour requires `notify: url`.') if (conditions[:notify] || []).any? { |c| c[:url].nil? }
 
         @rules << { field_name => {
@@ -724,8 +728,8 @@ module Crossbeams
         return '' unless options[:lookup]
 
         <<~HTML
-          <div id ="#{form_name}_#{name}_scan_lookup" class="font-semibold text-slate-400" data-lookup-result="Y" data-reset-value="#{@form_lookups[name] || '&nbsp;'}">#{@form_lookups[name] || '&nbsp;'}</div>
-          <input id ="#{form_name}_#{name}_scan_lookup_hidden" type="hidden" data-lookup-hidden="Y" data-reset-value="#{@form_lookups[name] || '&nbsp;'}" name="lookup_values[#{name}]" value="#{@form_lookups[name]}">
+          <div id ="#{@form_name}_#{name}_scan_lookup" class="font-semibold text-slate-400" data-lookup-result="Y" data-reset-value="#{@form_lookups[name] || '&nbsp;'}">#{@form_lookups[name] || '&nbsp;'}</div>
+          <input id ="#{@form_name}_#{name}_scan_lookup_hidden" type="hidden" data-lookup-hidden="Y" data-reset-value="#{@form_lookups[name] || '&nbsp;'}" name="lookup_values[#{name}]" value="#{@form_lookups[name]}">
         HTML
       end
 
@@ -779,7 +783,7 @@ module Crossbeams
         "<option value=\"#{CGI.escapeHTML(value.to_s)}\"#{sel}>#{CGI.escapeHTML(text.to_s)}</option>"
       end
 
-      def submit_section
+      def submit_section # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         return '' if @no_submit && @links.empty? && @buttons.empty?
         return "<p>#{links_section}</p>" if @no_submit && @buttons.empty?
         return "<p>#{buttons_section} #{links_section}</p>" if @no_submit
@@ -791,8 +795,8 @@ module Crossbeams
         # ------------------------------------
         # Temp for initial test:
         # button_caption = 'Submit'
-        submit_id_str = ''
-        initial_hide = ''
+        # submit_id_str = ''
+        # initial_hide = ''
         # buttons_section = ''
         # links_section = ''
         reset_section = ''
@@ -810,6 +814,18 @@ module Crossbeams
         @buttons.join(' ')
       end
 
+      def initial_hide
+        return '' unless @button_initially_hidden
+
+        ' hidden'
+      end
+
+      def submit_id_str
+        return '' unless @button_id
+
+        %(id="#{@button_id}" )
+      end
+
       def error_section
         base_err = base_err_msg_formatted
         err_msg = error_message_formatted
@@ -823,14 +839,15 @@ module Crossbeams
       end
 
       def error_message_formatted
-        case form_errors[:error_message]
+        msg = form_errors[:error_message] || form_errors[:message]
+        case msg
         when nil
           ''
         else
-          if form_errors[:error_message].start_with?('<div')
-            form_errors[:error_message]
+          if msg.start_with?('<div')
+            msg
           else
-            Crossbeams::Layout::Notice.new({}, form_errors[:error_message], notice_type: :error, show_caption: false).render
+            Crossbeams::Layout::Notice.new({}, msg, notice_type: :error, show_caption: false).render
           end
         end
       end
@@ -868,7 +885,7 @@ module Crossbeams
       # =================================================
 
       # Return behaviour rules for rendering.
-      def render_behaviours # rubocop:disable Metrics/AbcSize
+      def render_behaviours # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
         return nil if rules.nil?
 
         res = []
@@ -885,7 +902,7 @@ module Crossbeams
         res.join(' ')
       end
 
-      def build_behaviour(rule) # rubocop:disable Metrics/AbcSize
+      def build_behaviour(rule) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
         return %(data-change-values="#{split_change_affects(rule[:change_affects])}") if rule[:change_affects]
         return %(data-enable-on-values="#{rule[:enable_on_change].join(',')}") if rule[:enable_on_change]
         return %(data-observe-selected=#{build_observe_selected(rule[:populate_from_selected])}) if rule[:populate_from_selected]
@@ -897,7 +914,7 @@ module Crossbeams
       end
 
       def split_change_affects(change_affects)
-        change_affects.split(';').map { |c| "#{form_name}_#{c}" }.join(',')
+        change_affects.split(';').map { |c| "#{@form_name}_#{c}" }.join(',')
       end
 
       def build_observe_change(notify_rules)

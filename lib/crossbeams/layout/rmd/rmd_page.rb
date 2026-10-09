@@ -3,8 +3,8 @@
 module Crossbeams
   module Layout
     # A Page obejct holds all other layout elemnts.
-    class RMDPage
-      attr_reader :nodes, :page_config, :sequence
+    class RMDPage # rubocop:disable Metrics/ClassLength
+      attr_reader :nodes, :page_config, :sequence, :progress_prefix, :progress_val, :progress_max
 
       SC = StylesConfig
 
@@ -28,14 +28,16 @@ module Crossbeams
 
       # Build a page. Instantiates a Page and calls build on it.
       # @param [options]
-      def self.build(scan_with_camera = false, &block) # rubocop:disable Style/OptionalBooleanParameter
-        new.build(scan_with_camera, &block)
+      def self.build(rmd_state = { scan_with_camera: false }, &block)
+        new.build(rmd_state, &block)
       end
 
       # Build a page.
       # Passes the page instance and page_config to the block.
-      def build(scan_with_camera = false) # rubocop:disable Style/OptionalBooleanParameter
-        @scan_with_camera = scan_with_camera
+      def build(rmd_state)
+        @scan_with_camera = rmd_state[:scan_with_camera]
+        notices_from_hash(rmd_state)
+        @validation_errors = rmd_state[:rmd_validation]
         yield self
         self
       end
@@ -55,6 +57,7 @@ module Crossbeams
       def form
         form = RMDForm.new
         form.scan_with_camera(@scan_with_camera)
+        form.errors @validation_errors
         yield form
         @nodes << form
       end
@@ -83,6 +86,26 @@ module Crossbeams
         @error_caption = options[:caption] if options[:caption]
       end
 
+      def notices(obj)
+        return notices_from_hash if obj.is_a?(Hash)
+
+        notices_from_entity(obj)
+      end
+
+      def notices_from_hash(hash)
+        info_notice hash[:info_notice]
+        success_notice hash[:success_notice]
+        warning_notice hash[:warning_notice]
+        error_notice hash[:error_notice]
+      end
+
+      def notices_from_entity(entity) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        info_notice entity.info_notice if entity.respond_to?(:info_notice) && entity.info_notice
+        success_notice entity.success_notice if entity.respond_to?(:success_notice) && entity.success_notice
+        warning_notice entity.warning_notice if entity.respond_to?(:warning_notice) && entity.warning_notice
+        error_notice entity.error_notice if entity.respond_to?(:error_notice) && entity.error_notice
+      end
+
       def notes(value)
         @notes = value
       end
@@ -90,6 +113,16 @@ module Crossbeams
       def step_and_total(step, total)
         @step_number = step
         @step_count = total
+      end
+
+      def progress_indicator(val, max, prefix: nil)
+        raise ArgumentError, 'RMDPage#progress_indicator - val and max must be integers' unless val.is_a?(Integer) && max.is_a?(Integer)
+        raise ArgumentError, 'RMDPage#progress_indicator - max cannot be zero' if max.zero?
+        raise ArgumentError, 'RMDPage#progress_indicator - val and max cannot be negative' if val.negative? || max.negative?
+
+        @progress_prefix = prefix
+        @progress_val = val
+        @progress_max = max
       end
 
       def table(recs)
@@ -130,6 +163,7 @@ module Crossbeams
       # Render the page and all its child nodes.
       def render
         <<~HTML
+          #{progress_bar}
           <h1 class="#{SC.css_class(:h1)}">#{@title}#{page_number_and_page_count}</h1>
           #{notes_section}
           #{info_section}
@@ -141,6 +175,21 @@ module Crossbeams
       end
 
       private
+
+      def progress_bar
+        return '' if progress_max.nil?
+
+        text = "#{progress_prefix} #{progress_val} of #{progress_max}".lstrip
+        perc = progress_val / progress_max.to_f * 100.0
+        <<~HTML
+          <div class="-ml-2 my-2 relative w-full h-6 bg-sky-50 rounded-lg overflow-hidden">
+            <div class="h-full bg-ocean-700 opacity-50 rounded-lg" style="width: #{perc}%;"></div>
+            <span class="absolute inset-0 flex items-center justify-center text-sm font-medium text-slate-800">
+              #{text}
+            </span>
+          </div>
+        HTML
+      end
 
       def notes_section
         return '' unless @notes
