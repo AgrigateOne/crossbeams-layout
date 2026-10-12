@@ -188,7 +188,7 @@ module Crossbeams
       # @param options (Hash) options for the field. These are the same as for `add_field`, but `:scan_type` is required
       # @return [void]
       def add_scan_field(name, options) # rubocop:disable Metrics/AbcSize
-        raise ArgumentError, 'RMDForm: add_scan_field - "scan_type" must be provided' unless opts[:scan_type]
+        raise ArgumentError, 'RMDForm: add_scan_field - "scan_type" must be provided' unless options[:scan_type]
 
         options = { scan: 'key248_all' }.merge(options)
         @current_field = name
