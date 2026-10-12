@@ -130,7 +130,7 @@ Individual notice methods (below) can also be called in the block, and accept an
 
 |notes
 |value (String)
-|Add un-styled notes below the title. Newlines are converted to `<br>` tags.
+|Add un-styled notes below the title. Newlines are converted to `<br>` tags. For most cases, the use of the `*_notice` methods are preferred.
 
 |step_and_total
 |step (Integer), total (Integer)
@@ -263,7 +263,7 @@ Field-level errors are shown beside the relevant field. The first field in error
 
 |add_scan_field
 |name (Symbol), options (Hash)
-|Add a scan-enabled input with a clear button. Same options as `add_field`, but `:scan` and `:scan_type` are required.
+|Add a scan-enabled input with a clear button. Same options as `add_field`, but `:scan` and `:scan_type` are required. `:scan` defaults to 'key248_all'.
 
 |add_multiple_scan_fields
 |root_name (String), count (Integer), options (Hash)
@@ -319,7 +319,7 @@ Field-level errors are shown beside the relevant field. The first field in error
 
 |add_image
 |name (Symbol), options (Hash)
-|Add a file input for capturing or uploading a JPEG image. Sets the form to multipart.
+|Add a file input for capturing or uploading a JPEG image. Sets the form to multipart. On a mobile device, this can trigger the camera.
 
 |add_status_leds
 |colour (Symbol)
@@ -342,7 +342,7 @@ Used by `add_field` and `add_scan_field` (scan fields also require `:scan` and `
 |:required
 |Is the field required?
 |true or false
-|true
+|true. **NB** This is the **opposite** of the default for standard forms! 
 
 |:hide_on_load
 |Hide the field row when the form loads.
