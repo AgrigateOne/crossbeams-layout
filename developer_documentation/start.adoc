@@ -9,6 +9,8 @@
 * link:/developer_documentation/non_field_renderers.adoc[Non-field Renderers]
 * link:/developer_documentation/field_renderers.adoc[Field Renderers]
 
+* link:/developer_documentation/rmd_page_and_form.adoc[RMD pages and forms]
+
 * link:/developer_documentation/dashboards_charts.adoc[Dashboards for KPI cards and Charts]
 * link:/developer_documentation/dashboards_lanes.adoc[Dashboards showing state in lanes]
 

@@ -1,0 +1,663 @@
+= RMD Page and Form
+:toc:
+
+link:/developer_documentation/start.adoc[Back to documentation home]
+
+== Overview
+
+RMD pages are lightweight, mobile-friendly layouts intended for use on handheld scanning devices.
+They are built using a DSL centred on two classes:
+
+* <<RMDPage>> — the page container (title, notices, progress, tables, and one or more forms)
+* <<RMDForm>> — a form within the page (fields, scan inputs, buttons, and links)
+
+Unlike the main `Crossbeams::Layout::Page` DSL, RMD pages do not use UI rules or field renderers.
+Fields are added directly on the form object and rendered as plain HTML inputs suited to barcode scanning workflows.
+
+== Simplest example
+
+[source,ruby]
+----
+rmd_state = {
+  scan_with_camera: false,
+  rmd_validation: form_errors,
+  info_notice: 'Scan a pallet to begin'
+}
+
+layout = Crossbeams::Layout::RMDPage.build(rmd_state) do |page|
+  page.title 'Receive pallet'
+  page.form do |form|
+    form.name :receive
+    form.action '/receive/save'
+    form.values form_values
+    form.add_scan_field :pallet, scan_type: :pallet, caption: 'Pallet'
+  end
+end
+
+html = layout.render
+----
+
+After building the page, call `add_csrf_tag` on the page (which passes the tag through to each form) before rendering:
+
+[source,ruby]
+----
+layout.add_csrf_tag csrf_tag
+layout.render
+----
+
+== RMDPage
+
+`Crossbeams::Layout::RMDPage` holds the page title, notices, progress indicator, and child nodes (forms, tables, and free text).
+
+=== RMDPage.build
+
+Build and configure a page in one call.
+
+[source,ruby]
+----
+Crossbeams::Layout::RMDPage.build(rmd_state) do |page|
+  # ...
+end
+----
+
+The `rmd_state` hash supplies initial page state:
+
+|===
+|key |description |possible values |default
+
+|:scan_with_camera
+|If true, render camera scan and light-on/off buttons at the top of each form.
+|true or false
+|false
+
+|:rmd_validation
+|Validation errors hash passed to each form in the page (see <<Form errors>>).
+|Hash
+|nil
+
+|:info_notice
+|Info notice text (styled as info).
+|String
+|nil
+
+|:success_notice
+|Success notice text (styled as success).
+|String
+|nil
+
+|:warning_notice
+|Warning notice text (styled as warning).
+|String
+|nil
+
+|:error_notice
+|Error notice text (styled as error).
+|String
+|nil
+
+|===
+
+Individual notice methods (below) can also be called in the block, and accept an optional `:caption` option.
+
+=== RMDPage methods
+
+|===
+|method |args |description
+
+|title
+|value (String)
+|Set the page title. Rendered as an `<h1>`.
+
+|info_notice
+|value (String), options (Hash)
+|Set an info notice. Optional `:caption` in options.
+
+|success_notice
+|value (String), options (Hash)
+|Set a success notice. Optional `:caption` in options.
+
+|warning_notice
+|value (String), options (Hash)
+|Set a warning notice. Optional `:caption` in options.
+
+|error_notice
+|value (String), options (Hash)
+|Set an error notice. Optional `:caption` in options.
+
+|notices
+|obj (Hash or entity)
+|Set all notices at once from a Hash or from an object responding to `info_notice`, `success_notice`, `warning_notice`, and `error_notice`.
+
+|notes
+|value (String)
+|Add un-styled notes below the title. Newlines are converted to `<br>` tags.
+
+|step_and_total
+|step (Integer), total (Integer)
+|Append “(step n of t)” to the page title.
+
+|progress_indicator
+|val (Integer), max (Integer), prefix: (String, optional)
+|Render a progress bar above the title. Displays as “prefix val of max” (prefix is optional). `val` and `max` must be non-negative integers; `max` cannot be zero.
+
+|table
+|recs (Array)
+|Add a key/value table. `recs` is a 2D array of `[key, value]` pairs.
+
+|add_text
+|text (String)
+|Add raw HTML or text to the page body.
+
+|button_link
+|url (String), text (String)
+|Add a primary-styled link button.
+
+|form
+|block
+|Build an <<RMDForm>> and append it to the page. The form receives `scan_with_camera` and validation errors from the page state.
+
+|add_csrf_tag
+|tag (String)
+|Pass the CSRF tag to all child nodes (only forms use it).
+
+|render
+|
+|Render the complete page HTML.
+
+|===
+
+== RMDForm
+
+`Crossbeams::Layout::RMDForm` renders a single POST form with fields, optional scan support, validation error display, and submit/button/link controls.
+
+Each field is named `FORM_NAME[FIELD_NAME]` and given DOM id `FORM_NAME_FIELD_NAME`.
+
+=== Form configuration
+
+|===
+|method |args |description
+
+|name
+|value (Symbol)
+|Set the form name — the parameter group name in submitted params.
+
+|action
+|act (String)
+|Set the form action URL.
+
+|values
+|value (Hash)
+|Set field values used when rendering inputs and labels.
+
+|errors
+|value (Hash)
+|Set validation errors (see <<Form errors>>).
+
+|form_lookups
+|value (Hash)
+|Lookup display values keyed by field name. Used with `:lookup` fields.
+
+|button_caption
+|value (String)
+|Caption for the submit button. Default is 'Submit'
+
+|button_id
+|value (String)
+|DOM id for the submit button.
+
+|button_initially_hidden!
+|
+|Hide the submit button when the form loads.
+
+|small_submit!
+|
+|Render a smaller, centred submit button.
+
+|no_submit!
+|
+|Do not render the submit button (links and extra buttons may still render).
+
+|progress
+|value (String)
+|Text shown in the progress area below the form (hidden when empty).
+
+|add_csrf_tag
+|tag (String)
+|Set the CSRF tag. **Required** before `render` is called.
+
+|behaviours
+|block
+|Define field behaviours. Must be called **before** any fields are added.
+
+|render
+|
+|Render the form HTML. Raises if no CSRF tag was provided.
+
+|===
+
+=== Form errors
+
+Validation errors are passed via `errors` (or from the page's `rmd_validation` state).
+
+|===
+|key |description
+
+|`:errors`
+|Hash of field name (Symbol) to array of error message strings. Use `:base` or `nil` for form-level errors.
+
+|`:error_message` or `:message`
+|A single error message string (or HTML) displayed at the top of the form.
+
+|===
+
+Field-level errors are shown beside the relevant field. The first field in error receives autofocus; otherwise the first field on the form receives autofocus.
+
+=== RMDForm field and content methods
+
+|===
+|method |args |description
+
+|add_field
+|name (Symbol), options (Hash)
+|Add a standard input field. See <<add_field options>>.
+
+|add_scan_field
+|name (Symbol), options (Hash)
+|Add a scan-enabled input with a clear button. Same options as `add_field`, but `:scan` and `:scan_type` are required.
+
+|add_multiple_scan_fields
+|root_name (String), count (Integer), options (Hash)
+|Add numbered scan fields (e.g. `pallet_1`, `pallet_2`). See <<add_multiple_scan_fields options>>.
+
+|add_label
+|name (Symbol), options (Hash)
+|Add a display-only label (grey background by default). See <<add_label options>>.
+
+|add_hidden_field
+|name (Symbol), with_value: (optional)
+|Add a hidden input. Value defaults to the form value.
+
+|add_select
+|name (Symbol), options (Hash)
+|Add a select box. See <<add_select options>>.
+
+|add_toggle
+|name (Symbol), options (Hash)
+|Add a checkbox rendered as a toggle. Returns `'t'` or `'f'` in params.
+
+|add_section_header
+|caption (String), options (Hash)
+|Add a bold section caption. Optional `:id` and `:hide_on_load`.
+
+|add_prev_next_nav
+|url (String), ids (Array), current_id (Integer), options (Hash)
+|Render Previous/Next navigation links. URL must contain `$:id$` token.
+
+|add_table_start
+|
+|Start an HTML table (call `add_table_end` when finished).
+
+|add_table_end
+|
+|End an HTML table.
+
+|add_table_label
+|name (Symbol), value (String), options (Hash)
+|Add a table row with label and value cells. See <<add_table_label options>>.
+
+|add_table_row
+|name (Symbol), cols (Array), options (Hash)
+|Add a table row with one or more cells. See <<add_table_row options>>.
+
+|add_button
+|caption (String), action (String), options (Hash)
+|Add a submit button that posts the form to a different URL (`formaction`).
+
+|add_link
+|url (String), text (String), options (Hash)
+|Add a link styled as a button. Optional `:prompt` for a confirmation dialog.
+
+|add_image
+|name (Symbol), options (Hash)
+|Add a file input for capturing or uploading a JPEG image. Sets the form to multipart.
+
+|add_status_leds
+|colour (Symbol)
+|Render red, orange, and green LED indicators. Pass `:red`, `:orange`, or `:green` to light one LED.
+
+|===
+
+==== add_field options
+
+Used by `add_field` and `add_scan_field` (scan fields also require `:scan` and `:scan_type`).
+
+|===
+|attribute |description |possible values |default
+
+|:caption
+|The label text.
+|Any text
+|Field name with underscores converted to spaces and initial capital letter.
+
+|:required
+|Is the field required?
+|true or false
+|true
+
+|:hide_on_load
+|Hide the field row when the form loads.
+|true or false
+|false
+
+|:data_type
+|HTML input `type` attribute.
+|`:text`, `:number`, `:date`, `:time`, `:email`, `:password`, etc.
+|:text
+
+|:minvalue
+|HTML `min` attribute (numeric/date inputs).
+|Any number
+|n/a
+
+|:maxvalue
+|HTML `max` attribute (numeric/date inputs).
+|Any number
+|n/a
+
+|:allow_decimals
+|For `data_type: :number`, allow decimal values (`step="any"`).
+|true or false
+|false
+
+|:force_uppercase
+|Convert input to uppercase on blur; adds uppercase CSS class.
+|true
+|n/a
+
+|:scan
+|Enable barcode scanning on this field. When present, `add_field` delegates to `add_scan_field`.
+|A symbology key, e.g. `'key248_all'`
+|n/a (omit for non-scan fields)
+
+|:scan_type
+|Barcode type expected in the field. Must match an entry in `AppConst::BARCODE_PRINT_RULES`. Use `:any` for any type.
+|Symbol
+|Required when `:scan` is set
+
+|:lookup
+|Enable lookup display below the field (shows resolved value from `form_lookups`).
+|true
+|n/a
+
+|:submit_form
+|Automatically submit the form after a scan result is placed in this field.
+|true
+|n/a
+
+|:submit_form_set
+|Automatically submit the form after a scan result is placed in the last field of a set with this option.
+|true
+|n/a
+
+|===
+
+Scan symbology keys:
+
+* `key248_all` — any symbology
+* `key249_3o9` — Code 39
+* `key250_upc` — UPC
+* `key251_ean` — EAN
+* `key252_2d` — 2D (QR etc.)
+
+==== add_multiple_scan_fields options
+
+In addition to the options for `add_scan_field`:
+
+|===
+|attribute |description |possible values |default
+
+|:captions
+|Array of captions, one per generated field. Fields without a caption use the default caption derived from the field name.
+|Array of strings
+|n/a
+
+|:required
+|Which fields are required.
+|`:none`, `:first`, or `:all`
+|:all
+
+|===
+
+Example:
+
+[source,ruby]
+----
+form.add_multiple_scan_fields(:pallet, 3, required: :first, captions: %w[AAA BBB])
+# => pallet_1 required, caption 'AAA'
+# => pallet_2 optional, caption 'BBB'
+# => pallet_3 optional, caption 'Pallet 3'
+----
+
+==== add_label options
+
+|===
+|attribute |description |possible values |default
+
+|:caption
+|The label text.
+|Any text
+|Derived from field name.
+
+|:with_value
+|Text to display in the label (overrides form value).
+|Any text
+|Form value for the field.
+
+|:hidden_value
+|If provided, render a hidden input with this value.
+|Any value
+|No hidden field.
+
+|:no_bg
+|Render without the grey background.
+|true
+|false
+
+|:value_class
+|Extra CSS class(es) for the value div.
+|String
+|n/a
+
+|:hide_on_load
+|Hide the label row when the form loads.
+|true or false
+|false
+
+|===
+
+==== add_select options
+
+|===
+|attribute |description |possible values |default
+
+|:caption
+|The label text.
+|Any text
+|Derived from field name.
+
+|:required
+|Is the field required?
+|true or false
+|true
+
+|:hide_on_load
+|Hide the select row when the form loads.
+|true or false
+|false
+
+|:value
+|Pre-selected value (used when no form value is present).
+|Any value matching an option
+|Form value for the field.
+
+|:prompt
+|Prompt option at the top of the list. `true` uses “Select a value”.
+|String or true
+|n/a
+
+|:items
+|Select options. A 1D array uses the same text and value; a 2D array uses `[text, value]` pairs; a Hash renders `<optgroup>` elements.
+|Array or Hash
+|`[]`
+
+|===
+
+==== add_table_label options
+
+|===
+|attribute |description |possible values |default
+
+|:caption
+|Label text for the row (when not `:value_only`).
+|Any text
+|Derived from field name.
+
+|:even
+|Use the even-row background shading.
+|true or false
+|false
+
+|:value_class
+|Extra CSS class(es) for the value cell.
+|String
+|n/a
+
+|:value_only
+|Render only a value cell (no label column).
+|true or false
+|false
+
+|:hidden_value
+|If provided, include a hidden input in the value cell.
+|Any value
+|n/a
+
+|:hide_on_load
+|Hide the row when the form loads.
+|true or false
+|false
+
+|===
+
+==== add_table_row options
+
+|===
+|attribute |description |possible values |default
+
+|:even
+|Use the even-row background shading.
+|true or false
+|false
+
+|:heading
+|Render as a heading row.
+|true or false
+|false
+
+|:highlight_first_col
+|Render the first column in bold label style.
+|true or false
+|true
+
+|:stagger_col1
+|Render the first column in its own row above the remaining columns (useful for wide first columns).
+|true or false
+|false
+
+|:hide_on_load
+|Hide the row when the form loads.
+|true or false
+|false
+
+|===
+
+Cell values in `add_table_row` may be strings, `true` (check-on icon), `false` (check-off icon), or `nil` (blank cell).
+
+==== add_prev_next_nav options
+
+|===
+|attribute |description |possible values |default
+
+|:prev_caption
+|Caption for the previous button.
+|String
+|'Previous'
+
+|:next_caption
+|Caption for the next button.
+|String
+|'Next'
+
+|===
+
+==== add_button and add_link options
+
+|===
+|attribute |description |possible values |default
+
+|:id
+|DOM id of the button (`add_button` only).
+|String
+|Generated from caption hash
+
+|:hide_on_load
+|Hide the button when the form loads (`add_button` only).
+|true or false
+|false
+
+|:prompt
+|Confirmation prompt text (`add_link` only).
+|String
+|n/a
+
+|===
+
+=== Behaviours
+
+Behaviours are defined in a `behaviours` block **before** fields are added.
+They mirror behaviours available in UI Rules and attach `data-*` attributes to fields for client-side javascript.
+
+|===
+|method |description
+
+|enable(field, when: observer, changes_to: values)
+|Enable `field` when `observer` changes to one of `values`.
+
+|dropdown_change(field, notify: [...])
+|Notify URL(s) when a select value changes. Each notify entry requires `:url`; optional `:param_keys` and `:param_values`.
+
+|populate_from_selected(field, populate_from_selected: [...])
+|Populate fields from the selected option. Each entry may include `:sortable`.
+
+|keyup(field, notify: [...])
+|Notify URL(s) on keyup. Each notify entry requires `:url`.
+
+|input_change(field, notify: [...])
+|Notify URL(s) on input change. Each notify entry requires `:url`.
+
+|lose_focus(field, notify: [...])
+|Notify URL(s) when the field loses focus. Each notify entry requires `:url`.
+
+|===
+
+Example:
+
+[source,ruby]
+----
+form.behaviours do |b|
+  b.enable :detail_field, when: :mode, changes_to: %w[detailed]
+  b.dropdown_change :warehouse_id, notify: [{ url: '/lookups/locations', param_keys: %w[warehouse_id] }]
+end
+form.add_select :mode, items: %w[simple detailed]
+form.add_field :detail_field, hide_on_load: true
+----
