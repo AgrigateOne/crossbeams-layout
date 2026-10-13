@@ -23,7 +23,7 @@ class Crossbeams::Layout::FormButtonTest < Minitest::Test
     assert_nil attrs['id']
     assert_equal 'Submitting...', attrs['data-disable-with']
     classes = attrs['class'].split(' ')
-    assert_includes classes, 'bg-gray'
+    assert_includes classes, "bg-#{Crossbeams::Layout::StylesConfig.css_class(:secondary_bg)}"
   end
 
   def test_options
@@ -31,7 +31,7 @@ class Crossbeams::Layout::FormButtonTest < Minitest::Test
                          formaction: '/other',
                          name: 'xAx',
                          disable_with: 'XXX',
-                         colour: 'red',
+                         colour: :red,
                          dom_id: 'aa',
                          disabled: true)
     assert_equal 'Xyz', html.dom_text_value('button')
@@ -42,7 +42,7 @@ class Crossbeams::Layout::FormButtonTest < Minitest::Test
     assert_equal 'xAx', attrs['name']
     assert_equal 'XXX', attrs['data-disable-with']
     classes = attrs['class'].split(' ')
-    assert_includes classes, 'bg-red'
+    assert_includes classes, Crossbeams::Layout::StylesConfig.css_class(:bg_red)
   end
 
   # Button remote inherits the remote setting of the form (specified as "form_remote" in tests).
