@@ -51,7 +51,7 @@ module Crossbeams
           wrap_css << 'whitespace-nowrap' if @field_config[:hint] && !ignore_hint
 
           point = pointer ? ' cursor-pointer' : ''
-          %(<div class="#{wrap_css.join(' ')}">#{prefix}<label for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
+          %(<div class="#{wrap_css.join(' ')}">#{prefix}<label id="#{for_id}_label" for="#{for_id}" class="#{css_class}#{req}#{point}"#{toolt}>#{caption}</label>#{hint_trigger unless ignore_hint}</div>)
         end
 
         # The class for the field wrapper.

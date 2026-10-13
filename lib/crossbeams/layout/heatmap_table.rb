@@ -304,7 +304,7 @@ module Crossbeams
       def humanize_number(number) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         return zero_as || '' if number.nil?
         return number unless human_numbers
-        return number if number.to_s.match?(/[a-df-zA-Z-%]/) # Ignore "e" (which will be present for scientific notation)
+        return number if number.to_s.match?(/[a-df-zA-Z\-%]/) # Ignore "e" (which will be present for scientific notation)
 
         number = BigDecimal(number.to_s)
         return zero_as if zero_as && number.zero?

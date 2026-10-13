@@ -48,7 +48,7 @@ module Crossbeams
         clear_hide = @nodes.any?(&:filter_applied?) ? '' : 'hidden '
 
         <<~HTML
-          <div class="flex gap-2 items-top justify-end mb-2" data-page-filter="Y" data-filter-for-dom-id="#{@target_dom_id}" data-filter-url="#{@url}">
+          <div class="flex gap-2 items-top justify-end mt-1 mb-2" data-page-filter="Y" data-filter-for-dom-id="#{@target_dom_id}" data-filter-url="#{@url}">
             <div class="p-2">Filter:</div>
             #{filter_renders}
             <button class="hidden #{SC.css_class(:button_primary).sub('flex ', '')}" data-filter-btn-apply="Y">Apply</button>
