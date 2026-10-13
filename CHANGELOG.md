@@ -7,6 +7,11 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+
+## [2.4.0] - 2026-10-13
+### Added
 - `RMDPage` and `RMDForm` components for laying out RMD pages
 - Link: add styles `:info_button`, `:success_button`, `:warning_button`, `:error_button`
 - HeatmapTable component for rendering a heatmap SVG
