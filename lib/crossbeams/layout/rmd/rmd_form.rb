@@ -198,7 +198,7 @@ module Crossbeams
 
         required = options[:required].nil? || options[:required] ? ' required' : ''
         autofocus = autofocus_for_field(name)
-        label_render = %(<span class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
+        label_render = %(<span id="#{@form_name}_#{name}_label" class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
 
         nodes << <<~HTML
           <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}">#{label_render}<br>
@@ -237,7 +237,7 @@ module Crossbeams
 
         required = options[:required].nil? || options[:required] ? ' required' : ''
         autofocus = autofocus_for_field(name)
-        label_render = %(<span class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
+        label_render = %(<span id="#{@form_name}_#{name}_label" class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
 
         nodes << <<~HTML
           <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}">#{label_render}<br>
@@ -311,7 +311,7 @@ module Crossbeams
         items = options[:items] || []
         autofocus = autofocus_for_field(name)
         value = form_values[name] || options[:value]
-        label_render = %(<span class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
+        label_render = %(<span id="#{@form_name}_#{name}_label" class="#{'requiredlabel' unless required.empty?}">#{label}</span>)
         nodes << <<~HTML
           <div id="#{@form_name}_#{name}_row" class="mt-2#{initial_visibilty(options)}"#{field_error_state}>#{label_render}<br>
           <select class="py-2 px-3 #{Crossbeams::Layout::StylesConfig.css_class(:rmd_select)}#{field_error_class} w-full h-fit" id="#{@form_name}_#{name}" name="#{@form_name}[#{name}]" #{required}#{autofocus} #{render_behaviours}>
@@ -351,14 +351,23 @@ module Crossbeams
       # @param options (Hash) options for the header
       # @option options [String] :id the DOM id of the element
       # @option options [Boolean] :hide_on_load should this element be hidden when the form loads?
+      # @option options [Symbol] :style - style text. Options are :info or :none. Default is none
       # @return [void]
       def add_section_header(caption, options = {})
         raise ArgumentError, 'Section header caption cannot be blank' if caption.nil_or_empty?
 
         id = options[:id] || "sh_#{caption.hash}"
+        text = case options[:style]
+               when nil, :none
+                 caption
+               when :info
+                 Crossbeams::Layout::Notice.new({}, caption, notice_type: :info, show_caption: false).render
+               else
+                 raise ArgumentError, "RMDForm#add_section_header: #{options[:style]} is not a valid style"
+               end
         nodes << <<~HTML
           <div id="#{id}" class="mt-2#{initial_visibilty(options)}">
-            <span class="font-semibold text-slate-600">#{caption}</span>
+            <span class="font-semibold text-slate-600">#{text}</span>
           </div>
         HTML
       end
@@ -894,18 +903,9 @@ module Crossbeams
 
         div_w = @small_submit ? 'justify-center' : 'justify-end'
         grow = @small_submit ? 'grow ' : ''
-        # ------------------------------------
-        # Temp for initial test:
-        # button_caption = 'Submit'
-        # submit_id_str = ''
-        # initial_hide = ''
-        # buttons_section = ''
-        # links_section = ''
-        reset_section = ''
-        # ------------------------------------
         <<~HTML
           <div class="mt-4 flex flex-row gap-4 #{div_w} flex-wrap">
-            <input type="submit" value="#{@button_caption}" #{submit_id_str}data-disable-with="Submitting..." class="#{grow}#{SC.css_class(btn_class)} py-4#{initial_hide}" data-rmd-btn="Y"> #{buttons_section} #{links_section} #{reset_section}
+            <input type="submit" value="#{@button_caption}" #{submit_id_str}data-disable-with="Submitting..." class="#{grow}#{SC.css_class(btn_class)} py-4#{initial_hide}" data-rmd-btn="Y"> #{buttons_section} #{links_section}
           </div>
         HTML
       end

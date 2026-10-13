@@ -8,6 +8,7 @@ module Crossbeams
 
       SC = StylesConfig
 
+      # A node that receives a string and returns the same string when called to `render`.
       RenderNode = Struct.new(:str) do
         def render
           str

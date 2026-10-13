@@ -287,7 +287,7 @@ Field-level errors are shown beside the relevant field. The first field in error
 
 |add_section_header
 |caption (String), options (Hash)
-|Add a bold section caption. Optional `:id` and `:hide_on_load`.
+|Add a bold section caption. Optional `:id`, `:hide_on_load` and `:style` (`nil`, `:none` or `:info`).
 
 |add_prev_next_nav
 |url (String), ids (Array), current_id (Integer), options (Hash)
