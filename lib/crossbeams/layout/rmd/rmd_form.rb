@@ -354,7 +354,7 @@ module Crossbeams
       # @option options [Symbol] :style - style text. Options are :info or :none. Default is none
       # @return [void]
       def add_section_header(caption, options = {})
-        raise ArgumentError, 'Section header caption cannot be blank' if caption.nil_or_empty?
+        raise ArgumentError, 'Section header caption cannot be blank' if caption.nil? || caption.empty?
 
         id = options[:id] || "sh_#{caption.hash}"
         text = case options[:style]
@@ -508,8 +508,8 @@ module Crossbeams
       # @option options [Boolean] :hide_on_load should this element be hidden when the form loads?
       # @return [void]
       def add_button(caption, action, options = {})
-        raise ArgumentError, 'Button caption cannot be blank' if caption.nil_or_empty?
-        raise ArgumentError, 'Button action cannot be blank' if action.nil_or_empty?
+        raise ArgumentError, 'Button caption cannot be blank' if caption.nil? || caption.empty?
+        raise ArgumentError, 'Button action cannot be blank' if action.nil? || action.empty?
 
         id = options[:id] || "btn_#{caption.hash}"
         @buttons << <<~HTML
