@@ -21,6 +21,7 @@ module Crossbeams
         @multipart = false
         @small_submit = false
         @no_submit = false
+        @set_autofocus = true
         @button_caption = 'Submit'
         @button_id = nil
         @button_initially_hidden = false
@@ -802,15 +803,14 @@ module Crossbeams
 
       # Set autofocus on fields in error, or else on the first field.
       def autofocus_for_field(name)
-        if form_errors
-          if error_msg_for_field(name)
-            ' autofocus'
-          else
-            ''
-          end
-        else
-          nodes.empty? ? ' autofocus' : ''
+        att = ''
+        if form_errors.empty? && @set_autofocus
+          att = ' autofocus'
+          @set_autofocus = false
+        elsif error_msg_for_field(name)
+          att = ' autofocus'
         end
+        att
       end
 
       def camera_section
