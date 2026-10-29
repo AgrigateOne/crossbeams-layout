@@ -10,6 +10,10 @@ and this project adheres roughly to [Semantic Versioning](http://semver.org/).
 ### Changed
 ### Fixed
 
+## [2.5.0] - 2026-10-29
+### Changed
+- Upgrade to Ruby 4.0.7
+
 ## [2.4.0] - 2026-10-13
 ### Added
 - `RMDPage` and `RMDForm` components for laying out RMD pages
