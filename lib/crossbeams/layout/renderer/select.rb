@@ -12,9 +12,9 @@ module Crossbeams
           @field_config = field_config
           @page_config = page_config
           @caption = field_config[:caption] || present_field_as_label(field_name)
-          @searchable = field_config.fetch(:searchable, true)
+          @searchable = true
           @native = field_config.fetch(:native, false)
-          @remove_search_for_small_list = field_config.fetch(:remove_search_for_small_list, true)
+          @remove_search_for_small_list = false
           @optgroup = optgroup?(@field_config[:options], @field_config[:disabled_options])
           @options_2d = using_2d_options?(@field_config[:options], @field_config[:disabled_options])
           prepare_selected
