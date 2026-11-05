@@ -382,10 +382,12 @@ module Crossbeams
       # @option options [String] :prev_caption The caption to show on the previous button. Default "Previous"
       # @option options [String] :next_caption The caption to show on the next button. Default "Next"
       # @return [void]
-      def add_prev_next_nav(url, ids, current_id, options = {}) # rubocop:disable Metrics/AbcSize
+      def add_prev_next_nav(url, ids, current_id, options = {}) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
         curr_index = ids.index(current_id)
         have_prev = curr_index.positive?
         have_next = curr_index < ids.length - 1
+        return unless have_prev || have_next
+
         p_caption = options[:prev_caption] || 'Previous'
         n_caption = options[:next_caption] || 'Next'
         prev = if have_prev
