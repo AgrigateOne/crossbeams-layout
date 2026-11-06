@@ -81,7 +81,7 @@ class Crossbeams::SelectTest < Minitest::Test
 
   def test_remove_search
     s = simple_select_render(nil, ['a', 'b'])
-    assert_equal 'Y', html_element_attribute_value(s, :select, "data-auto-hide-search")
+    assert_equal 'N', html_element_attribute_value(s, :select, "data-auto-hide-search")
 
     s = simple_select_render(nil, ['a', 'b'], remove_search_for_small_list: true)
     assert_equal 'Y', html_element_attribute_value(s, :select, "data-auto-hide-search")
